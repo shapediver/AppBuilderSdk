@@ -42,6 +42,18 @@ export default function ViewportComponent({ id, branding, sessionSettingsId, ses
             }))
         useShapeDiverViewerStore.setState({ activeViewports })
 
+
+        // addListener(EVENTTYPE.SESSION.SESSION_CREATED, async (e) => {
+        //     const sessionEvent: ISessionEvent = e as ISessionEvent;
+        //     if((sessionSettingsId === sessionEvent.sessionId && sessionSettingsMode === SESSION_SETTINGS_MODE.MANUAL) || sessionSettingsMode === SESSION_SETTINGS_MODE.FIRST) {
+        //         const v = await activeViewportsRef.current[id];
+        //         if (v) {
+        //             (v.camera as IPerspectiveCameraApi).zoomRestriction.maxDistance = 100;
+        //             (v.camera as IPerspectiveCameraApi).zoomRestriction.minDistance = 90;
+        //         }
+        //     }
+        // })
+
         return () => {
             activeViewports[id] = activeViewports[id].then(async s => s && await s.close());
         }
