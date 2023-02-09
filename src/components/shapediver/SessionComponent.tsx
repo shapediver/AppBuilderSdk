@@ -1,5 +1,6 @@
-import { addListener, createSession, EVENTTYPE, ISessionApi, ISessionEvent, sessions } from "@shapediver/viewer";
-import { useEffect } from "react";
+import { createSession } from "@shapediver/viewer";
+import { useEffect, useRef } from "react";
+import { useShapeDiverViewerStore } from "../../app/shapediver/viewerStore";
 
 interface Props {
     ticket: string,
@@ -12,54 +13,36 @@ interface Props {
     initialParameterValues?: { [key: string]: string }
 }
 
-export default function SessionComponent(props: Props): JSX.Element {
-    let initialized = false;
+export default function SessionComponent({ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
 
     useEffect(() => {
-        const create = (): Promise<ISessionApi> => {
-            initialized = true;
-            return createSession({
-                id: props.id,
-                ticket: props.ticket,
-                modelViewUrl: props.modelViewUrl,
-                jwtToken: props.jwtToken,
-                waitForOutputs: props.waitForOutputs,
-                loadOutputs: props.loadOutputs,
-                excludeViewports: props.excludeViewports,
-                initialParameterValues: props.initialParameterValues
-            });
-        }
+        // if there is already a session with the same unique id registered
+        // we wait until that session is closed until we create this session anew
+        // the closing of the session is done on unmount
+        // this can happen in development mode due to the duplicate calls of react
+        // read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
 
-        let sessionPromise: Promise<ISessionApi>;
+        const activeSessions = activeSessionsRef.current;
+        const activeSession = activeSessions[id] || Promise.resolve();
 
-        if(sessions[props.id] || initialized) {
-            // if there is already a session with the same unique id registered
-            // we wait until that session is closed until we create this session anew
-            // the closing of the session is done on unmount
-            // this can happen in development mode due to the duplicate calls of react
-            // read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-            sessionPromise = new Promise<ISessionApi>(resolve => {
-                addListener(EVENTTYPE.SESSION.SESSION_CLOSED, async (e) => {
-                    await new Promise<ISessionApi>(resolve => setTimeout(resolve, 0));
-                    const viewportEvent = e as ISessionEvent;
-                    if(viewportEvent.sessionId === props.id) {
-                        sessionPromise = create();
-                        resolve(sessionPromise)
-                    }
-                })
-            })
-        } else {
-            sessionPromise = create();
-        }
+        activeSessions[id] = activeSession
+            .then(() => createSession({
+                id: id,
+                ticket: ticket,
+                modelViewUrl: modelViewUrl,
+                jwtToken: jwtToken,
+                waitForOutputs: waitForOutputs,
+                loadOutputs: loadOutputs,
+                excludeViewports: excludeViewports,
+                initialParameterValues: initialParameterValues
+            }))
+        useShapeDiverViewerStore.setState({ activeSessions })
 
-        return function cleanup () {
-            // unmount 
-            sessionPromise.then(s => {
-                initialized = false;
-                s.close()
-            });
+        return () => {
+            activeSessions[id] = activeSessions[id].then(async s => s && await s.close());
         }
-    }, [props.id, props.ticket, props.modelViewUrl, props.jwtToken, props.waitForOutputs, props.loadOutputs, props.excludeViewports, props.initialParameterValues]);
+    }, [id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues]);
 
     return (<></>);
 };

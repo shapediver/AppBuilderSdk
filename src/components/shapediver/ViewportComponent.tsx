@@ -1,6 +1,7 @@
 import '../../ViewportComponent.css';
-import { createViewport, EVENTTYPE, IViewportApi, viewports, addListener, IViewportEvent, BUSY_MODE_DISPLAY, SESSION_SETTINGS_MODE, SPINNER_POSITIONING, VISIBILITY_MODE } from "@shapediver/viewer";
-import React, { useEffect, useRef } from "react";
+import { createViewport, BUSY_MODE_DISPLAY, SESSION_SETTINGS_MODE, SPINNER_POSITIONING, VISIBILITY_MODE } from "@shapediver/viewer";
+import { useEffect, useRef } from "react";
+import { useShapeDiverViewerStore } from '../../app/shapediver/viewerStore';
 
 interface Props {
     id: string,
@@ -16,48 +17,35 @@ interface Props {
     visibility?: VISIBILITY_MODE,
 }
 
-export default function ViewportComponent(props: Props): JSX.Element {
+export default function ViewportComponent({ id, branding, sessionSettingsId, sessionSettingsMode, visibility }: Props): JSX.Element {
     const canvasRef = useRef(null);
+    const activeViewportsRef = useRef(useShapeDiverViewerStore(state => state.activeViewports));
 
     useEffect(() => {
+        // if there is already a viewport with the same unique id registered
+        // we wait until that viewport is closed until we create this viewport anew
+        // the closing of the viewport is done on unmount
+        // this can happen in development mode due to the duplicate calls of react
+        // read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
 
-        const create = (): Promise<IViewportApi> => {
-            return createViewport({
+        const activeViewports = activeViewportsRef.current;
+        const activeViewport = activeViewports[id] || Promise.resolve();
+
+        activeViewports[id] = activeViewport
+            .then(() => createViewport({
                 canvas: canvasRef.current!,
-                id: props.id,
-                branding: props.branding,
-                sessionSettingsId: props.sessionSettingsId,
-                sessionSettingsMode: props.sessionSettingsMode,
-                visibility: props.visibility
-            });
-        }
+                id: id,
+                branding: branding,
+                sessionSettingsId: sessionSettingsId,
+                sessionSettingsMode: sessionSettingsMode,
+                visibility: visibility
+            }))
+        useShapeDiverViewerStore.setState({ activeViewports })
 
-        let viewportPromise: Promise<IViewportApi>;
-        if (viewports[props.id]) {
-            // if there is already a viewport with the same unique id registered
-            // we wait until that viewport is closed until we create this viewport anew
-            // the closing of the viewport is done on unmount
-            // this can happen in development mode due to the duplicate calls of react
-            // read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-            viewportPromise = new Promise<IViewportApi>(resolve => {
-                addListener(EVENTTYPE.VIEWPORT.VIEWPORT_CLOSED, async (e) => {
-                    await new Promise<IViewportApi>(resolve => setTimeout(resolve, 0));
-                    const viewportEvent = e as IViewportEvent;
-                    if (viewportEvent.viewportId === props.id) {
-                        viewportPromise = create();
-                        resolve(viewportPromise)
-                    }
-                })
-            })
-        } else {
-            viewportPromise = create();
+        return () => {
+            activeViewports[id] = activeViewports[id].then(async s => s && await s.close());
         }
-
-        return function cleanup() {
-            // unmount 
-            viewportPromise.then(v => v.close());
-        }
-    }, [props.id, props.branding, props.sessionSettingsId, props.sessionSettingsMode, props.visibility]);
+    }, [id, branding, sessionSettingsId, sessionSettingsMode, visibility]);
 
     return (
         <div className="ViewportContainer">
