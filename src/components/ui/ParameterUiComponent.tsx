@@ -2,7 +2,7 @@ import '../../ViewportComponent.css';
 import { useEffect, useRef, useState } from "react";
 import { useShapeDiverViewerStore } from '../../app/shapediver/viewerStore';
 import { PARAMETER_TYPE } from '@shapediver/viewer';
-import { Loader } from '@mantine/core';
+import { Accordion, Loader } from '@mantine/core';
 import ParameterSliderComponent from './parameter/ParameterSliderComponent';
 import ParameterBooleanComponent from './parameter/ParameterBooleanComponent';
 import ParameterStringComponent from './parameter/ParameterStringComponent';
@@ -32,11 +32,27 @@ export default function ParameterUiComponent({ id }: Props): JSX.Element {
                     setLoading(false);
 
                     if (session) {
-                        let elements: JSX.Element[] = [];
-                        for (let p in session.parameters) {
-                            const param = session.parameters[p];
+                        let elementGroups: {
+                            [key: string]: {
+                                group: { id: string, name: string }
+                                elements: JSX.Element[],
+                            }
+                        } = {};
 
+                        const parameters = Object.values(session.parameters);
+                        parameters.sort((a, b) => (a.order || Infinity) - (b.order || Infinity));
+
+                        for (let i = 0; i < parameters.length; i++) {
+                            const param = parameters[i];
                             if (param.hidden) continue;
+
+                            const group = param.group || { id: "default", name: "Parameter Group" };
+                            if (!elementGroups[group.id]) {
+                                elementGroups[group.id] = {
+                                    group,
+                                    elements: []
+                                }
+                            }
 
                             if (
                                 param.type === PARAMETER_TYPE.INT ||
@@ -44,27 +60,40 @@ export default function ParameterUiComponent({ id }: Props): JSX.Element {
                                 param.type === PARAMETER_TYPE.EVEN ||
                                 param.type === PARAMETER_TYPE.ODD
                             ) {
-                                elements.push(<div key={param.id}><ParameterSliderComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterSliderComponent sessionId={id} parameterId={param.id} /></div>);
                             } else if (param.type === PARAMETER_TYPE.BOOL) {
-                                elements.push(<div key={param.id}><ParameterBooleanComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterBooleanComponent sessionId={id} parameterId={param.id} /></div>);
                             } else if (param.type === PARAMETER_TYPE.STRING) {
-                                elements.push(<div key={param.id}><ParameterStringComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterStringComponent sessionId={id} parameterId={param.id} /></div>);
                             } else if (param.type === PARAMETER_TYPE.STRINGLIST) {
-                                elements.push(<div key={param.id}><ParameterSelectComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterSelectComponent sessionId={id} parameterId={param.id} /></div>);
                             } else if (param.type === PARAMETER_TYPE.COLOR) {
-                                elements.push(<div key={param.id}><ParameterColorComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterColorComponent sessionId={id} parameterId={param.id} /></div>);
                             } else if (param.type === PARAMETER_TYPE.FILE) {
-                                elements.push(<div key={param.id}><ParameterFileInputComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterFileInputComponent sessionId={id} parameterId={param.id} /></div>);
                             } else {
-                                console.log(param.type)
-                                elements.push(<div key={param.id}><ParameterLabelComponent sessionId={id} parameterId={p} /></div>);
+                                elementGroups[group.id].elements.push(<div key={param.id}><ParameterLabelComponent sessionId={id} parameterId={param.id} /></div>);
                             }
                         }
 
+                        let elements: JSX.Element[] = [];
+
+                        for (let e in elementGroups) {
+                            const g = elementGroups[e];
+
+                            elements.push(
+                                <Accordion.Item key={g.group.id} value={g.group.id}>
+                                    <Accordion.Control>{g.group.name}</Accordion.Control>
+                                    <Accordion.Panel>{g.elements}</Accordion.Panel>
+                                </Accordion.Item>
+                            )
+
+                        }
+
                         setElement(
-                            <>
+                            <Accordion variant="contained">
                                 {elements}
-                            </>
+                            </Accordion>
                         )
                     }
                 })

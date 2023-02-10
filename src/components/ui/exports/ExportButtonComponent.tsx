@@ -10,6 +10,32 @@ interface Props {
     exportId: string
 }
 
+
+export const downloadBlobFile = (blob: Blob, filename: string) => {
+    const modelFile = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = modelFile;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
+};
+
+export const fetchFileWithToken = (url: string, filename: string, finallyCb = () => { }) => {
+    return fetch(url, {
+        ...({}),
+    })
+        .then((res) => res.blob())
+        .then((blob) => {
+            downloadBlobFile(blob, filename);
+        }).catch((err) => {
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            finallyCb();
+        });
+};
+
 export default function ExportButtonComponent({ sessionId, exportId }: Props): JSX.Element {
     const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
     const [loading, setLoading] = useState(true);
@@ -39,10 +65,7 @@ export default function ExportButtonComponent({ sessionId, exportId }: Props): J
                                         response.content[0] &&
                                         response.content[0].href
                                     ) {
-                                        let a = document.createElement("a");
-                                        a.href = response.content![0].href;
-                                        a.download = "export";
-                                        a.click();
+                                        await fetchFileWithToken(response.content[0].href, `${response.filename}.${response.content[0].format}`)
                                     }
                                 }
                             });
@@ -60,7 +83,7 @@ export default function ExportButtonComponent({ sessionId, exportId }: Props): J
                         }}>
                             <Button
                                 leftIcon={leftIcon}
-                                variant="white"
+                                variant="default"
                                 onClick={handleChange}
                             >
                                 {exp.type === EXPORT_TYPE.DOWNLOAD ? "Download File" : "Send Email"}
