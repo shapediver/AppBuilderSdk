@@ -1,5 +1,4 @@
-import { Skeleton, TextInput, ActionIcon } from "@mantine/core";
-import { IconCircleCheck } from '@tabler/icons-react';
+import { Skeleton, TextInput } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
 import ParameterLabelComponent from "./ParameterLabelComponent";
@@ -34,31 +33,26 @@ export default function ParameterStringComponent({ sessionId, parameterId }: Pro
                     })
                 }
 
+                let zoomResizeTimeout: NodeJS.Timeout;
+                const handleDirectChange = () => {
+                    clearTimeout(zoomResizeTimeout);
+                    zoomResizeTimeout = setTimeout(() => {
+                        if (textInputRef.current)
+                            handleChange(textInputRef.current.value)
+                    }, 500);
+                }
+
                 setElement(
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "space-between"
-                        }}>
-                            <TextInput
-                                ref={textInputRef}
-                                style={{
-                                    flexGrow: 0.9
-                                }}
-                                defaultValue={parameter.value}
-                            />
-                            <ActionIcon
-                                variant="transparent"
-                                size="lg"
-                                onClick={() => {
-                                    if (textInputRef.current)
-                                        handleChange(textInputRef.current.value)
-                                }}
-                            >
-                                <IconCircleCheck size={50} />
-                            </ActionIcon>
-                        </div>
+                        <TextInput
+                            ref={textInputRef}
+                            style={{
+                                flexGrow: 0.9
+                            }}
+                            defaultValue={parameter.value}
+                            onChange={handleDirectChange}
+                        />
                     </>
                 )
             }
