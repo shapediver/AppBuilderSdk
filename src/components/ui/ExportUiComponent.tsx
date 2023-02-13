@@ -14,35 +14,37 @@ export default function ExportUiComponent({ id }: Props): JSX.Element {
     const [element, setElement] = useState(<></>);
 
     useEffect(() => {
-        const unsubscribe = useShapeDiverViewerStore.subscribe(
-            state => {
-                activeSessionsRef.current = state.activeSessions;
+        const createExportUi = () => {
+            const activeSessions = activeSessionsRef.current;
+            const activeSession = activeSessions[id] || Promise.resolve();
 
-                const activeSessions = activeSessionsRef.current;
-                const activeSession = activeSessions[id] || Promise.resolve();
+            (activeSession || Promise.resolve()).then((session) => {
+                setLoading(false);
 
-                (activeSession || Promise.resolve()).then((session) => {
-                    setLoading(false);
+                if (session) {
+                    let elements: JSX.Element[] = [];
+                    for (let e in session.exports) {
+                        const exp = session.exports[e];
 
-                    if (session) {
-                        let elements: JSX.Element[] = [];
-                        for (let e in session.exports) {
-                            const exp = session.exports[e];
-
-                            if (exp.hidden) continue;
-                            elements.push(<div key={exp.id}><ExportButtonComponent sessionId={id} exportId={e} /></div>);
-                        }
-
-                        setElement(
-                            <>
-                                {elements}
-                            </>
-                        )
+                        if (exp.hidden) continue;
+                        elements.push(<div key={exp.id}><ExportButtonComponent sessionId={id} exportId={e} /></div>);
                     }
-                })
 
-            }
-        );
+                    setElement(
+                        <>
+                            {elements}
+                        </>
+                    )
+                }
+            })
+        }
+
+        const unsubscribe = useShapeDiverViewerStore.subscribe(state => {
+            activeSessionsRef.current = state.activeSessions;
+            createExportUi();
+        });
+
+        createExportUi();
 
         return () => {
             unsubscribe()
