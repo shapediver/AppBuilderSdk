@@ -1,7 +1,6 @@
-import { ActionIcon, ColorInput, Skeleton } from "@mantine/core";
-import { IconRefresh } from "@tabler/icons-react";
+import { Select, Skeleton } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 import ParameterLabelComponent from "./ParameterLabelComponent";
 
 interface Props {
@@ -9,9 +8,8 @@ interface Props {
     parameterId: string
 }
 
-export default function ParameterColorComponent({ sessionId, parameterId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
-    const colorInputRef = useRef<HTMLInputElement>(null);
+export default function ParameterSelectComponent({ sessionId, parameterId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
@@ -24,12 +22,11 @@ export default function ParameterColorComponent({ sessionId, parameterId }: Prop
 
             if (session) {
                 const parameter = session.parameters[parameterId];
-                const defaultValue = (parameter.value).replace("0x", "#").substring(0, 7);
 
                 const handleChange = (value: string) => {
                     activeSessions[sessionId].then((session) => {
                         if (session) {
-                            parameter.value = value;
+                            parameter.value = parameter.choices!.indexOf(value) + "";
                             session.customize();
                         }
                     })
@@ -38,19 +35,11 @@ export default function ParameterColorComponent({ sessionId, parameterId }: Prop
                 setElement(
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                        <ColorInput 
-                            ref={colorInputRef}
-                            defaultValue={defaultValue}
-                            placeholder="Pick color"
-                            rightSection={
-                                <ActionIcon onClick={() => {
-                                        if(colorInputRef.current) colorInputRef.current.value = defaultValue;
-                                        handleChange(defaultValue);
-                                    }}>
-                                    <IconRefresh size={16} />
-                                </ActionIcon>
-                            }
-                            onChangeEnd={handleChange}
+                        <Select
+                            placeholder="Pick one"
+                            defaultValue={parameter.choices![+parameter.defval]}
+                            onChange={handleChange}
+                            data={parameter.choices!}
                         />
                     </>
                 )

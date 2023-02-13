@@ -1,6 +1,7 @@
-import { Skeleton, Switch } from "@mantine/core";
+import { ActionIcon, ColorInput, Skeleton } from "@mantine/core";
+import { IconRefresh } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 import ParameterLabelComponent from "./ParameterLabelComponent";
 
 interface Props {
@@ -8,8 +9,9 @@ interface Props {
     parameterId: string
 }
 
-export default function ParameterBooleanComponent({ sessionId, parameterId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
+export default function ParameterColorComponent({ sessionId, parameterId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
+    const colorInputRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
@@ -22,9 +24,9 @@ export default function ParameterBooleanComponent({ sessionId, parameterId }: Pr
 
             if (session) {
                 const parameter = session.parameters[parameterId];
-                const defaultValue = (parameter.value === true || parameter.value === "true");
+                const defaultValue = (parameter.value).replace("0x", "#").substring(0, 7);
 
-                const handleChange = (value: boolean) => {
+                const handleChange = (value: string) => {
                     activeSessions[sessionId].then((session) => {
                         if (session) {
                             parameter.value = value;
@@ -36,9 +38,19 @@ export default function ParameterBooleanComponent({ sessionId, parameterId }: Pr
                 setElement(
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                        <Switch
-                            defaultChecked={defaultValue}
-                            onChange={(event) => handleChange(event.currentTarget.checked)}
+                        <ColorInput 
+                            ref={colorInputRef}
+                            defaultValue={defaultValue}
+                            placeholder="Pick color"
+                            rightSection={
+                                <ActionIcon onClick={() => {
+                                        if(colorInputRef.current) colorInputRef.current.value = defaultValue;
+                                        handleChange(defaultValue);
+                                    }}>
+                                    <IconRefresh size={16} />
+                                </ActionIcon>
+                            }
+                            onChangeEnd={handleChange}
                         />
                     </>
                 )

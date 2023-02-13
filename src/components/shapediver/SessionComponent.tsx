@@ -1,6 +1,6 @@
 import { createSession } from "@shapediver/viewer";
 import { useEffect, useRef } from "react";
-import { useShapeDiverViewerStore } from "../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../context/shapediverViewerStore";
 
 interface Props {
     ticket: string,
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function SessionComponent({ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
 
     useEffect(() => {
         // if there is already a session with the same unique id registered
@@ -37,7 +37,7 @@ export default function SessionComponent({ id, ticket, modelViewUrl, jwtToken, w
                 excludeViewports: excludeViewports,
                 initialParameterValues: initialParameterValues
             }))
-        useShapeDiverViewerStore.setState({ activeSessions })
+        useShapediverViewerStore.setState({ activeSessions })
 
         return () => {
             activeSessions[id] = activeSessions[id].then(async s => s && await s.close());

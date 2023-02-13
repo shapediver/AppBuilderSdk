@@ -1,42 +1,39 @@
-import { Image, ActionIcon, ColorScheme, Header } from '@mantine/core';
+import { Image, ActionIcon, ColorScheme, MediaQuery } from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
-import { useUiStore } from '../../app/shapediver/uiStore';
+import { useGlobalUiStore } from '../../context/globalUiStore';
 
 function HeaderBar() {
-    const colorScheme = useUiStore(state => state.colorScheme);
+    const colorScheme = useGlobalUiStore(state => state.colorScheme);
 
     const toggleColorScheme = (value?: ColorScheme) => {
-        useUiStore.setState({ colorScheme: (value || (colorScheme === 'dark' ? 'light' : 'dark')) })
+        useGlobalUiStore.setState({ colorScheme: (value || (colorScheme === 'dark' ? 'light' : 'dark')) })
     }
-    
+
     return (
-        <Header height={60} p="xs">
-            <div style={{
-                display: "flex",
-                justifyContent: "space-between"
-            }}>
+        <>
+            <MediaQuery smallerThan="sm" styles={{ width: "165px!important" }}>
                 <Image
                     style={{
-                        filter: colorScheme === 'dark' ? "" : "invert(1)"
+                        width: "300px",
+                        filter: colorScheme === 'dark' ? "" : "invert(1)",
                     }}
-                    width={300}
                     fit="contain"
                     radius="md"
                     src="https://shapediver.com/app/imgs/sd-logo-white-600x84.webp"
                     alt="ShapeDiver Logo"
                 />
-                <ActionIcon
-                    variant="outline"
-                    color={colorScheme === 'dark' ? 'yellow' : 'blue'}
-                    onClick={() => toggleColorScheme()}
-                    title="Toggle color scheme"
-                >
-                    {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoonStars size={18} />}
-                </ActionIcon>
+            </MediaQuery>
 
-            </div>
-        </Header>
-
+            <ActionIcon
+                variant="outline"
+                color={colorScheme === 'dark' ? 'yellow' : 'blue'}
+                onClick={() => toggleColorScheme()}
+                title="Toggle color scheme"
+                style={{ float: "right" }}
+            >
+                {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoonStars size={18} />}
+            </ActionIcon>
+        </>
     );
 }
 

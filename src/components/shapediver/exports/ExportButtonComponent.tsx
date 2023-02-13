@@ -2,7 +2,7 @@ import { Button, Loader, Skeleton } from "@mantine/core";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 import ExportLabelComponent from "./ExportLabelComponent";
 
 interface Props {
@@ -37,7 +37,7 @@ export const fetchFileWithToken = (url: string, filename: string, finallyCb = ()
 };
 
 export default function ExportButtonComponent({ sessionId, exportId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
     const [requestingExport, setRequestingExport] = useState(false);

@@ -1,7 +1,8 @@
-import { Slider, Skeleton } from "@mantine/core";
-import { PARAMETER_TYPE } from "@shapediver/viewer";
+import { FileInput, Skeleton } from "@mantine/core";
+import { IconUpload } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
+import { mapMimeTypeToFileEndings, extendMimeTypes } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "./ParameterLabelComponent";
 
 interface Props {
@@ -9,8 +10,8 @@ interface Props {
     parameterId: string
 }
 
-export default function ParameterSliderComponent({ sessionId, parameterId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
+export default function ParameterFileInputComponent({ sessionId, parameterId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
@@ -23,20 +24,12 @@ export default function ParameterSliderComponent({ sessionId, parameterId }: Pro
 
             if (session) {
                 const parameter = session.parameters[parameterId];
+                const fileEndings = [...mapMimeTypeToFileEndings(extendMimeTypes(parameter.format!))];
 
-                let step = 1;
-                if (parameter.type === PARAMETER_TYPE.INT) {
-                    step = 1;
-                } else if (parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD) {
-                    step = 2;
-                } else {
-                    step = 1 / Math.pow(10, parameter.decimalplaces!);
-                }
-
-                const handleChange = (value: number) => {
+                const handleChange = (value: File | null) => {
                     activeSessions[sessionId].then((session) => {
                         if (session) {
-                            parameter.value = value;
+                            parameter.value = value || "";
                             session.customize();
                         }
                     })
@@ -45,13 +38,11 @@ export default function ParameterSliderComponent({ sessionId, parameterId }: Pro
                 setElement(
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                        <Slider
-                            label={(value) => value.toFixed(1)}
-                            defaultValue={+parameter.value}
-                            min={+parameter.min!}
-                            max={+parameter.max!}
-                            step={step}
-                            onChangeEnd={handleChange}
+                        <FileInput
+                            placeholder="File Upload"
+                            accept={fileEndings.join(",")}
+                            onChange={handleChange}
+                            icon={<IconUpload size={14} />}
                         />
                     </>
                 )

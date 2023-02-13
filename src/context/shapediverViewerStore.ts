@@ -1,7 +1,7 @@
 import { ISessionApi, IViewportApi } from '@shapediver/viewer';
 import { create } from 'zustand'
 
-export interface SessionState {
+export interface shapediverViewerState {
     activeViewports: {
         [key: string]: Promise<IViewportApi | void>
     }
@@ -16,7 +16,7 @@ export interface SessionState {
     }) => void;
 }
 
-export const useShapeDiverViewerStore = create<SessionState>((set) => ({
+export const useShapediverViewerStore = create<shapediverViewerState>((set) => ({
     activeViewports: {},
     setActiveViewports: (activeViewports) =>
         set((state) => ({

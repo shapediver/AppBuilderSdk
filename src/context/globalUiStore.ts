@@ -1,12 +1,12 @@
 import { ColorScheme } from '@mantine/core';
 import { create } from 'zustand'
 
-interface uiState {
+interface globalUiState {
     colorScheme: ColorScheme;
     setColorScheme: (colorScheme: ColorScheme) => void;
 }
 
-export const useUiStore = create<uiState>((set) => ({
+export const useGlobalUiStore = create<globalUiState>((set) => ({
     colorScheme: "dark",
     setColorScheme: (colorScheme) =>
         set((state) => ({

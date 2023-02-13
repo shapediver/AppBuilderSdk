@@ -1,7 +1,6 @@
-import '../../ViewportComponent.css';
 import { createViewport, BUSY_MODE_DISPLAY, SESSION_SETTINGS_MODE, SPINNER_POSITIONING, VISIBILITY_MODE } from "@shapediver/viewer";
 import { useEffect, useRef } from "react";
-import { useShapeDiverViewerStore } from '../../app/shapediver/viewerStore';
+import { useShapediverViewerStore } from '../../context/shapediverViewerStore';
 
 interface Props {
     id: string,
@@ -19,7 +18,7 @@ interface Props {
 
 export default function ViewportComponent({ id, branding, sessionSettingsId, sessionSettingsMode, visibility }: Props): JSX.Element {
     const canvasRef = useRef(null);
-    const activeViewportsRef = useRef(useShapeDiverViewerStore(state => state.activeViewports));
+    const activeViewportsRef = useRef(useShapediverViewerStore(state => state.activeViewports));
 
     useEffect(() => {
         // if there is already a viewport with the same unique id registered
@@ -40,7 +39,7 @@ export default function ViewportComponent({ id, branding, sessionSettingsId, ses
                 sessionSettingsMode: sessionSettingsMode,
                 visibility: visibility
             }))
-        useShapeDiverViewerStore.setState({ activeViewports })
+        useShapediverViewerStore.setState({ activeViewports })
 
 
         // addListener(EVENTTYPE.SESSION.SESSION_CREATED, async (e) => {
@@ -60,7 +59,11 @@ export default function ViewportComponent({ id, branding, sessionSettingsId, ses
     }, [id, branding, sessionSettingsId, sessionSettingsMode, visibility]);
 
     return (
-        <div className="ViewportContainer">
+        <div style={{
+            overflow: "hidden",
+            width: "100%",
+            height: "100%"
+        }}>
             <canvas ref={canvasRef} />
         </div>
     )
