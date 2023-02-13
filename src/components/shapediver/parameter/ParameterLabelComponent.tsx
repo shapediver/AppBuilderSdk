@@ -1,14 +1,14 @@
 import { Skeleton, Text } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 
 interface Props {
     sessionId: string,
-    exportId: string
+    parameterId: string
 }
 
-export default function ExportLabelComponent({ sessionId, exportId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
+export default function ParameterLabelComponent({ sessionId, parameterId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
@@ -20,17 +20,17 @@ export default function ExportLabelComponent({ sessionId, exportId }: Props): JS
             setLoading(false);
 
             if (session) {
-                const exp = session.exports[exportId];
+                const parameter = session.parameters[parameterId];
                 setElement(
                     <>
-                        <Text style={{ paddingTop: "0.5rem" }} size="sm" fw={500}>{exp.displayname || exp.name}</Text>
+                        <Text style={{ paddingTop: "0.5rem", paddingBottom: "0.25rem" }} size="sm" fw={500}>{parameter.displayname || parameter.name}</Text>
                     </>
                 )
             }
         })
 
         return () => { }
-    }, [sessionId, exportId]);
+    }, [sessionId, parameterId]);
 
     return (
         <>

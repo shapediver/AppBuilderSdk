@@ -1,0 +1,103 @@
+import { AppShell, Tabs, Aside, MediaQuery, Navbar, Header, Burger, useMantineTheme } from '@mantine/core';
+import { SESSION_SETTINGS_MODE, BUSY_MODE_DISPLAY } from '@shapediver/viewer';
+import { IconReplace, IconFileDownload } from '@tabler/icons-react';
+import SessionComponent from '../components/shapediver/SessionComponent';
+import ViewportComponent from '../components/shapediver/ViewportComponent';
+import ExportUiComponent from '../components/shapediver/ExportUiComponent';
+import HeaderBar from '../components/ui/HeaderBar';
+import NavigationBar from '../components/ui/NavigationBar';
+import ParameterUiComponent from '../components/shapediver/ParameterUiComponent';
+import { useState } from 'react';
+
+function ViewPage() {
+    const [opened, setOpened] = useState(false);
+    const theme = useMantineTheme();
+
+    return (
+        <AppShell
+            padding="md"
+            navbarOffsetBreakpoint="sm"
+            asideOffsetBreakpoint="sm"
+            navbar={
+                <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+                    <NavigationBar />
+                </Navbar>
+            }
+            header={
+                <Header height={60} p="xs">
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", height: '100%' }}>
+                        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                            <Burger
+                                opened={opened}
+                                onClick={() => setOpened((o) => !o)}
+                                size="sm"
+                                color={theme.colors.gray[6]}
+                            />
+                        </MediaQuery>
+
+                        <HeaderBar />
+                    </div>
+                </Header>
+            }
+            aside={
+                <MediaQuery smallerThan="sm" styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}>
+                    <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+                            <Tabs defaultValue="parameters">
+                                <Tabs.List>
+                                    <Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
+                                    <Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
+                                </Tabs.List>
+
+                                <Tabs.Panel value="parameters" pt="xs">
+                                    <ParameterUiComponent sessionId="session_1" />
+                                </Tabs.Panel>
+
+                                <Tabs.Panel value="exports" pt="xs">
+                                    <ExportUiComponent sessionId="session_1" />
+                                </Tabs.Panel>
+                            </Tabs>
+
+                    </Aside>
+                </MediaQuery>
+            }
+            styles={(theme) => ({
+                main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+            })}
+        >
+            <MediaQuery smallerThan="sm" styles={{
+                margin: "-16px!important",
+                // minus two times padding (2 x 16)
+                maxHeight: "calc(100% - 268px);!important"
+            }}>
+                <div className="App" style={{
+                    height: "100%"
+                }}>
+                    <div style={{
+                        width: "100%",
+                        height: "100%"
+                    }}>
+                        <ViewportComponent
+                            id='viewport_1'
+                            sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
+                            sessionSettingsId='session_1'
+                            branding={{
+                                backgroundColor: "#141517",
+                                busyModeDisplay: BUSY_MODE_DISPLAY.BLUR
+                            }}
+                        />
+                    </div>
+
+                    <SessionComponent
+                        id='session_1'
+                        ticket='340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704'
+                        modelViewUrl='https://sdr7euc1.eu-central-1.shapediver.com'
+                        excludeViewports={["viewport_2"]}
+                    />
+                </div >
+
+            </MediaQuery>
+        </AppShell >
+    );
+}
+
+export default ViewPage;

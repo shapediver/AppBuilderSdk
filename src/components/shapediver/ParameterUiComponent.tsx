@@ -1,8 +1,7 @@
-import '../../ViewportComponent.css';
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from '../../app/shapediver/viewerStore';
+import { useShapediverViewerStore } from '../../context/shapediverViewerStore';
 import { PARAMETER_TYPE } from '@shapediver/viewer';
-import { Accordion, Loader } from '@mantine/core';
+import { Accordion, Loader, MediaQuery, ScrollArea } from '@mantine/core';
 import ParameterSliderComponent from './parameter/ParameterSliderComponent';
 import ParameterBooleanComponent from './parameter/ParameterBooleanComponent';
 import ParameterStringComponent from './parameter/ParameterStringComponent';
@@ -12,18 +11,18 @@ import ParameterLabelComponent from './parameter/ParameterLabelComponent';
 import ParameterFileInputComponent from './parameter/ParameterFileInputComponent';
 
 interface Props {
-    id: string
+    sessionId: string
 }
 
-export default function ParameterUiComponent({ id }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore.getState().activeSessions)
+export default function ParameterUiComponent({ sessionId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore.getState().activeSessions)
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
     useEffect(() => {
         const createParameterUi = () => {
             const activeSessions = activeSessionsRef.current;
-            const activeSession = activeSessions[id] || Promise.resolve();
+            const activeSession = activeSessions[sessionId] || Promise.resolve();
 
             (activeSession || Promise.resolve()).then((session) => {
                 setLoading(false);
@@ -57,19 +56,19 @@ export default function ParameterUiComponent({ id }: Props): JSX.Element {
                             param.type === PARAMETER_TYPE.EVEN ||
                             param.type === PARAMETER_TYPE.ODD
                         ) {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterSliderComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterSliderComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         } else if (param.type === PARAMETER_TYPE.BOOL) {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterBooleanComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterBooleanComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         } else if (param.type === PARAMETER_TYPE.STRING) {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterStringComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterStringComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         } else if (param.type === PARAMETER_TYPE.STRINGLIST) {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterSelectComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterSelectComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         } else if (param.type === PARAMETER_TYPE.COLOR) {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterColorComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterColorComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         } else if (param.type === PARAMETER_TYPE.FILE) {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterFileInputComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterFileInputComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         } else {
-                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterLabelComponent sessionId={id} parameterId={param.id} /></div>);
+                            elementGroups[group.id].elements.push(<div key={param.id}><ParameterLabelComponent sessionId={sessionId} parameterId={param.id} /></div>);
                         }
                     }
 
@@ -88,15 +87,22 @@ export default function ParameterUiComponent({ id }: Props): JSX.Element {
                     }
 
                     setElement(
-                        <Accordion variant="contained">
-                            {elements}
-                        </Accordion>
+                        <MediaQuery smallerThan="sm" styles={{
+                            // minus tab height (34) and two times margin (2 x 10)
+                            height: "calc(300px - 54px)"
+                        }}>
+                            <ScrollArea type="auto">
+                                <Accordion variant="contained">
+                                    {elements}
+                                </Accordion>
+                            </ScrollArea>
+                        </MediaQuery>
                     )
                 }
             })
         }
 
-        const unsubscribe = useShapeDiverViewerStore.subscribe( state => {
+        const unsubscribe = useShapediverViewerStore.subscribe(state => {
             activeSessionsRef.current = state.activeSessions;
             createParameterUi();
         });
@@ -106,7 +112,7 @@ export default function ParameterUiComponent({ id }: Props): JSX.Element {
         return () => {
             unsubscribe()
         }
-    }, [id]);
+    }, [sessionId]);
 
     return (
         <>

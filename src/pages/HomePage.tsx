@@ -1,7 +1,7 @@
-import { Image, Container, Card, Group, Text, Button, Paper } from "@mantine/core";
+import { Image, Container, Card, Group, Text, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 
-function Home() {
+function HomePage() {
   return (
     <>
       <Container style={{ paddingTop: "3rem" }} size="lg" px="lg">
@@ -41,7 +41,7 @@ function Home() {
             </Text>
 
             <Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/view">
-              Get me there!
+              On to the View Page!
             </Button>
           </Card>
 
@@ -64,7 +64,7 @@ function Home() {
             </Text>
 
             <Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/modelSelect">
-              Get me there!
+              On to the Model Select Page!
             </Button>
           </Card>
         </div>
@@ -73,4 +73,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;

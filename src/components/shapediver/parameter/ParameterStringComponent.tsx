@@ -1,8 +1,6 @@
-import { FileInput, Skeleton } from "@mantine/core";
-import { IconUpload } from "@tabler/icons-react";
+import { Skeleton, TextInput } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
-import { mapMimeTypeToFileEndings, extendMimeTypes } from "@shapediver/viewer.utils.mime-type";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 import ParameterLabelComponent from "./ParameterLabelComponent";
 
 interface Props {
@@ -10,8 +8,9 @@ interface Props {
     parameterId: string
 }
 
-export default function ParameterFileInputComponent({ sessionId, parameterId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
+export default function ParameterStringComponent({ sessionId, parameterId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
+    const textInputRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
@@ -24,25 +23,35 @@ export default function ParameterFileInputComponent({ sessionId, parameterId }: 
 
             if (session) {
                 const parameter = session.parameters[parameterId];
-                const fileEndings = [...mapMimeTypeToFileEndings(extendMimeTypes(parameter.format!))];
 
-                const handleChange = (value: File | null) => {
+                const handleChange = (value: string) => {
                     activeSessions[sessionId].then((session) => {
                         if (session) {
-                            parameter.value = value || "";
+                            parameter.value = value;
                             session.customize();
                         }
                     })
                 }
 
+                let zoomResizeTimeout: NodeJS.Timeout;
+                const handleDirectChange = () => {
+                    clearTimeout(zoomResizeTimeout);
+                    zoomResizeTimeout = setTimeout(() => {
+                        if (textInputRef.current)
+                            handleChange(textInputRef.current.value)
+                    }, 500);
+                }
+
                 setElement(
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                        <FileInput
-                            placeholder="File Upload"
-                            accept={fileEndings.join(",")}
-                            onChange={handleChange}
-                            icon={<IconUpload size={14} />}
+                        <TextInput
+                            ref={textInputRef}
+                            style={{
+                                flexGrow: 0.9
+                            }}
+                            defaultValue={parameter.value}
+                            onChange={handleDirectChange}
                         />
                     </>
                 )

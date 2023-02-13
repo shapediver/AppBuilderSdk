@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 function NavigationBar() {
 
     return (
-        <Navbar width={{ sm: 200, lg: 300 }} p="xs">
+        <>
             <Navbar.Section mx="-xs" px="xs" >
                 <Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/">
                     Home
@@ -24,7 +24,7 @@ function NavigationBar() {
             </Navbar.Section>
 
             <Outlet />
-        </Navbar>
+        </>
     );
 }
 

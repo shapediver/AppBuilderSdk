@@ -1,6 +1,6 @@
-import { Skeleton, TextInput } from "@mantine/core";
+import { Skeleton, Switch } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverViewerStore } from "../../../app/shapediver/viewerStore";
+import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 import ParameterLabelComponent from "./ParameterLabelComponent";
 
 interface Props {
@@ -8,9 +8,8 @@ interface Props {
     parameterId: string
 }
 
-export default function ParameterStringComponent({ sessionId, parameterId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapeDiverViewerStore(state => state.activeSessions));
-    const textInputRef = useRef<HTMLInputElement>(null);
+export default function ParameterBooleanComponent({ sessionId, parameterId }: Props): JSX.Element {
+    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
 
@@ -23,8 +22,9 @@ export default function ParameterStringComponent({ sessionId, parameterId }: Pro
 
             if (session) {
                 const parameter = session.parameters[parameterId];
+                const defaultValue = (parameter.value === true || parameter.value === "true");
 
-                const handleChange = (value: string) => {
+                const handleChange = (value: boolean) => {
                     activeSessions[sessionId].then((session) => {
                         if (session) {
                             parameter.value = value;
@@ -33,25 +33,12 @@ export default function ParameterStringComponent({ sessionId, parameterId }: Pro
                     })
                 }
 
-                let zoomResizeTimeout: NodeJS.Timeout;
-                const handleDirectChange = () => {
-                    clearTimeout(zoomResizeTimeout);
-                    zoomResizeTimeout = setTimeout(() => {
-                        if (textInputRef.current)
-                            handleChange(textInputRef.current.value)
-                    }, 500);
-                }
-
                 setElement(
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                        <TextInput
-                            ref={textInputRef}
-                            style={{
-                                flexGrow: 0.9
-                            }}
-                            defaultValue={parameter.value}
-                            onChange={handleDirectChange}
+                        <Switch
+                            defaultChecked={defaultValue}
+                            onChange={(event) => handleChange(event.currentTarget.checked)}
                         />
                     </>
                 )
