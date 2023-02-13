@@ -1,4 +1,5 @@
-import { MultiSelect } from "@mantine/core";
+import { MultiSelect, Notification } from "@mantine/core";
+import { IconAlertCircle } from "@tabler/icons-react";
 import { useTicketSelectStore } from "../../app/shapediver/ticketSelectStore";
 import SessionComponent from "../shapediver/SessionComponent";
 
@@ -53,7 +54,11 @@ export default function TicketSelect() {
 
             return <>{elements}</>;
         } else {
-            return <></>;
+            return <>
+                <Notification icon={<IconAlertCircle size={18} />} mt="xs" title="Model Select" disallowClose>
+                    Select a model to see it in the viewport!
+                </Notification>
+            </>;
         }
     }
 
