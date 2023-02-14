@@ -37,6 +37,10 @@ export default function ParameterBooleanComponent({ sessionId, parameterId }: Pr
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
                         <Switch
+                            styles={() => ({
+                                track: { cursor: "pointer" },
+                            })}
+                            size="md"
                             defaultChecked={defaultValue}
                             onChange={(event) => handleChange(event.currentTarget.checked)}
                         />

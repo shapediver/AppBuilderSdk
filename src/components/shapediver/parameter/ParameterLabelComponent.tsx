@@ -23,7 +23,7 @@ export default function ParameterLabelComponent({ sessionId, parameterId }: Prop
                 const parameter = session.parameters[parameterId];
                 setElement(
                     <>
-                        <Text style={{ paddingTop: "0.5rem", paddingBottom: "0.25rem" }} size="sm" fw={500}>{parameter.displayname || parameter.name}</Text>
+                        <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{parameter.displayname || parameter.name}</Text>
                     </>
                 )
             }

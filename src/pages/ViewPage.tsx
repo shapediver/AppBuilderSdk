@@ -1,5 +1,5 @@
 import { AppShell, Tabs, Aside, MediaQuery, Navbar, Header, Burger, useMantineTheme } from '@mantine/core';
-import { SESSION_SETTINGS_MODE, BUSY_MODE_DISPLAY } from '@shapediver/viewer';
+import { SESSION_SETTINGS_MODE } from '@shapediver/viewer';
 import { IconReplace, IconFileDownload } from '@tabler/icons-react';
 import SessionComponent from '../components/shapediver/SessionComponent';
 import ViewportComponent from '../components/shapediver/ViewportComponent';
@@ -10,8 +10,8 @@ import ParameterUiComponent from '../components/shapediver/ParameterUiComponent'
 import { useState } from 'react';
 
 function ViewPage() {
-    const [opened, setOpened] = useState(false);
     const theme = useMantineTheme();
+    const [opened, setOpened] = useState(false);
 
     return (
         <AppShell
@@ -69,20 +69,23 @@ function ViewPage() {
                 // minus two times padding (2 x 16)
                 maxHeight: "calc(100% - 268px);!important"
             }}>
-                <div className="App" style={{
+                <div style={{
+                    textAlign: "center",
                     height: "100%"
                 }}>
                     <div style={{
+                        position: "relative",
                         width: "100%",
-                        height: "100%"
+                        height: "100%",
+                        overflow: "hidden"
                     }}>
                         <ViewportComponent
                             id='viewport_1'
                             sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
                             sessionSettingsId='session_1'
                             branding={{
-                                backgroundColor: "#141517",
-                                busyModeDisplay: BUSY_MODE_DISPLAY.BLUR
+                                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                                logo: theme.colorScheme === 'dark' ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
                             }}
                         />
                     </div>
