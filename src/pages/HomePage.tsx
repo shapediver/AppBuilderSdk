@@ -1,7 +1,15 @@
 import { Image, Container, Card, Group, Text, Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 
-function HomePage() {
+/**
+ * Function that create the home page.
+ * On this page, an introduction is provided and all other pages are linked.
+ * 
+ * Currently under construction.
+ * 
+ * @returns 
+ */
+export default function HomePage() {
   return (
     <>
       <Container style={{ paddingTop: "3rem" }} size="lg" px="lg">
@@ -72,5 +80,3 @@ function HomePage() {
     </>
   );
 }
-
-export default HomePage;

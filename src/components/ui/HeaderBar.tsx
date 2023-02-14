@@ -2,7 +2,14 @@ import { Image, ActionIcon, MediaQuery, useMantineColorScheme } from '@mantine/c
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { useLinkClickHandler } from 'react-router-dom';
 
-function HeaderBar() {
+/**
+ * Functional component that creates an image and a icon for the header bar.
+ * The image redirect to the home page.
+ * The icon changes the color theme.
+ * 
+ * @returns 
+ */
+export default function HeaderBar() {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     
     return (
@@ -34,5 +41,3 @@ function HeaderBar() {
         </>
     );
 }
-
-export default HeaderBar;

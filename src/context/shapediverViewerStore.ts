@@ -16,6 +16,9 @@ export interface shapediverViewerState {
     }) => void;
 }
 
+/**
+ * State store for all created viewports and sessions.
+ */
 export const useShapediverViewerStore = create<shapediverViewerState>((set) => ({
     activeViewports: {},
     setActiveViewports: (activeViewports) =>
