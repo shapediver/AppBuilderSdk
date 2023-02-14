@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useShapediverViewerStore } from '../../context/shapediverViewerStore';
-import { Loader, MediaQuery, ScrollArea } from '@mantine/core';
+import { Divider, Loader, MediaQuery, ScrollArea } from '@mantine/core';
 import ExportButtonComponent from './exports/ExportButtonComponent';
 
 interface Props {
@@ -17,16 +17,19 @@ export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
             const activeSessions = activeSessionsRef.current;
             const activeSession = activeSessions[sessionId] || Promise.resolve();
 
+            setLoading(true);
             (activeSession || Promise.resolve()).then((session) => {
-                setLoading(false);
-
                 if (session) {
+                    setLoading(false);
+                    
                     let elements: JSX.Element[] = [];
-                    for (let e in session.exports) {
-                        const exp = session.exports[e];
+                    const exports = Object.values(session.exports);
+                    for (let i = 0; i < exports.length; i++) {
+                        const exp = exports[i];
 
                         if (exp.hidden) continue;
-                        elements.push(<div key={exp.id}><ExportButtonComponent sessionId={sessionId} exportId={e} /></div>);
+                        elements.push(<div key={exp.id}><ExportButtonComponent sessionId={sessionId} exportId={exp.id} /></div>);
+                        if(i !== exports.length-1) elements.push(<Divider key={exp.id+"_divider"} my="sm" />)
                     }
 
                     setElement(
@@ -57,7 +60,7 @@ export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
 
     return (
         <>
-            {loading && <Loader size="xl" variant="dots" />}
+            {loading && <Loader style={{ width: "100%" }} mt="xl" size="xl" variant="dots" />}
             {!loading && element}
         </>
     )

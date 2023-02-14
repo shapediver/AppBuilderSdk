@@ -1,5 +1,5 @@
-import { FileInput, Skeleton } from "@mantine/core";
-import { IconUpload } from "@tabler/icons-react";
+import { ActionIcon, FileInput, Skeleton } from "@mantine/core";
+import { IconUpload, IconX } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 import { mapMimeTypeToFileEndings, extendMimeTypes } from "@shapediver/viewer.utils.mime-type";
@@ -43,6 +43,13 @@ export default function ParameterFileInputComponent({ sessionId, parameterId }: 
                             accept={fileEndings.join(",")}
                             onChange={handleChange}
                             icon={<IconUpload size={14} />}
+                            rightSection={
+                                <ActionIcon onClick={() => {
+                                        handleChange(null)
+                                    }}>
+                                    <IconX size={16} />
+                                </ActionIcon>
+                            }
                         />
                     </>
                 )

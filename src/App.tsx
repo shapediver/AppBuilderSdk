@@ -1,18 +1,14 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
-import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
-import { useGlobalUiStore } from './context/globalUiStore';
+import { useState } from 'react';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ModelSelectPage from './pages/ModelSelectPage';
 import NoMatchPage from './pages/NoMatchPage';
 import ViewPage from './pages/ViewPage';
 
 function App() {
-  const colorScheme = useGlobalUiStore(state => state.colorScheme);
-
-  const toggleColorScheme = (value?: ColorScheme) => {
-    useGlobalUiStore.setState({ colorScheme: (value || (colorScheme === 'dark' ? 'light' : 'dark')) })
-  }
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
+  const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>

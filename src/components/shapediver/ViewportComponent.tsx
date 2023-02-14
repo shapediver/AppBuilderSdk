@@ -58,13 +58,5 @@ export default function ViewportComponent({ id, branding, sessionSettingsId, ses
         }
     }, [id, branding, sessionSettingsId, sessionSettingsMode, visibility]);
 
-    return (
-        <div style={{
-            overflow: "hidden",
-            width: "100%",
-            height: "100%"
-        }}>
-            <canvas ref={canvasRef} />
-        </div>
-    )
+    return (<canvas ref={canvasRef} />)
 };

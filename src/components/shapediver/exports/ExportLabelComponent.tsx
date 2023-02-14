@@ -23,7 +23,7 @@ export default function ExportLabelComponent({ sessionId, exportId }: Props): JS
                 const exp = session.exports[exportId];
                 setElement(
                     <>
-                        <Text style={{ paddingTop: "0.5rem", paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.displayname || exp.name}</Text>
+                        <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.displayname || exp.name}</Text>
                     </>
                 )
             }

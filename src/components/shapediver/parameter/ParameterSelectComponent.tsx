@@ -37,6 +37,7 @@ export default function ParameterSelectComponent({ sessionId, parameterId }: Pro
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
                         <Select
                             placeholder="Pick one"
+                            dropdownPosition="bottom"
                             defaultValue={parameter.choices![+parameter.defval]}
                             onChange={handleChange}
                             data={parameter.choices!}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useShapediverViewerStore } from '../../context/shapediverViewerStore';
 import { PARAMETER_TYPE } from '@shapediver/viewer';
-import { Accordion, Loader, MediaQuery, ScrollArea } from '@mantine/core';
+import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from '@mantine/core';
 import ParameterSliderComponent from './parameter/ParameterSliderComponent';
 import ParameterBooleanComponent from './parameter/ParameterBooleanComponent';
 import ParameterStringComponent from './parameter/ParameterStringComponent';
@@ -15,6 +15,7 @@ interface Props {
 }
 
 export default function ParameterUiComponent({ sessionId }: Props): JSX.Element {
+    const theme = useMantineTheme();
     const activeSessionsRef = useRef(useShapediverViewerStore.getState().activeSessions)
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
@@ -23,11 +24,12 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
         const createParameterUi = () => {
             const activeSessions = activeSessionsRef.current;
             const activeSession = activeSessions[sessionId] || Promise.resolve();
+            setLoading(true);
 
             (activeSession || Promise.resolve()).then((session) => {
-                setLoading(false);
-
                 if (session) {
+                    setLoading(false);
+
                     let elementGroups: {
                         [key: string]: {
                             group: { id: string, name: string }
@@ -77,10 +79,21 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
                     for (let e in elementGroups) {
                         const g = elementGroups[e];
 
+                        let groupElements: JSX.Element[] = [];
+                        g.elements.forEach((element, index) => {
+                            groupElements.push(element);
+                            if(index !== g.elements.length-1) groupElements.push(<Divider key={element.key+"_divider"} my="sm" />)
+                        });
+
                         elements.push(
                             <Accordion.Item key={g.group.id} value={g.group.id}>
                                 <Accordion.Control>{g.group.name}</Accordion.Control>
-                                <Accordion.Panel>{g.elements}</Accordion.Panel>
+                                <Accordion.Panel
+                                    key={g.group.id}
+                                    style={{ background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }}
+                                >
+                                    {groupElements}
+                                </Accordion.Panel>
                             </Accordion.Item>
                         )
 
@@ -92,7 +105,7 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
                             height: "calc(300px - 54px)"
                         }}>
                             <ScrollArea type="auto">
-                                <Accordion variant="contained">
+                                <Accordion variant="contained" radius="md">
                                     {elements}
                                 </Accordion>
                             </ScrollArea>
@@ -112,11 +125,11 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
         return () => {
             unsubscribe()
         }
-    }, [sessionId]);
+    }, [sessionId, theme]);
 
     return (
         <>
-            {loading && <Loader style={{ width: "100%" }} size="xl" variant="dots" />}
+            {loading && <Loader style={{ width: "100%" }} mt="xl" size="xl" variant="dots" />}
             {!loading && element}
         </>
     )

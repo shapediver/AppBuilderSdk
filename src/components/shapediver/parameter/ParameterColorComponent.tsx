@@ -11,25 +11,27 @@ interface Props {
 
 export default function ParameterColorComponent({ sessionId, parameterId }: Props): JSX.Element {
     const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
-    const colorInputRef = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState(true);
     const [element, setElement] = useState(<></>);
+    const [value, setValue] = useState("");
 
     useEffect(() => {
         const activeSessions = activeSessionsRef.current;
         const activeSession = activeSessions[sessionId] || Promise.resolve();
 
         activeSession.then((session) => {
-            setLoading(false);
 
             if (session) {
                 const parameter = session.parameters[parameterId];
-                const defaultValue = (parameter.value).replace("0x", "#").substring(0, 7);
+                const defaultValue = (parameter.defval).replace("0x", "#").substring(0, 7);
+                if(loading === true) setValue(defaultValue);
+                
+                setLoading(false);
 
-                const handleChange = (value: string) => {
+                const handleChange = (colorValue: string) => {
                     activeSessions[sessionId].then((session) => {
                         if (session) {
-                            parameter.value = value;
+                            parameter.value = colorValue;
                             session.customize();
                         }
                     })
@@ -39,12 +41,16 @@ export default function ParameterColorComponent({ sessionId, parameterId }: Prop
                     <>
                         <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
                         <ColorInput 
-                            ref={colorInputRef}
-                            defaultValue={defaultValue}
+                            styles={() => ({
+                                input: { cursor: "pointer" }
+                               // track: { cursor: "pointer" },
+                            })}
                             placeholder="Pick color"
+                            value={value}
+                            onChange={setValue}
                             rightSection={
                                 <ActionIcon onClick={() => {
-                                        if(colorInputRef.current) colorInputRef.current.value = defaultValue;
+                                        setValue(defaultValue);
                                         handleChange(defaultValue);
                                     }}>
                                     <IconRefresh size={16} />
@@ -58,7 +64,7 @@ export default function ParameterColorComponent({ sessionId, parameterId }: Prop
         })
 
         return () => { }
-    }, [sessionId, parameterId]);
+    }, [sessionId, parameterId, loading, value]);
 
     return (
         <>

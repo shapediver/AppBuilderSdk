@@ -79,9 +79,13 @@ export default function ExportButtonComponent({ sessionId, exportId }: Props): J
 
                         <div style={{
                             display: "flex",
-                            justifyContent: "space-between"
+                            justifyContent: "space-between",
                         }}>
                             <Button
+                                style={{
+                                    width: "70%"
+                                }}
+                                fullWidth={true}
                                 leftIcon={leftIcon}
                                 variant="default"
                                 onClick={handleChange}
