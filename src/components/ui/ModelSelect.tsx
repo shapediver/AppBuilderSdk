@@ -23,12 +23,20 @@ const sessionData: {
     },
 }
 
+/**
+ * Function that creates a select element in which models can be selected.
+ * For each model select, a session is created.
+ * 
+ * @returns 
+ */
 export default function ModelSelect() {
-
+    
+    // callback to create the session components
     const RenderSessions = (): JSX.Element => {
         const selectedModels = useModelSelectStore(state => state.selectedModels);
 
         if (selectedModels.length > 0) {
+            // for each selected model, create a SessionComponent
             let elements: JSX.Element[] = [];
             for (let i = 0; i < selectedModels.length; i++) {
                 elements.push(<SessionComponent
@@ -50,6 +58,7 @@ export default function ModelSelect() {
         }
     }
 
+    // callback for when the value was changed
     const handleChange = (values: string[]) => {
         let selectedModels: {
             ticket: string,

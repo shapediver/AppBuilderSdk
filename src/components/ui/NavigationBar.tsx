@@ -1,8 +1,13 @@
 import { Navbar, Button } from '@mantine/core';
 import { Link, Outlet } from "react-router-dom";
 
-function NavigationBar() {
-
+/**
+ * Function that creates the contents of the navigation bar.
+ * Creates buttons that points to various pages.
+ * 
+ * @returns 
+ */
+export default function NavigationBar() {
     return (
         <>
             <Navbar.Section mx="-xs" px="xs" >
@@ -27,5 +32,3 @@ function NavigationBar() {
         </>
     );
 }
-
-export default NavigationBar;

@@ -6,7 +6,17 @@ import NavigationBar from '../components/ui/NavigationBar';
 import ModelSelect from '../components/ui/ModelSelect';
 import { useState } from 'react';
 
-function ModelSelectPage() {
+/**
+ * Function that creates the model select page.
+ * An AppShell is used with:
+ * - the header specified as in HeaderBar
+ * - the navigation (left side) specified as in NavigationBar
+ * - the aside (right side) with a ModelSelect component
+ * - and a viewport in the main component that is set to take the settings from the first session that was selected via the select component
+ * 
+ * @returns 
+ */
+export default function ModelSelectPage() {
     const [opened, setOpened] = useState(false);
     const theme = useMantineTheme();
 
@@ -76,5 +86,3 @@ function ModelSelectPage() {
         </AppShell >
     );
 }
-
-export default ModelSelectPage;

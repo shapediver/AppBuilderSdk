@@ -11,6 +11,9 @@ interface ModelSelectState {
     }[]) => void;
 }
 
+/**
+ * State store for the selected models of the ModelSelect component.
+ */
 export const useModelSelectStore = create<ModelSelectState>((set) => ({
     selectedModels: [],
     setSelectedModels: (selectedModels) =>

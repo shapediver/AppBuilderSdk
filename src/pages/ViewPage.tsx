@@ -9,7 +9,17 @@ import NavigationBar from '../components/ui/NavigationBar';
 import ParameterUiComponent from '../components/shapediver/ParameterUiComponent';
 import { useState } from 'react';
 
-function ViewPage() {
+/**
+ * Function that creates the view page.
+ * An AppShell is used with:
+ * - the header specified as in HeaderBar
+ * - the navigation (left side) specified as in NavigationBar
+ * - the aside (right side) two tabs, one with a ParameterUiComponent and another with an ExportUiComponent
+ * - and a viewport and session in the main component. The session is connected via its id to the ParameterUiComponent and ExportUiComponent.
+ * 
+ * @returns 
+ */
+export default function ViewPage() {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
 
@@ -102,5 +112,3 @@ function ViewPage() {
         </AppShell >
     );
 }
-
-export default ViewPage;

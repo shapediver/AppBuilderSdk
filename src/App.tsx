@@ -6,7 +6,7 @@ import ModelSelectPage from './pages/ModelSelectPage';
 import NoMatchPage from './pages/NoMatchPage';
 import ViewPage from './pages/ViewPage';
 
-function App() {
+export default function App() {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
   const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
@@ -25,5 +25,3 @@ function App() {
     </ColorSchemeProvider>
   );
 }
-
-export default App;
