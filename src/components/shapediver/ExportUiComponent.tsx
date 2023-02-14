@@ -22,50 +22,61 @@ export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
     const [element, setElement] = useState(<></>);
 
     useEffect(() => {
-        // search for the session with the specified id in the active sessions
-        const activeSessions = activeSessionsRef.current;
-        const activeSession = activeSessions[sessionId];
+        const createExportUi = () => {
+            // search for the session with the specified id in the active sessions
+            const activeSessions = activeSessionsRef.current;
+            const activeSession = activeSessions[sessionId];
 
-        // activate the loading to show the Loader
-        setLoading(true);
+            // activate the loading to show the Loader
+            setLoading(true);
 
-        // early return if the session is not it the store (yet)
-        if (!activeSession) return;
+            // early return if the session is not it the store (yet)
+            if (!activeSession) return;
 
-        // once the session has been loaded we start creating the UI
-        activeSession.then((session) => {
-            if (!session) return;
+            // once the session has been loaded we start creating the UI
+            activeSession.then((session) => {
+                if (!session) return;
 
-            // deactivate the loading mode
-            setLoading(false);
+                // deactivate the loading mode
+                setLoading(false);
 
-            let elements: JSX.Element[] = [];
-            const exports = Object.values(session.exports);
-            // loop trough the exports and store the created elements
-            for (let i = 0; i < exports.length; i++) {
-                const exp = exports[i];
+                let elements: JSX.Element[] = [];
+                const exports = Object.values(session.exports);
+                // loop trough the exports and store the created elements
+                for (let i = 0; i < exports.length; i++) {
+                    const exp = exports[i];
 
-                // if an export is hidden, skip it
-                if (exp.hidden) continue;
-                elements.push(<div key={exp.id}><ExportButtonComponent sessionId={sessionId} exportId={exp.id} /></div>);
-                // create dividers between the elements
-                if (i !== exports.length - 1) elements.push(<Divider key={exp.id + "_divider"} my="sm" />)
-            }
+                    // if an export is hidden, skip it
+                    if (exp.hidden) continue;
+                    elements.push(<div key={exp.id}><ExportButtonComponent sessionId={sessionId} exportId={exp.id} /></div>);
+                    // create dividers between the elements
+                    if (i !== exports.length - 1) elements.push(<Divider key={exp.id + "_divider"} my="sm" />)
+                }
 
-            // finally, set the element
-            setElement(
-                <MediaQuery smallerThan="sm" styles={{
-                    // minus tab height (34) and two times margin (2 x 10)
-                    height: "calc(300px - 54px)"
-                }}>
-                    <ScrollArea>
-                        {elements}
-                    </ScrollArea>
-                </MediaQuery>
-            );
-        })
+                // finally, set the element
+                setElement(
+                    <MediaQuery smallerThan="sm" styles={{
+                        // minus tab height (34) and two times margin (2 x 10)
+                        height: "calc(300px - 54px)"
+                    }}>
+                        <ScrollArea>
+                            {elements}
+                        </ScrollArea>
+                    </MediaQuery>
+                );
+            })
+        }
 
-        return () => { }
+        const unsubscribe = useShapediverViewerStore.subscribe(state => {
+            activeSessionsRef.current = state.activeSessions;
+            createExportUi();
+        });
+
+        createExportUi();
+
+        return () => {
+            unsubscribe()
+        }
     }, [sessionId]);
 
     return (
