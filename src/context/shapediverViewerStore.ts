@@ -1,5 +1,5 @@
-import { ISessionApi, IViewportApi } from '@shapediver/viewer';
-import { create } from 'zustand'
+import { ISessionApi, IViewportApi } from "@shapediver/viewer";
+import { create } from "zustand";
 
 export interface shapediverViewerState {
     activeViewports: {
@@ -20,16 +20,16 @@ export interface shapediverViewerState {
  * State store for all created viewports and sessions.
  */
 export const useShapediverViewerStore = create<shapediverViewerState>((set) => ({
-    activeViewports: {},
-    setActiveViewports: (activeViewports) =>
-        set((state) => ({
-            ...state,
-            activeViewports
-        })),
-    activeSessions: {},
-    setActiveSessions: (activeSessions) =>
-        set((state) => ({
-            ...state,
-            activeSessions
-        }))
+	activeViewports: {},
+	setActiveViewports: (activeViewports) =>
+		set((state) => ({
+			...state,
+			activeViewports
+		})),
+	activeSessions: {},
+	setActiveSessions: (activeSessions) =>
+		set((state) => ({
+			...state,
+			activeSessions
+		}))
 }));

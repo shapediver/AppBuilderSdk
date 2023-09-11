@@ -1,6 +1,6 @@
 import { createViewport, BUSY_MODE_DISPLAY, SESSION_SETTINGS_MODE, SPINNER_POSITIONING, VISIBILITY_MODE } from "@shapediver/viewer";
-import { useEffect, useRef } from "react";
-import { useShapediverViewerStore } from '../../context/shapediverViewerStore';
+import React, { useEffect, useRef } from "react";
+import { useShapediverViewerStore } from "../../context/shapediverViewerStore";
 
 interface Props {
     // The unique identifier to use for the viewport.
@@ -28,41 +28,41 @@ interface Props {
 
 /**
  * Functional component that creates a canvas in which a viewport with the specified properties is loaded.
- * 
- * @returns 
+ *
+ * @returns
  */
 export default function ViewportComponent({ id, branding, sessionSettingsId, sessionSettingsMode, visibility }: Props): JSX.Element {
-    const canvasRef = useRef(null);
-    const activeViewportsRef = useRef(useShapediverViewerStore(state => state.activeViewports));
+	const canvasRef = useRef(null);
+	const activeViewportsRef = useRef(useShapediverViewerStore(state => state.activeViewports));
 
-    useEffect(() => {
-        // if there is already a viewport with the same unique id registered
-        // we wait until that viewport is closed until we create this viewport anew
-        // the closing of the viewport is done on unmount
-        // this can happen in development mode due to the duplicate calls of react
-        // read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
+	useEffect(() => {
+		// if there is already a viewport with the same unique id registered
+		// we wait until that viewport is closed until we create this viewport anew
+		// the closing of the viewport is done on unmount
+		// this can happen in development mode due to the duplicate calls of react
+		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
 
-        const activeViewports = activeViewportsRef.current;
-        const activeViewport = activeViewports[id] || Promise.resolve();
+		const activeViewports = activeViewportsRef.current;
+		const activeViewport = activeViewports[id] || Promise.resolve();
 
-        // we set a new promise with the new viewport
-        activeViewports[id] = activeViewport
-            .then(() => createViewport({
-                canvas: canvasRef.current!,
-                id: id,
-                branding: branding,
-                sessionSettingsId: sessionSettingsId,
-                sessionSettingsMode: sessionSettingsMode,
-                visibility: visibility
-            }));
-        // and then save it in the store
-        useShapediverViewerStore.setState({ activeViewports })
+		// we set a new promise with the new viewport
+		activeViewports[id] = activeViewport
+			.then(() => createViewport({
+				canvas: canvasRef.current!,
+				id: id,
+				branding: branding,
+				sessionSettingsId: sessionSettingsId,
+				sessionSettingsMode: sessionSettingsMode,
+				visibility: visibility
+			}));
+		// and then save it in the store
+		useShapediverViewerStore.setState({ activeViewports });
 
-        return () => {
-            // when the component is closed, we close the viewport and assign that promise
-            activeViewports[id] = activeViewports[id].then(async v => v && await v.close());
-        }
-    }, [id, branding, sessionSettingsId, sessionSettingsMode, visibility]);
+		return () => {
+			// when the component is closed, we close the viewport and assign that promise
+			activeViewports[id] = activeViewports[id].then(async v => v && await v.close());
+		};
+	}, [id, branding, sessionSettingsId, sessionSettingsMode, visibility]);
 
-    return (<canvas ref={canvasRef} />)
-};
+	return (<canvas ref={canvasRef} />);
+}
