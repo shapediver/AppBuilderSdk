@@ -1,5 +1,5 @@
 import { Skeleton, Text } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, JSX } from "react";
 import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
 
 interface Props {
@@ -12,40 +12,30 @@ interface Props {
 /**
  * Functional component that creates a label for an export.
  * It displays a Skeleton if the session is not accessible yet.
- * 
- * @returns 
+ *
+ * @returns
  */
 export default function ExportLabelComponent({ sessionId, exportId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
-    const [loading, setLoading] = useState(true);
-    const [element, setElement] = useState(<></>);
+	const sessionExports = useRef(useShapediverViewerStore(state => state.exports[sessionId]));
+	const [loading, setLoading] = useState(true);
+	const [element, setElement] = useState(<></>);
 
-    useEffect(() => {
-        // search for the session with the specified id in the active sessions
-        const activeSessions = activeSessionsRef.current;
-        const activeSession = activeSessions[sessionId];
+	useEffect(() => {
+		const exp = sessionExports.current ? sessionExports.current[exportId] : undefined;
 
-        // early return if the session is not it the store (yet)
-        if (!activeSession) return;
+		// early return if the export is not it the store (yet)
+		if (!exp) return;
 
-        activeSession.then((session) => {
-            if (!session) return;
+		// deactivate the loading mode
+		setLoading(false);
 
-            // deactivate the loading mode
-            setLoading(false);
+		setElement(<Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.displayname || exp.name}</Text>);
+	}, [sessionId, exportId]);
 
-            // create the label
-            const exp = session.exports[exportId];
-            setElement(<Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.displayname || exp.name}</Text>);
-        })
-
-        return () => { }
-    }, [sessionId, exportId]);
-
-    return (
-        <>
-            {loading && <Skeleton height={8} mt={6} radius="xl" />}
-            {!loading && element}
-        </>
-    );
+	return (
+		<>
+			{loading && <Skeleton height={8} mt={6} radius="xl" />}
+			{!loading && element}
+		</>
+	);
 }
