@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverViewerStore } from "../../context/shapediverViewerStore";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
-import ParameterSliderComponent from "./parameter/ParameterSliderComponent";
-import ParameterBooleanComponent from "./parameter/ParameterBooleanComponent";
-import ParameterStringComponent from "./parameter/ParameterStringComponent";
-import ParameterColorComponent from "./parameter/ParameterColorComponent";
-import ParameterSelectComponent from "./parameter/ParameterSelectComponent";
-import ParameterLabelComponent from "./parameter/ParameterLabelComponent";
-import ParameterFileInputComponent from "./parameter/ParameterFileInputComponent";
+import ParameterSliderComponent from "components/shapediver/parameter/ParameterSliderComponent";
+import ParameterBooleanComponent from "components/shapediver/parameter/ParameterBooleanComponent";
+import ParameterStringComponent from "components/shapediver/parameter/ParameterStringComponent";
+import ParameterColorComponent from "components/shapediver/parameter/ParameterColorComponent";
+import ParameterSelectComponent from "components/shapediver/parameter/ParameterSelectComponent";
+import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
+import ParameterFileInputComponent from "components/shapediver/parameter/ParameterFileInputComponent";
 
 interface Props {
     // The unique identifier to use to access the session.

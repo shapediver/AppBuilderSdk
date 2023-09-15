@@ -2,8 +2,8 @@ import { Button, Loader, Skeleton } from "@mantine/core";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
-import ExportLabelComponent from "./ExportLabelComponent";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
 
 interface Props {
     // The unique identifier to use to access the session.

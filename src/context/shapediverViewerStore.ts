@@ -1,31 +1,14 @@
-import { createSession, EXPORT_TYPE, IExportApi, ISessionApi, IViewportApi } from "@shapediver/viewer";
-import { create, StateCreator, StoreMutatorIdentifier } from "zustand";
-import { IParameterApi } from "@shapediver/viewer/src/interfaces/session/IParameterApi";
-import { fetchFileWithToken } from "../utils/file";
-
-export type SessionCreateDto = {
-	// The ticket for direct embedding of the model to create a session for. This identifies the model on the Geometry Backend.
-	ticket: string,
-	// The modelViewUrl of the ShapeDiver Geometry Backend hosting the model.
-	modelViewUrl: string,
-	// The JWT to use for authorizing the API calls to the Geometry Backend.
-	jwtToken?: string,
-	// The unique identifier to use for the session.
-	id: string,
-	// Option to wait for the outputs to be loaded, or return immediately after creation of the session. (default: true)
-	waitForOutputs?: boolean,
-	// Option to load the outputs, or not load them until the first call of customize. (default: true)
-	loadOutputs?: boolean,
-	// Option to exclude some viewports from the start.
-	excludeViewports?: string[],
-	// The initial set of parameter values to use. Map from parameter id to parameter value. The default value will be used for any parameter not specified.
-	initialParameterValues?: { [key: string]: string }
-}
-
-type SetterFn<T> = (state: T) => T | Partial<T>;
-
-type IParameters = {[sessionId: string]: {[parameterId: string]: IParameterApi<any>}};
-type IExports = {[sessionId: string]: {[exportId: string]: IExportApi}};
+import { createSession, EXPORT_TYPE } from "@shapediver/viewer";
+import { create } from "zustand";
+import { fetchFileWithToken } from "utils/file";
+import {
+	IExports,
+	IMiddlewareMutate,
+	IMiddlewareMutateImpl,
+	IParameters, ISessionCompare,
+	SessionCreateDto, SetterFn,
+	shapediverViewerState
+} from "types/context/shapediverViewerStore";
 
 const isSetterFunction = function <T>(setter: T | Partial<T> | SetterFn<T>): setter is SetterFn<T> {
 	return (setter as SetterFn<T>).apply !== undefined;

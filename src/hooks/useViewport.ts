@@ -6,7 +6,7 @@ import {
 	VISIBILITY_MODE
 } from "@shapediver/viewer";
 import { useEffect, useRef } from "react";
-import { useShapediverViewerStore } from "../context/shapediverViewerStore";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
 
 export interface IUseViewportProps {
 	// The unique identifier to use for the viewport.

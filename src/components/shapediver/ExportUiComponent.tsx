@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverViewerStore } from "../../context/shapediverViewerStore";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
 import { Divider, Loader, MediaQuery, ScrollArea } from "@mantine/core";
-import ExportButtonComponent from "./exports/ExportButtonComponent";
+import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
 
 interface Props {
     // The unique identifier to use to access the session.

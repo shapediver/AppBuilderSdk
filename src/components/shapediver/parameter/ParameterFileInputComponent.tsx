@@ -2,10 +2,10 @@ import { ActionIcon, FileInput } from "@mantine/core";
 import { IconUpload, IconX } from "@tabler/icons-react";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
-import ParameterLabelComponent from "./ParameterLabelComponent";
-import ParameterComponentBase from "./ParameterComponentBase";
-import { PropsParameters } from "../../../../types/components/shapediver/parameters";
-import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
+import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
+import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
+import { PropsParameters } from "types/components/shapediver/parameters";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
 
 /**
  * Functional component that creates a file input for a file parameter.

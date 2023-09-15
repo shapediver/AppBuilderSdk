@@ -1,10 +1,10 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import React, { useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import ModelSelectPage from "./pages/ModelSelectPage";
-import NoMatchPage from "./pages/NoMatchPage";
-import ViewPage from "./pages/ViewPage";
+import HomePage from "pages/HomePage";
+import ModelSelectPage from "pages/ModelSelectPage";
+import NoMatchPage from "pages/NoMatchPage";
+import ViewPage from "pages/ViewPage";
 
 export default function App() {
 	const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");

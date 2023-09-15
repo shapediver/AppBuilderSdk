@@ -1,10 +1,10 @@
 import { ActionIcon, ColorInput } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import React, { JSX, useEffect, useRef, useState } from "react";
-import ParameterLabelComponent from "./ParameterLabelComponent";
-import ParameterComponentBase from "./ParameterComponentBase";
-import { PropsParameters } from "../../../../types/components/shapediver/parameters";
-import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
+import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
+import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
+import { PropsParameters } from "types/components/shapediver/parameters";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
 
 /**
  * Functional component that creates a color swatch for a color parameter.

@@ -1,5 +1,6 @@
 import React, { useEffect, JSX } from "react";
-import { SessionCreateDto, useShapediverViewerStore } from "../../context/shapediverViewerStore";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import { SessionCreateDto } from "types/context/shapediverViewerStore";
 
 /**
  * Functional component that creates a session with the specified properties.

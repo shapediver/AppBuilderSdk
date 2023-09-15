@@ -1,12 +1,12 @@
 import { AppShell, Tabs, Aside, MediaQuery, Navbar, Header, Burger, useMantineTheme } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconReplace, IconFileDownload } from "@tabler/icons-react";
-import SessionComponent from "../components/shapediver/SessionComponent";
-import ViewportComponent from "../components/shapediver/ViewportComponent";
-import ExportUiComponent from "../components/shapediver/ExportUiComponent";
-import HeaderBar from "../components/ui/HeaderBar";
-import NavigationBar from "../components/ui/NavigationBar";
-import ParameterUiComponent from "../components/shapediver/ParameterUiComponent";
+import SessionComponent from "components/shapediver/SessionComponent";
+import ViewportComponent from "components/shapediver/ViewportComponent";
+import ExportUiComponent from "components/shapediver/ExportUiComponent";
+import HeaderBar from "components/ui/HeaderBar";
+import NavigationBar from "components/ui/NavigationBar";
+import ParameterUiComponent from "components/shapediver/ParameterUiComponent";
 import React, { useState } from "react";
 
 /**

@@ -1,9 +1,9 @@
 import { AppShell, Aside, Burger, Header, MediaQuery, Navbar, useMantineTheme } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import ViewportComponent from "../components/shapediver/ViewportComponent";
-import HeaderBar from "../components/ui/HeaderBar";
-import NavigationBar from "../components/ui/NavigationBar";
-import ModelSelect from "../components/ui/ModelSelect";
+import ViewportComponent from "components/shapediver/ViewportComponent";
+import HeaderBar from "components/ui/HeaderBar";
+import NavigationBar from "components/ui/NavigationBar";
+import ModelSelect from "components/ui/ModelSelect";
 import React, { useState } from "react";
 
 /**

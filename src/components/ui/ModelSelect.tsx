@@ -1,7 +1,7 @@
 import { MultiSelect, Notification } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useModelSelectStore } from "../../context/modelSelectStore";
-import SessionComponent from "../shapediver/SessionComponent";
+import SessionComponent from "components/shapediver/SessionComponent";
+import { useModelSelectStore } from "context/modelSelectStore";
 import React, { JSX } from "react";
 
 const sessionData: {

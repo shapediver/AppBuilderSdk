@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { IUseViewportProps, useViewport } from "../../hooks/useViewport";
+import { IUseViewportProps, useViewport } from "hooks/useViewport";
 
 /**
  * Functional component that creates a canvas in which a viewport with the specified properties is loaded.
