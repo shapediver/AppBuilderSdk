@@ -14,44 +14,15 @@ const isSetterFunction = function <T>(setter: T | Partial<T> | SetterFn<T>): set
 	return (setter as SetterFn<T>).apply !== undefined;
 };
 
-export interface shapediverViewerState {
-    activeViewports: {
-        [viewportId: string]: Promise<IViewportApi | void>
-    }
-    setActiveViewports: (activeViewports: {
-        [viewportId: string]: Promise<IViewportApi | void>
-    }) => void;
-    activeSessions: {
-        [sessionId: string]: ISessionApi | undefined
-    }
-    setActiveSessions: (activeSessions: {
-        [sessionId: string]: ISessionApi | undefined
-    }) => void;
-		sessionCreate: (dto: SessionCreateDto) => void;
-		sessionClose: (sessionId: string) => void;
-		parameters: IParameters;
-		parameterPropertyChange: <T extends keyof IParameterApi<any>>(
-			sessionId: string,
-			parameterId: string,
-			property: T,
-			value: IParameterApi<any>[T],
-		) => void;
-		exports: IExports;
-		exportRequest: (sessionId: string, exportId: string) => Promise<void>;
-}
-
-type IMiddlewareMutate = <
-	T extends shapediverViewerState,
-	Mps extends [StoreMutatorIdentifier, unknown][] = [],
-	Mcs extends [StoreMutatorIdentifier, unknown][] = [],
->(
-	stateCreator: StateCreator<T, Mps, Mcs>,
-) => StateCreator<T, Mps, Mcs>
-
-type IMiddlewareMutateImpl = <T extends shapediverViewerState>(
-	stateCreator: StateCreator<T, [], []>,
-) => StateCreator<T, [], []>
-
+const stringifySessionCommonParameters =  function(parameters: Pick<SessionCreateDto, "excludeViewports" | "id" | "jwtToken" | "modelViewUrl" | "ticket">) {
+	return JSON.stringify({
+		excludeViewports: parameters.excludeViewports,
+		id: parameters.id,
+		jwtToken: parameters.jwtToken || "",
+		modelViewUrl: parameters.modelViewUrl,
+		ticket: parameters.ticket,
+	});
+};
 
 const middlewareImpl: IMiddlewareMutateImpl = (stateCreator) => (set, get, store) => {
 	const parsedSet: typeof set = (...args) => {
@@ -139,6 +110,27 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 				activeSessions,
 			};
 		}),
+		sessionsSync: async (sessionsDto: SessionCreateDto[]) => {
+			const { activeSessions, sessionCreate, sessionClose } = get();
+			const isSession = (session: ISessionCompare | undefined): session is ISessionCompare => !!session;
+			const sessionsExist: ISessionCompare[] = Object.values(activeSessions).map((session) => session
+				? { id: session.id, imprint: stringifySessionCommonParameters(session) }
+				: undefined).filter(isSession);
+
+			const sessionsDataNew = sessionsDto.map((sessionDto) => ({ id: sessionDto.id, imprint: stringifySessionCommonParameters(sessionDto), data: sessionDto }));
+
+			const sessionsToDelete = sessionsExist.filter((sessionCompareExist) => {
+				return sessionsDataNew.findIndex((sessionCompareNew) => sessionCompareNew.imprint === sessionCompareExist.imprint) === -1;
+			});
+
+			const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
+				return sessionsExist.findIndex((sessionCompareExist) => sessionCompareExist.imprint === sessionCompareNew.imprint) === -1;
+			});
+
+			sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data));
+
+			sessionsToDelete.forEach((sessionToDelete) => sessionClose(sessionToDelete.id));
+		},
 		parameters: {},
 		parameterPropertyChange: (sessionId, parameterId, property, value) => {
 			set((state) => {
