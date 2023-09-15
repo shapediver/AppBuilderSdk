@@ -14,6 +14,9 @@ const isSetterFunction = function <T>(setter: T | Partial<T> | SetterFn<T>): set
 	return (setter as SetterFn<T>).apply !== undefined;
 };
 
+/**
+ * Get the imprint of common parameters of the ISessionApi or SessionCreateDto.
+ */
 const stringifySessionCommonParameters =  function(parameters: Pick<SessionCreateDto, "excludeViewports" | "id" | "jwtToken" | "modelViewUrl" | "ticket">) {
 	return JSON.stringify({
 		excludeViewports: parameters.excludeViewports,
@@ -24,10 +27,13 @@ const stringifySessionCommonParameters =  function(parameters: Pick<SessionCreat
 	});
 };
 
+/**
+ * Middleware for the parse input store data.
+ */
 const middlewareImpl: IMiddlewareMutateImpl = (stateCreator) => (set, get, store) => {
 	const parsedSet: typeof set = (...args) => {
 		let newState = args[0];
-
+		// Support zustand setter options
 		if (isSetterFunction(newState)) {
 			newState = newState(get()) ;
 		}
@@ -37,7 +43,9 @@ const middlewareImpl: IMiddlewareMutateImpl = (stateCreator) => (set, get, store
 
 		for (const sessionId in newState.activeSessions) {
 			if (Object.hasOwnProperty.call(newState.activeSessions, sessionId)) {
+				// Parse parameters of sessions
 				parameters[sessionId] = newState.activeSessions[sessionId]?.parameters || {};
+				// Parse exports of sessions
 				exports[sessionId] = newState.activeSessions[sessionId]?.exports || {};
 			}
 		}
@@ -112,23 +120,25 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 		}),
 		sessionsSync: async (sessionsDto: SessionCreateDto[]) => {
 			const { activeSessions, sessionCreate, sessionClose } = get();
+			// Helps to skip typescript filter error
 			const isSession = (session: ISessionCompare | undefined): session is ISessionCompare => !!session;
+			// Get existing sessions
 			const sessionsExist: ISessionCompare[] = Object.values(activeSessions).map((session) => session
 				? { id: session.id, imprint: stringifySessionCommonParameters(session) }
 				: undefined).filter(isSession);
-
+			// Convert SessionCreateDto[] to the ISessionCompare[]
 			const sessionsDataNew = sessionsDto.map((sessionDto) => ({ id: sessionDto.id, imprint: stringifySessionCommonParameters(sessionDto), data: sessionDto }));
-
+			// Find sessions to delete
 			const sessionsToDelete = sessionsExist.filter((sessionCompareExist) => {
 				return sessionsDataNew.findIndex((sessionCompareNew) => sessionCompareNew.imprint === sessionCompareExist.imprint) === -1;
 			});
-
+			// Find sessions to create
 			const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
 				return sessionsExist.findIndex((sessionCompareExist) => sessionCompareExist.imprint === sessionCompareNew.imprint) === -1;
 			});
-
+			// Create new sessions
 			sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data));
-
+			// Delete old sessions
 			sessionsToDelete.forEach((sessionToDelete) => sessionClose(sessionToDelete.id));
 		},
 		parameters: {},
