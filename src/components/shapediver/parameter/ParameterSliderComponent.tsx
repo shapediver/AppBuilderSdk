@@ -1,157 +1,141 @@
-import { Slider, Skeleton, TextInput } from "@mantine/core";
+import { Slider, TextInput } from "@mantine/core";
 import { IParameterApi, PARAMETER_TYPE } from "@shapediver/viewer";
-import { useEffect, useRef, useState } from "react";
-import { useShapediverViewerStore } from "../../../context/shapediverViewerStore";
-import ParameterLabelComponent from "./ParameterLabelComponent";
-
-interface Props {
-    // The unique identifier to use to access the session.
-    sessionId: string,
-    // The unique identifier to use to access the parameter.
-    parameterId: string
-}
+import React, { JSX, useEffect, useRef, useState } from "react";
+import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
+import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
+import { PropsParameters } from "types/components/shapediver/parameters";
+import { useShapediverViewerStore } from "context/shapediverViewerStore";
 
 /**
  * Round the number depending on the parameter type.
- * 
- * @param parameter 
- * @param n 
- * @returns 
+ *
+ * @param parameter
+ * @param n
+ * @returns
  */
 const round = (parameter: IParameterApi<number>, n: number) => {
-    if (parameter.type === PARAMETER_TYPE.INT || parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD)
-        n = +n.toFixed(0);
-    n = +n.toFixed(parameter.decimalplaces)
-    return n;
-}
+	if (parameter.type === PARAMETER_TYPE.INT || parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD)
+		n = +n.toFixed(0);
+	n = +n.toFixed(parameter.decimalplaces);
+	return n;
+};
 
 /**
  * Functional component that creates a slider component for a number parameter.
  * Additionally, a text input is added on the side.
  * It displays a Skeleton if the session is not accessible yet.
- * 
- * @returns 
+ *
+ * @returns
  */
-export default function ParameterSliderComponent({ sessionId, parameterId }: Props): JSX.Element {
-    const activeSessionsRef = useRef(useShapediverViewerStore(state => state.activeSessions));
-    const textInputRef = useRef<HTMLInputElement>(null);
-    const [loading, setLoading] = useState(true);
-    const [element, setElement] = useState(<></>);
-    const [value, setValue] = useState(0);
-    const [textValue, setTextValue] = useState("");
+export default function ParameterSliderComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
+	const sessionParameters = useRef(useShapediverViewerStore(state => state.parameters[sessionId]));
+	const changeParameterProperty = useShapediverViewerStore((state) => state.parameterPropertyChange);
+	const textInputRef = useRef<HTMLInputElement>(null);
+	const [loading, setLoading] = useState(false);
+	const [element, setElement] = useState(<></>);
+	const [value, setValue] = useState(0);
+	const [textValue, setTextValue] = useState("");
 
-    useEffect(() => {
-        // search for the session with the specified id in the active sessions
-        const activeSessions = activeSessionsRef.current;
-        const activeSession = activeSessions[sessionId];
+	useEffect(() => {
+		const parameter = sessionParameters.current ? sessionParameters.current[parameterId] : undefined;
 
-        // early return if the session is not it the store (yet)
-        if (!activeSession) return;
+		// early return if the parameter is not in the store (yet)
+		if (!parameter) return;
 
-        activeSession.then((session) => {
-            if (!session) return;
-            const parameter = session.parameters[parameterId];
+		// set the default value on the slider and the text input
+		setValue(+parameter.defval);
+		setTextValue(parameter.defval);
+	}, []);
 
-            // set the default value on the slider and the text input
-            if (loading === true) {
-                setValue(+parameter.defval);
-                setTextValue(parameter.defval);
-            }
+	useEffect(() => {
+		const parameter = sessionParameters.current ? sessionParameters.current[parameterId] : undefined;
 
-            // deactivate the loading mode
-            setLoading(false);
+		// early return if the parameter is not in the store (yet)
+		if (!parameter) return;
 
-            // calculate the step size which depends on the parameter type
-            let step = 1;
-            if (parameter.type === PARAMETER_TYPE.INT) {
-                step = 1;
-            } else if (parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD) {
-                step = 2;
-            } else {
-                step = 1 / Math.pow(10, parameter.decimalplaces!);
-            }
+		setLoading(false);
 
-            // callback for when the value was changed
-            const handleChange = (inputValue: number) => {
-                activeSessions[sessionId].then((session) => {
-                    if (!session) return;
+		// deactivate the loading mode
+		setLoading(false);
 
-                    // set the value and customize the session
-                    parameter.value = round(parameter, inputValue);
-                    session.customize();
-                })
-            }
+		// calculate the step size which depends on the parameter type
+		let step = 1;
+		if (parameter.type === PARAMETER_TYPE.INT) {
+			step = 1;
+		} else if (parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD) {
+			step = 2;
+		} else {
+			step = 1 / Math.pow(10, parameter.decimalplaces!);
+		}
 
-            let zoomResizeTimeout: NodeJS.Timeout;
-            // callback for when the text value has been changed
-            // instead of applying the value directly, set a timeout to wait on further input
-            // if this input does not happen within 500ms, clean the value and execute the handleChange-callback
-            const handleChangeDelay = () => {
-                if (textInputRef.current)
-                    setTextValue(textInputRef.current.value)
+		// callback for when the value was changed
+		const handleChange = (inputValue: number) => {
+			// set the value and customize the session
+			changeParameterProperty(sessionId, parameterId, "value", round(parameter, inputValue));
+		};
 
-                clearTimeout(zoomResizeTimeout);
-                zoomResizeTimeout = setTimeout(() => {
-                    if (!textInputRef.current) return;
+		let zoomResizeTimeout: NodeJS.Timeout;
+		// callback for when the text value has been changed
+		// instead of applying the value directly, set a timeout to wait on further input
+		// if this input does not happen within 500ms, clean the value and execute the handleChange-callback
+		const handleChangeDelay = () => {
+			if (textInputRef.current)
+				setTextValue(textInputRef.current.value);
 
-                    // if the text input value was not a number, reset it to the slider value
-                    if (isNaN(+textInputRef.current.value)) return setTextValue(value + "");
+			clearTimeout(zoomResizeTimeout);
+			zoomResizeTimeout = setTimeout(() => {
+				if (!textInputRef.current) return;
 
-                    let inputValue: number = +textInputRef.current.value;
-                    // if the text input value was not within the min and max, reset it to the slider value
-                    if (!(inputValue >= +parameter.min! && inputValue <= +parameter.max!)) return setTextValue(value + "");
+				// if the text input value was not a number, reset it to the slider value
+				if (isNaN(+textInputRef.current.value)) return setTextValue(value + "");
 
-                    // round the value according to the parameter type
-                    inputValue = round(parameter, inputValue);
+				let inputValue: number = +textInputRef.current.value;
+				// if the text input value was not within the min and max, reset it to the slider value
+				if (!(inputValue >= +parameter.min! && inputValue <= +parameter.max!)) return setTextValue(value + "");
 
-                    // set the slider value and text value accordingly
-                    setValue(inputValue)
-                    setTextValue(inputValue + "")
+				// round the value according to the parameter type
+				inputValue = round(parameter, inputValue);
 
-                    // execute the handleChange callback
-                    handleChange(inputValue)
-                }, 500);
-            }
+				// set the slider value and text value accordingly
+				setValue(inputValue);
+				setTextValue(inputValue + "");
 
-            // set the element with the label, slider and a text input component
-            // the slider triggers the handleChange-callback directly, whereas the text input triggers the handleChangeDelay callback
-            // the slider min, max and step are set according to the parameter specification
-            setElement(
-                <>
-                    <ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
-                    <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-                        <Slider
-                            style={{ width: "65%" }}
-                            label={round(parameter, value)}
-                            defaultValue={+parameter.value}
-                            min={+parameter.min!}
-                            max={+parameter.max!}
-                            step={step}
-                            value={value}
-                            onChange={(v) => {
-                                setValue(v);
-                                setTextValue(round(parameter, v) + "")
-                            }}
-                            onChangeEnd={handleChange}
-                        />
-                        <TextInput
-                            ref={textInputRef}
-                            style={{ width: "30%" }}
-                            value={textValue}
-                            onChange={handleChangeDelay}
-                        />
-                    </div>
-                </>
-            );
-        })
+				// execute the handleChange callback
+				handleChange(inputValue);
+			}, 500);
+		};
 
-        return () => { }
-    }, [sessionId, parameterId, loading, value, textValue]);
+		// set the element with the label, slider and a text input component
+		// the slider triggers the handleChange-callback directly, whereas the text input triggers the handleChangeDelay callback
+		// the slider min, max and step are set according to the parameter specification
+		setElement(
+			<>
+				<ParameterLabelComponent sessionId={sessionId} parameterId={parameterId} />
+				<div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+					<Slider
+						style={{ width: "65%" }}
+						label={round(parameter, value)}
+						defaultValue={+parameter.value}
+						min={+parameter.min!}
+						max={+parameter.max!}
+						step={step}
+						value={value}
+						onChange={(v) => {
+							setValue(v);
+							setTextValue(round(parameter, v) + "");
+						}}
+						onChangeEnd={handleChange}
+					/>
+					<TextInput
+						ref={textInputRef}
+						style={{ width: "30%" }}
+						value={textValue}
+						onChange={handleChangeDelay}
+					/>
+				</div>
+			</>
+		);
+	}, [sessionId, parameterId, loading, value, textValue]);
 
-    return (
-        <>
-            {loading && <Skeleton height={8} mt={6} radius="xl" />}
-            {!loading && element}
-        </>
-    );
+	return (<ParameterComponentBase loading={loading} element={element} />);
 }

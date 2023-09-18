@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 interface ModelSelectState {
     selectedModels: {
@@ -15,10 +15,10 @@ interface ModelSelectState {
  * State store for the selected models of the ModelSelect component.
  */
 export const useModelSelectStore = create<ModelSelectState>((set) => ({
-    selectedModels: [],
-    setSelectedModels: (selectedModels) =>
-        set((state) => ({
-            ...state,
-            selectedModels
-        }))
+	selectedModels: [],
+	setSelectedModels: (selectedModels) =>
+		set((state) => ({
+			...state,
+			selectedModels
+		}))
 }));
