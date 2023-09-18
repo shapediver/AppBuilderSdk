@@ -1,4 +1,4 @@
-import { createSession, EXPORT_TYPE } from "@shapediver/viewer";
+import { createSession, EXPORT_TYPE, ISessionApi } from "@shapediver/viewer";
 import { create } from "zustand";
 import { fetchFileWithToken } from "utils/file";
 import {
@@ -84,40 +84,58 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 				activeSessions
 			})),
 		sessionCreate: async ({ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: SessionCreateDto) => {
-			const session = await createSession({
-				id: id,
-				ticket: ticket,
-				modelViewUrl: modelViewUrl,
-				jwtToken: jwtToken,
-				waitForOutputs: waitForOutputs,
-				loadOutputs: loadOutputs,
-				excludeViewports: excludeViewports,
-				initialParameterValues: initialParameterValues
-			});
+			let session: ISessionApi|undefined = undefined;
+			try {
+				session = await createSession({
+					id: id,
+					ticket: ticket,
+					modelViewUrl: modelViewUrl,
+					jwtToken: jwtToken,
+					waitForOutputs: waitForOutputs,
+					loadOutputs: loadOutputs,
+					excludeViewports: excludeViewports,
+					initialParameterValues: initialParameterValues
+				});
+			} catch (e) {
+				console.error("sessionCreate error", e); // TODO logger ?
+			}
 
 			return set((state) => {
 				return {
 					...state,
 					activeSessions: {
 						...state.activeSessions,
-						[id]: session,
+						...session ? {[id]: session} : {},
 					},
 				};
 			});
 		},
-		sessionClose: (sessionId) => set((state) => {
-			const session = state.activeSessions[sessionId];
+		sessionClose: async (sessionId) => {
+			const { activeSessions } = get();
 
-			if (session) session.close();
+			let sessionIdDelete: string|undefined = undefined;
+			const session = activeSessions[sessionId];
 
-			const activeSessions = state.activeSessions;
-			delete activeSessions[sessionId];
+			if (session) {
+				try {
+					await session.close();
+					sessionIdDelete = sessionId;
+				} catch (e) {
+					console.error("sessionClose error", e); // TODO logger ?
+				}
 
-			return {
-				...state,
-				activeSessions,
-			};
-		}),
+			}
+
+			return set((state) => {
+				const activeSessions = state.activeSessions;
+				if (sessionIdDelete) delete activeSessions[sessionId];
+
+				return {
+					...state,
+					activeSessions,
+				};
+			});
+		},
 		sessionsSync: async (sessionsDto: SessionCreateDto[]) => {
 			const { activeSessions, sessionCreate, sessionClose } = get();
 			// Helps to skip typescript filter error
@@ -136,10 +154,11 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 			const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
 				return sessionsExist.findIndex((sessionCompareExist) => sessionCompareExist.imprint === sessionCompareNew.imprint) === -1;
 			});
-			// Create new sessions
-			sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data));
-			// Delete old sessions
-			sessionsToDelete.forEach((sessionToDelete) => sessionClose(sessionToDelete.id));
+
+			return Promise.all([
+				...sessionsToDelete.map((sessionToDelete) => sessionClose(sessionToDelete.id)),
+				...sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data)),
+			]);
 		},
 		parameters: {},
 		parameterPropertyChange: (sessionId, parameterId, property, value) => {
