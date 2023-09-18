@@ -83,7 +83,12 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 				...state,
 				activeSessions
 			})),
-		sessionCreate: async ({ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: SessionCreateDto) => {
+		sessionCreate: async (
+			{ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: SessionCreateDto,
+			callbacks: {
+				onError?: (error: any) => void;
+			} = {},
+		) => {
 			let session: ISessionApi|undefined = undefined;
 			try {
 				session = await createSession({
@@ -96,8 +101,8 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 					excludeViewports: excludeViewports,
 					initialParameterValues: initialParameterValues
 				});
-			} catch (e) {
-				console.error("sessionCreate error", e); // TODO logger ?
+			} catch (e: any) {
+				if (callbacks.onError) callbacks.onError(e);
 			}
 
 			return set((state) => {
@@ -110,7 +115,11 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 				};
 			});
 		},
-		sessionClose: async (sessionId) => {
+		sessionClose: async (
+			sessionId,
+			callbacks: {
+				onError?: (error: any) => void;
+			} = {},) => {
 			const { activeSessions } = get();
 
 			let sessionIdDelete: string|undefined = undefined;
@@ -121,9 +130,8 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 					await session.close();
 					sessionIdDelete = sessionId;
 				} catch (e) {
-					console.error("sessionClose error", e); // TODO logger ?
+					if (callbacks.onError) callbacks.onError(e);
 				}
-
 			}
 
 			return set((state) => {
@@ -148,7 +156,7 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 			const sessionsDataNew = sessionsDto.map((sessionDto) => ({ id: sessionDto.id, imprint: stringifySessionCommonParameters(sessionDto), data: sessionDto }));
 			// Find sessions to delete
 			const sessionsToDelete = sessionsExist.filter((sessionCompareExist) => {
-				return sessionsDataNew.findIndex((sessionCompareNew) => sessionCompareNew.imprint === sessionCompareExist.imprint) === -1;
+				return sessionsDataNew.findIndex((sessionCompareNew) => sessionCompareNew.imprint === sessionCompareExist.imprint) !== -1;
 			});
 			// Find sessions to create
 			const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
