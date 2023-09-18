@@ -16,10 +16,9 @@
     "zustand": "^4.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
     "eslint": "eslint ."
   },
   "eslintConfig": {
@@ -50,8 +49,12 @@
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
+    "@vitejs/plugin-react": "^4.0.4",
     "eslint-plugin-react": "^7.33.2",
     "typescript": "^4.9.5",
+    "vite": "^4.4.9",
+    "vite-plugin-svgr": "^3.2.0",
+    "vite-tsconfig-paths": "^4.2.1",
     "web-vitals": "^2.1.4"
   },
   "lint-staged": {
