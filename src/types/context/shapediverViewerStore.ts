@@ -40,9 +40,9 @@ export interface shapediverViewerState {
 	setActiveSessions: (activeSessions: {
 		[sessionId: string]: ISessionApi | undefined
 	}) => void;
-	sessionCreate: (dto: SessionCreateDto) => void;
-	sessionClose: (sessionId: string) => void;
-	sessionsSync:(sessionsDto: SessionCreateDto[]) => void,
+	sessionCreate: (dto: SessionCreateDto) => Promise<void>;
+	sessionClose: (sessionId: string) => Promise<void>;
+	sessionsSync:(sessionsDto: SessionCreateDto[]) => Promise<void[]>,
 	parameters: IParameters;
 	parameterPropertyChange: <T extends keyof IParameterApi<any>>(
 		sessionId: string,
