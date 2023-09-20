@@ -156,8 +156,11 @@ export const useShapediverViewerStore = create<shapediverViewerState>(middleware
 			const sessionsDataNew = sessionsDto.map((sessionDto) => ({ id: sessionDto.id, imprint: stringifySessionCommonParameters(sessionDto), data: sessionDto }));
 			// Find sessions to delete
 			const sessionsToDelete = sessionsExist.filter((sessionCompareExist) => {
-				return sessionsDataNew.findIndex((sessionCompareNew) => sessionCompareNew.imprint === sessionCompareExist.imprint) !== -1;
+				return sessionsDataNew.findIndex((sessionCompareNew) => {
+					return sessionCompareNew.imprint === sessionCompareExist.imprint;
+				}) === -1;
 			});
+
 			// Find sessions to create
 			const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
 				return sessionsExist.findIndex((sessionCompareExist) => sessionCompareExist.imprint === sessionCompareNew.imprint) === -1;
