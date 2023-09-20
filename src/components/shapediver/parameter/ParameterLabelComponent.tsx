@@ -1,8 +1,8 @@
 import { Text } from "@mantine/core";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
-import { PropsParameters } from "types/components/shapediver/parameters";
-import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 
 /**
  * Functional component that creates a label for a parameter.
@@ -11,7 +11,7 @@ import { useShapediverViewerStore } from "context/shapediverViewerStore";
  * @returns
  */
 export default function ParameterLabelComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
-	const sessionParameters = useRef(useShapediverViewerStore(state => state.parameters[sessionId]));
+	const sessionParameters = useRef(useShapediverStoreCommon(state => state.parameters[sessionId]));
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 

@@ -1,4 +1,4 @@
-import { IExportApi, ISessionApi, IViewportApi } from "@shapediver/viewer";
+import { IExportApi } from "@shapediver/viewer";
 import { IParameterApi } from "@shapediver/viewer/src/interfaces/session/IParameterApi";
 import { StateCreator, StoreMutatorIdentifier } from "zustand/esm";
 
@@ -27,43 +27,14 @@ export type IParameters = { [sessionId: string]: { [parameterId: string]: IParam
 
 export type IExports = { [sessionId: string]: { [exportId: string]: IExportApi } };
 
-export interface shapediverViewerState {
-	activeViewports: {
-		[viewportId: string]: Promise<IViewportApi | void>
-	;}
-	setActiveViewports: (activeViewports: {
-		[viewportId: string]: Promise<IViewportApi | void>
-	}) => void;
-	activeSessions: {
-		[sessionId: string]: ISessionApi | undefined
-	;}
-	setActiveSessions: (activeSessions: {
-		[sessionId: string]: ISessionApi | undefined
-	}) => void;
-	sessionCreate: (dto: SessionCreateDto) => Promise<void>;
-	sessionClose: (sessionId: string) => Promise<void>;
-	sessionsSync:(sessionsDto: SessionCreateDto[]) => Promise<void[]>,
-	parameters: IParameters;
-	parameterPropertyChange: <T extends keyof IParameterApi<any>>(
-		sessionId: string,
-		parameterId: string,
-		property: T,
-		value: IParameterApi<any>[T]
-	) => void;
-	exports: IExports;
-	exportRequest: (sessionId: string, exportId: string) => Promise<void>;
-}
-
-export type IMiddlewareMutate = <
-	T extends shapediverViewerState,
+export type IMiddlewareMutate<S> = <
+	T extends S,
 	Mps extends [StoreMutatorIdentifier, unknown][] = [],
 	Mcs extends [StoreMutatorIdentifier, unknown][] = [],
 >(
 	stateCreator: StateCreator<T, Mps, Mcs>
 ) => StateCreator<T, Mps, Mcs>
 
-export type IMiddlewareMutateImpl = <T extends shapediverViewerState>(
+export type IMiddlewareMutateImpl<S> = <T extends S>(
 	stateCreator: StateCreator<T, [], []>
 ) => StateCreator<T, [], []>
-
-export type ISessionCompare = { id: string, imprint: string, data?: SessionCreateDto };

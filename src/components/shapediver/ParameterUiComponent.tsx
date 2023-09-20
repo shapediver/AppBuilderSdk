@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
 import ParameterSliderComponent from "components/shapediver/parameter/ParameterSliderComponent";
@@ -27,7 +27,7 @@ interface Props {
  */
 export default function ParameterUiComponent({ sessionId }: Props): JSX.Element {
 	const theme = useMantineTheme();
-	const activeSessionsRef = useRef(useShapediverViewerStore.getState().activeSessions);
+	const activeSessionsRef = useRef(useShapediverStoreCommon.getState().activeSessions);
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 
@@ -136,7 +136,7 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
 			);
 		};
 
-		const unsubscribe = useShapediverViewerStore.subscribe(state => {
+		const unsubscribe = useShapediverStoreCommon.subscribe(state => {
 			activeSessionsRef.current = state.activeSessions;
 			createParameterUi();
 		});
