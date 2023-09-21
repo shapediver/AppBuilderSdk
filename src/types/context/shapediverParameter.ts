@@ -4,12 +4,12 @@ import {ShapeDiverResponseParameter} from "@shapediver/api.geometry-api-dto-v2"
  * The static definition of a parameter. 
  * We reuse the definition of the parameter on the Geometry Backend here. 
  */
-export type SdReactParameterDefinition = ShapeDiverResponseParameter;
+export type ISdReactParameterDefinition = ShapeDiverResponseParameter;
 
 /**
  * The dynamic properties of a parameter.
  */
-export interface SdReactParameterState<T> {
+export interface ISdReactParameterState<T> {
 
     /**
      * The current value according to the user interface. 
@@ -34,16 +34,16 @@ export interface SdReactParameterState<T> {
 /**
  * A parameter including its definition (static properties) and its state.
  */
-export interface SdReactParameter<T> {
+export interface ISdReactParameter<T> {
 
     /** The static definition of a parameter. */
-    readonly definition: SdReactParameterDefinition;
+    readonly definition: ISdReactParameterDefinition;
 
     /** 
      * The dynamic properties (aka the "state") of a parameter. 
      * Reactive components can react to this state, but not update it.
     */
-    readonly state: SdReactParameterState<T>;
+    readonly state: ISdReactParameterState<T>;
 
     /**
      * Set the ui value of the parameter. 
