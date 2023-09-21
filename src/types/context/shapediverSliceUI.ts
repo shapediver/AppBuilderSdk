@@ -6,10 +6,14 @@ import { IParameterApi } from "@shapediver/viewer/src/interfaces/session/IParame
 /**
  * TODO: 
  * 
- * 1) change this to the following type:
+ * 1) Change the type of IParameters to the following type:
  * export type IParameters = { [sessionId: string]: { [parameterId: string]: ISdReactParameter<any> } };
  * 
- * 2) change all parameter components to **only** take an SdReactParameter as input
+ * 2) Change all parameter components to **only** take an ISdReactParameter as input. 
+ *    The parameter components must **not** access the store directly.
+ * 
+ * 3) Change ParameterUiComponent to take an object of type { [parameterId: string]: IParameterApi<any> }
+ *    instead of a session id. ParameterUiComponent must **not** access the store directly.
  * 
  */
 export type IParameters = { [sessionId: string]: { [parameterId: string]: IParameterApi<any> } };
