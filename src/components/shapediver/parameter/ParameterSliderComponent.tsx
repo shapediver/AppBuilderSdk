@@ -3,8 +3,8 @@ import { IParameterApi, PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
-import { PropsParameters } from "types/components/shapediver/parameters";
-import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 
 /**
  * Round the number depending on the parameter type.
@@ -28,8 +28,8 @@ const round = (parameter: IParameterApi<number>, n: number) => {
  * @returns
  */
 export default function ParameterSliderComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
-	const sessionParameters = useRef(useShapediverViewerStore(state => state.parameters[sessionId]));
-	const changeParameterProperty = useShapediverViewerStore((state) => state.parameterPropertyChange);
+	const sessionParameters = useRef(useShapediverStoreCommon(state => state.parameters[sessionId]));
+	const changeParameterProperty = useShapediverStoreCommon((state) => state.parameterPropertyChange);
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(false);
 	const [element, setElement] = useState(<></>);

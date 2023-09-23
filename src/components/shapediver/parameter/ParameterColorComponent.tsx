@@ -3,8 +3,8 @@ import { IconRefresh } from "@tabler/icons-react";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
-import { PropsParameters } from "types/components/shapediver/parameters";
-import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 
 /**
  * Functional component that creates a color swatch for a color parameter.
@@ -13,8 +13,8 @@ import { useShapediverViewerStore } from "context/shapediverViewerStore";
  * @returns
  */
 export default function ParameterColorComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
-	const sessionParameters = useRef(useShapediverViewerStore(state => state.parameters[sessionId]));
-	const changeParameterProperty = useShapediverViewerStore((state) => state.parameterPropertyChange);
+	const sessionParameters = useRef(useShapediverStoreCommon(state => state.parameters[sessionId]));
+	const changeParameterProperty = useShapediverStoreCommon((state) => state.parameterPropertyChange);
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 	let defaultValue = "";

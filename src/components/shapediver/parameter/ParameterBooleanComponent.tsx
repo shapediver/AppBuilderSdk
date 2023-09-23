@@ -2,8 +2,8 @@ import { Switch } from "@mantine/core";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
-import { useShapediverViewerStore } from "context/shapediverViewerStore";
-import { PropsParameters } from "types/components/shapediver/parameters";
+import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
+import { PropsParameters } from "types/components/shapediver/uiParameter";
 
 /**
  * Functional component that creates a button for a boolean parameter.
@@ -12,8 +12,8 @@ import { PropsParameters } from "types/components/shapediver/parameters";
  * @returns
  */
 export default function ParameterBooleanComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
-	const sessionParameters = useRef(useShapediverViewerStore(state => state.parameters[sessionId]));
-	const changeParameterProperty = useShapediverViewerStore((state) => state.parameterPropertyChange);
+	const sessionParameters = useRef(useShapediverStoreCommon(state => state.parameters[sessionId]));
+	const changeParameterProperty = useShapediverStoreCommon((state) => state.parameterPropertyChange);
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 

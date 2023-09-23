@@ -2,8 +2,8 @@ import { Select } from "@mantine/core";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
-import { PropsParameters } from "types/components/shapediver/parameters";
-import { useShapediverViewerStore } from "context/shapediverViewerStore";
+import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 
 /**
  * Functional component that creates a dropdown select component for a string list parameter.
@@ -12,8 +12,8 @@ import { useShapediverViewerStore } from "context/shapediverViewerStore";
  * @returns
  */
 export default function ParameterSelectComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
-	const sessionParameters = useRef(useShapediverViewerStore(state => state.parameters[sessionId]));
-	const changeParameterProperty = useShapediverViewerStore((state) => state.parameterPropertyChange);
+	const sessionParameters = useRef(useShapediverStoreCommon(state => state.parameters[sessionId]));
+	const changeParameterProperty = useShapediverStoreCommon((state) => state.parameterPropertyChange);
 	const [loading, setLoading] = useState(false);
 	const [element, setElement] = useState(<></>);
 
