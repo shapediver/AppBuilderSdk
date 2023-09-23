@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
 import ParameterSliderComponent from "components/shapediver/parameter/ParameterSliderComponent";
@@ -9,6 +8,9 @@ import ParameterColorComponent from "components/shapediver/parameter/ParameterCo
 import ParameterSelectComponent from "components/shapediver/parameter/ParameterSelectComponent";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import ParameterFileInputComponent from "components/shapediver/parameter/ParameterFileInputComponent";
+import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
+import { useShapediverUiController } from "hooks/useShapediverUiController";
+import { ISdReactParameter } from "types/shapediver/shapediverUi";
 
 interface Props {
     // The unique identifier to use to access the session.
@@ -27,7 +29,8 @@ interface Props {
  */
 export default function ParameterUiComponent({ sessionId }: Props): JSX.Element {
 	const theme = useMantineTheme();
-	const activeSessionsRef = useRef(useShapediverStoreCommon.getState().activeSessions);
+	const { parametersSessionGet } = useShapediverUiController();
+	const activeSessionsRef = useRef(useShapediverStoreViewer.getState().activeSessions);
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 
@@ -66,18 +69,22 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
                 } = {};
 
 			// sort the parameters
-			const parameters = Object.values(session.parameters);
-			parameters.sort((a, b) => (a.order || Infinity) - (b.order || Infinity));
+			const parameters: ISdReactParameter<any>[] = [];
+			Object.values(parametersSessionGet(sessionId) || {}).forEach((parameter) => {
+				parameters.push(parameter);
+			});
+
+			parameters.sort((a: ISdReactParameter<any>, b: ISdReactParameter<any>) => (a.definition.order || Infinity) - (b.definition.order || Infinity));
 
 			// loop through the parameters and store the created elements in the elementGroups
 			for (let i = 0; i < parameters.length; i++) {
 				const param = parameters[i];
 
 				// if a parameter is hidden, skip it
-				if (param.hidden) continue;
+				if (param.definition.hidden) continue;
 
 				// read out the group or specify a new one if none has been provided
-				const group = param.group || { id: "default", name: "Parameter Group" };
+				const group = param.definition.group || { id: "default", name: "Parameter Group" };
 				if (!elementGroups[group.id]) {
 					elementGroups[group.id] = {
 						group,
@@ -85,13 +92,11 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
 					};
 				}
 
-				const type = param.type as keyof typeof parameterComponentsMap;
+				const type = param.definition.type as keyof typeof parameterComponentsMap;
 				const ParameterComponent = parameterComponentsMap[type] || ParameterLabelComponent;
+
 				// Get the element for the parameter and add it to the group
-				elementGroups[group.id].elements.push(<div key={param.id}><ParameterComponent
-					parameterId={param.id}
-					sessionId={sessionId}
-				/></div>);
+				elementGroups[group.id].elements.push(<div key={param.definition.id}><ParameterComponent parameter={param} /></div>);
 			}
 
 			const elements: JSX.Element[] = [];
@@ -136,7 +141,7 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
 			);
 		};
 
-		const unsubscribe = useShapediverStoreCommon.subscribe(state => {
+		const unsubscribe = useShapediverStoreViewer.subscribe(state => {
 			activeSessionsRef.current = state.activeSessions;
 			createParameterUi();
 		});
@@ -146,7 +151,7 @@ export default function ParameterUiComponent({ sessionId }: Props): JSX.Element 
 		return () => {
 			unsubscribe();
 		};
-	}, [sessionId, theme]);
+	}, [activeSessionsRef, theme]);
 
 	return (
 		<>

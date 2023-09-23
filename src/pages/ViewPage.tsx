@@ -7,7 +7,7 @@ import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
 import ParameterUiComponent from "components/shapediver/ParameterUiComponent";
 import React, { useEffect, useState } from "react";
-import { useShapediverStoreCommon } from "../context/shapediverStoreCommon";
+import { useShapediverUiController } from "hooks/useShapediverUiController";
 
 /**
  * Function that creates the view page.
@@ -22,8 +22,8 @@ import { useShapediverStoreCommon } from "../context/shapediverStoreCommon";
 export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	const sessionCreate = useShapediverStoreCommon(state => state.sessionCreate);
-	const sessionClose = useShapediverStoreCommon(state => state.sessionClose);
+	const [loading, setLoading] = useState(false);
+	const { sessionCreate, sessionClose } = useShapediverUiController();
 	const sessionCreateDto = {
 		id: "session_1",
 		ticket: "340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704",
@@ -32,12 +32,15 @@ export default function ViewPage() {
 	};
 
 	useEffect(() => {
+		setLoading(true);
 		// if there is already a session with the same unique id registered
 		// we wait until that session is closed until we create this session anew
 		// the closing of the session is done on unmount
 		// this can happen in development mode due to the duplicate calls of react
 		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		sessionCreate(sessionCreateDto);
+		sessionCreate(sessionCreateDto).finally(() => {
+			setLoading(false);
+		});
 
 		return () => {
 			// when the session is closed, we close the session
@@ -81,11 +84,11 @@ export default function ViewPage() {
 							</Tabs.List>
 
 							<Tabs.Panel value="parameters" pt="xs">
-								<ParameterUiComponent sessionId="session_1" />
+								{ !loading && <ParameterUiComponent sessionId="session_1" /> }
 							</Tabs.Panel>
 
 							<Tabs.Panel value="exports" pt="xs">
-								<ExportUiComponent sessionId="session_1" />
+								{ !loading && <ExportUiComponent sessionId="session_1" /> }
 							</Tabs.Panel>
 						</Tabs>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 import { Divider, Loader, MediaQuery, ScrollArea } from "@mantine/core";
 import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
+import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
 
 interface Props {
     // The unique identifier to use to access the session.
@@ -17,7 +17,7 @@ interface Props {
  * @returns
  */
 export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
-	const activeSessionsRef = useRef(useShapediverStoreCommon.getState().activeSessions);
+	const activeSessionsRef = useRef(useShapediverStoreViewer.getState().activeSessions);
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 
@@ -62,7 +62,7 @@ export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
 			);
 		};
 
-		const unsubscribe = useShapediverStoreCommon.subscribe(state => {
+		const unsubscribe = useShapediverStoreViewer.subscribe(state => {
 			activeSessionsRef.current = state.activeSessions;
 			createExportUi();
 		});

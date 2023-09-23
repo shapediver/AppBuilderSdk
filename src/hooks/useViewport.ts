@@ -6,7 +6,7 @@ import {
 	VISIBILITY_MODE
 } from "@shapediver/viewer";
 import { useEffect, useRef } from "react";
-import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
+import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
 
 export interface IUseViewportProps {
 	// The unique identifier to use for the viewport.
@@ -34,7 +34,8 @@ export interface IUseViewportProps {
 
 export function useViewport({ id, branding, sessionSettingsId, sessionSettingsMode, visibility }: IUseViewportProps) {
 	const canvasRef = useRef(null);
-	const activeViewportsRef = useRef(useShapediverStoreCommon(state => state.activeViewports));
+	const setActiveViewports = useShapediverStoreViewer(state => state.setActiveViewports);
+	const activeViewportsRef = useRef(useShapediverStoreViewer(state => state.activeViewports));
 
 	useEffect(() => {
 		// if there is already a viewport with the same unique id registered
@@ -56,13 +57,13 @@ export function useViewport({ id, branding, sessionSettingsId, sessionSettingsMo
 				visibility: visibility
 			}));
 		// and then save it in the store
-		useShapediverStoreCommon.setState({ activeViewports });
+		setActiveViewports(activeViewports);
 
 		return () => {
 			// when the component is closed, we close the viewport and assign that promise
 			activeViewports[id] = activeViewports[id].then(async v => v && await v.close());
 		};
-	}, [id, branding, sessionSettingsId, sessionSettingsMode, visibility]);
+	}, [/*id, branding, sessionSettingsId, sessionSettingsMode, visibility*/]);
 
 	return {
 		canvasRef

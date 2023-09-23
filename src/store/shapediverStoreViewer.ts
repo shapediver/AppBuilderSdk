@@ -1,7 +1,6 @@
 import { createSession, ISessionApi } from "@shapediver/viewer";
-import { StateCreator } from "zustand/esm";
-import { ISessionCompare, ShapediverSliceViewerState } from "../types/context/shapediverSliceViewer";
-import { SessionCreateDto } from "../types/context/shapediverStoreCommon";
+import { ISessionCompare, SessionCreateDto, ShapediverStoreViewerState } from "../types/store/shapediverStoreViewer";
+import { create } from "zustand";
 
 /**
  * Get the imprint of common parameters of the ISessionApi or SessionCreateDto.
@@ -19,7 +18,7 @@ const stringifySessionCommonParameters =  function(parameters: Pick<SessionCreat
 /**
  * State store for all created viewports and sessions.
  */
-export const createShapediverSliceViewer: StateCreator<ShapediverSliceViewerState, [], []> = (set, get): ShapediverSliceViewerState => ({
+export const useShapediverStoreViewer = create<ShapediverStoreViewerState>((set, get) => ({
 	activeViewports: {},
 	setActiveViewports: (activeViewports) =>
 		set((state) => ({
@@ -32,6 +31,9 @@ export const createShapediverSliceViewer: StateCreator<ShapediverSliceViewerStat
 			...state,
 			activeSessions
 		})),
+	activeSessionsGet: () => {
+		return get().activeSessions;
+	},
 	sessionCreate: async (
 		{ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: SessionCreateDto,
 		callbacks: {
@@ -120,4 +122,5 @@ export const createShapediverSliceViewer: StateCreator<ShapediverSliceViewerStat
 			...sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data)),
 		]);
 	},
-});
+}
+));
