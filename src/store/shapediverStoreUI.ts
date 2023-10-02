@@ -2,11 +2,13 @@ import { IShapediverStoreUI } from "types/store/shapediverStoreUI";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { fetchFileWithToken } from "utils/file";
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { devtoolsSettings } from "./storeSettings";
 
 /**
  * Store of UI-related data.
  */
-export const useShapediverStoreUI = create<IShapediverStoreUI>((set, get) => ({
+export const useShapediverStoreUI = create<IShapediverStoreUI>()(devtools((set, get) => ({
 	
 	parameters: {},
 	
@@ -17,9 +19,9 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>((set, get) => ({
 		set((state) => ({
 			...state,
 			parameters,
-		}));
+		}), false, "parametersSessionSet");
 	},
-	
+
 	parametersSessionGet: (sessionId) => {
 		return get().parameters[sessionId];
 	},
@@ -50,4 +52,4 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>((set, get) => ({
 		}
 	}
 }
-));
+), { ...devtoolsSettings, name: "ShapeDiver | UI" }));

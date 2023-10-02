@@ -1,6 +1,8 @@
 import { createSession, ISessionApi } from "@shapediver/viewer";
 import { SessionCreateDto, IShapediverStoreViewer } from "../types/store/shapediverStoreViewer";
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { devtoolsSettings } from "./storeSettings";
 
 /**
  * Helper for comparing sessions.
@@ -23,7 +25,7 @@ const createSessionIdentifier =  function(parameters: Pick<SessionCreateDto, "id
 /**
  * Store of viewer-related data.
  */
-export const useShapediverStoreViewer = create<IShapediverStoreViewer>((set, get) => ({
+export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtools((set, get) => ({
 	
 	activeViewports: {},
 	
@@ -32,7 +34,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>((set, get
 		set((state) => ({
 			...state,
 			activeViewports
-		})),
+		}), false, "setActiveViewports"),
 
 	activeSessions: {},
 
@@ -71,7 +73,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>((set, get
 					...session ? {[session.id]: session} : {},
 				},
 			};
-		});
+		}, false, "sessionCreate");
 	},
 
 	sessionClose: async (
@@ -104,7 +106,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>((set, get
 				//...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
 				activeSessions,
 			};
-		});
+		}, false, "sessionClose");
 	},
 
 	sessionsSync: async (sessionDtos: SessionCreateDto[]) => {
@@ -135,4 +137,4 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>((set, get
 		]);
 	},
 }
-));
+), { ...devtoolsSettings, name: "ShapeDiver | Viewer" }));
