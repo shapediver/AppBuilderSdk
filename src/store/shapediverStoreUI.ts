@@ -1,4 +1,4 @@
-import { IShapediverStoreUI } from "types/store/shapediverStoreUI";
+import { IParameters, IShapediverStoreUI } from "types/store/shapediverStoreUI";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { fetchFileWithToken } from "utils/file";
 import { create } from "zustand";
@@ -12,28 +12,30 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>()(devtools((set, 
 	
 	parameters: {},
 	
-	parametersSessionSet: (sessionId, parametersSession) => {
+	addSession: (sessionId, parametersSession) => {
 		const parameters = get().parameters;
 		parameters[sessionId] = parametersSession;
 
 		set((state) => ({
 			...state,
 			parameters,
-		}), false, "parametersSessionSet");
+		}), false, "addSession");
 	},
 
-	parametersSessionRemove: (sessionId: string) => {
-		const parameters = get().parameters;
-		delete parameters[sessionId];
-
+	removeSession: (sessionId: string) => {
+		const parametersPerSession = get().parameters;
+		
+		// create a new object, omitting the session which was closed
+		const parameters : {[id: string]: IParameters} = {};
+		Object.keys(parametersPerSession).forEach(id => {
+			if (id !== sessionId)
+				parameters[id] = parametersPerSession[id];
+		});
+	
 		set((state) => ({
 			...state,
 			parameters,
-		}), false, "parametersSessionRemove");
-	},
-
-	parametersSessionGet: (sessionId) => {
-		return get().parameters[sessionId];
+		}), false, "removeSession");
 	},
 
 	exports: {},

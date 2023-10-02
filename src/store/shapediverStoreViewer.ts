@@ -38,14 +38,6 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 	activeSessions: {},
 
-	/**
-	 * TODO review why we need this
-	 * @returns 
-	 */
-	activeSessionsGet: () => {
-		return get().activeSessions;
-	},
-
 	sessionCreate: async (
 		dto: SessionCreateDto,
 		callbacks: {
@@ -67,7 +59,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 		return set((state) => {
 			return {
-				//...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
+				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
 				activeSessions: {
 					...state.activeSessions,
 					...session ? {[session.id]: session} : {},
@@ -81,30 +73,30 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 		callbacks: {
 			onError?: (error: any) => void;
 		} = {},) => {
+
 		const { activeSessions } = get();
-
-		let sessionIdDelete: string|undefined = undefined;
 		const session = activeSessions[sessionId];
+		if (!session) return;
 
-		if (session) {
-			try {
-				await session.close();
-				sessionIdDelete = sessionId;
-			} catch (e) {
-				if (callbacks.onError) callbacks.onError(e);
-			}
+		try {
+			await session.close();
+		} catch (e) {
+			if (callbacks.onError) callbacks.onError(e);
+			return;
 		}
-
-		if (!sessionIdDelete) return;
-
+	
 		return set((state) => {
-			const activeSessions = state.activeSessions;
-			if (sessionIdDelete) 
-				delete activeSessions[sessionId];
+
+			// create a new object, omitting the session which was closed
+			const newSessions : {[id: string]: ISessionApi} = {};
+			Object.keys(state.activeSessions).forEach(id => {
+				if (id !== sessionId)
+					newSessions[id] = state.activeSessions[id];
+			});
 
 			return {
-				//...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
-				activeSessions,
+				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
+				activeSessions: newSessions,
 			};
 		}, false, "sessionClose");
 	},

@@ -1,6 +1,4 @@
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
-import { SessionCreateDto } from "../store/shapediverStoreViewer";
-import { IOutputApi, ViewportCreationDefinition } from "@shapediver/viewer";
 
 /**
  * The static definition of a parameter.
@@ -85,30 +83,3 @@ export interface ISdReactParameter<T>{
      */
     stringify(): string;
 }
-
-/**
- * TODO document this
- */
-export interface ShapediverUIConfig {
-    sessions: {
-        [id: string]: {
-            data: SessionCreateDto,
-        };
-    }
-    viewports: {
-        [id: string]: {
-            data?: Pick<ViewportCreationDefinition, "id">,
-        };
-    }
-    parameters?: {
-        [id: string]: {
-            data?: ISdReactParameter<any>,
-        };
-    }
-    outputs?: {
-        [id: string]: {
-            data?: Pick<IOutputApi, "id">,
-        };
-    }
-}
-

@@ -1,5 +1,5 @@
 import { IExportApi } from "@shapediver/viewer";
-import { ISdReactParameter } from "../shapediver/shapediverUi";
+import { ISdReactParameter } from "../shapediver/parameter";
 
 /**
  * An object of parameters keyed by parameter id.
@@ -27,27 +27,20 @@ export interface IShapediverStoreUI {
 	parameters: IParametersPerSession;
 
 	/**
-	 * Add a group of parameters, grouped by session.
+	 * Add a session to the UI state.
 	 * @param sessionId 
 	 * @param parameters 
 	 * @returns 
 	 */
-	parametersSessionSet: (sessionId: string, parameters: IParameters) => void,
+	addSession: (sessionId: string, parameters: IParameters) => void,
 
 	/**
-	 * Remove a group of parameters, grouped by session.
+	 * Remove a session from the UI state.
 	 * @param sessionId 
 	 * @param parameters 
 	 * @returns 
 	 */
-	parametersSessionRemove: (sessionId: string) => void,
-
-	/**
-	 * Get a group of parameters by session.
-	 * @param sessionId 
-	 * @returns 
-	 */
-	parametersSessionGet: (sessionId: string) => IParameters,
+	removeSession: (sessionId: string) => void,
 
 	/**
 	 * TODO to be refactored

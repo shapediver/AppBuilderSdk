@@ -1,4 +1,4 @@
-import { ISdReactParameter } from "../../shapediver/shapediverUi";
+import { ISdReactParameter } from "../../shapediver/parameter";
 
 export interface PropsParameters<T> {
 	// Parameter

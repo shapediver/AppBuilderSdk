@@ -1,8 +1,5 @@
-import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
-import { SessionCreateDto } from "types/store/shapediverStoreViewer";
-import { useShapediverStoreUI } from "store/shapediverStoreUI";
 import { IParameterApi, ISessionApi } from "@shapediver/viewer";
-import { ISdReactParameter, ISdReactParameterState } from "types/shapediver/shapediverUi";
+import { ISdReactParameter, ISdReactParameterState } from "types/shapediver/parameter";
 
 class SdReactParameter<T> implements ISdReactParameter<T> {
 	/** The session definition. */
@@ -88,56 +85,6 @@ class SdReactParameter<T> implements ISdReactParameter<T> {
 	}
 }
 
-export const useShapediverUiController = () => {
-
-	const {
-		sessionCreate: storeViewerSessionCreate,
-		sessionClose: storeViewerSessionClose,
-		activeSessionsGet,
-	} = useShapediverStoreViewer(state => state);
-
-	const {
-		parametersSessionSet,
-		parametersSessionRemove,
-	} = useShapediverStoreUI(state => state);
-
-	const parameterSessionParse = <T>(session: ISessionApi, parameterId: string): SdReactParameter<T>  => {
-		return new SdReactParameter(session, parameterId);
-	};
-
-	const sessionCreate = async (dto: SessionCreateDto) => {
-		await storeViewerSessionCreate(dto);
-
-		const parametersParsed: { [parameterId: string]: ISdReactParameter<any> } = {};
-		const session = activeSessionsGet()[dto.id];
-
-		if (!session) return false;
-
-		Object.keys(session.parameters || {}).forEach(parameterId => {
-			if (!session.parameters[parameterId]) return;
-
-			parametersParsed[parameterId] = parameterSessionParse(session, parameterId);
-		});
-
-		parametersSessionSet(dto.id, parametersParsed);
-
-		return true;
-	};
-
-	const sessionClose = async (sessionId: string) => {
-		const session = activeSessionsGet()[sessionId];
-
-		if (!session) return false;
-
-		await storeViewerSessionClose(sessionId);
-
-		parametersSessionRemove(sessionId);
-
-		return true;
-	};
-
-	return {
-		sessionCreate,
-		sessionClose,
-	};
+export const createSdReactParameter = <T>(session: ISessionApi, parameterId: string): ISdReactParameter<T>  => {
+	return new SdReactParameter(session, parameterId);
 };

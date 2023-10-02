@@ -7,6 +7,10 @@ export interface SessionCreateDto extends SessionCreationDefinition {
 	id: string,
 }
 
+export interface IShapeDiverStoreViewerSessions {
+	[sessionId: string]: ISessionApi;
+}
+
 /**
  * Interface for the store of viewer-related data.
  */
@@ -32,17 +36,7 @@ export interface IShapediverStoreViewer {
 	/** 
 	 * Sessions currently known by the store.
 	 */
-	activeSessions: {
-		[sessionId: string]: ISessionApi;
-	}
-
-	/**
-	 * TODO review why we need this
-	 * @returns 
-	 */
-	activeSessionsGet: () => {
-		[sessionId: string]: ISessionApi;
-	};
+	activeSessions: IShapeDiverStoreViewerSessions
 
 	/**
 	 * Create a session and add it to the store.

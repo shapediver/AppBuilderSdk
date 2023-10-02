@@ -2,7 +2,7 @@ import { Slider, TextInput } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { ISdReactParameterDefinition } from "types/shapediver/shapediverUi";
+import { ISdReactParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameters } from "types/components/shapediver/uiParameter";
 
 /**
