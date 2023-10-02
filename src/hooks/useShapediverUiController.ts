@@ -98,12 +98,8 @@ export const useShapediverUiController = () => {
 
 	const {
 		parametersSessionSet,
-		parametersSessionGet: storeUiParametersSessionGet,
+		parametersSessionRemove,
 	} = useShapediverStoreUI(state => state);
-
-	const parametersSessionGet = (sessionId: string) => {
-		return storeUiParametersSessionGet(sessionId);
-	};
 
 	const parameterSessionParse = <T>(session: ISessionApi, parameterId: string): SdReactParameter<T>  => {
 		return new SdReactParameter(session, parameterId);
@@ -135,13 +131,12 @@ export const useShapediverUiController = () => {
 
 		await storeViewerSessionClose(sessionId);
 
-		parametersSessionSet(sessionId, undefined);
+		parametersSessionRemove(sessionId);
 
 		return true;
 	};
 
 	return {
-		parametersSessionGet,
 		sessionCreate,
 		sessionClose,
 	};

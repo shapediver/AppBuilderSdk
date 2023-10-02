@@ -22,6 +22,16 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>()(devtools((set, 
 		}), false, "parametersSessionSet");
 	},
 
+	parametersSessionRemove: (sessionId: string) => {
+		const parameters = get().parameters;
+		delete parameters[sessionId];
+
+		set((state) => ({
+			...state,
+			parameters,
+		}), false, "parametersSessionRemove");
+	},
+
 	parametersSessionGet: (sessionId) => {
 		return get().parameters[sessionId];
 	},

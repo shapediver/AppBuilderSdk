@@ -8,6 +8,7 @@ import NavigationBar from "components/ui/NavigationBar";
 import ParameterUiComponent from "components/shapediver/ParameterUiComponent";
 import React, { useEffect, useState } from "react";
 import { useShapediverUiController } from "hooks/useShapediverUiController";
+import { useShapediverStoreUI } from "store/shapediverStoreUI";
 
 /**
  * Function that creates the view page.
@@ -31,6 +32,8 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 
+	const parameters = useShapediverStoreUI(state => state.parameters[sessionCreateDto.id]);
+	
 	useEffect(() => {
 		setLoading(true);
 		// if there is already a session with the same unique id registered
@@ -84,7 +87,7 @@ export default function ViewPage() {
 							</Tabs.List>
 
 							<Tabs.Panel value="parameters" pt="xs">
-								{ !loading && <ParameterUiComponent sessionId="session_1" /> }
+								{ !loading && parameters && <ParameterUiComponent parameters={parameters} /> }
 							</Tabs.Panel>
 
 							<Tabs.Panel value="exports" pt="xs">

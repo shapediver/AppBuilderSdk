@@ -2,23 +2,9 @@ import { IExportApi } from "@shapediver/viewer";
 import { ISdReactParameter } from "../shapediver/shapediverUi";
 
 /**
- * TODO:
- *
- * 1) Change the type of IParameters to the following type:
- * export type IParameters = { [sessionId: string]: { [parameterId: string]: ISdReactParameter<any> } };
- *
- * 2) Change all parameter components to **only** take an ISdReactParameter as input.
- *    The parameter components must **not** access the store directly.
- *
- * 3) Change ParameterUiComponent to take an object of type { [parameterId: string]: IParameterApi<any> }
- *    instead of a session id. ParameterUiComponent must **not** access the store directly.
- *
- */
-
-/**
  * An object of parameters keyed by parameter id.
  */
-export type IParameters = { [parameterId: string]: ISdReactParameter<any> } | undefined;
+export type IParameters = { [parameterId: string]: ISdReactParameter<any> };
 
 /**
  * Objects of parameters grouped by session id.
@@ -47,6 +33,14 @@ export interface IShapediverStoreUI {
 	 * @returns 
 	 */
 	parametersSessionSet: (sessionId: string, parameters: IParameters) => void,
+
+	/**
+	 * Remove a group of parameters, grouped by session.
+	 * @param sessionId 
+	 * @param parameters 
+	 * @returns 
+	 */
+	parametersSessionRemove: (sessionId: string) => void,
 
 	/**
 	 * Get a group of parameters by session.
