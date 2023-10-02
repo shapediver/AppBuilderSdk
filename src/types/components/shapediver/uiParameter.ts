@@ -1,7 +1,7 @@
-export interface PropsParameters {
+import { ISdReactParameter } from "../../shapediver/shapediverUi";
+
+export interface PropsParameters<T> {
 	// Parameter
-	parameterId: string,
-	// The unique identifier to use to access the session.
-	sessionId: string,
+	parameter: ISdReactParameter<T>
 }
 

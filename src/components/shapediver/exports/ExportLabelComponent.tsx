@@ -1,6 +1,6 @@
 import { Skeleton, Text } from "@mantine/core";
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
+import { useShapediverStoreUI } from "../../../store/shapediverStoreUI";
 
 interface Props {
     // The unique identifier to use to access the session.
@@ -16,7 +16,7 @@ interface Props {
  * @returns
  */
 export default function ExportLabelComponent({ sessionId, exportId }: Props): JSX.Element {
-	const sessionExports = useRef(useShapediverStoreCommon(state => state.exports[sessionId]));
+	const sessionExports = useRef(useShapediverStoreUI(state => state.exports[sessionId]));
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 

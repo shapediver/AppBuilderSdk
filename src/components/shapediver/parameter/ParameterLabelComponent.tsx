@@ -1,8 +1,6 @@
 import { Text } from "@mantine/core";
-import React, { JSX, useEffect, useRef, useState } from "react";
-import ParameterComponentBase from "components/shapediver/parameter/ParameterComponentBase";
+import React, { JSX } from "react";
 import { PropsParameters } from "types/components/shapediver/uiParameter";
-import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 
 /**
  * Functional component that creates a label for a parameter.
@@ -10,22 +8,8 @@ import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
  *
  * @returns
  */
-export default function ParameterLabelComponent({ parameterId, sessionId }: PropsParameters): JSX.Element {
-	const sessionParameters = useRef(useShapediverStoreCommon(state => state.parameters[sessionId]));
-	const [loading, setLoading] = useState(true);
-	const [element, setElement] = useState(<></>);
+export default function ParameterLabelComponent(props: PropsParameters<any>): JSX.Element {
+	const { parameter: { definition } } = props;
 
-	useEffect(() => {
-		const parameter = sessionParameters.current ? sessionParameters.current[parameterId] : undefined;
-
-		// early return if the parameter is not in the store (yet)
-		if (!parameter) return;
-
-		// deactivate the loading mode
-		setLoading(false);
-
-		setElement(<Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{parameter.displayname || parameter.name}</Text>);
-	}, [sessionId, parameterId]);
-
-	return (<ParameterComponentBase loading={loading} element={element} />);
+	return <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{definition.displayname || definition.name}</Text>;
 }

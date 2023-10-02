@@ -1,9 +1,15 @@
 import { ISessionApi, IViewportApi } from "@shapediver/viewer";
-import { SessionCreateDto } from "./shapediverStoreCommon";
+import {
+	SessionCreationDefinition
+} from "@shapediver/viewer.main.creation-control-center/src/interfaces/ICreationControlCenter";
+
+export interface SessionCreateDto extends SessionCreationDefinition {
+	id: string,
+}
 
 export type ISessionCompare = { id: string, imprint: string, data?: SessionCreateDto };
 
-export interface ShapediverSliceViewerState {
+export interface ShapediverStoreViewerState {
 	activeViewports: {
 		[viewportId: string]: Promise<IViewportApi | void>
 		;}
@@ -11,8 +17,11 @@ export interface ShapediverSliceViewerState {
 		[viewportId: string]: Promise<IViewportApi | void>
 	}) => void;
 	activeSessions: {
-		[sessionId: string]: ISessionApi | undefined
-		;}
+		[sessionId: string]: ISessionApi | undefined;
+	}
+	activeSessionsGet: () => {
+		[sessionId: string]: ISessionApi | undefined;
+	}
 	setActiveSessions: (activeSessions: {
 		[sessionId: string]: ISessionApi | undefined
 	}) => void;

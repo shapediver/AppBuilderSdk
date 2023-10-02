@@ -2,8 +2,8 @@ import { Button, Loader, Skeleton } from "@mantine/core";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverStoreCommon } from "context/shapediverStoreCommon";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
+import { useShapediverStoreUI } from "../../../store/shapediverStoreUI";
 
 interface Props {
     // The unique identifier to use to access the session.
@@ -19,8 +19,8 @@ interface Props {
  * @returns
  */
 export default function ExportButtonComponent({ sessionId, exportId }: Props): JSX.Element {
-	const sessionExports = useRef(useShapediverStoreCommon(state => state.exports[sessionId]));
-	const exportRequest = useShapediverStoreCommon((state) => state.exportRequest);
+	const sessionExports = useRef(useShapediverStoreUI(state => state.exports[sessionId]));
+	const exportRequest = useShapediverStoreUI((state) => state.exportRequest);
 
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
