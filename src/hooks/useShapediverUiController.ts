@@ -40,19 +40,22 @@ class SdReactParameter<T> implements ISdReactParameter<T> {
 			uiValue: value
 		};
 
+		this.definition.value = value;
+
 		return true;
 	}
 
 	execute = async () => {
-		const value = this.state.uiValue;
+		this.definition.value = this.state.uiValue;
+
+		await this.session.customize();
+
 		this._state = {
 			...this.state,
-			execValue: value,
+			execValue: this.state.uiValue,
 		};
 
-		this.definition.value = value;
-
-		return this.session.customize().then(() => true);
+		return true;
 	}
 
 	isValid = (value: any, throwError?: boolean) => {
@@ -63,20 +66,21 @@ class SdReactParameter<T> implements ISdReactParameter<T> {
 		this._state = {
 			...this.state,
 			uiValue: this.definition.defval,
-			execValue: this.definition.defval,
 		};
 
-		return this.definition.resetToDefaultValue();
+		this.definition.resetToDefaultValue();
 	}
 
-	resetToSessionValue = () => {
+	resetToExecValue = () => {
+
+		const value = this.state.execValue;
+
 		this._state = {
 			...this.state,
-			uiValue: this.definition.sessionValue,
-			execValue: this.definition.sessionValue,
+			uiValue: value,
 		};
 
-		return this.definition.resetToSessionValue();
+		this.definition.value = value;
 	}
 
 	stringify() {
@@ -85,11 +89,13 @@ class SdReactParameter<T> implements ISdReactParameter<T> {
 }
 
 export const useShapediverUiController = () => {
+
 	const {
 		sessionCreate: storeViewerSessionCreate,
 		sessionClose: storeViewerSessionClose,
 		activeSessionsGet,
 	} = useShapediverStoreViewer(state => state);
+
 	const {
 		parametersSessionSet,
 		parametersSessionGet: storeUiParametersSessionGet,

@@ -1,6 +1,6 @@
-import {ShapeDiverResponseParameter} from "@shapediver/api.geometry-api-dto-v2";
+import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
 import { SessionCreateDto } from "../store/shapediverStoreViewer";
-import { IOutputApi, IParameterApi, ViewportCreationDefinition } from "@shapediver/viewer";
+import { IOutputApi, ViewportCreationDefinition } from "@shapediver/viewer";
 
 /**
  * The static definition of a parameter.
@@ -36,7 +36,7 @@ export interface ISdReactParameterState<T> {
 /**
  * A parameter including its definition (static properties) and its state.
  */
-export interface ISdReactParameter<T> extends Pick<IParameterApi<T>, "isValid" | "resetToDefaultValue" | "resetToSessionValue" | "stringify">{
+export interface ISdReactParameter<T>{
 
     /** The static definition of a parameter. */
     readonly definition: ISdReactParameterDefinition;
@@ -59,8 +59,36 @@ export interface ISdReactParameter<T> extends Pick<IParameterApi<T>, "isValid" |
      * Run background executions, and update state.execValue on success.
      */
     execute(): Promise<boolean>;
+
+    /**
+     * Evaluates if a given value is valid for this parameter.
+     * 
+     * @param value the value to evaluate
+     * @param throwError if true, an error is thrown if validation does not pass (default: false)
+     */
+    isValid(value: any, throwError?: boolean): boolean;
+
+    /**
+     * Resets the ui value to the default value. 
+     * Note: Does not call execute. 
+     */
+    resetToDefaultValue(): void;
+
+    /**
+     * Resets the ui value to execValue.
+     * Note: Does not call execute. 
+     */
+    resetToExecValue(): void;
+    
+    /**
+     * Returns the current value as a string
+     */
+    stringify(): string;
 }
 
+/**
+ * TODO document this
+ */
 export interface ShapediverUIConfig {
     sessions: {
         [id: string]: {
