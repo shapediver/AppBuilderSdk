@@ -1,5 +1,5 @@
 import { IExportApi } from "@shapediver/viewer";
-import { ISdReactParameter } from "../shapediver/parameter";
+import { ISdReactParameter } from "types/shapediver/parameter";
 import { ISdReactExport } from "types/shapediver/export";
 
 /**
@@ -42,17 +42,17 @@ export interface IShapediverStoreUI {
 	/**
 	 * Add a session to the UI state.
 	 * TODO SS-7076 extend this by a further parameter "exports: IExports"
-	 * @param sessionId 
-	 * @param parameters 
-	 * @returns 
+	 * @param sessionId
+	 * @param parameters
+	 * @returns
 	 */
 	addSession: (sessionId: string, parameters: IParameters) => void,
 
 	/**
 	 * Remove a session from the UI state.
-	 * @param sessionId 
-	 * @param parameters 
-	 * @returns 
+	 * @param sessionId
+	 * @param parameters
+	 * @returns
 	 */
 	removeSession: (sessionId: string) => void,
 
@@ -63,9 +63,9 @@ export interface IShapediverStoreUI {
 
 	/**
 	 * TODO SS-7076 to be dropped
-	 * @param sessionId 
-	 * @param exportId 
-	 * @returns 
+	 * @param sessionId
+	 * @param exportId
+	 * @returns
 	 */
 	exportRequest: (sessionId: string, exportId: string) => Promise<void>;
 }

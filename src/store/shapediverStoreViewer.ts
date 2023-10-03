@@ -1,5 +1,5 @@
 import { createSession, ISessionApi } from "@shapediver/viewer";
-import { SessionCreateDto, IShapediverStoreViewer } from "../types/store/shapediverStoreViewer";
+import { SessionCreateDto, IShapediverStoreViewer } from "types/store/shapediverStoreViewer";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "./storeSettings";
@@ -26,9 +26,9 @@ const createSessionIdentifier =  function(parameters: Pick<SessionCreateDto, "id
  * Store of viewer-related data.
  */
 export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtools((set, get) => ({
-	
+
 	activeViewports: {},
-	
+
 	/** TODO to be refactored */
 	setActiveViewports: (activeViewports) =>
 		set((state) => ({
@@ -84,7 +84,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			if (callbacks.onError) callbacks.onError(e);
 			return;
 		}
-	
+
 		return set((state) => {
 
 			// create a new object, omitting the session which was closed

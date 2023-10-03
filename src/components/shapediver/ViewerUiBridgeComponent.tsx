@@ -15,17 +15,16 @@ interface Props {
  * @returns
  */
 export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props): JSX.Element {
-	
+
 	const session = sessions[sessionId];
-	const addSessionToUi = useShapediverStoreUI(state => state.addSession);
-	const removeSessionFromUi = useShapediverStoreUI(state => state.removeSession);
-	
+	const { addSession: addSessionToUi, removeSession: removeSessionFromUi} = useShapediverStoreUI();
+
 	useEffect(() => {
 		if (session) {
 			// session exists, add parameter to the UI store
 			const parametersParsed: { [id: string]: ISdReactParameter<any> } = {};
 			Object.keys(session.parameters || {}).forEach(id => {
-				if (!session.parameters[id]) 
+				if (!session.parameters[id])
 					return;
 				parametersParsed[id] = createSdReactParameter(session, id);
 			});
@@ -37,8 +36,8 @@ export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props):
 		}
 
 		return () => removeSessionFromUi(sessionId);
-	
+
 	}, [session]);
-	
+
 	return (<></>);
 }

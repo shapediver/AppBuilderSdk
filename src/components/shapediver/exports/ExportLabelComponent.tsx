@@ -1,6 +1,6 @@
 import { Skeleton, Text } from "@mantine/core";
 import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverStoreUI } from "../../../store/shapediverStoreUI";
+import { useShapediverStoreUI } from "store/shapediverStoreUI";
 
 interface Props {
     // The unique identifier to use to access the session.
