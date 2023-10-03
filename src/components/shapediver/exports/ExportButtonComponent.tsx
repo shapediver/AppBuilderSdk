@@ -3,7 +3,7 @@ import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState, JSX } from "react";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
-import { useShapediverStoreUI } from "../../../store/shapediverStoreUI";
+import { useShapediverStoreUI } from "store/shapediverStoreUI";
 
 interface Props {
     // The unique identifier to use to access the session.
@@ -13,6 +13,8 @@ interface Props {
 }
 
 /**
+ * TODO SS-7076 refactor this like the parameter components
+ * 
  * Functional component that creates a button that triggers an export.
  * If the export is downloadable, that file will be downloaded.
  *

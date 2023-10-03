@@ -1,126 +1,132 @@
 import { createSession, ISessionApi } from "@shapediver/viewer";
-import { ISessionCompare, SessionCreateDto, ShapediverStoreViewerState } from "../types/store/shapediverStoreViewer";
+import { SessionCreateDto, IShapediverStoreViewer } from "types/store/shapediverStoreViewer";
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { devtoolsSettings } from "./storeSettings";
 
 /**
- * Get the imprint of common parameters of the ISessionApi or SessionCreateDto.
+ * Helper for comparing sessions.
  */
-const stringifySessionCommonParameters =  function(parameters: Pick<SessionCreateDto, "excludeViewports" | "id" | "jwtToken" | "modelViewUrl" | "ticket">) {
+type ISessionCompare = { id: string, identifier: string, dto?: SessionCreateDto };
+
+/**
+ * Helper for comparing sessions.
+ */
+const createSessionIdentifier =  function(parameters: Pick<SessionCreateDto, "id" | "jwtToken" | "modelViewUrl" | "ticket" | "guid">) {
 	return JSON.stringify({
-		excludeViewports: parameters.excludeViewports,
 		id: parameters.id,
-		jwtToken: parameters.jwtToken || "",
-		modelViewUrl: parameters.modelViewUrl,
-		ticket: parameters.ticket,
+		//jwtToken: parameters.jwtToken || "",
+		//modelViewUrl: parameters.modelViewUrl,
+		//ticket: parameters.ticket,
+		//guid: parameters.guid,
 	});
 };
 
 /**
- * State store for all created viewports and sessions.
+ * Store of viewer-related data.
  */
-export const useShapediverStoreViewer = create<ShapediverStoreViewerState>((set, get) => ({
+export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtools((set, get) => ({
+
 	activeViewports: {},
+
+	/** TODO to be refactored */
 	setActiveViewports: (activeViewports) =>
 		set((state) => ({
 			...state,
 			activeViewports
-		})),
-	activeSessions: {},
-	setActiveSessions: (activeSessions) =>
-		set((state) => ({
-			...state,
-			activeSessions
-		})),
-	activeSessionsGet: () => {
-		return get().activeSessions;
-	},
-	sessionCreate: async (
-		{ id, ticket, modelViewUrl, jwtToken, waitForOutputs, loadOutputs, excludeViewports, initialParameterValues }: SessionCreateDto,
+		}), false, "setActiveViewports"),
+
+	sessions: {},
+
+	createSession: async (
+		dto: SessionCreateDto,
 		callbacks: {
 			onError?: (error: any) => void;
 		} = {},
 	) => {
+		// in case a session with the same identifier exists, skip creating a new one
+		const identifier = createSessionIdentifier(dto);
+		const { sessions } = get();
+		if ( Object.values(sessions).findIndex(s => identifier === createSessionIdentifier(s)) >= 0 )
+			return;
+
 		let session: ISessionApi|undefined = undefined;
 		try {
-			session = await createSession({
-				id: id,
-				ticket: ticket,
-				modelViewUrl: modelViewUrl,
-				jwtToken: jwtToken,
-				waitForOutputs: waitForOutputs,
-				loadOutputs: loadOutputs,
-				excludeViewports: excludeViewports,
-				initialParameterValues: initialParameterValues
-			});
+			session = await createSession(dto);
 		} catch (e: any) {
 			if (callbacks.onError) callbacks.onError(e);
 		}
 
 		return set((state) => {
 			return {
-				...state,
-				activeSessions: {
-					...state.activeSessions,
-					...session ? {[id]: session} : {},
+				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
+				sessions: {
+					...state.sessions,
+					...session ? {[session.id]: session} : {},
 				},
 			};
-		});
+		}, false, "createSession");
 	},
-	sessionClose: async (
+
+	closeSession: async (
 		sessionId,
 		callbacks: {
 			onError?: (error: any) => void;
 		} = {},) => {
-		const { activeSessions } = get();
 
-		let sessionIdDelete: string|undefined = undefined;
-		const session = activeSessions[sessionId];
+		const { sessions } = get();
+		const session = sessions[sessionId];
+		if (!session) return;
 
-		if (session) {
-			try {
-				await session.close();
-				sessionIdDelete = sessionId;
-			} catch (e) {
-				if (callbacks.onError) callbacks.onError(e);
-			}
+		try {
+			await session.close();
+		} catch (e) {
+			if (callbacks.onError) callbacks.onError(e);
+			return;
 		}
 
 		return set((state) => {
-			const activeSessions = state.activeSessions;
-			if (sessionIdDelete) delete activeSessions[sessionId];
+
+			// create a new object, omitting the session which was closed
+			const newSessions : {[id: string]: ISessionApi} = {};
+			Object.keys(state.sessions).forEach(id => {
+				if (id !== sessionId)
+					newSessions[id] = state.sessions[id];
+			});
 
 			return {
-				...state,
-				activeSessions,
+				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
+				sessions: newSessions,
 			};
-		});
+		}, false, "closeSession");
 	},
-	sessionsSync: async (sessionsDto: SessionCreateDto[]) => {
-		const { activeSessions, sessionCreate, sessionClose } = get();
+
+	syncSessions: async (sessionDtos: SessionCreateDto[]) => {
+		const { sessions, createSession, closeSession } = get();
 		// Helps to skip typescript filter error
 		const isSession = (session: ISessionCompare | undefined): session is ISessionCompare => !!session;
 		// Get existing sessions
-		const sessionsExist: ISessionCompare[] = Object.values(activeSessions).map((session) => session
-			? { id: session.id, imprint: stringifySessionCommonParameters(session) }
+		const existingSessionData: ISessionCompare[] = Object.values(sessions).map((session) => session
+			? { id: session.id, identifier: createSessionIdentifier(session) }
 			: undefined).filter(isSession);
 		// Convert SessionCreateDto[] to the ISessionCompare[]
-		const sessionsDataNew = sessionsDto.map((sessionDto) => ({ id: sessionDto.id, imprint: stringifySessionCommonParameters(sessionDto), data: sessionDto }));
+		const requestedSessionData = sessionDtos.map((sessionDto) => ({ id: sessionDto.id, identifier: createSessionIdentifier(sessionDto), data: sessionDto }));
 		// Find sessions to delete
-		const sessionsToDelete = sessionsExist.filter((sessionCompareExist) => {
-			return sessionsDataNew.findIndex((sessionCompareNew) => {
-				return sessionCompareNew.imprint === sessionCompareExist.imprint;
+		const sessionsToDelete = existingSessionData.filter((sessionCompareExist) => {
+			return requestedSessionData.findIndex((sessionCompareNew) => {
+				return sessionCompareNew.identifier === sessionCompareExist.identifier;
 			}) === -1;
 		});
 
 		// Find sessions to create
-		const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
-			return sessionsExist.findIndex((sessionCompareExist) => sessionCompareExist.imprint === sessionCompareNew.imprint) === -1;
+		const sessionsToCreate = requestedSessionData.filter((sessionCompareNew) => {
+			return existingSessionData.findIndex((sessionCompareExist) => sessionCompareExist.identifier === sessionCompareNew.identifier) === -1;
 		});
 
 		return Promise.all([
-			...sessionsToDelete.map((sessionToDelete) => sessionClose(sessionToDelete.id)),
-			...sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data)),
+			...sessionsToDelete.map((sessionToDelete) => closeSession(sessionToDelete.id)),
+			...sessionsToCreate.map((sessionDataNew) => createSession(sessionDataNew.data)),
 		]);
 	},
 }
-));
+), { ...devtoolsSettings, name: "ShapeDiver | Viewer" }));

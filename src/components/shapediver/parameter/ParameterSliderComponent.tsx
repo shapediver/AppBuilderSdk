@@ -2,7 +2,7 @@ import { Slider, TextInput } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { ISdReactParameterDefinition } from "types/shapediver/shapediverUi";
+import { ISdReactParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameters } from "types/components/shapediver/uiParameter";
 
 /**
@@ -72,6 +72,7 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 		}, 500);
 	};
 
+	// TODO SS-7076 no need for an effect here, let's refactor this without effect
 	useEffect(() => {
 		setValue(+parameter.definition.defval);
 		setTextValue(parameter.definition.defval);

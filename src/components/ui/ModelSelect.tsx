@@ -2,8 +2,8 @@ import { MultiSelect, Notification } from "@mantine/core";
 import { useModelSelectStore } from "store/modelSelectStore";
 import React, { useEffect, useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { SessionCreateDto } from "../../types/store/shapediverStoreViewer";
-import { useShapediverStoreViewer } from "../../store/shapediverStoreViewer";
+import { SessionCreateDto } from "types/store/shapediverStoreViewer";
+import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
 
 const sessionData: {
     [key: string]: {
@@ -37,7 +37,7 @@ const sessionData: {
  */
 export default function ModelSelect() {
 	const setSelectedModels = useModelSelectStore((state) => state.setSelectedModels);
-	const sessionsSync = useShapediverStoreViewer((state) => state.sessionsSync);
+	const sessionsSync = useShapediverStoreViewer((state) => state.syncSessions);
 	const [loading, setLoading] = useState(false);
 	const selectedModels = useModelSelectStore(state => state.selectedModels);
 

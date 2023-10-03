@@ -20,6 +20,7 @@ export default function ParameterBooleanComponent(props: PropsParameters<boolean
 		}
 	};
 
+	// TODO SS-7076 no need for an effect here, let's refactor this without effect
 	useEffect(() => {
 		setDefaultValue(parameter.state.uiValue === true || parameter.state.uiValue === "true");
 	}, [parameter]);
