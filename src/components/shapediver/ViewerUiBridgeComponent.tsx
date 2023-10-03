@@ -29,6 +29,7 @@ export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props):
 					return;
 				parametersParsed[id] = createSdReactParameter(session, id);
 			});
+			// TODO SS-7076 extend this by exports
 			addSessionToUi(sessionId, parametersParsed);
 		} else {
 			// session does not exist, remove from the UI store

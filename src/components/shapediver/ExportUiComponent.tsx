@@ -9,6 +9,8 @@ interface Props {
 }
 
 /**
+ * TODO SS-7076 refactor this like ParameterUiComponent
+ * 
  * Functional component that create an export UI for the session which id was provided.
  *
  * First, the resolve of the session promise is awaited after which the UI elements are created.
@@ -17,7 +19,7 @@ interface Props {
  * @returns
  */
 export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
-	const activeSessionsRef = useRef(useShapediverStoreViewer.getState().activeSessions);
+	const activeSessionsRef = useRef(useShapediverStoreViewer.getState().sessions);
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 
@@ -63,7 +65,7 @@ export default function ExportUiComponent({ sessionId }: Props): JSX.Element {
 		};
 
 		const unsubscribe = useShapediverStoreViewer.subscribe(state => {
-			activeSessionsRef.current = state.activeSessions;
+			activeSessionsRef.current = state.sessions;
 			createExportUi();
 		});
 

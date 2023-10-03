@@ -13,6 +13,8 @@ interface Props {
 }
 
 /**
+ * TODO SS-7076 refactor this like the parameter components
+ * 
  * Functional component that creates a button that triggers an export.
  * If the export is downloadable, that file will be downloaded.
  *

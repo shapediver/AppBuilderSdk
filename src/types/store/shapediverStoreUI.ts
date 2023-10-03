@@ -1,5 +1,6 @@
 import { IExportApi } from "@shapediver/viewer";
 import { ISdReactParameter } from "../shapediver/parameter";
+import { ISdReactExport } from "types/shapediver/export";
 
 /**
  * An object of parameters keyed by parameter id.
@@ -12,9 +13,21 @@ export type IParameters = { [parameterId: string]: ISdReactParameter<any> };
 export type IParametersPerSession = { [sessionId: string]: IParameters };
 
 /**
+ * An object of exports keyed by export id.
+ * TODO SS-7076 use this
+ */
+export type IExports = { [exportId: string]: ISdReactExport };
+
+/**
+ * An object of exports keyed by export id.
+ * TODO SS-7076 use this
+ */
+export type IExportsPerSession = { [sessionId: string]: IExports };
+
+/**
  * TODO to be refactored like parameters, remove dependency on viewer
  */
-export type IExports = { [sessionId: string]: { [exportId: string]: IExportApi } };
+export type IExportsLegacy = { [sessionId: string]: { [exportId: string]: IExportApi } };
 
 /**
  * Interface for the store of UI-related data.
@@ -22,12 +35,13 @@ export type IExports = { [sessionId: string]: { [exportId: string]: IExportApi }
 export interface IShapediverStoreUI {
 	/**
 	 * Parameters grouped by session id.
-	 * TODO this is work in progress, it doesn't make sense like this in the longer run for the UI.
+	 * Note: this is work in progress, it doesn't make sense like this in the longer run for the UI.
 	 */
 	parameters: IParametersPerSession;
 
 	/**
 	 * Add a session to the UI state.
+	 * TODO SS-7076 extend this by a further parameter "exports: IExports"
 	 * @param sessionId 
 	 * @param parameters 
 	 * @returns 
@@ -43,12 +57,12 @@ export interface IShapediverStoreUI {
 	removeSession: (sessionId: string) => void,
 
 	/**
-	 * TODO to be refactored
+	 * TODO SS-7076 to be refactored, use IExportsPerSession instead of IExportsLegacy
 	 */
-	exports: IExports;
+	exports: IExportsLegacy;
 
 	/**
-	 * TODO to be refactored
+	 * TODO SS-7076 to be dropped
 	 * @param sessionId 
 	 * @param exportId 
 	 * @returns 

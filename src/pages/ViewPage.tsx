@@ -25,7 +25,7 @@ export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const { sessionCreate, sessionClose, activeSessions } = useShapediverStoreViewer();
+	const { createSession, closeSession, sessions } = useShapediverStoreViewer();
 	
 	const sessionCreateDto = {
 		id: "session_1",
@@ -43,19 +43,19 @@ export default function ViewPage() {
 		// the closing of the session is done on unmount
 		// this can happen in development mode due to the duplicate calls of react
 		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		sessionCreate(sessionCreateDto).finally(() => {
+		createSession(sessionCreateDto).finally(() => {
 			setLoading(false);
 		});
 
 		return () => {
 			// when the ViewPage gets destroyed, we close the session
-			sessionClose(sessionCreateDto.id);
+			closeSession(sessionCreateDto.id);
 		};
 	}, []);
 
 	return (
 		<>
-			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={activeSessions}></ViewerUiBridgeComponent>
+			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}></ViewerUiBridgeComponent>
 			<AppShell
 				padding="md"
 				navbarOffsetBreakpoint="sm"

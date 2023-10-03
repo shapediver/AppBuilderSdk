@@ -37,7 +37,7 @@ const sessionData: {
  */
 export default function ModelSelect() {
 	const setSelectedModels = useModelSelectStore((state) => state.setSelectedModels);
-	const sessionsSync = useShapediverStoreViewer((state) => state.sessionsSync);
+	const sessionsSync = useShapediverStoreViewer((state) => state.syncSessions);
 	const [loading, setLoading] = useState(false);
 	const selectedModels = useModelSelectStore(state => state.selectedModels);
 

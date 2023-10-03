@@ -22,6 +22,7 @@ export default function ParameterColorComponent(props: PropsParameters<string>):
 		}
 	};
 
+	// TODO SS-7076 no need for an effect here, let's refactor this without effect
 	useEffect(() => {
 		// set the default value
 		if (!defaultValue) {

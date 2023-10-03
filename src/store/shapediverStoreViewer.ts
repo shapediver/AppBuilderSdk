@@ -36,9 +36,9 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			activeViewports
 		}), false, "setActiveViewports"),
 
-	activeSessions: {},
+	sessions: {},
 
-	sessionCreate: async (
+	createSession: async (
 		dto: SessionCreateDto,
 		callbacks: {
 			onError?: (error: any) => void;
@@ -46,8 +46,8 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 	) => {
 		// in case a session with the same identifier exists, skip creating a new one
 		const identifier = createSessionIdentifier(dto);
-		const { activeSessions } = get();
-		if ( Object.values(activeSessions).findIndex(s => identifier === createSessionIdentifier(s)) >= 0 )
+		const { sessions } = get();
+		if ( Object.values(sessions).findIndex(s => identifier === createSessionIdentifier(s)) >= 0 )
 			return;
 
 		let session: ISessionApi|undefined = undefined;
@@ -60,22 +60,22 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 		return set((state) => {
 			return {
 				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
-				activeSessions: {
-					...state.activeSessions,
+				sessions: {
+					...state.sessions,
 					...session ? {[session.id]: session} : {},
 				},
 			};
-		}, false, "sessionCreate");
+		}, false, "createSession");
 	},
 
-	sessionClose: async (
+	closeSession: async (
 		sessionId,
 		callbacks: {
 			onError?: (error: any) => void;
 		} = {},) => {
 
-		const { activeSessions } = get();
-		const session = activeSessions[sessionId];
+		const { sessions } = get();
+		const session = sessions[sessionId];
 		if (!session) return;
 
 		try {
@@ -89,43 +89,43 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 			// create a new object, omitting the session which was closed
 			const newSessions : {[id: string]: ISessionApi} = {};
-			Object.keys(state.activeSessions).forEach(id => {
+			Object.keys(state.sessions).forEach(id => {
 				if (id !== sessionId)
-					newSessions[id] = state.activeSessions[id];
+					newSessions[id] = state.sessions[id];
 			});
 
 			return {
 				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
-				activeSessions: newSessions,
+				sessions: newSessions,
 			};
-		}, false, "sessionClose");
+		}, false, "closeSession");
 	},
 
-	sessionsSync: async (sessionDtos: SessionCreateDto[]) => {
-		const { activeSessions, sessionCreate, sessionClose } = get();
+	syncSessions: async (sessionDtos: SessionCreateDto[]) => {
+		const { sessions, createSession, closeSession } = get();
 		// Helps to skip typescript filter error
 		const isSession = (session: ISessionCompare | undefined): session is ISessionCompare => !!session;
 		// Get existing sessions
-		const sessionsExist: ISessionCompare[] = Object.values(activeSessions).map((session) => session
+		const existingSessionData: ISessionCompare[] = Object.values(sessions).map((session) => session
 			? { id: session.id, identifier: createSessionIdentifier(session) }
 			: undefined).filter(isSession);
 		// Convert SessionCreateDto[] to the ISessionCompare[]
-		const sessionsDataNew = sessionDtos.map((sessionDto) => ({ id: sessionDto.id, identifier: createSessionIdentifier(sessionDto), data: sessionDto }));
+		const requestedSessionData = sessionDtos.map((sessionDto) => ({ id: sessionDto.id, identifier: createSessionIdentifier(sessionDto), data: sessionDto }));
 		// Find sessions to delete
-		const sessionsToDelete = sessionsExist.filter((sessionCompareExist) => {
-			return sessionsDataNew.findIndex((sessionCompareNew) => {
+		const sessionsToDelete = existingSessionData.filter((sessionCompareExist) => {
+			return requestedSessionData.findIndex((sessionCompareNew) => {
 				return sessionCompareNew.identifier === sessionCompareExist.identifier;
 			}) === -1;
 		});
 
 		// Find sessions to create
-		const sessionsToCreate = sessionsDataNew.filter((sessionCompareNew) => {
-			return sessionsExist.findIndex((sessionCompareExist) => sessionCompareExist.identifier === sessionCompareNew.identifier) === -1;
+		const sessionsToCreate = requestedSessionData.filter((sessionCompareNew) => {
+			return existingSessionData.findIndex((sessionCompareExist) => sessionCompareExist.identifier === sessionCompareNew.identifier) === -1;
 		});
 
 		return Promise.all([
-			...sessionsToDelete.map((sessionToDelete) => sessionClose(sessionToDelete.id)),
-			...sessionsToCreate.map((sessionDataNew) => sessionCreate(sessionDataNew.data)),
+			...sessionsToDelete.map((sessionToDelete) => closeSession(sessionToDelete.id)),
+			...sessionsToCreate.map((sessionDataNew) => createSession(sessionDataNew.data)),
 		]);
 	},
 }

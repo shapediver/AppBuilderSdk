@@ -72,6 +72,7 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 		}, 500);
 	};
 
+	// TODO SS-7076 no need for an effect here, let's refactor this without effect
 	useEffect(() => {
 		setValue(+parameter.definition.defval);
 		setTextValue(parameter.definition.defval);
