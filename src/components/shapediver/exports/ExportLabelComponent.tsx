@@ -1,12 +1,9 @@
 import { Skeleton, Text } from "@mantine/core";
-import React, { useEffect, useRef, useState, JSX } from "react";
-import { useShapediverStoreUI } from "store/shapediverStoreUI";
+import React, { JSX, useEffect, useState } from "react";
+import { ISdReactExport } from "../../../types/shapediver/export";
 
 interface Props {
-    // The unique identifier to use to access the session.
-    sessionId: string,
-    // The unique identifier to use to access the export.
-    exportId: string
+	exp: ISdReactExport
 }
 
 /**
@@ -15,22 +12,19 @@ interface Props {
  *
  * @returns
  */
-export default function ExportLabelComponent({ sessionId, exportId }: Props): JSX.Element {
-	const sessionExports = useRef(useShapediverStoreUI(state => state.exports[sessionId]));
+export default function ExportLabelComponent({ exp }: Props): JSX.Element {
 	const [loading, setLoading] = useState(true);
 	const [element, setElement] = useState(<></>);
 
 	useEffect(() => {
-		const exp = sessionExports.current ? sessionExports.current[exportId] : undefined;
-
 		// early return if the export is not it the store (yet)
 		if (!exp) return;
 
 		// deactivate the loading mode
 		setLoading(false);
 
-		setElement(<Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.displayname || exp.name}</Text>);
-	}, [sessionId, exportId]);
+		setElement(<Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.definition.displayname || exp.definition.name}</Text>);
+	}, [exp]);
 
 	return (
 		<>

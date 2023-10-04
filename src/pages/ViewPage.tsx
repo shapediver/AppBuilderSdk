@@ -26,7 +26,7 @@ export default function ViewPage() {
 	const [opened, setOpened] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { createSession, closeSession, sessions } = useShapediverStoreViewer();
-	
+
 	const sessionCreateDto = {
 		id: "session_1",
 		ticket: "340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704",
@@ -35,7 +35,8 @@ export default function ViewPage() {
 	};
 
 	const parameters = useShapediverStoreUI(state => state.parameters[sessionCreateDto.id]);
-	
+	const exports = useShapediverStoreUI(state => state.exports[sessionCreateDto.id]);
+
 	useEffect(() => {
 		setLoading(true);
 		// if there is already a session with the same unique id registered
@@ -95,7 +96,7 @@ export default function ViewPage() {
 								</Tabs.Panel>
 
 								<Tabs.Panel value="exports" pt="xs">
-									{ !loading && <ExportUiComponent sessionId="session_1" /> }
+									{ !loading && exports && <ExportUiComponent exports={exports} /> }
 								</Tabs.Panel>
 							</Tabs>
 
