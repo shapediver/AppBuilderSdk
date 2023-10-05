@@ -1,27 +1,32 @@
 import { IExportApi, ISessionApi } from "@shapediver/viewer";
-import { ISdReactExport, ISdReactExportDefinition } from "types/shapediver/export";
+import { ISdReactExport, ISdReactExportActions, ISdReactExportDefinition } from "types/shapediver/export";
 
 class SdReactExport implements ISdReactExport {
-	/** The static definition of a parameter. */
+
+	/** The static definition of the export. */
 	readonly definition: ISdReactExportDefinition;
-	/** The session export. */
+	
+	/** API of the export. */
 	private sessionExport: IExportApi;
 
+	/** Actions that can be taken on the export. */
+	private _actions: ISdReactExportActions;
+
 	constructor(session: ISessionApi, exportId: string) {
-		this.definition = session.exports[exportId];
-		this.sessionExport = session.exports[exportId];
+		const exportApi = session.exports[exportId];
+		this.definition = exportApi;
+		this.sessionExport = exportApi;
+		this._actions = {
+			request: async (parameters?: { [key: string]: string }) => {
+				return this.sessionExport.request(parameters);
+			}
+		};
 	}
 
-	/**
-	 * Request the export.
-	 *
-	 * @param parameters Parameter values to be used for this export request. Map from parameter id to parameter value. The current value will be used for any parameter not specified.
-	 *
-	 * @throws {@type ShapeDiverViewerError}
-	 */
-	request = async (parameters?: { [key: string]: string }) => {
-		return this.sessionExport.request(parameters);
+	get actions() {
+		return this._actions;
 	}
+
 }
 
 export const createSdReactExport = (session: ISessionApi, exportId: string): ISdReactExport  => {

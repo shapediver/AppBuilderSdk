@@ -2,6 +2,7 @@ import React, { JSX } from "react";
 import { Divider, Loader, MediaQuery, ScrollArea } from "@mantine/core";
 import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
 import { IExports } from "types/store/shapediverStoreUI";
+import { ISdReactExport } from "types/shapediver/export";
 
 interface Props {
     exports: IExports
@@ -20,11 +21,11 @@ export default function ExportUiComponent({ exports }: Props): JSX.Element {
 
 	// loop through the exports and store the created elements
 	for (let i = 0; i < sortedExports.length; i++) {
-		const exp = sortedExports[i];
+		const exp = sortedExports[i] as ISdReactExport;
 
 		// if an export is hidden, skip it
 		if (exp.definition.hidden) continue;
-		elements.push(<div key={exp.definition.id}><ExportButtonComponent exp={exp} /></div>);
+		elements.push(<div key={exp.definition.id}><ExportButtonComponent definition={exp.definition} actions={exp.actions} /></div>);
 		// create dividers between the elements
 		if (i !== sortedExports.length - 1) elements.push(<Divider key={exp.definition.id + "_divider"} my="sm" />);
 	}

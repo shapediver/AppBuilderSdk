@@ -1,4 +1,5 @@
 import { ShapeDiverResponseExport, ShapeDiverResponseExportDefinition } from "@shapediver/api.geometry-api-dto-v2";
+import { ISdReactParamOrExport } from "./common";
 
 /**
  * The static definition of an export.
@@ -7,13 +8,9 @@ import { ShapeDiverResponseExport, ShapeDiverResponseExportDefinition } from "@s
 export type ISdReactExportDefinition = ShapeDiverResponseExportDefinition;
 
 /**
- * An export including its definition (static properties) and its state.
+ * Actions which can be taken on an export.
  */
-export interface ISdReactExport {
-
-    /** The static definition of a parameter. */
-    readonly definition: ISdReactExportDefinition;
-
+export interface ISdReactExportActions {
     /**
      * Request the export.
      *
@@ -22,4 +19,18 @@ export interface ISdReactExport {
      * @throws {@type ShapeDiverViewerError}
      */
     request(parameters?: { [key: string]: string }): Promise<ShapeDiverResponseExport>;
+}
+
+/**
+ * An export including its definition (static properties) and its state.
+ */
+export interface ISdReactExport extends ISdReactParamOrExport {
+
+    /** The static definition of the export. */
+    readonly definition: ISdReactExportDefinition;
+
+    /**
+     * Actions which can be taken on the export.
+     */
+   readonly actions: ISdReactExportActions;
 }

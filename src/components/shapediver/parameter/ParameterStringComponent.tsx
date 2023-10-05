@@ -1,7 +1,7 @@
 import { TextInput } from "@mantine/core";
 import React, { JSX, useRef } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { PropsParameters } from "types/components/shapediver/propsParameter";
 
 /**
  * Functional component that creates a string input component for a string parameter.
@@ -10,13 +10,15 @@ import { PropsParameters } from "types/components/shapediver/uiParameter";
  * @returns
  */
 export default function ParameterStringComponent(props: PropsParameters<string>): JSX.Element {
-	const { parameter } = props;
+	const { definition, state, actions } = props;
 	const textInputRef = useRef<HTMLInputElement>(null);
 
 	// function to apply the value to the parameter and customize the scene
 	const handleChange = (value: string) => {
 		// set the value and customize the session
-		parameter.setUiValue(value);
+		if (actions.setUiValue(value)) {
+			actions.execute();
+		}
 	};
 
 	let zoomResizeTimeout: NodeJS.Timeout;
@@ -33,12 +35,12 @@ export default function ParameterStringComponent(props: PropsParameters<string>)
 
 	return <>
 		<ParameterLabelComponent { ...props } />
-		{parameter && <TextInput
+		{definition && <TextInput
 			ref={textInputRef}
 			style={{
 				flexGrow: 0.9
 			}}
-			defaultValue={parameter.state.uiValue}
+			defaultValue={state.uiValue}
 			onChange={handleChangeDelay}
 		/>}
 	</>;

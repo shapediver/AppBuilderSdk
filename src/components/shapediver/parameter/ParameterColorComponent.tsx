@@ -2,7 +2,7 @@ import { ActionIcon, ColorInput } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 import React, { JSX, useEffect, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { PropsParameters } from "types/components/shapediver/propsParameter";
 
 /**
  * Functional component that creates a color swatch for a color parameter.
@@ -11,14 +11,14 @@ import { PropsParameters } from "types/components/shapediver/uiParameter";
  * @returns
  */
 export default function ParameterColorComponent(props: PropsParameters<string>): JSX.Element {
-	const { parameter } = props;
+	const { definition, actions } = props;
 	let defaultValue = "";
 	const [value, setValue] = useState("");
 
 	// callback for when the value was changed
 	const handleChange = (colorValue: string) => {
-		if (parameter.setUiValue(colorValue)) {
-			parameter.execute();
+		if (actions.setUiValue(colorValue)) {
+			actions.execute();
 		}
 	};
 
@@ -27,14 +27,14 @@ export default function ParameterColorComponent(props: PropsParameters<string>):
 	useEffect(() => {
 		// set the default value
 		if (!defaultValue) {
-			defaultValue = (parameter.definition.defval).replace("0x", "#").substring(0, 7);
+			defaultValue = (definition.defval).replace("0x", "#").substring(0, 7);
 			setValue(defaultValue);
 		}
-	}, [parameter]);
+	}, [definition]);
 
 	return <>
 		<ParameterLabelComponent { ...props } />
-		{ parameter && <ColorInput
+		{ definition && <ColorInput
 			styles={() => ({
 				input: { cursor: "pointer" }
 				// track: { cursor: "pointer" },

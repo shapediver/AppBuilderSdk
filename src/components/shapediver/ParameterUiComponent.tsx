@@ -9,6 +9,7 @@ import ParameterSelectComponent from "components/shapediver/parameter/ParameterS
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import ParameterFileInputComponent from "components/shapediver/parameter/ParameterFileInputComponent";
 import { IParameters } from "types/store/shapediverStoreUI";
+import { ISdReactParameter } from "types/shapediver/parameter";
 
 interface Props {
     parameters: IParameters
@@ -57,7 +58,7 @@ export default function ParameterUiComponent({ parameters }: Props): JSX.Element
 
 	// loop through the parameters and store the created elements in the elementGroups
 	for (let i = 0; i < sortedParams.length; i++) {
-		const param = sortedParams[i];
+		const param = sortedParams[i] as ISdReactParameter<any>;
 
 		// if a parameter is hidden, skip it
 		if (param.definition.hidden) continue;
@@ -75,7 +76,7 @@ export default function ParameterUiComponent({ parameters }: Props): JSX.Element
 		const ParameterComponent = parameterComponentsMap[type] || ParameterLabelComponent;
 
 		// Get the element for the parameter and add it to the group
-		elementGroups[group.id].elements.push(<div key={param.definition.id}><ParameterComponent parameter={param} /></div>);
+		elementGroups[group.id].elements.push(<div key={param.definition.id}><ParameterComponent definition={param.definition} state={param.state} actions={param.actions} /></div>);
 	}
 
 	const elements: JSX.Element[] = [];

@@ -3,7 +3,7 @@ import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { ISdReactParameterDefinition } from "types/shapediver/parameter";
-import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { PropsParameters } from "types/components/shapediver/propsParameter";
 
 /**
  * Round the number depending on the parameter type.
@@ -27,7 +27,7 @@ const round = (parameter: ISdReactParameterDefinition, n: number) => {
  * @returns
  */
 export default function ParameterSliderComponent(props: PropsParameters<number>): JSX.Element {
-	const { parameter } = props;
+	const { definition, actions } = props;
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const [value, setValue] = useState(0);
 	const [textValue, setTextValue] = useState("");
@@ -36,8 +36,8 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 	// callback for when the value was changed
 	const handleChange = (inputValue: number) => {
 		// set the value and customize the session
-		if (parameter.setUiValue(round(parameter.definition, inputValue))) {
-			parameter.execute();
+		if (actions.setUiValue(round(definition, inputValue))) {
+			actions.execute();
 		}
 	};
 
@@ -58,10 +58,10 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 
 			let inputValue: number = +textInputRef.current.value;
 			// if the text input value was not within the min and max, reset it to the slider value
-			if (!(inputValue >= +parameter.definition.min! && inputValue <= +parameter.definition.max!)) return setTextValue(value + "");
+			if (!(inputValue >= +definition.min! && inputValue <= +definition.max!)) return setTextValue(value + "");
 
 			// round the value according to the parameter type
-			inputValue = round(parameter.definition, inputValue);
+			inputValue = round(definition, inputValue);
 
 			// set the slider value and text value accordingly
 			setValue(inputValue);
@@ -75,37 +75,37 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 	// TODO SS-7076 no need for an effect here, let's refactor this without effect - deprecated
 	// TODO SS-7076 Reactive value required for inputs and can't be placed at the root scope
 	useEffect(() => {
-		setValue(+parameter.definition.defval);
-		setTextValue(parameter.definition.defval);
+		setValue(+definition.defval);
+		setTextValue(definition.defval);
 
 		// calculate the step size which depends on the parameter type
-		if (parameter.definition.type === PARAMETER_TYPE.INT) {
+		if (definition.type === PARAMETER_TYPE.INT) {
 			setStep(1);
-		} else if (parameter.definition.type === PARAMETER_TYPE.EVEN || parameter.definition.type === PARAMETER_TYPE.ODD) {
+		} else if (definition.type === PARAMETER_TYPE.EVEN || definition.type === PARAMETER_TYPE.ODD) {
 			setStep(2);
 		} else {
-			setStep(1 / Math.pow(10, parameter.definition.decimalplaces!));
+			setStep(1 / Math.pow(10, definition.decimalplaces!));
 		}
-	}, [parameter]);
+	}, [definition]);
 
 	return <>
 		<ParameterLabelComponent { ...props } />
-		{parameter && <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-			{ parameter && <Slider
+		{definition && <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+			{ definition && <Slider
 				style={{ width: "65%" }}
-				label={round(parameter.definition, value)}
+				label={round(definition, value)}
 				defaultValue={+value}
-				min={+parameter.definition.min!}
-				max={+parameter.definition.max!}
+				min={+definition.min!}
+				max={+definition.max!}
 				step={step}
 				value={value}
 				onChange={(v) => {
 					setValue(v);
-					setTextValue(round(parameter.definition, v) + "");
+					setTextValue(round(definition, v) + "");
 				}}
 				onChangeEnd={handleChange}
 			/> }
-			{ parameter && <TextInput
+			{ definition && <TextInput
 				ref={textInputRef}
 				style={{ width: "30%" }}
 				value={textValue}

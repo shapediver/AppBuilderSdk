@@ -1,7 +1,7 @@
 import { Switch } from "@mantine/core";
 import React, { JSX, useEffect, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { PropsParameters } from "types/components/shapediver/propsParameter";
 
 /**
  * Functional component that creates a button for a boolean parameter.
@@ -10,25 +10,25 @@ import { PropsParameters } from "types/components/shapediver/uiParameter";
  * @returns
  */
 export default function ParameterBooleanComponent(props: PropsParameters<boolean>): JSX.Element {
-	const { parameter } = props;
+	const { definition, state, actions } = props;
 	const [defaultValue, setDefaultValue] = useState(false);
 
 	const handleChange = (value: boolean) => {
 		// set the value and customize the session
-		if (parameter.setUiValue(value)) {
-			parameter.execute();
+		if (actions.setUiValue(value)) {
+			actions.execute();
 		}
 	};
 
 	// TODO SS-7076 no need for an effect here, let's refactor this without effect - deprecated
 	// TODO SS-7076 Reactive value required for inputs and can't be placed at the root scope
 	useEffect(() => {
-		setDefaultValue(parameter.state.uiValue === true || parameter.state.uiValue === "true");
-	}, [parameter]);
+		setDefaultValue(state.uiValue === true || state.uiValue === "true");
+	}, [state]);
 
 	return <>
 		<ParameterLabelComponent { ...props} />
-		{parameter && <Switch
+		{definition && <Switch
 			styles={() => ({
 				track: { cursor: "pointer" },
 			})}
