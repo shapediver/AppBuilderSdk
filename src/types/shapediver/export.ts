@@ -1,11 +1,10 @@
-import { ShapeDiverResponseExport } from "@shapediver/api.geometry-api-dto-v2";
-import { IExportApi } from "@shapediver/viewer";
+import { ShapeDiverResponseExport, ShapeDiverResponseExportDefinition } from "@shapediver/api.geometry-api-dto-v2";
 
 /**
  * The static definition of an export.
  * We reuse the definition of the export on the Geometry Backend here.
  */
-export type ISdReactExportDefinition = IExportApi;
+export type ISdReactExportDefinition = ShapeDiverResponseExportDefinition;
 
 /**
  * An export including its definition (static properties) and its state.

@@ -1,11 +1,15 @@
-import { ISessionApi } from "@shapediver/viewer";
+import { IExportApi, ISessionApi } from "@shapediver/viewer";
 import { ISdReactExport, ISdReactExportDefinition } from "types/shapediver/export";
 
 class SdReactExport implements ISdReactExport {
 	/** The static definition of a parameter. */
 	readonly definition: ISdReactExportDefinition;
+	/** The session export. */
+	private sessionExport: IExportApi;
+
 	constructor(session: ISessionApi, exportId: string) {
 		this.definition = session.exports[exportId];
+		this.sessionExport = session.exports[exportId];
 	}
 
 	/**
@@ -16,7 +20,7 @@ class SdReactExport implements ISdReactExport {
 	 * @throws {@type ShapeDiverViewerError}
 	 */
 	request = async (parameters?: { [key: string]: string }) => {
-		return this.definition.request(parameters);
+		return this.sessionExport.request(parameters);
 	}
 }
 
