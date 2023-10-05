@@ -37,12 +37,22 @@ export interface IShapediverStoreViewer {
 	 * @param dto
 	 * @returns
 	 */
-	createViewport: (dto: ViewportCreateDto) => Promise<void>;
+	createViewport: (
+		dto: ViewportCreateDto,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
 
 	/**
 	 * Close a viewport and remove it from the store.
 	 */
-	closeViewport: (viewportId: string) => Promise<void>;
+	closeViewport: (
+		viewportId: string,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
 
 	/**
 	 * Sessions currently known by the store.
@@ -54,12 +64,22 @@ export interface IShapediverStoreViewer {
 	 * @param dto
 	 * @returns
 	 */
-	createSession: (dto: SessionCreateDto) => Promise<void>;
+	createSession: (
+		dto: SessionCreateDto,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
 
 	/**
 	 * Close a session and remove it from the store.
 	 */
-	closeSession: (sessionId: string) => Promise<void>;
+	closeSession: (
+		sessionId: string,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
 
 	/**
 	 * Synchronize the sessions with the given dtos, create and close sessions as required.

@@ -40,9 +40,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 	createViewport: async (
 		dto: ViewportCreateDto,
-		callbacks: {
-			onError?: (error: any) => void;
-		} = {},
+		callbacks = {},
 	) => {
 		// in case a viewport with the same identifier exists, skip creating a new one
 		const identifier = createViewportIdentifier(dto);
@@ -71,9 +69,8 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 	closeViewport: async (
 		viewportId,
-		callbacks: {
-			onError?: (error: any) => void;
-		} = {},) => {
+		callbacks = {},
+	) => {
 
 		const { viewports } = get();
 		const viewport = viewports[viewportId];
@@ -104,9 +101,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 	createSession: async (
 		dto: SessionCreateDto,
-		callbacks: {
-			onError?: (error: any) => void;
-		} = {},
+		callbacks = {},
 	) => {
 		// in case a session with the same identifier exists, skip creating a new one
 		const identifier = createSessionIdentifier(dto);
@@ -133,10 +128,8 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 	closeSession: async (
 		sessionId,
-		callbacks: {
-			onError?: (error: any) => void;
-		} = {},) => {
-
+		callbacks = {},
+	) => {
 		const { sessions } = get();
 		const session = sessions[sessionId];
 		if (!session) return;
