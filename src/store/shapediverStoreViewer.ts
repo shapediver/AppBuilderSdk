@@ -1,5 +1,5 @@
-import { createSession, ISessionApi } from "@shapediver/viewer";
-import { SessionCreateDto, IShapediverStoreViewer } from "types/store/shapediverStoreViewer";
+import { createSession, createViewport, ISessionApi, IViewportApi } from "@shapediver/viewer";
+import { SessionCreateDto, IShapediverStoreViewer, ViewportCreateDto } from "types/store/shapediverStoreViewer";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "./storeSettings";
@@ -23,26 +23,85 @@ const createSessionIdentifier =  function(parameters: Pick<SessionCreateDto, "id
 };
 
 /**
+ * Helper for comparing viewports.
+ */
+const createViewportIdentifier =  function(parameters: Pick<ViewportCreateDto, "id">) {
+	return JSON.stringify({
+		id: parameters.id,
+	});
+};
+
+/**
  * Store of viewer-related data.
  */
 export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtools((set, get) => ({
 
-	activeViewports: {},
+	viewports: {},
 
-	/** TODO to be refactored */
-	setActiveViewports: (activeViewports) =>
-		set((state) => ({
-			...state,
-			activeViewports
-		}), false, "setActiveViewports"),
+	createViewport: async (
+		dto: ViewportCreateDto,
+		callbacks = {},
+	) => {
+		// in case a viewport with the same identifier exists, skip creating a new one
+		const identifier = createViewportIdentifier(dto);
+		const { viewports } = get();
+
+		if ( Object.values(viewports).findIndex(v => identifier === createViewportIdentifier(v)) >= 0 )
+			return;
+
+		let viewport: IViewportApi|undefined = undefined;
+
+		try {
+			viewport = await createViewport(dto);
+		} catch (e: any) {
+			if (callbacks.onError) callbacks.onError(e);
+		}
+
+		return set((state) => {
+			return {
+				viewports: {
+					...state.viewports,
+					...viewport ? {[viewport.id]: viewport} : {},
+				},
+			};
+		}, false, "createViewport");
+	},
+
+	closeViewport: async (
+		viewportId,
+		callbacks = {},
+	) => {
+
+		const { viewports } = get();
+		const viewport = viewports[viewportId];
+		if (!viewport) return;
+
+		try {
+			await viewport.close();
+		} catch (e) {
+			if (callbacks.onError) callbacks.onError(e);
+			return;
+		}
+
+		return set((state) => {
+			// create a new object, omitting the session which was closed
+			const newViewports : {[id: string]: IViewportApi} = {};
+			Object.keys(state.viewports).forEach(id => {
+				if (id !== viewportId)
+					newViewports[id] = state.viewports[id];
+			});
+
+			return {
+				viewports: newViewports,
+			};
+		}, false, "closeViewport");
+	},
 
 	sessions: {},
 
 	createSession: async (
 		dto: SessionCreateDto,
-		callbacks: {
-			onError?: (error: any) => void;
-		} = {},
+		callbacks = {},
 	) => {
 		// in case a session with the same identifier exists, skip creating a new one
 		const identifier = createSessionIdentifier(dto);
@@ -59,7 +118,6 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 		return set((state) => {
 			return {
-				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
 				sessions: {
 					...state.sessions,
 					...session ? {[session.id]: session} : {},
@@ -70,10 +128,8 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 	closeSession: async (
 		sessionId,
-		callbacks: {
-			onError?: (error: any) => void;
-		} = {},) => {
-
+		callbacks = {},
+	) => {
 		const { sessions } = get();
 		const session = sessions[sessionId];
 		if (!session) return;
@@ -95,7 +151,6 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			});
 
 			return {
-				...state, // <-- according to the docs of zustand, this is not necessary at the top level. see https://github.com/pmndrs/zustand/blob/main/docs/guides/immutable-state-and-merging.md
 				sessions: newSessions,
 			};
 		}, false, "closeSession");

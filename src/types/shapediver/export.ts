@@ -13,12 +13,12 @@ export interface ISdReactExport {
 
     /** The static definition of a parameter. */
     readonly definition: ISdReactExportDefinition;
-     
+
     /**
      * Request the export.
-     * 
+     *
      * @param parameters Parameter values to be used for this export request. Map from parameter id to parameter value. The current value will be used for any parameter not specified.
-     * 
+     *
      * @throws {@type ShapeDiverViewerError}
      */
     request(parameters?: { [key: string]: string }): Promise<ShapeDiverResponseExport>;

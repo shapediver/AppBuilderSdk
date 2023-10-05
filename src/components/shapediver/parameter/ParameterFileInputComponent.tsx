@@ -1,6 +1,6 @@
 import { ActionIcon, FileInput } from "@mantine/core";
 import { IconUpload, IconX } from "@tabler/icons-react";
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX } from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameters } from "types/components/shapediver/uiParameter";
@@ -13,20 +13,14 @@ import { PropsParameters } from "types/components/shapediver/uiParameter";
  */
 export default function ParameterFileInputComponent(props: PropsParameters<File|null>): JSX.Element {
 	const { parameter } = props;
-	// create the file endings from all the formats that are specified in the parameter
-	const [fileEndings, setFileEndings] = useState<string[]>([]);
-
 	// callback for when the value was changed
 	const handleChange = (value: File | null) => {
 		if (parameter.setUiValue(value || "")) {
 			parameter.execute();
 		}
 	};
-
-	// TODO SS-7076 no need for an effect here, let's refactor this without effect
-	useEffect(() => {
-		setFileEndings([...mapMimeTypeToFileEndings(extendMimeTypes(parameter.definition.format!))]);
-	}, [parameter]);
+	// create the file endings from all the formats that are specified in the parameter
+	const fileEndings = [...mapMimeTypeToFileEndings(extendMimeTypes(parameter.definition.format!))];
 
 	return <>
 		<ParameterLabelComponent { ...props } />

@@ -1,86 +1,75 @@
-import { Button, Loader, Skeleton } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
-import React, { useEffect, useRef, useState, JSX } from "react";
+import React, { JSX, useState } from "react";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
-import { useShapediverStoreUI } from "store/shapediverStoreUI";
+import { ISdReactExport } from "types/shapediver/export";
+import { fetchFileWithToken } from "utils/file";
 
 interface Props {
-    // The unique identifier to use to access the session.
-    sessionId: string,
-    // The unique identifier to use to access the export.
-    exportId: string
+	exp: ISdReactExport
 }
 
 /**
- * TODO SS-7076 refactor this like the parameter components
- * 
  * Functional component that creates a button that triggers an export.
  * If the export is downloadable, that file will be downloaded.
  *
  * @returns
  */
-export default function ExportButtonComponent({ sessionId, exportId }: Props): JSX.Element {
-	const sessionExports = useRef(useShapediverStoreUI(state => state.exports[sessionId]));
-	const exportRequest = useShapediverStoreUI((state) => state.exportRequest);
-
-	const [loading, setLoading] = useState(true);
-	const [element, setElement] = useState(<></>);
-	const [requestingExport, setRequestingExport] = useState(false);
-
-	useEffect(() => {
-		const exp = sessionExports.current ? sessionExports.current[exportId] : undefined;
-
-		// early return if the export is not it the store (yet)
+export default function ExportButtonComponent(props: Props): JSX.Element {
+	const { exp } = props;
+	const exportRequest = async () => {
 		if (!exp) return;
 
-		// deactivate the loading mode
-		setLoading(false);
+		// request the export
+		const response = await exp.request();
 
-		// Depending on the type of export, use a download or email icon
-		const leftIcon = exp.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />;
+		// if the export is a download export, download it
+		if (exp.definition.type === EXPORT_TYPE.DOWNLOAD) {
+			if (
+				response.content &&
+				response.content[0] &&
+				response.content[0].href
+			) {
+				await fetchFileWithToken(response.content[0].href, `${response.filename}.${response.content[0].format}`);
+			}
+		}
+	};
 
-		// callback for when the export button has been clicked
-		const onClick = async () => {
-			if (!exp) return;
-			// set the requestingExport true to display a loading icon
-			setRequestingExport(true);
+	// callback for when the export button has been clicked
+	const onClick = async () => {
+		if (!exp) return;
+		// set the requestingExport true to display a loading icon
+		setRequestingExport(true);
 
-			await exportRequest(sessionId, exportId);
+		await exportRequest();
 
-			// set the requestingExport false to remove the loading icon
-			setRequestingExport(false);
-		};
+		// set the requestingExport false to remove the loading icon
+		setRequestingExport(false);
+	};
 
-		// set the element with the label, a button and a loader that is shown when requestingExport is enabled
-		setElement(
-			<>
-				<ExportLabelComponent sessionId={sessionId} exportId={exportId} />
-				<div style={{
-					display: "flex",
-					justifyContent: "space-between",
-				}}>
-					<Button
-						style={{
-							width: "70%"
-						}}
-						fullWidth={true}
-						leftIcon={leftIcon}
-						variant="default"
-						onClick={onClick}
-					>
-						{exp.type === EXPORT_TYPE.DOWNLOAD ? "Download File" : "Send Email"}
-					</Button>
-					{requestingExport && <Loader />}
-				</div>
-			</>
-		);
-	}, [sessionId, exportId, requestingExport]);
+	const [requestingExport, setRequestingExport] = useState(false);
 
 	return (
 		<>
-			{loading && <Skeleton height={8} mt={6} radius="xl" />}
-			{!loading && element}
+			<ExportLabelComponent { ...props } />
+			{ exp && <div style={{
+				display: "flex",
+				justifyContent: "space-between",
+			}}>
+				<Button
+					style={{
+						width: "70%"
+					}}
+					fullWidth={true}
+					leftIcon={exp.definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
+					variant="default"
+					onClick={onClick}
+				>
+					{exp.definition.type === EXPORT_TYPE.DOWNLOAD ? "Download File" : "Send Email"}
+				</Button>
+				{requestingExport && <Loader />}
+			</div> }
 		</>
 	);
 }

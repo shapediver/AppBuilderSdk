@@ -72,7 +72,8 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 		}, 500);
 	};
 
-	// TODO SS-7076 no need for an effect here, let's refactor this without effect
+	// TODO SS-7076 no need for an effect here, let's refactor this without effect - deprecated
+	// TODO SS-7076 Reactive value required for inputs and can't be placed at the root scope
 	useEffect(() => {
 		setValue(+parameter.definition.defval);
 		setTextValue(parameter.definition.defval);
@@ -87,7 +88,6 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 		}
 	}, [parameter]);
 
-	// return (<ParameterComponentBase loading={loading} element={element} />);
 	return <>
 		<ParameterLabelComponent { ...props } />
 		{parameter && <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>

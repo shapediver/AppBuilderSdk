@@ -1,9 +1,16 @@
 import { ISessionApi, IViewportApi, SessionCreationDefinition } from "@shapediver/viewer";
+import {
+	ViewportCreationDefinition
+} from "@shapediver/viewer.main.creation-control-center/src/interfaces/ICreationControlCenter";
 
 /**
  * We redeclare SessionCreationDefinition to have always have an id
  */
 export interface SessionCreateDto extends SessionCreationDefinition {
+	id: string,
+}
+
+export interface ViewportCreateDto extends ViewportCreationDefinition {
 	id: string,
 }
 
@@ -22,47 +29,62 @@ export interface IShapediverStoreViewer {
 
 	/**
 	 * Viewports currently known by the store.
-	 * 
-	 * TODO SS-7076 refactor this to remove promise
-	 * new signature: 
-	 * viewports: IShapeDiverStoreViewerViewports (Note: rename to "viewports", remove the prefix "active" !)
 	 */
-	activeViewports: {
-		[viewportId: string]: Promise<IViewportApi | void>
-	}
+	viewports: IShapeDiverStoreViewerViewports
 
 	/**
-	 * TODO SS-7076 to be removed when refactoring
-	 * instead implement createViewport, closeViewport
-	 * 
-	 * @param activeViewports 
-	 * @returns 
+	 * Create a viewport and add it to the store.
+	 * @param dto
+	 * @returns
 	 */
-	setActiveViewports: (activeViewports: {
-		[viewportId: string]: Promise<IViewportApi | void>
-	}) => void;
+	createViewport: (
+		dto: ViewportCreateDto,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
 
-	/** 
+	/**
+	 * Close a viewport and remove it from the store.
+	 */
+	closeViewport: (
+		viewportId: string,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
+
+	/**
 	 * Sessions currently known by the store.
 	 */
 	sessions: IShapeDiverStoreViewerSessions
 
 	/**
 	 * Create a session and add it to the store.
-	 * @param dto 
-	 * @returns 
+	 * @param dto
+	 * @returns
 	 */
-	createSession: (dto: SessionCreateDto) => Promise<void>;
-
-	/** 
-	 * Close a session and remove it from the store.
-	 */
-	closeSession: (sessionId: string) => Promise<void>;
+	createSession: (
+		dto: SessionCreateDto,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
 
 	/**
-	 * Synchronize the sessions with the given dtos, create and close sessions as required. 
-	 * @param sessionsDto 
-	 * @returns 
+	 * Close a session and remove it from the store.
+	 */
+	closeSession: (
+		sessionId: string,
+		callbacks?: {
+			onError?: (error: any) => void;
+		}
+	) => Promise<void>;
+
+	/**
+	 * Synchronize the sessions with the given dtos, create and close sessions as required.
+	 * @param sessionsDto
+	 * @returns
 	 */
 	syncSessions: (sessionDtos: SessionCreateDto[]) => Promise<void[]>,
 }

@@ -1,6 +1,5 @@
 import {
 	BUSY_MODE_DISPLAY,
-	createViewport,
 	SESSION_SETTINGS_MODE,
 	SPINNER_POSITIONING,
 	VISIBILITY_MODE
@@ -33,37 +32,23 @@ export interface IUseViewportProps {
 }
 
 export function useViewport({ id, branding, sessionSettingsId, sessionSettingsMode, visibility }: IUseViewportProps) {
+	const { createViewport, closeViewport } = useShapediverStoreViewer();
 	const canvasRef = useRef(null);
-	const setActiveViewports = useShapediverStoreViewer(state => state.setActiveViewports);
-	const activeViewportsRef = useRef(useShapediverStoreViewer(state => state.activeViewports));
 
 	useEffect(() => {
-		// if there is already a viewport with the same unique id registered
-		// we wait until that viewport is closed until we create this viewport anew
-		// the closing of the viewport is done on unmount
-		// this can happen in development mode due to the duplicate calls of React
-		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		const activeViewports = activeViewportsRef.current;
-		const activeViewport = activeViewports[id] || Promise.resolve();
-
-		// we set a new promise with the new viewport
-		activeViewports[id] = activeViewport
-			.then(() => createViewport({
-				canvas: canvasRef.current!,
-				id: id,
-				branding: branding,
-				sessionSettingsId: sessionSettingsId,
-				sessionSettingsMode: sessionSettingsMode,
-				visibility: visibility
-			}));
-		// and then save it in the store
-		setActiveViewports(activeViewports);
+		createViewport({
+			canvas: canvasRef.current!,
+			id: id,
+			branding: branding,
+			sessionSettingsId: sessionSettingsId,
+			sessionSettingsMode: sessionSettingsMode,
+			visibility: visibility
+		});
 
 		return () => {
-			// when the component is closed, we close the viewport and assign that promise
-			activeViewports[id] = activeViewports[id].then(async v => v && await v.close());
+			closeViewport(id);
 		};
-	}, [/*id, branding, sessionSettingsId, sessionSettingsMode, visibility*/]);
+	}, []);
 
 	return {
 		canvasRef
