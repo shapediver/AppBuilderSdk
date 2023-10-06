@@ -5,6 +5,7 @@ import { ISdReactParameter } from "types/shapediver/parameter";
 import { IShapeDiverStoreViewerSessions } from "types/store/shapediverStoreViewer";
 import { ISdReactExport } from "types/shapediver/export";
 import { createSdReactExport } from "shapediver/exports";
+import { useShapediverStoreParameters } from "store/parameterStore";
 
 interface Props {
     sessionId: string,
@@ -20,6 +21,7 @@ export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props):
 
 	const session = sessions[sessionId];
 	const { addSession: addSessionToUi, removeSession: removeSessionFromUi} = useShapediverStoreUI();
+	const parameterStore = useShapediverStoreParameters();
 	
 	useEffect(() => {
 		if (session) {
@@ -30,7 +32,7 @@ export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props):
 					return;
 				parametersParsed[id] = createSdReactParameter(session, id);
 			});
-
+			
 			// session exists, add export to the UI store
 			const exportsParsed: { [id: string]: ISdReactExport } = {};
 			Object.keys(session.exports || {}).forEach(id => {
@@ -40,9 +42,13 @@ export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props):
 			});
 
 			addSessionToUi(sessionId, parametersParsed, exportsParsed);
+
+			parameterStore.addSession(session);
 		} else {
 			// session does not exist, remove from the UI store
 			removeSessionFromUi(sessionId);
+
+			parameterStore.removeSession(sessionId);
 		}
 
 		return () => removeSessionFromUi(sessionId);

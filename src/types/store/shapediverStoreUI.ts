@@ -2,6 +2,8 @@ import { ISdReactParamOrExport } from "types/shapediver/common";
 
 /**
  * An object of parameters keyed by parameter id.
+ * TODO SS-7087 refactor this to be an array of parameter ids
+ * IParameters = Array<string>
  */
 export type IParameters = { [parameterId: string]: ISdReactParamOrExport };
 
@@ -12,6 +14,8 @@ export type IParametersPerSession = { [sessionId: string]: IParameters };
 
 /**
  * An object of exports keyed by export id.
+ * TODO SS-7087 refactor this to be an array of export ids
+ * IExports = Array<string>
  */
 export type IExports = { [exportId: string]: ISdReactParamOrExport };
 

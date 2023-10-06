@@ -13,6 +13,8 @@ import { ISdReactParameter } from "types/shapediver/parameter";
 
 interface Props {
     parameters: IParameters
+	// TODO SS-7087 extend this by
+	// exports: IExports
 }
 
 /**
@@ -38,6 +40,8 @@ export default function ParameterUiComponent({ parameters }: Props): JSX.Element
 		[PARAMETER_TYPE.COLOR]: ParameterColorComponent,
 		[PARAMETER_TYPE.FILE]: ParameterFileInputComponent,
 	};
+
+	// TODO SS-7087 use "store of parameter stores" to get parameters and exports by id
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
