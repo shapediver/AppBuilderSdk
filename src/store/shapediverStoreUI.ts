@@ -12,18 +12,22 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>()(devtools((set, 
 
 	addSession: (sessionId, parametersSession, exportsSession) => {
 		const {parameters, exports } = get();
-		parameters[sessionId] = parametersSession;
-		exports[sessionId] = exportsSession;
 
 		set(() => ({
-			parameters,
-			exports
+			parameters: {
+				...parameters,
+				...{[sessionId]: parametersSession}
+			},
+			exports: {
+				...exports,
+				...{[sessionId]: exportsSession}
+			}
 		}), false, "addSession");
 	},
 
 	removeSession: (sessionId: string) => {
 		const parametersPerSession = get().parameters;
-		const exportsPerSession = get().parameters;
+		const exportsPerSession = get().exports;
 
 		// create a new object, omitting the session which was closed
 		const parameters : {[id: string]: IParameters} = {};
