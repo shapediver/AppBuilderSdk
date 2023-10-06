@@ -1,10 +1,6 @@
-import { Skeleton, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import React, { JSX } from "react";
-import { ISdReactExport } from "../../../types/shapediver/export";
-
-interface Props {
-	exp: ISdReactExport
-}
+import { PropsExport } from "types/components/shapediver/propsExport";
 
 /**
  * Functional component that creates a label for an export.
@@ -12,11 +8,8 @@ interface Props {
  *
  * @returns
  */
-export default function ExportLabelComponent({ exp }: Props): JSX.Element {
-	return (
-		<>
-			{!exp && <Skeleton height={8} mt={6} radius="xl" />}
-			{exp && <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{exp.definition.displayname || exp.definition.name}</Text>}
-		</>
-	);
+export default function ExportLabelComponent(props: PropsExport): JSX.Element {
+	const { definition } = props;
+
+	return <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{definition.displayname || definition.name}</Text>;
 }

@@ -3,12 +3,8 @@ import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
 import React, { JSX, useState } from "react";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
-import { ISdReactExport } from "types/shapediver/export";
 import { fetchFileWithToken } from "utils/file";
-
-interface Props {
-	exp: ISdReactExport
-}
+import { PropsExport } from "types/components/shapediver/propsExport";
 
 /**
  * Functional component that creates a button that triggers an export.
@@ -16,16 +12,15 @@ interface Props {
  *
  * @returns
  */
-export default function ExportButtonComponent(props: Props): JSX.Element {
-	const { exp } = props;
+export default function ExportButtonComponent(props: PropsExport): JSX.Element {
+	const { definition, actions } = props;
+	
 	const exportRequest = async () => {
-		if (!exp) return;
-
 		// request the export
-		const response = await exp.request();
+		const response = await actions.request();
 
 		// if the export is a download export, download it
-		if (exp.definition.type === EXPORT_TYPE.DOWNLOAD) {
+		if (definition.type === EXPORT_TYPE.DOWNLOAD) {
 			if (
 				response.content &&
 				response.content[0] &&
@@ -38,7 +33,6 @@ export default function ExportButtonComponent(props: Props): JSX.Element {
 
 	// callback for when the export button has been clicked
 	const onClick = async () => {
-		if (!exp) return;
 		// set the requestingExport true to display a loading icon
 		setRequestingExport(true);
 
@@ -53,7 +47,7 @@ export default function ExportButtonComponent(props: Props): JSX.Element {
 	return (
 		<>
 			<ExportLabelComponent { ...props } />
-			{ exp && <div style={{
+			{ definition && <div style={{
 				display: "flex",
 				justifyContent: "space-between",
 			}}>
@@ -62,11 +56,11 @@ export default function ExportButtonComponent(props: Props): JSX.Element {
 						width: "70%"
 					}}
 					fullWidth={true}
-					leftIcon={exp.definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
+					leftIcon={definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
 					variant="default"
 					onClick={onClick}
 				>
-					{exp.definition.type === EXPORT_TYPE.DOWNLOAD ? "Download File" : "Send Email"}
+					{definition.type === EXPORT_TYPE.DOWNLOAD ? "Download File" : "Send Email"}
 				</Button>
 				{requestingExport && <Loader />}
 			</div> }

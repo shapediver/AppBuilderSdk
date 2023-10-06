@@ -20,7 +20,7 @@ export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props):
 
 	const session = sessions[sessionId];
 	const { addSession: addSessionToUi, removeSession: removeSessionFromUi} = useShapediverStoreUI();
-
+	
 	useEffect(() => {
 		if (session) {
 			// session exists, add parameter to the UI store

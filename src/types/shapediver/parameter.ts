@@ -1,4 +1,5 @@
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
+import { ISdReactParamOrExport } from "./common";
 
 /**
  * The static definition of a parameter.
@@ -32,19 +33,9 @@ export interface ISdReactParameterState<T> {
 }
 
 /**
- * A parameter including its definition (static properties) and its state.
+ * Actions which can be taken on a parameter.
  */
-export interface ISdReactParameter<T>{
-
-    /** The static definition of a parameter. */
-    readonly definition: ISdReactParameterDefinition;
-
-    /**
-     * The dynamic properties (aka the "state") of a parameter.
-     * Reactive components can react to this state, but not update it.
-    */
-    readonly state: ISdReactParameterState<T>;
-
+export interface ISdReactParameterActions<T> {
     /**
      * Set the ui value of the parameter.
      * The provided value must be valid, otherwise this function will return false.
@@ -82,4 +73,25 @@ export interface ISdReactParameter<T>{
      * Returns the current value as a string
      */
     stringify(): string;
+}
+
+/**
+ * A parameter including its definition (static properties) and its state.
+ */
+export interface ISdReactParameter<T> extends ISdReactParamOrExport {
+
+    /** The static definition of the parameter. */
+    readonly definition: ISdReactParameterDefinition;
+
+    /**
+     * The dynamic properties (aka the "state") of the parameter.
+     * Reactive components can react to this state, but not update it.
+    */
+    readonly state: ISdReactParameterState<T>;
+
+    /**
+     * Actions which can be taken on the parameter.
+     */
+    readonly actions: ISdReactParameterActions<T>;
+    
 }

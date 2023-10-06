@@ -1,7 +1,7 @@
 import { Select } from "@mantine/core";
 import React, { JSX } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/uiParameter";
+import { PropsParameters } from "types/components/shapediver/propsParameter";
 
 /**
  * Functional component that creates a dropdown select component for a string list parameter.
@@ -10,23 +10,23 @@ import { PropsParameters } from "types/components/shapediver/uiParameter";
  * @returns
  */
 export default function ParameterSelectComponent(props: PropsParameters<any>): JSX.Element {
-	const { parameter } = props;
+	const { definition, actions } = props;
 
 	// callback for when the value was changed
 	const handleChange = (value: string) => {
-		if (parameter.setUiValue(parameter.definition.choices!.indexOf(value) + "")) {
-			parameter.execute();
+		if (actions.setUiValue(definition.choices!.indexOf(value) + "")) {
+			actions.execute();
 		}
 	};
 
 	return <>
 		<ParameterLabelComponent { ...props } />
-		{ parameter && <Select
+		{ definition && <Select
 			placeholder="Pick one"
 			dropdownPosition="bottom"
-			defaultValue={parameter.definition.choices![+parameter.definition.defval]}
+			defaultValue={definition.choices![+definition.defval]}
 			onChange={handleChange}
-			data={parameter.definition.choices!}
+			data={definition.choices!}
 		/>}
 	</>;
 }

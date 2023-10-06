@@ -22,6 +22,10 @@ export interface IShapeDiverStoreViewerViewports {
 	[viewportId: string]: IViewportApi;
 }
 
+export interface IShapeDiverStoreViewerCallbacks {
+	onError?: (error: any) => void;
+}
+
 /**
  * Interface for the store of viewer-related data.
  */
@@ -39,9 +43,7 @@ export interface IShapediverStoreViewer {
 	 */
 	createViewport: (
 		dto: ViewportCreateDto,
-		callbacks?: {
-			onError?: (error: any) => void;
-		}
+		callbacks?: IShapeDiverStoreViewerCallbacks
 	) => Promise<void>;
 
 	/**
@@ -49,9 +51,7 @@ export interface IShapediverStoreViewer {
 	 */
 	closeViewport: (
 		viewportId: string,
-		callbacks?: {
-			onError?: (error: any) => void;
-		}
+		callbacks?: IShapeDiverStoreViewerCallbacks
 	) => Promise<void>;
 
 	/**
@@ -66,9 +66,7 @@ export interface IShapediverStoreViewer {
 	 */
 	createSession: (
 		dto: SessionCreateDto,
-		callbacks?: {
-			onError?: (error: any) => void;
-		}
+		callbacks?: IShapeDiverStoreViewerCallbacks
 	) => Promise<void>;
 
 	/**
@@ -76,9 +74,7 @@ export interface IShapediverStoreViewer {
 	 */
 	closeSession: (
 		sessionId: string,
-		callbacks?: {
-			onError?: (error: any) => void;
-		}
+		callbacks?: IShapeDiverStoreViewerCallbacks
 	) => Promise<void>;
 
 	/**

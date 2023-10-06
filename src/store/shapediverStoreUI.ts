@@ -1,4 +1,4 @@
-import { IParameters, IShapediverStoreUI } from "types/store/shapediverStoreUI";
+import { IExports, IParameters, IShapediverStoreUI } from "types/store/shapediverStoreUI";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "./storeSettings";
@@ -12,17 +12,22 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>()(devtools((set, 
 
 	addSession: (sessionId, parametersSession, exportsSession) => {
 		const {parameters, exports } = get();
-		parameters[sessionId] = parametersSession;
-		exports[sessionId] = exportsSession;
 
 		set(() => ({
-			parameters,
-			exports
+			parameters: {
+				...parameters,
+				...{[sessionId]: parametersSession}
+			},
+			exports: {
+				...exports,
+				...{[sessionId]: exportsSession}
+			}
 		}), false, "addSession");
 	},
 
 	removeSession: (sessionId: string) => {
 		const parametersPerSession = get().parameters;
+		const exportsPerSession = get().exports;
 
 		// create a new object, omitting the session which was closed
 		const parameters : {[id: string]: IParameters} = {};
@@ -31,9 +36,16 @@ export const useShapediverStoreUI = create<IShapediverStoreUI>()(devtools((set, 
 				parameters[id] = parametersPerSession[id];
 		});
 
+		const exports : {[id: string]: IExports} = {};
+		Object.keys(exportsPerSession).forEach(id => {
+			if (id !== sessionId)
+				exports[id] = exportsPerSession[id];
+		});
+
 		set((state) => ({
 			...state,
 			parameters,
+			exports,
 		}), false, "removeSession");
 	},
 

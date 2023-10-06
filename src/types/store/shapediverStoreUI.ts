@@ -1,10 +1,9 @@
-import { ISdReactParameter } from "types/shapediver/parameter";
-import { ISdReactExport } from "types/shapediver/export";
+import { ISdReactParamOrExport } from "types/shapediver/common";
 
 /**
  * An object of parameters keyed by parameter id.
  */
-export type IParameters = { [parameterId: string]: ISdReactParameter<any> };
+export type IParameters = { [parameterId: string]: ISdReactParamOrExport };
 
 /**
  * Objects of parameters grouped by session id.
@@ -14,7 +13,7 @@ export type IParametersPerSession = { [sessionId: string]: IParameters };
 /**
  * An object of exports keyed by export id.
  */
-export type IExports = { [exportId: string]: ISdReactExport };
+export type IExports = { [exportId: string]: ISdReactParamOrExport };
 
 /**
  * An object of exports keyed by export id.
