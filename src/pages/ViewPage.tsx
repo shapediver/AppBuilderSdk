@@ -4,11 +4,12 @@ import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
 import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
 import ViewerUiBridgeComponent from "components/shapediver/ViewerUiBridgeComponent";
 import ParameterGroupsUiComponent from "components/shapediver/ui/ParameterGroupsUiComponent";
 import { useShapediverStoreParameters } from "store/parameterStore";
+import { useSession } from "hooks/useSession";
 
 /**
  * Function that creates the view page.
@@ -23,8 +24,7 @@ import { useShapediverStoreParameters } from "store/parameterStore";
 export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	//const [ loading, setLoading ] = useState(false);
-	const { createSession, closeSession, sessions } = useShapediverStoreViewer();
+	const { sessions } = useShapediverStoreViewer();
 	
 	const sessionId = "session_1";
 	const sessionCreateDto = {
@@ -34,6 +34,8 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 
+	useSession(sessionCreateDto);
+
 	const parameterProps = useShapediverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
 		return {sessionId, parameterId: id};
 	}));
@@ -41,23 +43,6 @@ export default function ViewPage() {
 		return {sessionId, exportId: id};
 	}));
 	
-	useEffect(() => {
-		//setLoading(true);
-		// if there is already a session with the same unique id registered
-		// we wait until that session is closed until we create this session anew
-		// the closing of the session is done on unmount
-		// this can happen in development mode due to the duplicate calls of react
-		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		createSession(sessionCreateDto).finally(() => { // TODO async issue, a session created faster than the previous one is closed
-			//setLoading(false);
-		});
-
-		return () => {
-			// when the ViewPage gets destroyed, we close the session
-			closeSession(sessionCreateDto.id);
-		};
-	}, []);
-
 	return (
 		<>
 			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}/>

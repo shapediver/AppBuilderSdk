@@ -44,7 +44,7 @@ export interface IShapediverStoreViewer {
 	createViewport: (
 		dto: ViewportCreateDto,
 		callbacks?: IShapeDiverStoreViewerCallbacks
-	) => Promise<void>;
+	) => Promise<IViewportApi | undefined>;
 
 	/**
 	 * Close a viewport and remove it from the store.
@@ -67,7 +67,7 @@ export interface IShapediverStoreViewer {
 	createSession: (
 		dto: SessionCreateDto,
 		callbacks?: IShapeDiverStoreViewerCallbacks
-	) => Promise<void>;
+	) => Promise<ISessionApi | undefined>;
 
 	/**
 	 * Close a session and remove it from the store.
