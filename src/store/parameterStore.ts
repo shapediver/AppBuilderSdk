@@ -170,12 +170,20 @@ export const useShapediverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "removeSession");
 	},
 
+	useParameters: (sessionId: string) => {
+		return get().parameterStores[sessionId] || {};
+	},
+
 	useParameter: (sessionId: string, paramId: string) => {
-		return get().parameterStores[sessionId][paramId];
+		return get().useParameters(sessionId)[paramId] || {};
+	},
+
+	useExports: (sessionId: string) => {
+		return get().exportStores[sessionId] || {};
 	},
 
 	useExport: (sessionId: string, exportId: string) => {
-		return get().exportStores[sessionId][exportId];
+		return get().useExports(sessionId)[exportId] || {};
 	}
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Parameters" }));

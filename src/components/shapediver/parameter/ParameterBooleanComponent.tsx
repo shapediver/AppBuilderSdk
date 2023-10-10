@@ -1,7 +1,9 @@
 import { Switch } from "@mantine/core";
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { ISdReactParameter } from "types/shapediver/parameter";
+import { useShapediverStoreParameters } from "store/parameterStore";
 
 /**
  * Functional component that creates a button for a boolean parameter.
@@ -9,9 +11,12 @@ import { PropsParameters } from "types/components/shapediver/propsParameter";
  *
  * @returns
  */
-export default function ParameterBooleanComponent(props: PropsParameters<boolean>): JSX.Element {
-	const { definition, state, actions } = props;
-	const [defaultValue, setDefaultValue] = useState(false);
+export default function ParameterBooleanComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId } = props;
+	const parametersStore = useShapediverStoreParameters();
+	const { definition, actions } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<boolean>);
+	
+	const [defaultValue] = useState(() => definition.defval.toLowerCase() === "true");
 
 	const handleChange = (value: boolean) => {
 		// set the value and customize the session
@@ -19,10 +24,6 @@ export default function ParameterBooleanComponent(props: PropsParameters<boolean
 			actions.execute();
 		}
 	};
-
-	useEffect(() => {
-		setDefaultValue(state.uiValue === true || state.uiValue === "true");
-	}, [state]);
 
 	return <>
 		<ParameterLabelComponent { ...props} />

@@ -1,6 +1,8 @@
 import { Text } from "@mantine/core";
 import React, { JSX } from "react";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { useShapediverStoreParameters } from "store/parameterStore";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { ISdReactParameter } from "types/shapediver/parameter";
 
 /**
  * Functional component that creates a label for a parameter or .
@@ -8,8 +10,10 @@ import { PropsParameters } from "types/components/shapediver/propsParameter";
  *
  * @returns
  */
-export default function ParameterLabelComponent(props: PropsParameters<any>): JSX.Element {
-	const { definition } = props;
-
+export default function ParameterLabelComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId } = props;
+	const parametersStore = useShapediverStoreParameters();
+	const { definition } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<any>);
+	
 	return <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{definition.displayname || definition.name}</Text>;
 }

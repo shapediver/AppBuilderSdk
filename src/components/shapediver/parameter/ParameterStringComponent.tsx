@@ -1,7 +1,9 @@
 import { TextInput } from "@mantine/core";
 import React, { JSX, useRef } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { useShapediverStoreParameters } from "store/parameterStore";
+import { ISdReactParameter } from "types/shapediver/parameter";
 
 /**
  * Functional component that creates a string input component for a string parameter.
@@ -9,15 +11,12 @@ import { PropsParameters } from "types/components/shapediver/propsParameter";
  *
  * @returns
  */
-export default function ParameterStringComponent(props: PropsParameters<string>): JSX.Element {
-	const { definition, state, actions } = props;
+export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId } = props;
+	const parametersStore = useShapediverStoreParameters();
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<string>);
+	
 	const textInputRef = useRef<HTMLInputElement>(null);
-
-	// SS-7087 example of how to use the "store of parameter stores"
-	// const parametersStore = useShapediverStoreParameters();
-	// const paramState = parametersStore.useParameter("session_1", definition.id)(state => (state as ISdReactParameter<string>).state);
-	// const paramActions = parametersStore.useParameter("session_1", definition.id)(state => (state as ISdReactParameter<string>).actions);
-	// SS-7087 The component props are the same parametersStore.parameter definitions
 
 	// function to apply the value to the parameter and customize the scene
 	const handleChange = (value: string) => {

@@ -4,12 +4,11 @@ import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
 import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
-import ParameterUiComponent from "components/shapediver/ParameterUiComponent";
 import React, { useEffect, useState } from "react";
 import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
 import ViewerUiBridgeComponent from "components/shapediver/ViewerUiBridgeComponent";
 import ParameterGroupsUiComponent from "components/shapediver/ui/ParameterGroupsUiComponent";
-import ExportsUiComponent from "components/shapediver/ui/ExportsUiComponent";
+import { useShapediverStoreParameters } from "store/parameterStore";
 
 /**
  * Function that creates the view page.
@@ -24,25 +23,33 @@ import ExportsUiComponent from "components/shapediver/ui/ExportsUiComponent";
 export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	const [loading, setLoading] = useState(false);
+	//const [ loading, setLoading ] = useState(false);
 	const { createSession, closeSession, sessions } = useShapediverStoreViewer();
-
+	
+	const sessionId = "session_1";
 	const sessionCreateDto = {
-		id: "session_1",
+		id: sessionId,
 		ticket: "340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
 		excludeViewports: ["viewport_2"],
 	};
 
+	const parameterProps = useShapediverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
+		return {sessionId, parameterId: id};
+	}));
+	const exportProps = useShapediverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
+		return {sessionId, exportId: id};
+	}));
+	
 	useEffect(() => {
-		setLoading(true);
+		//setLoading(true);
 		// if there is already a session with the same unique id registered
 		// we wait until that session is closed until we create this session anew
 		// the closing of the session is done on unmount
 		// this can happen in development mode due to the duplicate calls of react
 		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
 		createSession(sessionCreateDto).finally(() => { // TODO async issue, a session created faster than the previous one is closed
-			setLoading(false);
+			//setLoading(false);
 		});
 
 		return () => {
@@ -88,21 +95,14 @@ export default function ViewPage() {
 									<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 									<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 								</Tabs.List>
-
-
-								{ !loading && <ParameterUiComponent
-									sessionId={sessionCreateDto.id}
-									parametersRenderComponent={({ parameters }) =>
-										<Tabs.Panel value="parameters" pt="xs">
-											{ !loading && <ParameterGroupsUiComponent parameters={parameters} /> }
-										</Tabs.Panel>
-									}
-									exportsRenderComponent={({ exports }) =>
-										<Tabs.Panel value="exports" pt="xs">
-											{ !loading && <ExportsUiComponent exports={exports} /> }
-										</Tabs.Panel>
-									}
-								/> }
+								
+								<Tabs.Panel value="parameters" pt="xs">
+									<ParameterGroupsUiComponent parameters={parameterProps} />
+								</Tabs.Panel>
+							
+								<Tabs.Panel value="exports" pt="xs">
+									<ParameterGroupsUiComponent exports={exportProps} />
+								</Tabs.Panel>
 							</Tabs>
 
 						</Aside>

@@ -1,6 +1,5 @@
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
 import { ISdReactParamOrExport } from "types/shapediver/common";
-import { ShapeDiverCommonsGroup } from "@shapediver/api.geometry-api-dto-v2/dist/commons/SdCommonsGroup";
 
 /**
  * The static definition of a parameter.
@@ -94,8 +93,4 @@ export interface ISdReactParameter<T> extends ISdReactParamOrExport {
      * Actions which can be taken on the parameter.
      */
     readonly actions: ISdReactParameterActions<T>;
-}
-
-export interface ISdReactParameterGroup extends  ShapeDiverCommonsGroup {
-    elements: ISdReactParameter<any>[],
 }

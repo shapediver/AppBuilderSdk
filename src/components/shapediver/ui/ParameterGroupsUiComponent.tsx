@@ -1,8 +1,10 @@
 import React, { JSX } from "react";
 import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
-import { ISdReactParameter } from "types/shapediver/parameter";
-import { getParameterComponent } from "types/components/shapediver/parameter";
-import { IParameterStore } from "../../../types/store/shapediverStoreParameters";
+import { getExportComponent, getParameterComponent } from "types/components/shapediver/parameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { PropsExport } from "types/components/shapediver/propsExport";
+import { useShapediverStoreParameters } from "store/parameterStore";
+import { ISdReactParamOrExportDefinition } from "types/shapediver/common";
 
 /**
  * Functional component that creates a wrapper for parameters group.
@@ -11,13 +13,33 @@ import { IParameterStore } from "../../../types/store/shapediverStoreParameters"
  */
 
 interface Props {
-	parameters: IParameterStore[],
+	parameters?: PropsParameter[],
+	exports?: PropsExport[]
+}
+
+interface ParamOrExportDefinition {
+	parameter?: PropsParameter,
+	export?: PropsExport,
+	definition: ISdReactParamOrExportDefinition,
 }
 
 export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
-	const sortedParams = props.parameters.map((ps) => ps((state) => state));
-
+	
+	const {parameters, exports} = props;
+	const {parameterStores, exportStores} = useShapediverStoreParameters();
+	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
+	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
+		const definition = parameterStores[p.sessionId][p.parameterId].getState().definition;
+		
+		return { parameter: p, definition };
+	}));
+	sortedParamsAndExports = sortedParamsAndExports.concat((exports || []).map(e => {
+		const definition = exportStores[e.sessionId][e.exportId].getState().definition;
+		
+		return { export: e, definition };
+	}));
+	
 	// create a data structure to store the elements within groups
 	const elementGroups: {
 		[key: string]: {
@@ -28,16 +50,16 @@ export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 
 	// sort the parameters
 	// const sortedParams = Object.values(parameters).map((ps) => ps((state) => state));
-	sortedParams.sort((a, b) => (a.definition.order || Infinity) - (b.definition.order || Infinity));
+	sortedParamsAndExports.sort((a, b) => (a.definition.order || Infinity) - (b.definition.order || Infinity));
 
 	// as long as there are no parameters, show a loader
-	if (sortedParams.length === 0) {
+	if (sortedParamsAndExports.length === 0) {
 		return(<Loader style={{ width: "100%" }} mt="xl" size="xl" variant="dots" />);
 	}
 
 	// loop through the parameters and store the created elements in the elementGroups
-	for (let i = 0; i < sortedParams.length; i++) {
-		const param = sortedParams[i] as ISdReactParameter<any>;
+	for (let i = 0; i < sortedParamsAndExports.length; i++) {
+		const param = sortedParamsAndExports[i];
 
 		// if a parameter is hidden, skip it
 		if (param.definition.hidden) continue;
@@ -51,10 +73,18 @@ export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 			};
 		}
 
-		const ParameterComponent = getParameterComponent(param);
+		if (param.parameter) {
+			const ParameterComponent = getParameterComponent(param.definition);
 
-		// Get the element for the parameter and add it to the group
-		elementGroups[group.id].elements.push(<div key={param.definition.id}><ParameterComponent definition={param.definition} state={param.state} actions={param.actions} /></div>);
+			// Get the element for the parameter and add it to the group
+			elementGroups[group.id].elements.push(<div key={param.definition.id}><ParameterComponent sessionId={param.parameter.sessionId} parameterId={param.parameter.parameterId} /></div>);
+		}
+		else if (param.export) {
+			const ExportComponent = getExportComponent(param.definition);
+
+			// Get the element for the parameter and add it to the group
+			elementGroups[group.id].elements.push(<div key={param.definition.id}><ExportComponent sessionId={param.export.sessionId} exportId={param.export.exportId} /></div>);
+		}
 	}
 
 	const elements: JSX.Element[] = [];

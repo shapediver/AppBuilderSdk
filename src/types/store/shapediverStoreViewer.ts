@@ -4,7 +4,7 @@ import {
 } from "@shapediver/viewer.main.creation-control-center/src/interfaces/ICreationControlCenter";
 
 /**
- * We redeclare SessionCreationDefinition to have always have an id
+ * We redeclare SessionCreationDefinition to always have an id
  */
 export interface SessionCreateDto extends SessionCreationDefinition {
 	id: string,
