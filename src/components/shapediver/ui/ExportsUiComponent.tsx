@@ -1,8 +1,8 @@
 import React, { JSX } from "react";
 import { Divider, Loader, MediaQuery, ScrollArea } from "@mantine/core";
-import { ISdReactParamOrExport } from "types/shapediver/common";
 import { ISdReactExport } from "types/shapediver/export";
 import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
+import { IExportStore } from "types/store/shapediverStoreParameters";
 
 /**
  * Functional component that creates a wrapper for parameters group.
@@ -11,11 +11,11 @@ import ExportButtonComponent from "components/shapediver/exports/ExportButtonCom
  */
 
 interface Props {
-	exports: ISdReactParamOrExport[],
+	exports: IExportStore[],
 }
 
 export default function ExportsUiComponent(props: Props): JSX.Element {
-	const { exports } = props;
+	const exports = props.exports.map((ps) => ps((state) => state));
 
 	const elements: JSX.Element[] = [];
 

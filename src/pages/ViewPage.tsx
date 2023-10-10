@@ -41,7 +41,7 @@ export default function ViewPage() {
 		// the closing of the session is done on unmount
 		// this can happen in development mode due to the duplicate calls of react
 		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		createSession(sessionCreateDto).finally(() => {
+		createSession(sessionCreateDto).finally(() => { // TODO async issue, a session created faster than the previous one is closed
 			setLoading(false);
 		});
 
@@ -53,7 +53,7 @@ export default function ViewPage() {
 
 	return (
 		<>
-			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}></ViewerUiBridgeComponent>
+			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}/>
 
 			<AppShell
 				padding="md"

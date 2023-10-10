@@ -1,11 +1,11 @@
 import React, { JSX } from "react";
 import { useShapediverStoreParameters } from "store/parameterStore";
-import { ISdReactParamOrExport } from "types/shapediver/common";
+import { IExportStore, IParameterStore } from "types/store/shapediverStoreParameters";
 
 interface Props {
 	sessionId: string,
-	parametersRenderComponent: (props: { parameters: ISdReactParamOrExport[] }) => JSX.Element,
-	exportsRenderComponent: (props: { exports: ISdReactParamOrExport[] }) => JSX.Element,
+	parametersRenderComponent: (props: { parameters: IParameterStore[] }) => JSX.Element,
+	exportsRenderComponent: (props: { exports: IExportStore[] }) => JSX.Element,
 }
 
 /**
@@ -19,11 +19,11 @@ interface Props {
  */
 export default function ParameterUiComponent({ sessionId, parametersRenderComponent, exportsRenderComponent }: Props): JSX.Element {
 	const parameters = useShapediverStoreParameters((state) => {
-		return state.parameterStores[sessionId] ? Object.values(state.parameterStores[sessionId]).map((ps) => ps((state) => state)) : [];
+		return state.parameterStores[sessionId] ? Object.values(state.parameterStores[sessionId]) : [];
 	});
 
 	const exports = useShapediverStoreParameters(state => {
-		return state.exportStores[sessionId] ? Object.values(state.exportStores[sessionId]).map((es) => es((state) => state)) : [];
+		return state.exportStores[sessionId] ? Object.values(state.exportStores[sessionId]) : [];
 	});
 
 	return(

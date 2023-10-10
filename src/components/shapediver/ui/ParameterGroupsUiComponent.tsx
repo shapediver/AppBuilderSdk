@@ -1,8 +1,8 @@
 import React, { JSX } from "react";
 import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
-import { ISdReactParamOrExport } from "types/shapediver/common";
 import { ISdReactParameter } from "types/shapediver/parameter";
 import { getParameterComponent } from "types/components/shapediver/parameter";
+import { IParameterStore } from "../../../types/store/shapediverStoreParameters";
 
 /**
  * Functional component that creates a wrapper for parameters group.
@@ -11,12 +11,12 @@ import { getParameterComponent } from "types/components/shapediver/parameter";
  */
 
 interface Props {
-	parameters: ISdReactParamOrExport[],
+	parameters: IParameterStore[],
 }
 
 export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
-	const sortedParams = [ ...props.parameters ];
+	const sortedParams = props.parameters.map((ps) => ps((state) => state));
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
