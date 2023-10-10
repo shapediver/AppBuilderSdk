@@ -29,9 +29,9 @@ const round = (parameter: ISdReactParameterDefinition, n: number) => {
  * @returns
  */
 export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId } = props;
+	const { sessionId, parameterId, disableIfDirty } = props;
 	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<number>);
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<number>);
 	
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const [value, setValue] = useState(0);
@@ -107,12 +107,14 @@ export default function ParameterSliderComponent(props: PropsParameter): JSX.Ele
 					setTextValue(round(definition, v) + "");
 				}}
 				onChangeEnd={handleChange}
+				disabled={disableIfDirty && state.dirty}
 			/> }
 			{ definition && <TextInput
 				ref={textInputRef}
 				style={{ width: "30%" }}
 				value={textValue}
 				onChange={handleChangeDelay}
+				disabled={disableIfDirty && state.dirty}
 			/> }
 		</div>}
 	</>;

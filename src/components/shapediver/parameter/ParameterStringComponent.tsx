@@ -12,7 +12,7 @@ import { ISdReactParameter } from "types/shapediver/parameter";
  * @returns
  */
 export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId } = props;
+	const { sessionId, parameterId, disableIfDirty } = props;
 	const parametersStore = useShapediverStoreParameters();
 	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<string>);
 	
@@ -47,6 +47,7 @@ export default function ParameterStringComponent(props: PropsParameter): JSX.Ele
 			}}
 			defaultValue={state.uiValue}
 			onChange={handleChangeDelay}
+			disabled={disableIfDirty && state.dirty}
 		/>}
 	</>;
 }

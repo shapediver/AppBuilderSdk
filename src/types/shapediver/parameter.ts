@@ -26,10 +26,10 @@ export interface ISdReactParameterState<T> {
     readonly execValue: T | string;
 
     /**
-     * Whether the parameter shall appear locked in the user interface.
+     * True if the uiValue is dirty (does not match the execValue). 
      * This might be the case during background executions.
      */
-    readonly locked: boolean;
+    readonly dirty: boolean;
 }
 
 /**

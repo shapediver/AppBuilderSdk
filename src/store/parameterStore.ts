@@ -21,7 +21,7 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 	const state: ISdReactParameterState<T> = {
 		uiValue: definition.value,
 		execValue: definition.value,
-		locked: false
+		dirty: false
 	};
 
 	return create<ISdReactParameter<T>>((set, get) => ({
@@ -39,7 +39,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						uiValue
+						uiValue,
+						dirty: uiValue !== _state.state.execValue
 					}
 				}));
 
@@ -52,7 +53,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						execValue: state.uiValue
+						execValue: state.uiValue,
+						dirty: false
 					}
 				}));
 
@@ -67,7 +69,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						uiValue: definition.defval
+						uiValue: definition.defval,
+						dirty: definition.defval !== _state.state.execValue
 					}
 				}));
 			},
@@ -77,7 +80,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						uiValue: state.execValue
+						uiValue: state.execValue,
+						dirty: false
 					}
 				}));
 			},

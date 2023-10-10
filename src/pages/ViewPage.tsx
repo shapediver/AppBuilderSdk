@@ -97,11 +97,11 @@ export default function ViewPage() {
 								</Tabs.List>
 								
 								<Tabs.Panel value="parameters" pt="xs">
-									<ParameterGroupsUiComponent parameters={parameterProps} />
+									<ParameterGroupsUiComponent parameters={parameterProps} disableIfDirty={true} />
 								</Tabs.Panel>
 							
 								<Tabs.Panel value="exports" pt="xs">
-									<ParameterGroupsUiComponent exports={exportProps} />
+									<ParameterGroupsUiComponent exports={exportProps} defaultGroupName="Exports" />
 								</Tabs.Panel>
 							</Tabs>
 

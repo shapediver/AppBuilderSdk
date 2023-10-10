@@ -12,9 +12,9 @@ import { useShapediverStoreParameters } from "store/parameterStore";
  * @returns
  */
 export default function ParameterBooleanComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId } = props;
+	const { sessionId, parameterId, disableIfDirty } = props;
 	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<boolean>);
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<boolean>);
 	
 	const [defaultValue] = useState(() => definition.defval.toLowerCase() === "true");
 
@@ -34,6 +34,7 @@ export default function ParameterBooleanComponent(props: PropsParameter): JSX.El
 			size="md"
 			defaultChecked={defaultValue}
 			onChange={(event) => handleChange(event.currentTarget.checked)}
+			disabled={disableIfDirty && state.dirty}
 		/>}
 	</>;
 }

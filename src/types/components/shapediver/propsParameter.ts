@@ -10,5 +10,9 @@ export interface PropsParameter extends PropsParameterOrExport {
      */
     readonly parameterId: string;
 
+    /**
+     * Disable the parameter component if it's in dirty state.
+     */
+    readonly disableIfDirty?: boolean;
 }
 

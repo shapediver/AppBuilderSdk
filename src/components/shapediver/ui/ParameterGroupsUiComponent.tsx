@@ -14,7 +14,9 @@ import { ISdReactParamOrExportDefinition } from "types/shapediver/common";
 
 interface Props {
 	parameters?: PropsParameter[],
-	exports?: PropsExport[]
+	exports?: PropsExport[],
+	defaultGroupName?: string,
+	disableIfDirty?: boolean,
 }
 
 interface ParamOrExportDefinition {
@@ -26,7 +28,7 @@ interface ParamOrExportDefinition {
 export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
 	
-	const {parameters, exports} = props;
+	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
 	const {parameterStores, exportStores} = useShapediverStoreParameters();
 	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
 	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
@@ -65,7 +67,7 @@ export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 		if (param.definition.hidden) continue;
 
 		// read out the group or specify a new one if none has been provided
-		const group = param.definition.group || { id: "default", name: "Default Group" };
+		const group = param.definition.group || { id: "default", name: defaultGroupName || "Default Group" };
 		if (!elementGroups[group.id]) {
 			elementGroups[group.id] = {
 				group,
@@ -77,7 +79,14 @@ export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 			const ParameterComponent = getParameterComponent(param.definition);
 
 			// Get the element for the parameter and add it to the group
-			elementGroups[group.id].elements.push(<div key={param.definition.id}><ParameterComponent sessionId={param.parameter.sessionId} parameterId={param.parameter.parameterId} /></div>);
+			elementGroups[group.id].elements.push(
+				<div key={param.definition.id}>
+					<ParameterComponent 
+						sessionId={param.parameter.sessionId} 
+						parameterId={param.parameter.parameterId}
+						disableIfDirty={disableIfDirty} />
+				</div>
+			);
 		}
 		else if (param.export) {
 			const ExportComponent = getExportComponent(param.definition);

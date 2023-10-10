@@ -12,9 +12,9 @@ import { ISdReactParameter } from "types/shapediver/parameter";
  * @returns
  */
 export default function ParameterSelectComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId } = props;
+	const { sessionId, parameterId, disableIfDirty } = props;
 	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<any>);
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<any>);
 	
 	// callback for when the value was changed
 	const handleChange = (value: string) => {
@@ -31,6 +31,7 @@ export default function ParameterSelectComponent(props: PropsParameter): JSX.Ele
 			defaultValue={definition.choices![+definition.defval]}
 			onChange={handleChange}
 			data={definition.choices!}
+			disabled={disableIfDirty && state.dirty}
 		/>}
 	</>;
 }

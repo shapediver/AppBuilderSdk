@@ -14,9 +14,9 @@ import { useShapediverStoreParameters } from "store/parameterStore";
  * @returns
  */
 export default function ParameterFileInputComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId } = props;
+	const { sessionId, parameterId, disableIfDirty } = props;
 	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<File|null>);
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<File|null>);
 	
 	// callback for when the value was changed
 	const handleChange = (value: File | null) => {
@@ -41,6 +41,7 @@ export default function ParameterFileInputComponent(props: PropsParameter): JSX.
 					<IconX size={16} />
 				</ActionIcon>
 			}
+			disabled={disableIfDirty && state.dirty}
 		/> }
 	</>;
 }

@@ -13,9 +13,9 @@ import { useShapediverStoreParameters } from "store/parameterStore";
  * @returns
  */
 export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId } = props;
+	const { sessionId, parameterId, disableIfDirty } = props;
 	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<string>);
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<string>);
 	
 	const defaultValue = definition.defval.replace("0x", "#").substring(0, 7);
 	const [value, setValue] = useState(() => defaultValue);
@@ -46,6 +46,7 @@ export default function ParameterColorComponent(props: PropsParameter): JSX.Elem
 				</ActionIcon>
 			}
 			onChangeEnd={handleChange}
+			disabled={disableIfDirty && state.dirty}
 		/> }
 	</>;
 }
