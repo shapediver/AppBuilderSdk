@@ -1,15 +1,15 @@
-import { AppShell, Tabs, Aside, MediaQuery, Navbar, Header, Burger, useMantineTheme } from "@mantine/core";
+import { AppShell, Aside, Burger, Header, MediaQuery, Navbar, Tabs, useMantineTheme } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import { IconReplace, IconFileDownload } from "@tabler/icons-react";
+import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
-import ExportUiComponent from "components/shapediver/ExportUiComponent";
 import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
 import ParameterUiComponent from "components/shapediver/ParameterUiComponent";
 import React, { useEffect, useState } from "react";
-import { useShapediverStoreUI } from "store/shapediverStoreUI";
 import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
 import ViewerUiBridgeComponent from "components/shapediver/ViewerUiBridgeComponent";
+import ParameterGroupsUiComponent from "components/shapediver/ui/ParameterGroupsUiComponent";
+import ExportsUiComponent from "components/shapediver/ui/ExportsUiComponent";
 
 /**
  * Function that creates the view page.
@@ -34,9 +34,6 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 
-	const parameters = useShapediverStoreUI(state => state.parameters[sessionCreateDto.id]);
-	const exports = useShapediverStoreUI(state => state.exports[sessionCreateDto.id]);
-
 	useEffect(() => {
 		setLoading(true);
 		// if there is already a session with the same unique id registered
@@ -44,7 +41,7 @@ export default function ViewPage() {
 		// the closing of the session is done on unmount
 		// this can happen in development mode due to the duplicate calls of react
 		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		createSession(sessionCreateDto).finally(() => {
+		createSession(sessionCreateDto).finally(() => { // TODO async issue, a session created faster than the previous one is closed
 			setLoading(false);
 		});
 
@@ -56,7 +53,8 @@ export default function ViewPage() {
 
 	return (
 		<>
-			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}></ViewerUiBridgeComponent>
+			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}/>
+
 			<AppShell
 				padding="md"
 				navbarOffsetBreakpoint="sm"
@@ -91,13 +89,20 @@ export default function ViewPage() {
 									<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 								</Tabs.List>
 
-								<Tabs.Panel value="parameters" pt="xs">
-									{ !loading && parameters && <ParameterUiComponent parameters={parameters} /> }
-								</Tabs.Panel>
 
-								<Tabs.Panel value="exports" pt="xs">
-									{ !loading && exports && <ExportUiComponent exports={exports} /> }
-								</Tabs.Panel>
+								{ !loading && <ParameterUiComponent
+									sessionId={sessionCreateDto.id}
+									parametersRenderComponent={({ parameters }) =>
+										<Tabs.Panel value="parameters" pt="xs">
+											{ !loading && <ParameterGroupsUiComponent parameters={parameters} /> }
+										</Tabs.Panel>
+									}
+									exportsRenderComponent={({ exports }) =>
+										<Tabs.Panel value="exports" pt="xs">
+											{ !loading && <ExportsUiComponent exports={exports} /> }
+										</Tabs.Panel>
+									}
+								/> }
 							</Tabs>
 
 						</Aside>

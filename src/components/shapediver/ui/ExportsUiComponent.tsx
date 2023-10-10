@@ -1,14 +1,22 @@
 import React, { JSX } from "react";
 import { Divider, Loader, MediaQuery, ScrollArea } from "@mantine/core";
-import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
-import { IExports } from "types/store/shapediverStoreUI";
 import { ISdReactExport } from "types/shapediver/export";
+import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
+import { IExportStore } from "types/store/shapediverStoreParameters";
+
+/**
+ * Functional component that creates a wrapper for parameters group.
+ *
+ * @returns
+ */
 
 interface Props {
-    exports: IExports
+	exports: IExportStore[],
 }
 
-export default function ExportUiComponent({ exports }: Props): JSX.Element {
+export default function ExportsUiComponent(props: Props): JSX.Element {
+	const exports = props.exports.map((ps) => ps((state) => state));
+
 	const elements: JSX.Element[] = [];
 
 	// sort the parameters
@@ -30,14 +38,12 @@ export default function ExportUiComponent({ exports }: Props): JSX.Element {
 		if (i !== sortedExports.length - 1) elements.push(<Divider key={exp.definition.id + "_divider"} my="sm" />);
 	}
 
-	return (
-		<MediaQuery smallerThan="sm" styles={{
-			// minus tab height (34) and two times margin (2 x 10)
-			height: "calc(300px - 54px)"
-		}}>
-			<ScrollArea>
-				{elements}
-			</ScrollArea>
-		</MediaQuery>
-	);
+	return <MediaQuery smallerThan="sm" styles={{
+		// minus tab height (34) and two times margin (2 x 10)
+		height: "calc(300px - 54px)"
+	}}>
+		<ScrollArea>
+			{elements}
+		</ScrollArea>
+	</MediaQuery>;
 }

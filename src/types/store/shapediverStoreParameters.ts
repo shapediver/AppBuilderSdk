@@ -8,6 +8,12 @@ export type IParameterStores = { [parameterId: string]: IParameterStore }
 
 export type IParameterStoresPerSession = { [sessionId: string]: IParameterStores };
 
+export type IExportStore = UseBoundStore<StoreApi<ISdReactParamOrExport>>;
+
+export type IExportStores = { [parameterId: string]: IExportStore }
+
+export type IExportStoresPerSession = { [sessionId: string]: IExportStores };
+
 /**
  * Interface for the store of parameter stores.
  */
@@ -18,9 +24,9 @@ export interface IShapeDiverStoreParameters {
 	parameterStores: IParameterStoresPerSession;
 
 	/**
-	 * TODO SS-7087 extend this to also store export stores
+	 * Export stores.
 	 */
-	// exportStores: .....
+	exportStores: IExportStoresPerSession;
 
 	/**
 	 * Add parameter stores for all parameters of the session.
@@ -39,9 +45,8 @@ export interface IShapeDiverStoreParameters {
 
 	/**
 	 * Get abstracted parameters for session.
-	 * @param sessionId 
-	 * @returns 
+	 * @param sessionId
+	 * @returns
 	 */
 	useParameter: (sessionId: string, paramId: string) => IParameterStore;
-
 }
