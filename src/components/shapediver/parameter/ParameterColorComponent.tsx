@@ -22,8 +22,6 @@ export default function ParameterColorComponent(props: PropsParameters<string>):
 		}
 	};
 
-	// TODO SS-7076 no need for an effect here, let's refactor this without effect - deprecated
-	// TODO SS-7076 Reactive value required for inputs and can't be placed at the root scope
 	useEffect(() => {
 		// set the default value
 		if (!defaultValue) {

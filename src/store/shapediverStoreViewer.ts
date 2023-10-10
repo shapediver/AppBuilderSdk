@@ -80,6 +80,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			await viewport.close();
 		} catch (e) {
 			if (callbacks.onError) callbacks.onError(e);
+
 			return;
 		}
 
@@ -138,11 +139,11 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			await session.close();
 		} catch (e) {
 			if (callbacks.onError) callbacks.onError(e);
+			
 			return;
 		}
 
 		return set((state) => {
-
 			// create a new object, omitting the session which was closed
 			const newSessions : {[id: string]: ISessionApi} = {};
 			Object.keys(state.sessions).forEach(id => {

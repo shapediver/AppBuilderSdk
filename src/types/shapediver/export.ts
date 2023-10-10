@@ -32,5 +32,5 @@ export interface ISdReactExport extends ISdReactParamOrExport {
     /**
      * Actions which can be taken on the export.
      */
-   readonly actions: ISdReactExportActions;
+    readonly actions: ISdReactExportActions;
 }

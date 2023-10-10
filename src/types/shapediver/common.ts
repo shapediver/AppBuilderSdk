@@ -1,10 +1,10 @@
 import { ShapeDiverCommonsGroup } from "@shapediver/api.geometry-api-dto-v2/dist/commons/SdCommonsGroup";
 
 export interface ISdReactParamOrExportDefinition {
- 
+
     /** ID of the parameter or export. */
     id: string;
-  
+
     /** Name of the parameter or export. */
     name: string;
 
@@ -31,5 +31,4 @@ export interface ISdReactParamOrExport {
 
     /** The static definition of a parameter. */
     readonly definition: ISdReactParamOrExportDefinition;
-
 }

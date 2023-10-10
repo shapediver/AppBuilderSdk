@@ -16,6 +16,7 @@ const round = (parameter: ISdReactParameterDefinition, n: number) => {
 	if (parameter.type === PARAMETER_TYPE.INT || parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD)
 		n = +n.toFixed(0);
 	n = +n.toFixed(parameter.decimalplaces);
+
 	return n;
 };
 
@@ -72,8 +73,6 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 		}, 500);
 	};
 
-	// TODO SS-7076 no need for an effect here, let's refactor this without effect - deprecated
-	// TODO SS-7076 Reactive value required for inputs and can't be placed at the root scope
 	useEffect(() => {
 		setValue(+definition.defval);
 		setTextValue(definition.defval);

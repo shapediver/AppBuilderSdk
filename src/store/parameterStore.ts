@@ -2,23 +2,36 @@ import { create } from "zustand";
 import { ISdReactParameter, ISdReactParameterState } from "types/shapediver/parameter";
 import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
-import { devtoolsSettings } from "./storeSettings";
-import { IParameterStores, IParameterStoresPerSession, IShapeDiverStoreParameters } from "types/store/shapediverStoreParameters";
+import { devtoolsSettings } from "store/storeSettings";
+import {
+	IExportStores, IExportStoresPerSession,
+	IParameterStores,
+	IParameterStoresPerSession,
+	IShapeDiverStoreParameters
+} from "types/store/shapediverStoreParameters";
+import { ISdReactExport } from "../types/shapediver/export";
 
 /**
  * Create store for a single parameter.
  */
-export function createParameterStore<T>(session: ISessionApi, paramId: string) { 
+export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 	const param = session.parameters[paramId];
+	/** The static definition of a parameter. */
 	const definition = param;
 	const state: ISdReactParameterState<T> = {
 		uiValue: definition.value,
 		execValue: definition.value,
 		locked: false
 	};
+
 	return create<ISdReactParameter<T>>((set, get) => ({
 		definition,
+		/**
+		 * The dynamic properties (aka the "state") of a parameter.
+		 * Reactive components can react to this state, but not update it.
+		 */
 		state,
+		/** Actions that can be taken on the parameter. */
 		actions: {
 			setUiValue: function (uiValue: string | T): boolean {
 				const actions = get().actions;
@@ -29,6 +42,7 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 						uiValue
 					}
 				}));
+
 				return true;
 			},
 			execute: async function (): Promise<boolean> {
@@ -41,6 +55,7 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 						execValue: state.uiValue
 					}
 				}));
+
 				return true;
 			},
 			isValid: function (value: any, throwError?: boolean | undefined): boolean {
@@ -74,29 +89,66 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 }
 
 /**
+ * Create store for a single export.
+ */
+export function createExportStore(session: ISessionApi, exportId: string) {
+	const exportApi = session.exports[exportId];
+	/** The static definition of the export. */
+	const definition = exportApi;
+	const sessionExport = exportApi;
+
+	return create<ISdReactExport>(() => ({
+		definition,
+		/** Actions that can be taken on the export. */
+		actions: {
+			request: async (parameters?: { [key: string]: string }) => {
+				return sessionExport.request(parameters);
+			}
+		}
+	}));
+}
+
+/**
  * Store of parameter stores.
  */
 export const useShapediverStoreParameters = create<IShapeDiverStoreParameters>()(devtools((set, get) => ({
 
 	parameterStores: {},
+	exportStores: {},
 
 	addSession: (session: ISessionApi) => {
 		const sessionId = session.id;
-		const parameters = get().parameterStores;
-		if (parameters[sessionId]) 
-			return;
-		const parameterStores: IParameterStores = {}; 
-		Object.keys(session.parameters).forEach(paramId => parameterStores[paramId] = createParameterStore(session, paramId));
+		const { parameterStores: parameters, exportStores: exports} = get();
+
 		set((_state) => ({
-			parameterStores: {
+			parameterStores:  {
 				..._state.parameterStores,
-				...{ [sessionId]: parameterStores }
+				...parameters[sessionId]
+					? {} // Keep existing parameter stores
+					: {
+						..._state.parameterStores,
+						[sessionId]: Object.keys(session.parameters).reduce((acc, paramId) => {
+							acc[paramId] = createParameterStore(session, paramId);
+
+							return acc;
+						}, {} as IParameterStores)
+					} // Create new parameter stores
+			},
+			exportStores: {
+				..._state.exportStores,
+				...exports[sessionId]
+					? {} // Keep existing export stores
+					: { [sessionId]: Object.keys(session.exports).reduce((acc, exportId) => {
+						acc[exportId] = createExportStore(session, exportId);
+
+						return acc;
+					}, {} as IExportStores) } // Create new export stores
 			}
 		}), false, "addSession");
 	},
 
 	removeSession: (sessionId: string) => {
-		const parametersPerSession = get().parameterStores;
+		const {parameterStores: parametersPerSession, exportStores: exportsPerSession } = get();
 
 		// create a new object, omitting the session to be removed
 		const parameters: IParameterStoresPerSession = {};
@@ -105,15 +157,25 @@ export const useShapediverStoreParameters = create<IShapeDiverStoreParameters>()
 				parameters[id] = parametersPerSession[id];
 		});
 
+		// create a new object, omitting the session to be removed
+		const exports: IExportStoresPerSession = {};
+		Object.keys(exportsPerSession).forEach(id => {
+			if (id !== sessionId)
+				exports[id] = exportsPerSession[id];
+		});
+
 		set(() => ({
 			parameterStores: parameters,
+			exportStores: exports,
 		}), false, "removeSession");
 	},
 
 	useParameter: (sessionId: string, paramId: string) => {
-		const store = get().parameterStores[sessionId][paramId];
-		return store;
-	}
+		return get().parameterStores[sessionId][paramId];
+	},
 
+	useExport: (sessionId: string, exportId: string) => {
+		return get().exportStores[sessionId][exportId];
+	}
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Parameters" }));

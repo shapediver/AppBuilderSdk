@@ -1,5 +1,6 @@
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
-import { ISdReactParamOrExport } from "./common";
+import { ISdReactParamOrExport } from "types/shapediver/common";
+import { ShapeDiverCommonsGroup } from "@shapediver/api.geometry-api-dto-v2/dist/commons/SdCommonsGroup";
 
 /**
  * The static definition of a parameter.
@@ -51,24 +52,24 @@ export interface ISdReactParameterActions<T> {
 
     /**
      * Evaluates if a given value is valid for this parameter.
-     * 
+     *
      * @param value the value to evaluate
      * @param throwError if true, an error is thrown if validation does not pass (default: false)
      */
     isValid(value: any, throwError?: boolean): boolean;
 
     /**
-     * Resets the ui value to the default value. 
-     * Note: Does not call execute. 
+     * Resets the ui value to the default value.
+     * Note: Does not call execute.
      */
     resetToDefaultValue(): void;
 
     /**
      * Resets the ui value to execValue.
-     * Note: Does not call execute. 
+     * Note: Does not call execute.
      */
     resetToExecValue(): void;
-    
+
     /**
      * Returns the current value as a string
      */
@@ -93,5 +94,8 @@ export interface ISdReactParameter<T> extends ISdReactParamOrExport {
      * Actions which can be taken on the parameter.
      */
     readonly actions: ISdReactParameterActions<T>;
-    
+}
+
+export interface ISdReactParameterGroup extends  ShapeDiverCommonsGroup {
+    elements: ISdReactParameter<any>[],
 }
