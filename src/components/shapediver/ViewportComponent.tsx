@@ -10,5 +10,14 @@ import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 export default function ViewportComponent(props: ViewportCreateDto): JSX.Element {
 	const { canvasRef } = useViewport(props);
 
-	return (<canvas ref={canvasRef} />);
+	return (
+		<div style={{
+			position: "relative",
+			width: "100%",
+			height: "100%",
+			overflow: "hidden"
+		}}>
+			<canvas ref={canvasRef} />
+		</div>
+	);
 }

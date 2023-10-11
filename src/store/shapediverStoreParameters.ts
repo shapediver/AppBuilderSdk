@@ -113,7 +113,8 @@ export function createExportStore(session: ISessionApi, exportId: string) {
 }
 
 /**
- * Store of parameter stores.
+ * Store data related to abstracted parameters and exports.
+ * @see {@link IShapeDiverStoreParameters}
  */
 export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()(devtools((set, get) => ({
 

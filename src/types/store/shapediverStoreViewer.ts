@@ -4,14 +4,18 @@ import {
 } from "@shapediver/viewer.main.creation-control-center/src/interfaces/ICreationControlCenter";
 
 /**
- * We redeclare SessionCreationDefinition to always have an id
+ * Redeclaration of SessionCreationDefinition to always have an id.
  */
 export interface SessionCreateDto extends SessionCreationDefinition {
 	id: string,
 }
 
+/**
+ * Redeclaration of ViewportCreationDefinition to always have an id.
+ */
 export interface ViewportCreateDto extends ViewportCreationDefinition {
 	id: string,
+	showStatistics?: boolean,
 }
 
 export interface IShapeDiverStoreViewerSessions {

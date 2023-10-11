@@ -16,7 +16,13 @@ export type IExportStores = { [parameterId: string]: IExportStore }
 export type IExportStoresPerSession = { [sessionId: string]: IExportStores };
 
 /**
- * Interface for the store of parameter stores.
+ * Interface for the store of parameters and exports. 
+ * The parameters and exports managed by this store are abstractions of the 
+ * parameters and exports defined by a ShapeDiver 3D Viewer session. 
+ * It is easy to plug all parameters and exports defined by one or multiple sessions 
+ * into this store. 
+ * The abstraction provided by this store also allows to define parameters which
+ * are not directly linked to a session. 
  */
 export interface IShapeDiverStoreParameters {
 	/**
@@ -45,28 +51,28 @@ export interface IShapeDiverStoreParameters {
 	removeSession: (sessionId: string) => void,
 
 	/**
-	 * Get all parameters of session.
+	 * Get all parameter stores for a given session id.
 	 * @param sessionId
 	 * @returns
 	 */
 	useParameters: (sessionId: string) => IParameterStores;
 
 	/**
-	 * Get single parameter.
+	 * Get a single parameter store.
 	 * @param sessionId
 	 * @returns
 	 */
 	useParameter: (sessionId: string, paramId: string) => IParameterStore;
 
 	/**
-	 * Get all exports of session.
+	 * Get all export stores for a given session id.
 	 * @param sessionId
 	 * @returns
 	 */
 	useExports: (sessionId: string) => IExportStores;
 
 	/**
-	 * Get single export.
+	 * Get a single export store.
 	 * @param sessionId
 	 * @returns
 	 */

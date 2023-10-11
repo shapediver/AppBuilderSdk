@@ -5,11 +5,10 @@ import ViewportComponent from "components/shapediver/ViewportComponent";
 import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
 import React, { useState } from "react";
-import { useShapeDiverStoreViewer } from "store/shapediverStoreViewer";
-import ViewerUiBridgeComponent from "components/shapediver/ViewerUiBridgeComponent";
 import ParameterAccordionComponent from "components/shapediver/ui/ParameterAccordionComponent";
 import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
+import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
 
 /**
  * Function that creates the view page.
@@ -24,7 +23,6 @@ import { useSession } from "hooks/useSession";
 export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	const { sessions } = useShapeDiverStoreViewer();
 	
 	const sessionId = "session_1";
 	const sessionCreateDto = {
@@ -34,7 +32,8 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 
-	useSession(sessionCreateDto);
+	const { sessionApi } = useSession(sessionCreateDto);
+	useRegisterSessionParameters(sessionApi);
 
 	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
 		return {sessionId, parameterId: id};
@@ -45,21 +44,19 @@ export default function ViewPage() {
 	
 	return (
 		<>
-			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}/>
-
 			<AppShell
 				padding="md"
 				navbarOffsetBreakpoint="sm"
 				asideOffsetBreakpoint="sm"
 				navbar={
-					<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+					<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }}>
 						<NavigationBar />
 					</Navbar>
 				}
 				header={
 					<Header height={60} p="xs">
 						<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
-							<MediaQuery largerThan="sm" styles={{ display: "none" }}>
+							<MediaQuery largerThan="md" styles={{ display: "none" }}>
 								<Burger
 									opened={opened}
 									onClick={() => setOpened((o) => !o)}
@@ -74,7 +71,7 @@ export default function ViewPage() {
 				}
 				aside={
 					<MediaQuery smallerThan="sm" styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}>
-						<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+						<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 300, lg: 300 }}>
 							<Tabs defaultValue="parameters">
 								<Tabs.List>
 									<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
@@ -82,14 +79,13 @@ export default function ViewPage() {
 								</Tabs.List>
 								
 								<Tabs.Panel value="parameters" pt="xs">
-									<ParameterAccordionComponent parameters={parameterProps} disableIfDirty={true} />
+									<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
 								</Tabs.Panel>
 							
 								<Tabs.Panel value="exports" pt="xs">
 									<ParameterAccordionComponent exports={exportProps} defaultGroupName="Exports" />
 								</Tabs.Panel>
 							</Tabs>
-
 						</Aside>
 					</MediaQuery>
 				}
@@ -102,28 +98,16 @@ export default function ViewPage() {
 					// minus two times padding (2 x 16)
 					maxHeight: "calc(100% - 268px);!important"
 				}}>
-					<div style={{
-						textAlign: "center",
-						height: "100%"
-					}}>
-						<div style={{
-							position: "relative",
-							width: "100%",
-							height: "100%",
-							overflow: "hidden"
-						}}>
-							<ViewportComponent
-								id='viewport_1'
-								sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
-								sessionSettingsId='session_1'
-								branding={{
-									backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-									logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
-								}}
-							/>
-						</div>
-					</div >
-
+					<ViewportComponent
+						id='viewport_1'
+						sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
+						showStatistics={true}
+						branding={{
+							backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+							logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
+						}}
+					/>
+		
 				</MediaQuery>
 			</AppShell >
 		</>

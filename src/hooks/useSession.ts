@@ -3,6 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useShapeDiverStoreViewer } from "store/shapediverStoreViewer";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
 
+/**
+ * Hook for creating a session with a ShapeDiver model using the ShapeDiver 3D Viewer. 
+ * @see {@link useShapeDiverStoreViewer} to access the API of the session. 
+ * @see {@link useRegisterSessionParameters}
+ * @param props 
+ * @returns 
+ */
 export function useSession(props: SessionCreateDto) {
 	const { createSession, closeSession } = useShapeDiverStoreViewer();
 	const promiseChain = useRef(Promise.resolve());

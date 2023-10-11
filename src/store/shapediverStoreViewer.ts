@@ -32,7 +32,8 @@ const createViewportIdentifier =  function(parameters: Pick<ViewportCreateDto, "
 };
 
 /**
- * Store of viewer-related data.
+ * Store data related to the ShapeDiver 3D Viewer.
+ * @see {@link IShapeDiverStoreViewer}
  */
 export const useShapeDiverStoreViewer = create<IShapeDiverStoreViewer>()(devtools((set, get) => ({
 

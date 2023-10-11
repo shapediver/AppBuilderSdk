@@ -27,6 +27,11 @@ const sessionData: {
 		ticket: "340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
+	"Bookshelf": {
+		id: "3",
+		ticket: "28f8b4597674b28a35a88877eb82f285bb085fa65ddabe3a9968c59cd859d0e1f711f9f8aaaddba56ac4805122aa374adc3376f27fcc02e9e5e6a7951341d7354355d805ecbf7cb8f1b47957ed583ddcf628bc2317a32f6a7dd5ad0d5fd4c6c3ea538f26596fd0-b07caa3ab7ab068ea8effb6e4dec8de7",
+		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
+	},
 };
 
 /**
