@@ -2,8 +2,7 @@ import { TextInput } from "@mantine/core";
 import React, { JSX, useRef } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
-import { IShapeDiverParameter } from "types/shapediver/parameter";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a string input component for a string parameter.
@@ -12,8 +11,7 @@ import { IShapeDiverParameter } from "types/shapediver/parameter";
  */
 export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapeDiverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<string>);
+	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
 	
 	const textInputRef = useRef<HTMLInputElement>(null);
 

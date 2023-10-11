@@ -3,8 +3,7 @@ import { IconRefresh } from "@tabler/icons-react";
 import React, { JSX, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { IShapeDiverParameter } from "types/shapediver/parameter";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a color swatch for a color parameter.
@@ -13,8 +12,7 @@ import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
  */
 export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapeDiverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<string>);
+	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
 	
 	const defaultValue = definition.defval.replace("0x", "#").substring(0, 7);
 	const [value, setValue] = useState(() => defaultValue);

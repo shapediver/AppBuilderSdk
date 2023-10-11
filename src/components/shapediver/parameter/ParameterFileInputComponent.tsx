@@ -4,8 +4,7 @@ import React, { JSX } from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { IShapeDiverParameter } from "types/shapediver/parameter";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a file input for a file parameter.
@@ -14,8 +13,7 @@ import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
  */
 export default function ParameterFileInputComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapeDiverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<File|null>);
+	const { definition, actions, state } = useParameter<File|null>(sessionId, parameterId);
 	
 	// callback for when the value was changed
 	const handleChange = (value: File | null) => {

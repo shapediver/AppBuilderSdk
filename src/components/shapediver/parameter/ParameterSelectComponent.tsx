@@ -2,8 +2,7 @@ import { Select } from "@mantine/core";
 import React, { JSX } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
-import { IShapeDiverParameter } from "types/shapediver/parameter";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a dropdown select component for a string list parameter.
@@ -12,8 +11,7 @@ import { IShapeDiverParameter } from "types/shapediver/parameter";
  */
 export default function ParameterSelectComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapeDiverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<any>);
+	const { definition, actions, state } = useParameter<any>(sessionId, parameterId);
 	
 	// callback for when the value was changed
 	const handleChange = (value: string) => {

@@ -2,9 +2,9 @@ import { Slider, TextInput } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { IShapeDiverParameter, IShapeDiverParameterDefinition } from "types/shapediver/parameter";
+import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Round the number depending on the parameter type.
@@ -29,8 +29,8 @@ const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
  */
 export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapeDiverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<number>);
+	const { definition, actions, state } = useParameter<number>(sessionId, parameterId);
+	
 	
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const [value, setValue] = useState(0);
