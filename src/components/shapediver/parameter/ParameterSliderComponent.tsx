@@ -2,9 +2,9 @@ import { Slider, TextInput } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { ISdReactParameter, ISdReactParameterDefinition } from "types/shapediver/parameter";
+import { IShapeDiverParameter, IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useShapediverStoreParameters } from "store/parameterStore";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 
 /**
  * Round the number depending on the parameter type.
@@ -13,7 +13,7 @@ import { useShapediverStoreParameters } from "store/parameterStore";
  * @param n
  * @returns
  */
-const round = (parameter: ISdReactParameterDefinition, n: number) => {
+const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
 	if (parameter.type === PARAMETER_TYPE.INT || parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD)
 		n = +n.toFixed(0);
 	n = +n.toFixed(parameter.decimalplaces);
@@ -22,16 +22,15 @@ const round = (parameter: ISdReactParameterDefinition, n: number) => {
 };
 
 /**
- * Functional component that creates a slider component for a number parameter.
- * Additionally, a text input is added on the side.
- * It displays a Skeleton if the session is not accessible yet.
+ * Functional component that creates a slider component for a number parameter. 
+ * Additionally, a text input is added on the side. 
  *
  * @returns
  */
 export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<number>);
+	const parametersStore = useShapeDiverStoreParameters();
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<number>);
 	
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const [value, setValue] = useState(0);

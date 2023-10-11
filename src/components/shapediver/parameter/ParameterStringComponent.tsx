@@ -2,19 +2,18 @@ import { TextInput } from "@mantine/core";
 import React, { JSX, useRef } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useShapediverStoreParameters } from "store/parameterStore";
-import { ISdReactParameter } from "types/shapediver/parameter";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { IShapeDiverParameter } from "types/shapediver/parameter";
 
 /**
  * Functional component that creates a string input component for a string parameter.
- * It displays a Skeleton if the session is not accessible yet.
  *
  * @returns
  */
 export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<string>);
+	const parametersStore = useShapeDiverStoreParameters();
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<string>);
 	
 	const textInputRef = useRef<HTMLInputElement>(null);
 

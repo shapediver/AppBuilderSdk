@@ -5,10 +5,10 @@ import ViewportComponent from "components/shapediver/ViewportComponent";
 import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
 import React, { useState } from "react";
-import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
+import { useShapeDiverStoreViewer } from "store/shapediverStoreViewer";
 import ViewerUiBridgeComponent from "components/shapediver/ViewerUiBridgeComponent";
-import ParameterGroupsUiComponent from "components/shapediver/ui/ParameterGroupsUiComponent";
-import { useShapediverStoreParameters } from "store/parameterStore";
+import ParameterAccordionComponent from "components/shapediver/ui/ParameterAccordionComponent";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
 
 /**
@@ -24,7 +24,7 @@ import { useSession } from "hooks/useSession";
 export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	const { sessions } = useShapediverStoreViewer();
+	const { sessions } = useShapeDiverStoreViewer();
 	
 	const sessionId = "session_1";
 	const sessionCreateDto = {
@@ -36,10 +36,10 @@ export default function ViewPage() {
 
 	useSession(sessionCreateDto);
 
-	const parameterProps = useShapediverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
+	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
 		return {sessionId, parameterId: id};
 	}));
-	const exportProps = useShapediverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
+	const exportProps = useShapeDiverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
 		return {sessionId, exportId: id};
 	}));
 	
@@ -82,11 +82,11 @@ export default function ViewPage() {
 								</Tabs.List>
 								
 								<Tabs.Panel value="parameters" pt="xs">
-									<ParameterGroupsUiComponent parameters={parameterProps} disableIfDirty={true} />
+									<ParameterAccordionComponent parameters={parameterProps} disableIfDirty={true} />
 								</Tabs.Panel>
 							
 								<Tabs.Panel value="exports" pt="xs">
-									<ParameterGroupsUiComponent exports={exportProps} defaultGroupName="Exports" />
+									<ParameterAccordionComponent exports={exportProps} defaultGroupName="Exports" />
 								</Tabs.Panel>
 							</Tabs>
 

@@ -1,6 +1,6 @@
 import React, { JSX, useEffect } from "react";
 import { IShapeDiverStoreViewerSessions } from "types/store/shapediverStoreViewer";
-import { useShapediverStoreParameters } from "store/parameterStore";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 
 interface Props {
     sessionId: string,
@@ -9,13 +9,14 @@ interface Props {
 
 /**
  * Functional component that bridges between the viewer store and the UI store.
+ * TODO replace by a hook
  *
  * @returns
  */
 export default function ViewerUiBridgeComponent({ sessionId, sessions }: Props): JSX.Element {
 
 	const session = sessions[sessionId];
-	const { addSession, removeSession } = useShapediverStoreParameters();
+	const { addSession, removeSession } = useShapeDiverStoreParameters();
 
 	useEffect(() => {
 		if (session) {

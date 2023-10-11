@@ -1,15 +1,15 @@
 import { ISessionApi } from "@shapediver/viewer";
-import { ISdReactExport } from "types/shapediver/export";
-import { ISdReactParameter } from "types/shapediver/parameter";
+import { IShapeDiverExport } from "types/shapediver/export";
+import { IShapeDiverParameter } from "types/shapediver/parameter";
 import { StoreApi, UseBoundStore } from "zustand";
 
-export type IParameterStore = UseBoundStore<StoreApi<ISdReactParameter<any>>>;
+export type IParameterStore = UseBoundStore<StoreApi<IShapeDiverParameter<any>>>;
 
 export type IParameterStores = { [parameterId: string]: IParameterStore }
 
 export type IParameterStoresPerSession = { [sessionId: string]: IParameterStores };
 
-export type IExportStore = UseBoundStore<StoreApi<ISdReactExport>>;
+export type IExportStore = UseBoundStore<StoreApi<IShapeDiverExport>>;
 
 export type IExportStores = { [parameterId: string]: IExportStore }
 

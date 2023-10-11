@@ -1,13 +1,13 @@
 import React, { JSX } from "react";
 import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
-import { getExportComponent, getParameterComponent } from "types/components/shapediver/parameter";
+import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { useShapediverStoreParameters } from "store/parameterStore";
-import { ISdReactParamOrExportDefinition } from "types/shapediver/common";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 
 /**
- * Functional component that creates a wrapper for parameters group.
+ * Functional component that creates an accordion of parameter and export components.
  *
  * @returns
  */
@@ -22,14 +22,15 @@ interface Props {
 interface ParamOrExportDefinition {
 	parameter?: PropsParameter,
 	export?: PropsExport,
-	definition: ISdReactParamOrExportDefinition,
+	definition: IShapeDiverParamOrExportDefinition,
 }
 
-export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
+export default function ParameterAccordionComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
-	
 	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
-	const {parameterStores, exportStores} = useShapediverStoreParameters();
+	const {parameterStores, exportStores} = useShapeDiverStoreParameters();
+
+	// collect definitions of parameters and exports for sorting and grouping
 	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
 	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
 		const definition = parameterStores[p.sessionId][p.parameterId].getState().definition;
@@ -76,9 +77,9 @@ export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 		}
 
 		if (param.parameter) {
+			// Get the element for the parameter and add it to the group
 			const ParameterComponent = getParameterComponent(param.definition);
 
-			// Get the element for the parameter and add it to the group
 			elementGroups[group.id].elements.push(
 				<div key={param.definition.id}>
 					<ParameterComponent 
@@ -89,10 +90,16 @@ export default function ParameterGroupsUiComponent(props: Props): JSX.Element {
 			);
 		}
 		else if (param.export) {
+			// Get the element for the export and add it to the group
 			const ExportComponent = getExportComponent(param.definition);
 
-			// Get the element for the parameter and add it to the group
-			elementGroups[group.id].elements.push(<div key={param.definition.id}><ExportComponent sessionId={param.export.sessionId} exportId={param.export.exportId} /></div>);
+			elementGroups[group.id].elements.push(
+				<div key={param.definition.id}>
+					<ExportComponent 
+						sessionId={param.export.sessionId} 
+						exportId={param.export.exportId} />
+				</div>
+			);
 		}
 	}
 

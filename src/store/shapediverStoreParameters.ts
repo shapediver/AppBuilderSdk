@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ISdReactParameter, ISdReactParameterState } from "types/shapediver/parameter";
+import { IShapeDiverParameter, IShapeDiverParameterState } from "types/shapediver/parameter";
 import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
@@ -9,7 +9,7 @@ import {
 	IParameterStoresPerSession,
 	IShapeDiverStoreParameters
 } from "types/store/shapediverStoreParameters";
-import { ISdReactExport } from "../types/shapediver/export";
+import { IShapeDiverExport } from "../types/shapediver/export";
 
 /**
  * Create store for a single parameter.
@@ -18,13 +18,13 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 	const param = session.parameters[paramId];
 	/** The static definition of a parameter. */
 	const definition = param;
-	const state: ISdReactParameterState<T> = {
+	const state: IShapeDiverParameterState<T> = {
 		uiValue: definition.value,
 		execValue: definition.value,
 		dirty: false
 	};
 
-	return create<ISdReactParameter<T>>((set, get) => ({
+	return create<IShapeDiverParameter<T>>((set, get) => ({
 		definition,
 		/**
 		 * The dynamic properties (aka the "state") of a parameter.
@@ -101,7 +101,7 @@ export function createExportStore(session: ISessionApi, exportId: string) {
 	const definition = exportApi;
 	const sessionExport = exportApi;
 
-	return create<ISdReactExport>(() => ({
+	return create<IShapeDiverExport>(() => ({
 		definition,
 		/** Actions that can be taken on the export. */
 		actions: {
@@ -115,7 +115,7 @@ export function createExportStore(session: ISessionApi, exportId: string) {
 /**
  * Store of parameter stores.
  */
-export const useShapediverStoreParameters = create<IShapeDiverStoreParameters>()(devtools((set, get) => ({
+export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()(devtools((set, get) => ({
 
 	parameterStores: {},
 	exportStores: {},

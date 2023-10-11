@@ -6,7 +6,7 @@ import ParameterSelectComponent from "components/shapediver/parameter/ParameterS
 import ParameterColorComponent from "components/shapediver/parameter/ParameterColorComponent";
 import ParameterFileInputComponent from "components/shapediver/parameter/ParameterFileInputComponent";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { ISdReactParamOrExportDefinition } from "types/shapediver/common";
+import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
 
@@ -23,7 +23,7 @@ const parameterComponentsMap = {
 	[PARAMETER_TYPE.FILE]: ParameterFileInputComponent,
 };
 
-export const getParameterComponent = (definition: ISdReactParamOrExportDefinition) => {
+export const getParameterComponent = (definition: IShapeDiverParamOrExportDefinition) => {
 	const type = definition.type as keyof typeof parameterComponentsMap;
 
 	return parameterComponentsMap[type] || ParameterLabelComponent;
@@ -34,7 +34,7 @@ const exportComponentsMap = {
 	[EXPORT_TYPE.EMAIL]: ExportButtonComponent,
 };
 
-export const getExportComponent = (definition: ISdReactParamOrExportDefinition) => {
+export const getExportComponent = (definition: IShapeDiverParamOrExportDefinition) => {
 	const type = definition.type as keyof typeof exportComponentsMap;
 
 	return exportComponentsMap[type] || ExportLabelComponent;

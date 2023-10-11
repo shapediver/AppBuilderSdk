@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
+import { useShapeDiverStoreViewer } from "store/shapediverStoreViewer";
 import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 
 export function useViewport(props: ViewportCreateDto) {
-	const { createViewport, closeViewport } = useShapediverStoreViewer();
+	const { createViewport, closeViewport } = useShapeDiverStoreViewer();
 	const promiseChain = useRef(Promise.resolve());
 	const canvasRef = useRef(null);
 

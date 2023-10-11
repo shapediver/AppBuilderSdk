@@ -29,7 +29,7 @@ export interface IShapeDiverStoreViewerCallbacks {
 /**
  * Interface for the store of viewer-related data.
  */
-export interface IShapediverStoreViewer {
+export interface IShapeDiverStoreViewer {
 
 	/**
 	 * Viewports currently known by the store.

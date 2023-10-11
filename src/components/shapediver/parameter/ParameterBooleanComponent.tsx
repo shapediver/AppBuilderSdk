@@ -2,19 +2,18 @@ import { Switch } from "@mantine/core";
 import React, { JSX, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { ISdReactParameter } from "types/shapediver/parameter";
-import { useShapediverStoreParameters } from "store/parameterStore";
+import { IShapeDiverParameter } from "types/shapediver/parameter";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 
 /**
  * Functional component that creates a button for a boolean parameter.
- * It displays a Skeleton if the session is not accessible yet.
  *
  * @returns
  */
 export default function ParameterBooleanComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const parametersStore = useShapediverStoreParameters();
-	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as ISdReactParameter<boolean>);
+	const parametersStore = useShapeDiverStoreParameters();
+	const { definition, actions, state } = parametersStore.useParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<boolean>);
 	
 	const [defaultValue] = useState(() => definition.defval.toLowerCase() === "true");
 

@@ -1,5 +1,5 @@
 import { createSession, createViewport, ISessionApi, IViewportApi } from "@shapediver/viewer";
-import { SessionCreateDto, IShapediverStoreViewer, ViewportCreateDto } from "types/store/shapediverStoreViewer";
+import { SessionCreateDto, IShapeDiverStoreViewer, ViewportCreateDto } from "types/store/shapediverStoreViewer";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "./storeSettings";
@@ -34,7 +34,7 @@ const createViewportIdentifier =  function(parameters: Pick<ViewportCreateDto, "
 /**
  * Store of viewer-related data.
  */
-export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtools((set, get) => ({
+export const useShapeDiverStoreViewer = create<IShapeDiverStoreViewer>()(devtools((set, get) => ({
 
 	viewports: {},
 
