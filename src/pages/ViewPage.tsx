@@ -1,14 +1,13 @@
-import { AppShell, Aside, Burger, Header, MediaQuery, Navbar, Tabs, useMantineTheme } from "@mantine/core";
+import { Tabs, useMantineTheme } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
-import HeaderBar from "components/ui/HeaderBar";
-import NavigationBar from "components/ui/NavigationBar";
-import React, { useState } from "react";
+import React from "react";
 import ParameterAccordionComponent from "components/shapediver/ui/ParameterAccordionComponent";
 import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
 import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
+import ExamplePage from "pages/ExamplePage";
 
 /**
  * Function that creates the view page.
@@ -22,8 +21,7 @@ import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters
  */
 export default function ViewPage() {
 	const theme = useMantineTheme();
-	const [opened, setOpened] = useState(false);
-	
+
 	const sessionId = "session_1";
 	const sessionCreateDto = {
 		id: sessionId,
@@ -41,75 +39,35 @@ export default function ViewPage() {
 	const exportProps = useShapeDiverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
 		return {sessionId, exportId: id};
 	}));
-	
+
+	const aside = <Tabs defaultValue="parameters">
+		<Tabs.List>
+			<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
+			<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
+		</Tabs.List>
+
+		<Tabs.Panel value="parameters" pt="xs">
+			<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+		</Tabs.Panel>
+
+		<Tabs.Panel value="exports" pt="xs">
+			<ParameterAccordionComponent exports={exportProps} defaultGroupName="Exports" />
+		</Tabs.Panel>
+	</Tabs>;
+
 	return (
 		<>
-			<AppShell
-				padding="md"
-				navbarOffsetBreakpoint="sm"
-				asideOffsetBreakpoint="sm"
-				navbar={
-					<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }}>
-						<NavigationBar />
-					</Navbar>
-				}
-				header={
-					<Header height={60} p="xs">
-						<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
-							<MediaQuery largerThan="md" styles={{ display: "none" }}>
-								<Burger
-									opened={opened}
-									onClick={() => setOpened((o) => !o)}
-									size="sm"
-									color={theme.colors.gray[6]}
-								/>
-							</MediaQuery>
-
-							<HeaderBar />
-						</div>
-					</Header>
-				}
-				aside={
-					<MediaQuery smallerThan="sm" styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}>
-						<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 300, lg: 300 }}>
-							<Tabs defaultValue="parameters">
-								<Tabs.List>
-									<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
-									<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
-								</Tabs.List>
-								
-								<Tabs.Panel value="parameters" pt="xs">
-									<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
-								</Tabs.Panel>
-							
-								<Tabs.Panel value="exports" pt="xs">
-									<ParameterAccordionComponent exports={exportProps} defaultGroupName="Exports" />
-								</Tabs.Panel>
-							</Tabs>
-						</Aside>
-					</MediaQuery>
-				}
-				styles={(theme) => ({
-					main: { backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0] },
-				})}
-			>
-				<MediaQuery smallerThan="sm" styles={{
-					margin: "-16px!important",
-					// minus two times padding (2 x 16)
-					maxHeight: "calc(100% - 268px);!important"
-				}}>
-					<ViewportComponent
-						id='viewport_1'
-						sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
-						showStatistics={true}
-						branding={{
-							backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-							logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
-						}}
-					/>
-		
-				</MediaQuery>
-			</AppShell >
+			<ExamplePage aside={aside}>
+				<ViewportComponent
+					id='viewport_1'
+					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
+					showStatistics={true}
+					branding={{
+						backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+						logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
+					}}
+				/>
+			</ExamplePage>
 		</>
 	);
 }
