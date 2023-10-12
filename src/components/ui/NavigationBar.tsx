@@ -25,7 +25,7 @@ export default function NavigationBar() {
 
 			<Navbar.Section mx="-xs" px="xs" >
 				<Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/modelSelect">
-                    Model Select Page
+                    Select Page
 				</Button>
 			</Navbar.Section>
 

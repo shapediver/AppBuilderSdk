@@ -1,23 +1,19 @@
 import { TextInput } from "@mantine/core";
 import React, { JSX, useRef } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a string input component for a string parameter.
- * It displays a Skeleton if the session is not accessible yet.
  *
  * @returns
  */
-export default function ParameterStringComponent(props: PropsParameters<string>): JSX.Element {
-	const { definition, state, actions } = props;
+export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId, disableIfDirty } = props;
+	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
+	
 	const textInputRef = useRef<HTMLInputElement>(null);
-
-	// SS-7087 example of how to use the "store of parameter stores"
-	// const parametersStore = useShapediverStoreParameters();
-	// const paramState = parametersStore.useParameter("session_1", definition.id)(state => (state as ISdReactParameter<string>).state);
-	// const paramActions = parametersStore.useParameter("session_1", definition.id)(state => (state as ISdReactParameter<string>).actions);
-	// SS-7087 The component props are the same parametersStore.parameter definitions
 
 	// function to apply the value to the parameter and customize the scene
 	const handleChange = (value: string) => {
@@ -43,11 +39,9 @@ export default function ParameterStringComponent(props: PropsParameters<string>)
 		<ParameterLabelComponent { ...props } />
 		{definition && <TextInput
 			ref={textInputRef}
-			style={{
-				flexGrow: 0.9
-			}}
 			defaultValue={state.uiValue}
 			onChange={handleChangeDelay}
+			disabled={disableIfDirty && state.dirty}
 		/>}
 	</>;
 }

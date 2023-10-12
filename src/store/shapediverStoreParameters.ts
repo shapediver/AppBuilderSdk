@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ISdReactParameter, ISdReactParameterState } from "types/shapediver/parameter";
+import { IShapeDiverParameter, IShapeDiverParameterState } from "types/shapediver/parameter";
 import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
@@ -9,7 +9,7 @@ import {
 	IParameterStoresPerSession,
 	IShapeDiverStoreParameters
 } from "types/store/shapediverStoreParameters";
-import { ISdReactExport } from "../types/shapediver/export";
+import { IShapeDiverExport } from "../types/shapediver/export";
 
 /**
  * Create store for a single parameter.
@@ -18,13 +18,13 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 	const param = session.parameters[paramId];
 	/** The static definition of a parameter. */
 	const definition = param;
-	const state: ISdReactParameterState<T> = {
+	const state: IShapeDiverParameterState<T> = {
 		uiValue: definition.value,
 		execValue: definition.value,
-		locked: false
+		dirty: false
 	};
 
-	return create<ISdReactParameter<T>>((set, get) => ({
+	return create<IShapeDiverParameter<T>>((set, get) => ({
 		definition,
 		/**
 		 * The dynamic properties (aka the "state") of a parameter.
@@ -39,7 +39,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						uiValue
+						uiValue,
+						dirty: uiValue !== _state.state.execValue
 					}
 				}));
 
@@ -52,7 +53,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						execValue: state.uiValue
+						execValue: state.uiValue,
+						dirty: false
 					}
 				}));
 
@@ -67,7 +69,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						uiValue: definition.defval
+						uiValue: definition.defval,
+						dirty: definition.defval !== _state.state.execValue
 					}
 				}));
 			},
@@ -77,7 +80,8 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 				set((_state) => ({
 					state: {
 						..._state.state,
-						uiValue: state.execValue
+						uiValue: state.execValue,
+						dirty: false
 					}
 				}));
 			},
@@ -97,7 +101,7 @@ export function createExportStore(session: ISessionApi, exportId: string) {
 	const definition = exportApi;
 	const sessionExport = exportApi;
 
-	return create<ISdReactExport>(() => ({
+	return create<IShapeDiverExport>(() => ({
 		definition,
 		/** Actions that can be taken on the export. */
 		actions: {
@@ -109,9 +113,10 @@ export function createExportStore(session: ISessionApi, exportId: string) {
 }
 
 /**
- * Store of parameter stores.
+ * Store data related to abstracted parameters and exports.
+ * @see {@link IShapeDiverStoreParameters}
  */
-export const useShapediverStoreParameters = create<IShapeDiverStoreParameters>()(devtools((set, get) => ({
+export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()(devtools((set, get) => ({
 
 	parameterStores: {},
 	exportStores: {},
@@ -170,12 +175,20 @@ export const useShapediverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "removeSession");
 	},
 
+	useParameters: (sessionId: string) => {
+		return get().parameterStores[sessionId] || {};
+	},
+
 	useParameter: (sessionId: string, paramId: string) => {
-		return get().parameterStores[sessionId][paramId];
+		return get().useParameters(sessionId)[paramId] || {};
+	},
+
+	useExports: (sessionId: string) => {
+		return get().exportStores[sessionId] || {};
 	},
 
 	useExport: (sessionId: string, exportId: string) => {
-		return get().exportStores[sessionId][exportId];
+		return get().useExports(sessionId)[exportId] || {};
 	}
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Parameters" }));

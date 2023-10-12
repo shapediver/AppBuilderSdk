@@ -1,17 +1,19 @@
 import { Switch } from "@mantine/core";
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a button for a boolean parameter.
- * It displays a Skeleton if the session is not accessible yet.
  *
  * @returns
  */
-export default function ParameterBooleanComponent(props: PropsParameters<boolean>): JSX.Element {
-	const { definition, state, actions } = props;
-	const [defaultValue, setDefaultValue] = useState(false);
+export default function ParameterBooleanComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId, disableIfDirty } = props;
+	const { definition, actions, state } = useParameter<boolean>(sessionId, parameterId);
+	
+	const [defaultValue] = useState(() => definition.defval.toLowerCase() === "true");
 
 	const handleChange = (value: boolean) => {
 		// set the value and customize the session
@@ -19,10 +21,6 @@ export default function ParameterBooleanComponent(props: PropsParameters<boolean
 			actions.execute();
 		}
 	};
-
-	useEffect(() => {
-		setDefaultValue(state.uiValue === true || state.uiValue === "true");
-	}, [state]);
 
 	return <>
 		<ParameterLabelComponent { ...props} />
@@ -33,6 +31,7 @@ export default function ParameterBooleanComponent(props: PropsParameters<boolean
 			size="md"
 			defaultChecked={defaultValue}
 			onChange={(event) => handleChange(event.currentTarget.checked)}
+			disabled={disableIfDirty && state.dirty}
 		/>}
 	</>;
 }

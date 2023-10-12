@@ -4,12 +4,11 @@ import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
 import HeaderBar from "components/ui/HeaderBar";
 import NavigationBar from "components/ui/NavigationBar";
-import ParameterUiComponent from "components/shapediver/ParameterUiComponent";
-import React, { useEffect, useState } from "react";
-import { useShapediverStoreViewer } from "store/shapediverStoreViewer";
-import ViewerUiBridgeComponent from "components/shapediver/ViewerUiBridgeComponent";
-import ParameterGroupsUiComponent from "components/shapediver/ui/ParameterGroupsUiComponent";
-import ExportsUiComponent from "components/shapediver/ui/ExportsUiComponent";
+import React, { useState } from "react";
+import ParameterAccordionComponent from "components/shapediver/ui/ParameterAccordionComponent";
+import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useSession } from "hooks/useSession";
+import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
 
 /**
  * Function that creates the view page.
@@ -24,50 +23,40 @@ import ExportsUiComponent from "components/shapediver/ui/ExportsUiComponent";
 export default function ViewPage() {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const { createSession, closeSession, sessions } = useShapediverStoreViewer();
-
+	
+	const sessionId = "session_1";
 	const sessionCreateDto = {
-		id: "session_1",
+		id: sessionId,
 		ticket: "340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
 		excludeViewports: ["viewport_2"],
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		// if there is already a session with the same unique id registered
-		// we wait until that session is closed until we create this session anew
-		// the closing of the session is done on unmount
-		// this can happen in development mode due to the duplicate calls of react
-		// read about that here: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state
-		createSession(sessionCreateDto).finally(() => { // TODO async issue, a session created faster than the previous one is closed
-			setLoading(false);
-		});
+	const { sessionApi } = useSession(sessionCreateDto);
+	useRegisterSessionParameters(sessionApi);
 
-		return () => {
-			// when the ViewPage gets destroyed, we close the session
-			closeSession(sessionCreateDto.id);
-		};
-	}, []);
-
+	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
+		return {sessionId, parameterId: id};
+	}));
+	const exportProps = useShapeDiverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
+		return {sessionId, exportId: id};
+	}));
+	
 	return (
 		<>
-			<ViewerUiBridgeComponent sessionId={sessionCreateDto.id} sessions={sessions}/>
-
 			<AppShell
 				padding="md"
 				navbarOffsetBreakpoint="sm"
 				asideOffsetBreakpoint="sm"
 				navbar={
-					<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+					<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }}>
 						<NavigationBar />
 					</Navbar>
 				}
 				header={
 					<Header height={60} p="xs">
 						<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
-							<MediaQuery largerThan="sm" styles={{ display: "none" }}>
+							<MediaQuery largerThan="md" styles={{ display: "none" }}>
 								<Burger
 									opened={opened}
 									onClick={() => setOpened((o) => !o)}
@@ -82,29 +71,21 @@ export default function ViewPage() {
 				}
 				aside={
 					<MediaQuery smallerThan="sm" styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}>
-						<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+						<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 300, lg: 300 }}>
 							<Tabs defaultValue="parameters">
 								<Tabs.List>
 									<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 									<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 								</Tabs.List>
-
-
-								{ !loading && <ParameterUiComponent
-									sessionId={sessionCreateDto.id}
-									parametersRenderComponent={({ parameters }) =>
-										<Tabs.Panel value="parameters" pt="xs">
-											{ !loading && <ParameterGroupsUiComponent parameters={parameters} /> }
-										</Tabs.Panel>
-									}
-									exportsRenderComponent={({ exports }) =>
-										<Tabs.Panel value="exports" pt="xs">
-											{ !loading && <ExportsUiComponent exports={exports} /> }
-										</Tabs.Panel>
-									}
-								/> }
+								
+								<Tabs.Panel value="parameters" pt="xs">
+									<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+								</Tabs.Panel>
+							
+								<Tabs.Panel value="exports" pt="xs">
+									<ParameterAccordionComponent exports={exportProps} defaultGroupName="Exports" />
+								</Tabs.Panel>
 							</Tabs>
-
 						</Aside>
 					</MediaQuery>
 				}
@@ -117,28 +98,16 @@ export default function ViewPage() {
 					// minus two times padding (2 x 16)
 					maxHeight: "calc(100% - 268px);!important"
 				}}>
-					<div style={{
-						textAlign: "center",
-						height: "100%"
-					}}>
-						<div style={{
-							position: "relative",
-							width: "100%",
-							height: "100%",
-							overflow: "hidden"
-						}}>
-							<ViewportComponent
-								id='viewport_1'
-								sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
-								sessionSettingsId='session_1'
-								branding={{
-									backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-									logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
-								}}
-							/>
-						</div>
-					</div >
-
+					<ViewportComponent
+						id='viewport_1'
+						sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
+						showStatistics={true}
+						branding={{
+							backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+							logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
+						}}
+					/>
+		
 				</MediaQuery>
 			</AppShell >
 		</>

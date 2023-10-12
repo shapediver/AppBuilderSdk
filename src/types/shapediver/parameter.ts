@@ -1,17 +1,16 @@
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
-import { ISdReactParamOrExport } from "types/shapediver/common";
-import { ShapeDiverCommonsGroup } from "@shapediver/api.geometry-api-dto-v2/dist/commons/SdCommonsGroup";
+import { IShapeDiverParamOrExport } from "types/shapediver/common";
 
 /**
  * The static definition of a parameter.
  * We reuse the definition of the parameter on the Geometry Backend here.
  */
-export type ISdReactParameterDefinition = ShapeDiverResponseParameter;
+export type IShapeDiverParameterDefinition = ShapeDiverResponseParameter;
 
 /**
  * The dynamic properties of a parameter.
  */
-export interface ISdReactParameterState<T> {
+export interface IShapeDiverParameterState<T> {
 
     /**
      * The current value according to the user interface.
@@ -27,16 +26,16 @@ export interface ISdReactParameterState<T> {
     readonly execValue: T | string;
 
     /**
-     * Whether the parameter shall appear locked in the user interface.
+     * True if the uiValue is dirty (does not match the execValue). 
      * This might be the case during background executions.
      */
-    readonly locked: boolean;
+    readonly dirty: boolean;
 }
 
 /**
  * Actions which can be taken on a parameter.
  */
-export interface ISdReactParameterActions<T> {
+export interface IShapeDiverParameterActions<T> {
     /**
      * Set the ui value of the parameter.
      * The provided value must be valid, otherwise this function will return false.
@@ -79,23 +78,19 @@ export interface ISdReactParameterActions<T> {
 /**
  * A parameter including its definition (static properties) and its state.
  */
-export interface ISdReactParameter<T> extends ISdReactParamOrExport {
+export interface IShapeDiverParameter<T> extends IShapeDiverParamOrExport {
 
     /** The static definition of the parameter. */
-    readonly definition: ISdReactParameterDefinition;
+    readonly definition: IShapeDiverParameterDefinition;
 
     /**
      * The dynamic properties (aka the "state") of the parameter.
      * Reactive components can react to this state, but not update it.
     */
-    readonly state: ISdReactParameterState<T>;
+    readonly state: IShapeDiverParameterState<T>;
 
     /**
      * Actions which can be taken on the parameter.
      */
-    readonly actions: ISdReactParameterActions<T>;
-}
-
-export interface ISdReactParameterGroup extends  ShapeDiverCommonsGroup {
-    elements: ISdReactParameter<any>[],
+    readonly actions: IShapeDiverParameterActions<T>;
 }

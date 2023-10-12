@@ -19,7 +19,7 @@ export default function HeaderBar() {
 				<Image
 					style={{
 						cursor: "pointer",
-						width: "300px",
+						width: "250px",
 						filter: colorScheme === "dark" ? "" : "invert(1)",
 					}}
 					fit="contain"

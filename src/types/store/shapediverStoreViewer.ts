@@ -4,14 +4,18 @@ import {
 } from "@shapediver/viewer.main.creation-control-center/src/interfaces/ICreationControlCenter";
 
 /**
- * We redeclare SessionCreationDefinition to have always have an id
+ * Redeclaration of SessionCreationDefinition to always have an id.
  */
 export interface SessionCreateDto extends SessionCreationDefinition {
 	id: string,
 }
 
+/**
+ * Redeclaration of ViewportCreationDefinition to always have an id.
+ */
 export interface ViewportCreateDto extends ViewportCreationDefinition {
 	id: string,
+	showStatistics?: boolean,
 }
 
 export interface IShapeDiverStoreViewerSessions {
@@ -29,7 +33,7 @@ export interface IShapeDiverStoreViewerCallbacks {
 /**
  * Interface for the store of viewer-related data.
  */
-export interface IShapediverStoreViewer {
+export interface IShapeDiverStoreViewer {
 
 	/**
 	 * Viewports currently known by the store.
@@ -44,7 +48,7 @@ export interface IShapediverStoreViewer {
 	createViewport: (
 		dto: ViewportCreateDto,
 		callbacks?: IShapeDiverStoreViewerCallbacks
-	) => Promise<void>;
+	) => Promise<IViewportApi | undefined>;
 
 	/**
 	 * Close a viewport and remove it from the store.
@@ -67,7 +71,7 @@ export interface IShapediverStoreViewer {
 	createSession: (
 		dto: SessionCreateDto,
 		callbacks?: IShapeDiverStoreViewerCallbacks
-	) => Promise<void>;
+	) => Promise<ISessionApi | undefined>;
 
 	/**
 	 * Close a session and remove it from the store.

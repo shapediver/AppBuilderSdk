@@ -1,4 +1,3 @@
-import { ISdReactParamOrExportDefinition } from "types/shapediver/common";
 
 /**
  * Common props of parameters and exports.
@@ -6,8 +5,8 @@ import { ISdReactParamOrExportDefinition } from "types/shapediver/common";
 export interface PropsParameterOrExport {
 	
 	/**
-	 * Definition of parameter or export.
+	 * Session the parameter or export is defined by.
 	 */
-	definition: ISdReactParamOrExportDefinition
+	readonly sessionId: string
 }
 

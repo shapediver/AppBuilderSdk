@@ -2,8 +2,9 @@ import { Slider, TextInput } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { ISdReactParameterDefinition } from "types/shapediver/parameter";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Round the number depending on the parameter type.
@@ -12,7 +13,7 @@ import { PropsParameters } from "types/components/shapediver/propsParameter";
  * @param n
  * @returns
  */
-const round = (parameter: ISdReactParameterDefinition, n: number) => {
+const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
 	if (parameter.type === PARAMETER_TYPE.INT || parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD)
 		n = +n.toFixed(0);
 	n = +n.toFixed(parameter.decimalplaces);
@@ -21,14 +22,16 @@ const round = (parameter: ISdReactParameterDefinition, n: number) => {
 };
 
 /**
- * Functional component that creates a slider component for a number parameter.
- * Additionally, a text input is added on the side.
- * It displays a Skeleton if the session is not accessible yet.
+ * Functional component that creates a slider component for a number parameter. 
+ * Additionally, a text input is added on the side. 
  *
  * @returns
  */
-export default function ParameterSliderComponent(props: PropsParameters<number>): JSX.Element {
-	const { definition, actions } = props;
+export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId, disableIfDirty } = props;
+	const { definition, actions, state } = useParameter<number>(sessionId, parameterId);
+	
+	
 	const textInputRef = useRef<HTMLInputElement>(null);
 	const [value, setValue] = useState(0);
 	const [textValue, setTextValue] = useState("");
@@ -103,12 +106,14 @@ export default function ParameterSliderComponent(props: PropsParameters<number>)
 					setTextValue(round(definition, v) + "");
 				}}
 				onChangeEnd={handleChange}
+				disabled={disableIfDirty && state.dirty}
 			/> }
 			{ definition && <TextInput
 				ref={textInputRef}
 				style={{ width: "30%" }}
 				value={textValue}
 				onChange={handleChangeDelay}
+				disabled={disableIfDirty && state.dirty}
 			/> }
 		</div>}
 	</>;

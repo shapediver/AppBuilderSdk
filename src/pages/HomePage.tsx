@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 /**
- * Function that create the home page.
+ * Function that creates the home page.
  * On this page, an introduction is provided and all other pages are linked.
  *
  * Currently under construction.
@@ -14,7 +14,7 @@ export default function HomePage() {
 	return (
 		<>
 			<Container style={{ paddingTop: "3rem" }} size="lg" px="lg">
-				<h1>ShapeDiver CreateReactApp Example</h1>
+				<h1>ShapeDiver React Example</h1>
 
 				<Card shadow="sm" p="lg" radius="md">
 					<Card.Section>
@@ -26,7 +26,8 @@ export default function HomePage() {
 					</Card.Section>
 					<Group position="apart" mt="md" mb="xs">
 						<Text size="sm" color="dimmed">
-              On this example page we present several use cases that utilize React components for the creation of viewports, sessions, parameters, exports and much more. All these components are provided in the repository and can be customized freely.
+On this example page we present several use cases that utilize React components for the creation of viewports, sessions, 
+components representing parameters and exports, and much more. All these components are provided in the repository and can be customized easily. 
 						</Text>
 					</Group>
 				</Card>
@@ -38,15 +39,18 @@ export default function HomePage() {
 							<Image
 								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 								height={160}
+								style={{ padding: "1rem" }}
+								fit="contain"
 								alt="Under Construction"
 							/>
 						</Card.Section>
 						<Group position="apart" mt="md" mb="xs">
-							<Text weight={500}>View Page</Text>
+							<Text weight={500}>Model View Page</Text>
 						</Group>
 
 						<Text size="sm" color="dimmed">
-              The example for the view page loads a model and creates a parameter and export menu. All export and parameter types are separated in different components to make them easily customizable.
+This example opens a single session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing 
+the parameters and exports defined by the model. All components are easily customizable.
 						</Text>
 
 						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/view">
@@ -61,6 +65,8 @@ export default function HomePage() {
 							<Image
 								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 								height={160}
+								style={{ padding: "1rem" }}
+								fit="contain"
 								alt="Under Construction"
 							/>
 						</Card.Section>
@@ -69,7 +75,8 @@ export default function HomePage() {
 						</Group>
 
 						<Text size="sm" color="dimmed">
-              The example for the model select page loads a viewport in which multiple sessions can be loaded at once. In this example, the settings of the model which is first selected in the list are used in the viewport.
+This example displays a single viewport in which sessions with multiple ShapeDiver models can be loaded at once. 
+The settings of the model which is selected first are used to configure the viewport (camera, controls, etc).
 						</Text>
 
 						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/modelSelect">

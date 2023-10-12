@@ -1,19 +1,21 @@
 import { ActionIcon, ColorInput } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
-import { PropsParameters } from "types/components/shapediver/propsParameter";
+import { PropsParameter } from "types/components/shapediver/propsParameter";
+import { useParameter } from "hooks/useParameter";
 
 /**
  * Functional component that creates a color swatch for a color parameter.
- * It displays a Skeleton if the session is not accessible yet.
  *
  * @returns
  */
-export default function ParameterColorComponent(props: PropsParameters<string>): JSX.Element {
-	const { definition, actions } = props;
-	let defaultValue = "";
-	const [value, setValue] = useState("");
+export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
+	const { sessionId, parameterId, disableIfDirty } = props;
+	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
+	
+	const defaultValue = definition.defval.replace("0x", "#").substring(0, 7);
+	const [value, setValue] = useState(() => defaultValue);
 
 	// callback for when the value was changed
 	const handleChange = (colorValue: string) => {
@@ -21,14 +23,6 @@ export default function ParameterColorComponent(props: PropsParameters<string>):
 			actions.execute();
 		}
 	};
-
-	useEffect(() => {
-		// set the default value
-		if (!defaultValue) {
-			defaultValue = (definition.defval).replace("0x", "#").substring(0, 7);
-			setValue(defaultValue);
-		}
-	}, [definition]);
 
 	return <>
 		<ParameterLabelComponent { ...props } />
@@ -49,6 +43,7 @@ export default function ParameterColorComponent(props: PropsParameters<string>):
 				</ActionIcon>
 			}
 			onChangeEnd={handleChange}
+			disabled={disableIfDirty && state.dirty}
 		/> }
 	</>;
 }

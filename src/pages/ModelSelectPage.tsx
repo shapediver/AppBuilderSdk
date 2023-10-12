@@ -24,14 +24,14 @@ export default function ModelSelectPage() {
 		<AppShell
 			padding="md"
 			navbar={
-				<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+				<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }}>
 					<NavigationBar />
 				</Navbar>
 			}
 			header={
 				<Header height={60} p="xs">
 					<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
-						<MediaQuery largerThan="sm" styles={{ display: "none" }}>
+						<MediaQuery largerThan="md" styles={{ display: "none" }}>
 							<Burger
 								opened={opened}
 								onClick={() => setOpened((o) => !o)}
@@ -46,7 +46,7 @@ export default function ModelSelectPage() {
 			}
 			aside={
 				<MediaQuery smallerThan="sm" styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}>
-					<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+					<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 300, lg: 300 }}>
 						<ModelSelect />
 					</Aside>
 				</MediaQuery>
@@ -60,28 +60,15 @@ export default function ModelSelectPage() {
 				// minus two times padding (2 x 16)
 				maxHeight: "calc(100% - 268px);!important"
 			}}>
-				<div style={{
-					textAlign: "center",
-					height: "100%"
-				}}>
-					<div style={{
-						position: "relative",
-						width: "100%",
-						height: "100%",
-						overflow: "hidden"
-					}}>
-						<ViewportComponent
-							id='viewport_2'
-							sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
-							sessionSettingsId='selected_session_0'
-							branding={{
-								backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-								logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
-							}}
-						/>
-					</div>
-				</div >
-
+				<ViewportComponent
+					id='viewport_2'
+					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
+					showStatistics={true}
+					branding={{
+						backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+						logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
+					}}
+				/>
 			</MediaQuery>
 		</AppShell >
 	);

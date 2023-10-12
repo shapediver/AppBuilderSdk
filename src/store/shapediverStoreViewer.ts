@@ -1,5 +1,5 @@
 import { createSession, createViewport, ISessionApi, IViewportApi } from "@shapediver/viewer";
-import { SessionCreateDto, IShapediverStoreViewer, ViewportCreateDto } from "types/store/shapediverStoreViewer";
+import { SessionCreateDto, IShapeDiverStoreViewer, ViewportCreateDto } from "types/store/shapediverStoreViewer";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "./storeSettings";
@@ -32,9 +32,10 @@ const createViewportIdentifier =  function(parameters: Pick<ViewportCreateDto, "
 };
 
 /**
- * Store of viewer-related data.
+ * Store data related to the ShapeDiver 3D Viewer.
+ * @see {@link IShapeDiverStoreViewer}
  */
-export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtools((set, get) => ({
+export const useShapeDiverStoreViewer = create<IShapeDiverStoreViewer>()(devtools((set, get) => ({
 
 	viewports: {},
 
@@ -57,7 +58,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			if (callbacks.onError) callbacks.onError(e);
 		}
 
-		return set((state) => {
+		set((state) => {
 			return {
 				viewports: {
 					...state.viewports,
@@ -65,6 +66,8 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 				},
 			};
 		}, false, "createViewport");
+
+		return viewport;
 	},
 
 	closeViewport: async (
@@ -117,7 +120,7 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 			if (callbacks.onError) callbacks.onError(e);
 		}
 
-		return set((state) => {
+		set((state) => {
 			return {
 				sessions: {
 					...state.sessions,
@@ -125,6 +128,8 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 				},
 			};
 		}, false, "createSession");
+
+		return session;
 	},
 
 	closeSession: async (
@@ -181,7 +186,9 @@ export const useShapediverStoreViewer = create<IShapediverStoreViewer>()(devtool
 
 		return Promise.all([
 			...sessionsToDelete.map((sessionToDelete) => closeSession(sessionToDelete.id)),
-			...sessionsToCreate.map((sessionDataNew) => createSession(sessionDataNew.data)),
+			...sessionsToCreate.map((sessionDataNew) => {
+				createSession(sessionDataNew.data);
+			}),
 		]);
 	},
 }
