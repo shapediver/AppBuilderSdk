@@ -39,9 +39,6 @@ export default function ParameterStringComponent(props: PropsParameter): JSX.Ele
 		<ParameterLabelComponent { ...props } />
 		{definition && <TextInput
 			ref={textInputRef}
-			style={{
-				flexGrow: 0.9
-			}}
 			defaultValue={state.uiValue}
 			onChange={handleChangeDelay}
 			disabled={disableIfDirty && state.dirty}
