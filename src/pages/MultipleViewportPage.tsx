@@ -61,12 +61,10 @@ export default function ViewPage() {
 	});
 
 	return (
-		<>
-			<ExamplePage>
-				<Grid style={{height: "100%"}}>
-					{ viewports }
-				</Grid>
-			</ExamplePage>
-		</>
+		<ExamplePage>
+			<Grid style={{height: "100%"}}>
+				{ viewports }
+			</Grid>
+		</ExamplePage>
 	);
 }
