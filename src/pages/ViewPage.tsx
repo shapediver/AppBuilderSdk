@@ -1,4 +1,4 @@
-import { Tabs, useMantineTheme } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
@@ -8,20 +8,16 @@ import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
 import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
 import ExamplePage from "pages/ExamplePage";
+import { useBranding } from "hooks/useViewport";
 
 /**
  * Function that creates the view page.
- * An AppShell is used with:
- * - the header specified as in HeaderBar
- * - the navigation (left side) specified as in NavigationBar
- * - the aside (right side) two tabs, one with a ParameterUiComponent and another with an ExportUiComponent
- * - and a viewport and session in the main component. The session is connected via its id to the ParameterUiComponent and ExportUiComponent.
+ * The aside (right side) two tabs, one with a ParameterUiComponent and another with an ExportUiComponent
+ * and a viewport and session in the main component. The session is connected via its id to the ParameterUiComponent and ExportUiComponent.
  *
  * @returns
  */
 export default function ViewPage() {
-	const theme = useMantineTheme();
-
 	const sessionId = "session_1";
 	const sessionCreateDto = {
 		id: sessionId,
@@ -30,6 +26,7 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 
+	const { branding } = useBranding();
 	const { sessionApi } = useSession(sessionCreateDto);
 	useRegisterSessionParameters(sessionApi);
 
@@ -62,10 +59,7 @@ export default function ViewPage() {
 					id='viewport_1'
 					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
 					showStatistics={true}
-					branding={{
-						backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
-						logo: theme.colorScheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
-					}}
+					branding={branding}
 				/>
 			</ExamplePage>
 		</>
