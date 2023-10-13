@@ -64,7 +64,9 @@ export default function ExamplePage({ children = <></>, aside = <></> }: Props) 
 					// minus two times padding (2 x 16)
 					maxHeight: "calc(100% - 268px);!important"
 				}}>
-					{ children }
+					<div style={{ height: "100%", width: "100%"}}>
+						{ children }
+					</div>
 				</MediaQuery>
 			</AppShell>
 		</>

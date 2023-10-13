@@ -63,7 +63,7 @@ export default function ViewPage() {
 	}));
 
 	const viewports = Object.values(sessionsCreateDto).map((sessionCreateDto, i) => {
-		return <Grid.Col span={12} lg={6} key={sessionCreateDto.id} style={{height: "50%"}}>
+		return <Grid.Col span={6} key={sessionCreateDto.id} style={{height: "50%"}}>
 			<ViewportComponent
 				id={"viewport_multiple_" + i}
 				sessionSettingsId={sessionCreateDto.id}
