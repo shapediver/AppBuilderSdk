@@ -25,7 +25,7 @@ interface ParamOrExportDefinition {
 	definition: IShapeDiverParamOrExportDefinition,
 }
 
-export default function ParameterAccordionComponent(props: Props): JSX.Element {
+export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
 	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
 	const {parameterStores, exportStores} = useShapeDiverStoreParameters();
@@ -37,6 +37,7 @@ export default function ParameterAccordionComponent(props: Props): JSX.Element {
 
 		return { parameter: p, definition };
 	}));
+
 	sortedParamsAndExports = sortedParamsAndExports.concat((exports || []).map(e => {
 		const definition = exportStores[e.sessionId][e.exportId].getState().definition;
 

@@ -3,7 +3,7 @@ import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/ViewportComponent";
 import React from "react";
-import ParameterAccordionComponent from "components/shapediver/ui/ParameterAccordionComponent";
+import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
 import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
@@ -45,12 +45,14 @@ export default function ViewPage() {
 
 		<Tabs.Panel value="parameters" pt="xs"  style={{ position: "relative", height: "100%"}}>
 			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
-				<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt="xs">
-			<ParameterAccordionComponent exports={exportProps} defaultGroupName="Exports" />
+			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
+				<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
+			</div>
 		</Tabs.Panel>
 	</Tabs>;
 
