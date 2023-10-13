@@ -13,7 +13,7 @@ import { useParameter } from "hooks/useParameter";
 export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
 	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
-	
+
 	const defaultValue = definition.defval.replace("0x", "#").substring(0, 7);
 	const [value, setValue] = useState(() => defaultValue);
 
@@ -43,7 +43,7 @@ export default function ParameterColorComponent(props: PropsParameter): JSX.Elem
 				</ActionIcon>
 			}
 			onChangeEnd={handleChange}
-			disabled={disableIfDirty && state.dirty}
+			readOnly={disableIfDirty && state.dirty}
 		/> }
 	</>;
 }

@@ -28,7 +28,7 @@ export default function ExamplePage({ children = <></>, aside = <></> }: Props) 
 				navbarOffsetBreakpoint="sm"
 				asideOffsetBreakpoint="sm"
 				navbar={
-					<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }}>
+					<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }} style={{ width: "auto"}}>
 						<NavigationBar />
 					</Navbar>
 				}

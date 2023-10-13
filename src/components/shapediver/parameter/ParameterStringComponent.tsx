@@ -12,7 +12,6 @@ import { useParameter } from "hooks/useParameter";
 export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
 	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
-	
 	const textInputRef = useRef<HTMLInputElement>(null);
 
 	// function to apply the value to the parameter and customize the scene
@@ -32,7 +31,7 @@ export default function ParameterStringComponent(props: PropsParameter): JSX.Ele
 		zoomResizeTimeout = setTimeout(() => {
 			if (textInputRef.current)
 				handleChange(textInputRef.current.value);
-		}, 500);
+		}, 1000);
 	};
 
 	return <>
@@ -42,6 +41,7 @@ export default function ParameterStringComponent(props: PropsParameter): JSX.Ele
 			defaultValue={state.uiValue}
 			onChange={handleChangeDelay}
 			disabled={disableIfDirty && state.dirty}
+			maxLength={definition.max}
 		/>}
 	</>;
 }

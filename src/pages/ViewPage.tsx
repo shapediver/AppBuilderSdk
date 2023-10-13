@@ -37,14 +37,16 @@ export default function ViewPage() {
 		return {sessionId, exportId: id};
 	}));
 
-	const aside = <Tabs defaultValue="parameters">
+	const aside = <Tabs defaultValue="parameters" style={{ height: "100%"}}>
 		<Tabs.List>
 			<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 			<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt="xs">
-			<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+		<Tabs.Panel value="parameters" pt="xs"  style={{ position: "relative", height: "100%"}}>
+			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
+				<ParameterAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+			</div>
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt="xs">
