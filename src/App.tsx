@@ -5,6 +5,7 @@ import HomePage from "pages/HomePage";
 import ModelSelectPage from "pages/ModelSelectPage";
 import NoMatchPage from "pages/NoMatchPage";
 import ViewPage from "pages/ViewPage";
+import MultipleViewportPage from "pages/MultipleViewportPage";
 
 export default function App() {
 	const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
@@ -18,6 +19,7 @@ export default function App() {
 						<Route path="/" element={<HomePage />} />
 						<Route path="view" element={<ViewPage />} />
 						<Route path="modelSelect" element={<ModelSelectPage />} />
+						<Route path="multipleViewport" element={<MultipleViewportPage />} />
 						<Route path="*" element={<NoMatchPage />} />
 					</Routes>
 				</HashRouter>

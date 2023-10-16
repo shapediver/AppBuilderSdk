@@ -29,6 +29,12 @@ export default function NavigationBar() {
 				</Button>
 			</Navbar.Section>
 
+			<Navbar.Section mx="-xs" px="xs" >
+				<Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/multipleViewport">
+					Multiple Viewports
+				</Button>
+			</Navbar.Section>
+
 			<Outlet />
 		</>
 	);

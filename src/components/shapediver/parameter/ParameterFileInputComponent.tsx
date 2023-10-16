@@ -1,6 +1,6 @@
 import { ActionIcon, FileInput } from "@mantine/core";
 import { IconUpload, IconX } from "@tabler/icons-react";
-import React, { JSX } from "react";
+import React, { JSX, useState } from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
@@ -14,9 +14,11 @@ import { useParameter } from "hooks/useParameter";
 export default function ParameterFileInputComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
 	const { definition, actions, state } = useParameter<File|null>(sessionId, parameterId);
-	
+	const [ value, setValue ] = useState<File|null>(null);
 	// callback for when the value was changed
 	const handleChange = (value: File | null) => {
+		setValue(value);
+
 		if (actions.setUiValue(value || "")) {
 			actions.execute();
 		}
@@ -39,6 +41,7 @@ export default function ParameterFileInputComponent(props: PropsParameter): JSX.
 				</ActionIcon>
 			}
 			disabled={disableIfDirty && state.dirty}
+			value={value}
 		/> }
 	</>;
 }

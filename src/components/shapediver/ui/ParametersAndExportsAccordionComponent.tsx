@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { Accordion, Divider, Loader, MediaQuery, ScrollArea, useMantineTheme } from "@mantine/core";
+import { Accordion, Divider, Loader, useMantineTheme } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
@@ -25,7 +25,7 @@ interface ParamOrExportDefinition {
 	definition: IShapeDiverParamOrExportDefinition,
 }
 
-export default function ParameterAccordionComponent(props: Props): JSX.Element {
+export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
 	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
 	const {parameterStores, exportStores} = useShapeDiverStoreParameters();
@@ -34,15 +34,16 @@ export default function ParameterAccordionComponent(props: Props): JSX.Element {
 	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
 	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
 		const definition = parameterStores[p.sessionId][p.parameterId].getState().definition;
-		
+
 		return { parameter: p, definition };
 	}));
+
 	sortedParamsAndExports = sortedParamsAndExports.concat((exports || []).map(e => {
 		const definition = exportStores[e.sessionId][e.exportId].getState().definition;
-		
+
 		return { export: e, definition };
 	}));
-	
+
 	// create a data structure to store the elements within groups
 	const elementGroups: {
 		[key: string]: {
@@ -82,8 +83,8 @@ export default function ParameterAccordionComponent(props: Props): JSX.Element {
 
 			elementGroups[group.id].elements.push(
 				<div key={param.definition.id}>
-					<ParameterComponent 
-						sessionId={param.parameter.sessionId} 
+					<ParameterComponent
+						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
 						disableIfDirty={disableIfDirty} />
 				</div>
@@ -95,8 +96,8 @@ export default function ParameterAccordionComponent(props: Props): JSX.Element {
 
 			elementGroups[group.id].elements.push(
 				<div key={param.definition.id}>
-					<ExportComponent 
-						sessionId={param.export.sessionId} 
+					<ExportComponent
+						sessionId={param.export.sessionId}
 						exportId={param.export.exportId} />
 				</div>
 			);
@@ -130,14 +131,7 @@ export default function ParameterAccordionComponent(props: Props): JSX.Element {
 		);
 	}
 
-	return <MediaQuery smallerThan="sm" styles={{
-		// minus tab height (34) and two times margin (2 x 10)
-		height: "calc(300px - 54px)"
-	}}>
-		<ScrollArea type="auto">
-			<Accordion variant="contained" radius="md">
-				{ elements }
-			</Accordion>
-		</ScrollArea>
-	</MediaQuery>;
+	return <Accordion variant="contained" radius="md">
+		{ elements }
+	</Accordion>;
 }
