@@ -6,7 +6,6 @@ import React from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
-import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
 import ExamplePage from "pages/ExamplePage";
 import { useBranding } from "hooks/useViewport";
 
@@ -27,8 +26,11 @@ export default function ViewPage() {
 	};
 
 	const { branding } = useBranding();
-	const { sessionApi } = useSession(sessionCreateDto);
-	useRegisterSessionParameters(sessionApi);
+
+	useSession({
+		...sessionCreateDto,
+		isParametersRegister: true,
+	});
 
 	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
 		return {sessionId, parameterId: id};

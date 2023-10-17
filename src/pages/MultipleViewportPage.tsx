@@ -2,7 +2,6 @@ import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/ViewportComponent";
 import React from "react";
 import { useSession } from "hooks/useSession";
-import { useRegisterSessionParameters } from "hooks/useRegisterSessionParameters";
 import ExamplePage from "pages/ExamplePage";
 import { useBranding } from "hooks/useViewport";
 import { Grid, Tabs } from "@mantine/core";
@@ -36,13 +35,15 @@ export default function ViewPage() {
 	};
 
 	const { branding } = useBranding();
-	const { sessionApi: sessionApi_1 } = useSession(sessionsCreateDto[sessionBenchKey]);
-	// useSession(sessionsCreateDto["Bench_2"]);
-	const { sessionApi: sessionApi_3 } = useSession(sessionsCreateDto[sessionBookshelfKey]);
-	// useSession(sessionsCreateDto["Bookshelf_2"]);
 
-	useRegisterSessionParameters(sessionApi_1);
-	useRegisterSessionParameters(sessionApi_3);
+	useSession({
+		...sessionsCreateDto[sessionBenchKey],
+		isParametersRegister: true,
+	});
+	useSession({
+		...sessionsCreateDto[sessionBookshelfKey],
+		isParametersRegister: true,
+	});
 
 	const parameterBenchProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionsCreateDto[sessionBenchKey].id)).map(id => {
 		return { sessionId: sessionsCreateDto[sessionBenchKey].id, parameterId: id };
