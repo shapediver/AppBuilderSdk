@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IShapeDiverParameter, IShapeDiverParameterState } from "types/shapediver/parameter";
-import { ISessionApi } from "@shapediver/viewer";
+import { IParameterApi, ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
@@ -9,13 +9,13 @@ import {
 	IParameterStoresPerSession,
 	IShapeDiverStoreParameters
 } from "types/store/shapediverStoreParameters";
-import { IShapeDiverExport } from "../types/shapediver/export";
+import { IShapeDiverExport } from "types/shapediver/export";
 
 /**
  * Create store for a single parameter.
  */
 export function createParameterStore<T>(session: ISessionApi, paramId: string) {
-	const param = session.parameters[paramId];
+	const param = session.parameters[paramId] as IParameterApi<T>;
 	/** The static definition of a parameter. */
 	const definition = param;
 	const state: IShapeDiverParameterState<T> = {

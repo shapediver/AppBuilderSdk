@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const useStrictMode = false;
+const useStrictMode = true;
 
 root.render(
 	useStrictMode ? <React.StrictMode><App/></React.StrictMode> : <App/>
