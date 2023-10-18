@@ -15,9 +15,10 @@ import HeaderBar from "components/ui/HeaderBar";
 interface Props {
 	children: React.ReactNode;
 	aside?: React.ReactNode;
+	className?: string;
 }
 
-export default function ExamplePage({ children = <></>, aside = <></> }: Props) {
+export default function ExamplePage({ children = <></>, aside = <></>, className = "" }: Props) {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
 
@@ -27,6 +28,7 @@ export default function ExamplePage({ children = <></>, aside = <></> }: Props) 
 				padding="md"
 				navbarOffsetBreakpoint="sm"
 				asideOffsetBreakpoint="sm"
+				className={className}
 				navbar={
 					<Navbar p="md" hiddenBreakpoint="md" hidden={!opened} width={{ md: 150, lg: 200 }} style={{ width: "auto"}}>
 						<NavigationBar />
