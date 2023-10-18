@@ -1,13 +1,16 @@
 import { Tabs } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
-import ViewportComponent from "components/shapediver/ViewportComponent";
+import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
 import { useBranding } from "hooks/useViewport";
+import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
+import { useShapeDiverStoreViewer } from "../store/shapediverStoreViewer";
 
 /**
  * Function that creates the view page.
@@ -17,6 +20,7 @@ import { useBranding } from "hooks/useViewport";
  * @returns
  */
 export default function ViewPage() {
+	const viewportId = "viewport_1";
 	const sessionId = "session_1";
 	const sessionCreateDto = {
 		id: sessionId,
@@ -24,6 +28,7 @@ export default function ViewPage() {
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
 		excludeViewports: ["viewport_2"],
 	};
+	const viewport = useShapeDiverStoreViewer(state => state.viewports[viewportId]);
 
 	const { branding } = useBranding();
 
@@ -35,9 +40,12 @@ export default function ViewPage() {
 	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
 		return {sessionId, parameterId: id};
 	}));
+
 	const exportProps = useShapeDiverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
 		return {sessionId, exportId: id};
 	}));
+
+	const fullscreenId = "viewer-fullscreen-area";
 
 	const aside = <Tabs defaultValue="parameters" style={{ height: "100%"}}>
 		<Tabs.List>
@@ -60,13 +68,23 @@ export default function ViewPage() {
 
 	return (
 		<>
-			<ExamplePage aside={aside}>
+			<ExamplePage className={fullscreenId} aside={aside}>
 				<ViewportComponent
-					id='viewport_1'
+					id={viewportId}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
 					showStatistics={true}
 					branding={branding}
-				/>
+				>
+					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
+						<ViewportIcons
+							viewport={viewport}
+							isArBtn
+							isFullscreenBtn
+							isZoomBtn
+							isCamerasBtn
+						/>
+					</ViewportAdditionalUIWrapper>
+				</ViewportComponent>
 			</ExamplePage>
 		</>
 	);

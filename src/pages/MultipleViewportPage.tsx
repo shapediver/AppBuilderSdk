@@ -1,5 +1,5 @@
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import ViewportComponent from "components/shapediver/ViewportComponent";
+import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
