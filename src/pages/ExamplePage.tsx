@@ -62,7 +62,6 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				})}
 			>
 				<MediaQuery smallerThan="sm" styles={{
-					margin: "-16px!important",
 					// minus two times padding (2 x 16)
 					maxHeight: "calc(100% - 268px);!important"
 				}}>
