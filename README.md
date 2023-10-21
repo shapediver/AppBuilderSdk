@@ -103,7 +103,10 @@ When developing using Chrome, the following browser extensions are useful:
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-TODO add more resources here
+This [playlist](https://www.youtube.com/playlist?list=PLm0xKijKIaNEbUmUXJK1h8PoI9gYqznwS) contains some valuable tutorials about React, TypeScript, and Mantine. 
+
+  * [ShapeDiver Help Center](https://help.shapediver.com)
+  * [ShapeDiver Forum](https://forum.shapediver.com)
 
 ## Disclaimer
 
