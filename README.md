@@ -2,9 +2,14 @@
 
 This project introduces some useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer). 
 
+:warning: Work in progress, please expect frequent changes and refactoring!
+
+## Some hints about ShapeDiver
+
 The complete API documentation of the ShapeDiver 3D Viewer can be found [here](https://viewer.shapediver.com/v3/latest/api/index.html). 
 
-:warning: Work in progress, please expect frequent changes and refactoring!
+This example includes some [tickets](https://help.shapediver.com/doc/enable-embedding) of ShapeDiver models for testing. 
+You can [author](https://help.shapediver.com/doc/grasshopper) and [upload](https://help.shapediver.com/doc/uploading-models) your own Grasshopper models.  
 
 ## Dependencies
 
