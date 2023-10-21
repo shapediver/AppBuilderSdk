@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AppShell, Aside, Burger, Header, MediaQuery, Navbar, useMantineTheme } from "@mantine/core";
 import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
+import { useMediaQuery } from "@mantine/hooks";
 
 /**
  * Function that creates the view page.
@@ -21,11 +22,12 @@ interface Props {
 export default function ExamplePage({ children = <></>, aside = <></>, className = "" }: Props) {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
+	const isMobile = useMediaQuery("(max-width: 765px)");
 
 	return (
 		<>
 			<AppShell
-				padding="md"
+				padding={isMobile ? 0 : "md"}
 				navbarOffsetBreakpoint="sm"
 				asideOffsetBreakpoint="sm"
 				className={className}
@@ -62,7 +64,6 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				})}
 			>
 				<MediaQuery smallerThan="sm" styles={{
-					margin: "-16px!important",
 					// minus two times padding (2 x 16)
 					maxHeight: "calc(100% - 268px);!important"
 				}}>
