@@ -39,6 +39,7 @@ export interface IShapeDiverParameterActions<T> {
     /**
      * Set the ui value of the parameter.
      * The provided value must be valid, otherwise this function will return false.
+     * Note: Does not call execute.
      *
      * @param value the value to use for setting state.uiValue
      */
@@ -46,6 +47,11 @@ export interface IShapeDiverParameterActions<T> {
 
     /**
      * Run background executions, and update state.execValue on success.
+     * Note: The returned promise might not resolve for quite some time, e.g. in 
+     * case parameter changes are waiting to be confirmed by the user. 
+     * 
+     * @returns true in case execution was successful, false in case it failed or
+     *          was rejected by the user. 
      */
     execute(): Promise<boolean>;
 
@@ -69,10 +75,6 @@ export interface IShapeDiverParameterActions<T> {
      */
     resetToExecValue(): void;
 
-    /**
-     * Returns the current value as a string
-     */
-    stringify(): string;
 }
 
 /**
@@ -93,4 +95,47 @@ export interface IShapeDiverParameter<T> extends IShapeDiverParamOrExport {
      * Actions which can be taken on the parameter.
      */
     readonly actions: IShapeDiverParameterActions<T>;
+}
+
+/**
+ * Executor interface for parameters. 
+ * Used for executing parameter changes, e.g. using an IParameterApi provided by 
+ * a ShapeDiver 3D Viewer session. 
+ * Implementations of this interface are used in the implementation of 
+ * IShapeDiverStoreParameters to provide behavior like the following: 
+ *   * immediate execution of parameter changes
+ *   * deferred execution, requiring confirmation by the user
+ * 
+ * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IParameterApi.html
+ */
+export interface IShapeDiverParameterExecutor<T> {
+    
+    /**
+     * Execute a parameter change, e.g. using an IParameterApi provided 
+     * by a ShapeDiver 3D Viewer session. 
+     * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IParameterApi.html
+     * 
+     * Note: The returned promise might not resolve for quite some time, e.g. in 
+     * case parameter changes are waiting to be confirmed by the user. 
+     * 
+     * @param uiValue The new value to execute.
+     * @param execValue The latest successfully executed value.
+     *
+     * @returns true in case execution was successful, false in case it failed or
+     *          was rejected by the user. 
+     */
+    readonly execute: (uiValue : T | string, execValue: T | string) => Promise<boolean>;
+
+    /**
+     * Evaluates if a given value is valid.
+     *
+     * @param value the value to evaluate
+     * @param throwError if true, an error is thrown if validation does not pass (default: false)
+     */
+    readonly isValid: (value: any, throwError?: boolean) => boolean;
+
+    /**
+     * Definition of the parameter.
+     */
+    readonly definition: ShapeDiverResponseParameter;
 }

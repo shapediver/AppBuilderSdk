@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { IShapeDiverParameter, IShapeDiverParameterState } from "types/shapediver/parameter";
+import { IShapeDiverParameter, IShapeDiverParameterExecutor, IShapeDiverParameterState } from "types/shapediver/parameter";
 import { IParameterApi, ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
@@ -11,16 +11,39 @@ import {
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 
+function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string): IShapeDiverParameterExecutor<T> {
+	const param = session.parameters[paramId] as IParameterApi<T>;
+	
+	return {
+		execute: async (uiValue: T | string, execValue: T | string) => {
+			try {
+				param.value = uiValue;
+				await session.customize();
+				
+				return true;
+			}
+			catch // TODO provide possibility to react to exception
+			{
+				param.value = execValue;
+				
+				return false;
+			}
+		},
+		isValid: (uiValue: T | string, throwError?: boolean) => param.isValid(uiValue, throwError),
+		definition: param
+	};
+}
+
 /**
  * Create store for a single parameter.
  */
-function createParameterStore<T>(session: ISessionApi, paramId: string) {
-	const param = session.parameters[paramId] as IParameterApi<T>;
+function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
+	const definition = executor.definition;
+
 	/** The static definition of a parameter. */
-	const definition = param;
 	const state: IShapeDiverParameterState<T> = {
-		uiValue: definition.value,
-		execValue: definition.value,
+		uiValue: definition.defval,
+		execValue: definition.defval,
 		dirty: false
 	};
 
@@ -48,24 +71,31 @@ function createParameterStore<T>(session: ISessionApi, paramId: string) {
 			},
 			execute: async function (): Promise<boolean> {
 				const state = get().state;
-				param.value = state.uiValue;
-				await session.customize();
-				set((_state) => ({
-					state: {
-						..._state.state,
-						execValue: state.uiValue,
-						dirty: false
-					}
-				}));
+				const result = await executor.execute(state.uiValue, state.execValue);
+				if (result)
+					set((_state) => ({
+						state: {
+							..._state.state,
+							execValue: state.uiValue,
+							dirty: false
+						}
+					}));
+				else
+					set((_state) => ({
+						state: {
+							..._state.state,
+							uiValue: state.execValue,
+							dirty: false
+						}
+					}));
 
-				return true;
+				return result;
 			},
 			isValid: function (value: any, throwError?: boolean | undefined): boolean {
-				return param.isValid(value, throwError);
+				return executor.isValid(value, throwError);
 			},
 			resetToDefaultValue: function (): void {
 				const definition = get().definition;
-				param.value = definition.defval;
 				set((_state) => ({
 					state: {
 						..._state.state,
@@ -76,7 +106,6 @@ function createParameterStore<T>(session: ISessionApi, paramId: string) {
 			},
 			resetToExecValue: function (): void {
 				const state = get().state;
-				param.value = state.execValue;
 				set((_state) => ({
 					state: {
 						..._state.state,
@@ -85,9 +114,6 @@ function createParameterStore<T>(session: ISessionApi, paramId: string) {
 					}
 				}));
 			},
-			stringify: function (): string {
-				return param.stringify();
-			}
 		}
 	}));
 }
@@ -133,7 +159,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					: {
 						..._state.parameterStores,
 						[sessionId]: Object.keys(session.parameters).reduce((acc, paramId) => {
-							acc[paramId] = createParameterStore(session, paramId);
+							acc[paramId] = createParameterStore(createDefaultParameterExecutor(session, paramId));
 
 							return acc;
 						}, {} as IParameterStores)
