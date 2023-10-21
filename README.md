@@ -1,46 +1,105 @@
-# Getting Started with Create React App
+# ShapeDiver React template
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project introduces some useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer). 
 
-## Available Scripts
+The complete API documentation of the ShapeDiver 3D Viewer can be found [here](https://viewer.shapediver.com/v3/latest/api/index.html). 
 
-In the project directory, you can run:
+:warning: Work in progress, please expect frequent changes and refactoring!
 
-### `npm start`
+## Dependencies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Basics
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The example is coded using [TypeScript](https://www.typescriptlang.org/). We use [Vite](https://vitejs.dev/) as a build tool for 
+fast development experience. 
 
-### `npm test`
+### UI Kit
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This template uses the [Mantine](https://mantine.dev/) UI Kit. However, the code has been developed having reusability in mind, which means 
+it should easily be possible to swap out the UI Kit. 
 
-### `npm run build`
+### State management
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+We use the [zustand](https://github.com/pmndrs/zustand) state manager to provide the following stores: 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### ShapeDiver session and viewport store
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This store is used to manage [viewports](https://help.shapediver.com/doc/viewers) and [sessions](https://help.shapediver.com/doc/sessions) of the ShapeDiver 3D viewer. 
 
-### `npm run eject`
+Interface: [IShapeDiverStoreViewer](src/types/store/shapediverStoreViewer.ts), 
+Implementation: [useShapeDiverStoreViewer](src/store/useShapeDiverStoreViewer.ts)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Related hooks: 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  * [useViewport](src/hooks/useViewport.ts)
+  * [useSession](src/hooks/useSession.ts)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Related components: 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  * [ViewportComponent](src/components/shapediver/viewport/ViewportComponent.tsx) makes use of `useViewport`
+  * [ViewPage](src/pages/ViewPage.tsx) creates a single session using `useSession` and uses a `ViewportComponent`
+
+#### Parameter and export store
+
+This store provides a stateful abstraction of the parameter and export functionality offered by the ShapeDiver 3D Viewer. 
+
+Interface: [IShapeDiverStoreParameters](src/types/store/shapediverStoreParameters.ts), 
+Implementation: [useShapeDiverStoreParameters](src/store/useShapeDiverStoreParameters.ts)
+
+Related hooks: 
+
+  * [useParameter](src/hooks/useParameter.ts)
+  * [useExport](src/hooks/useExport.ts)
+
+Related components: 
+ 
+  * [ParameterStringComponent](src/components/shapediver/parameter/ParameterStringComponent.tsx) implements a string parameter component and makes use of `useParameter`
+  * [ExportButtonComponent](src/components/shapediver/exports/ExportButtonComponent.tsx) allows to trigger an export and makes use of `useExport`
+  * [ParametersAndExportsAccordionComponent](src/components/shapediver/ui/ParametersAndExportsAccordionComponent.tsx) implements an accordion of grouped parameter and export components
+
+## Prerequisites
+
+We recommend using an IDE like [Visual Studio Code](https://code.visualstudio.com/). 
+
+Recommended extensions: 
+
+  * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+The example works using [node.js](https://nodejs.dev/en/about/releases/) 18 and 20. 
+
+## Getting started
+
+Install dependencies: 
+
+```npm i```
+
+Start local development server: 
+
+```npm run start```
+
+This runs the app in development mode. Open [http://127.0.0.1:3000](http://127.0.0.1:3000) to view it in the browser. 
+The page will re-render when you make edits. You will also see potential errors in the console. 
+
+### Further available scripts
+
+```npm run build```
+
+Builds the app for production to the `dist` folder.
+
+## Developer tools
+
+When developing using Chrome, the following browser extensions are useful: 
+
+  * [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+  * [Redux DevTools](https://github.com/reduxjs/redux-devtools): allows to inspect the stores managed by [zustand](https://github.com/pmndrs/zustand)
+
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+TODO add more resources here
+
+## Disclaimer
+
+This code example is provided as is. We do not warrant it to be useful for any purpose.  

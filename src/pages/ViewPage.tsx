@@ -4,13 +4,13 @@ import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
-import { useBranding } from "hooks/useViewport";
+import { useMantineBranding } from "hooks/useMantineBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
-import { useShapeDiverStoreViewer } from "../store/shapediverStoreViewer";
+import { useShapeDiverStoreViewer } from "../store/useShapeDiverStoreViewer";
 
 /**
  * Function that creates the view page.
@@ -30,11 +30,11 @@ export default function ViewPage() {
 	};
 	const viewport = useShapeDiverStoreViewer(state => state.viewports[viewportId]);
 
-	const { branding } = useBranding();
+	const { branding } = useMantineBranding();
 
 	useSession({
 		...sessionCreateDto,
-		isParametersRegister: true,
+		registerParametersAndExports: true,
 	});
 
 	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
@@ -78,10 +78,10 @@ export default function ViewPage() {
 					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
 						<ViewportIcons
 							viewport={viewport}
-							isArBtn
-							isFullscreenBtn
-							isZoomBtn
-							isCamerasBtn
+							enableArBtn
+							enableFullscreenBtn
+							enableZoomBtn
+							enableCamerasBtn
 						/>
 					</ViewportAdditionalUIWrapper>
 				</ViewportComponent>

@@ -14,7 +14,7 @@ import { IShapeDiverExport } from "types/shapediver/export";
 /**
  * Create store for a single parameter.
  */
-export function createParameterStore<T>(session: ISessionApi, paramId: string) {
+function createParameterStore<T>(session: ISessionApi, paramId: string) {
 	const param = session.parameters[paramId] as IParameterApi<T>;
 	/** The static definition of a parameter. */
 	const definition = param;
@@ -95,7 +95,7 @@ export function createParameterStore<T>(session: ISessionApi, paramId: string) {
 /**
  * Create store for a single export.
  */
-export function createExportStore(session: ISessionApi, exportId: string) {
+function createExportStore(session: ISessionApi, exportId: string) {
 	const exportApi = session.exports[exportId];
 	/** The static definition of the export. */
 	const definition = exportApi;

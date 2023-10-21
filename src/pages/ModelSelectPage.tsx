@@ -3,7 +3,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import ModelSelect from "components/ui/ModelSelect";
 import React from "react";
 import ExamplePage from "pages/ExamplePage";
-import { useBranding } from "hooks/useViewport";
+import { useMantineBranding } from "hooks/useMantineBranding";
 
 /**
  * Function that creates the model select page.
@@ -13,7 +13,7 @@ import { useBranding } from "hooks/useViewport";
  * @returns
  */
 export default function ModelSelectPage() {
-	const { branding } = useBranding();
+	const { branding } = useMantineBranding();
 
 	return (
 		<ExamplePage aside={<ModelSelect />}>

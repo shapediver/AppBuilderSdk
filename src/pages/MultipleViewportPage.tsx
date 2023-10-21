@@ -3,11 +3,11 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React from "react";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
-import { useBranding } from "hooks/useViewport";
+import { useMantineBranding } from "hooks/useMantineBranding";
 import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useShapeDiverStoreParameters } from "../store/shapediverStoreParameters";
+import { useShapeDiverStoreParameters } from "../store/useShapeDiverStoreParameters";
 
 /**
  * Function that creates the view page.
@@ -34,15 +34,15 @@ export default function ViewPage() {
 		},
 	};
 
-	const { branding } = useBranding();
+	const { branding } = useMantineBranding();
 
 	useSession({
 		...sessionsCreateDto[sessionBenchKey],
-		isParametersRegister: true,
+		registerParametersAndExports: true,
 	});
 	useSession({
 		...sessionsCreateDto[sessionBookshelfKey],
-		isParametersRegister: true,
+		registerParametersAndExports: true,
 	});
 
 	const parameterBenchProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionsCreateDto[sessionBenchKey].id)).map(id => {

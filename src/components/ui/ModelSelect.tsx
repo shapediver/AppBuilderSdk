@@ -1,9 +1,9 @@
 import { MultiSelect, Notification } from "@mantine/core";
-import { useModelSelectStore } from "store/modelSelectStore";
+import { useModelSelectStore } from "store/useModelSelectStore";
 import React, { useEffect, useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
-import { useShapeDiverStoreViewer } from "store/shapediverStoreViewer";
+import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 
 const sessionData: {
     [key: string]: {

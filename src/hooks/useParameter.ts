@@ -1,4 +1,4 @@
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { IShapeDiverParameter } from "types/shapediver/parameter";
 
 /**

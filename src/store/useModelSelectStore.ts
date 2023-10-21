@@ -1,16 +1,14 @@
 import { create } from "zustand";
 
+interface SelectedModel {
+    id: string,
+    ticket: string,
+    modelViewUrl: string
+}
+
 interface ModelSelectState {
-    selectedModels: {
-        id: string,
-        ticket: string,
-        modelViewUrl: string
-    }[];
-    setSelectedModels: (selectedModels: {
-				id: string,
-        ticket: string,
-        modelViewUrl: string
-    }[]) => void;
+    selectedModels: SelectedModel[];
+    setSelectedModels: (selectedModels: SelectedModel[]) => void;
 }
 
 /**

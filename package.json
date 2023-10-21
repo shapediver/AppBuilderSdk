@@ -18,7 +18,8 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview",
+    "optimize": "tsc && vite optimize --force",
+    "preview": "vite preview",
     "eslint": "eslint ."
   },
   "eslintConfig": {

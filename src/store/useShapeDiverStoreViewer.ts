@@ -12,13 +12,9 @@ type ISessionCompare = { id: string, identifier: string, dto?: SessionCreateDto 
 /**
  * Helper for comparing sessions.
  */
-const createSessionIdentifier =  function(parameters: Pick<SessionCreateDto, "id" | "jwtToken" | "modelViewUrl" | "ticket" | "guid">) {
+const createSessionIdentifier =  function(parameters: Pick<SessionCreateDto, "id">) {
 	return JSON.stringify({
 		id: parameters.id,
-		//jwtToken: parameters.jwtToken || "",
-		//modelViewUrl: parameters.modelViewUrl,
-		//ticket: parameters.ticket,
-		//guid: parameters.guid,
 	});
 };
 

@@ -3,7 +3,7 @@ import { Accordion, Divider, Loader, useMantineTheme } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 
 /**

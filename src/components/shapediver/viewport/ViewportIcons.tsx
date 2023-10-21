@@ -17,10 +17,10 @@ interface Props {
 	variantDisabled?: ActionIconVariant,
 	fullscreenId?: string,
 	viewport?: IViewportApi,
-	isArBtn?: boolean,
-	isZoomBtn?: boolean,
-	isFullscreenBtn?: boolean,
-	isCamerasBtn?: boolean,
+	enableArBtn?: boolean,
+	enableZoomBtn?: boolean,
+	enableFullscreenBtn?: boolean,
+	enableCamerasBtn?: boolean,
 }
 
 export default function ViewportIcons({
@@ -31,18 +31,18 @@ export default function ViewportIcons({
 	size = 32,
 	fullscreenId = "viewer-fullscreen-area",
 	viewport,
-	isArBtn = false,
-	isZoomBtn = false,
-	isFullscreenBtn = false,
-	isCamerasBtn = false,
+	enableArBtn = false,
+	enableZoomBtn = false,
+	enableFullscreenBtn = false,
+	enableCamerasBtn = false,
 	style = { display: "flex"},
 }: Props) {
 	const iconStyle = {
 		margin: "3px",
 	};
 
-	const isARVisible = viewport ? viewport.enableAR : false;
-	const isArDisabled = viewport ? (!viewport.viewableInAR()) : true;
+	const isArEnabled = viewport ? viewport.enableAR : false;
+	const isViewableInAr = viewport ? (!viewport.viewableInAR()) : true;
 
 	const onArClick = () => {
 		if (!viewport) return;
@@ -67,12 +67,12 @@ export default function ViewportIcons({
 		onZoomDoubleClick,
 	);
 
-	const isFullscreenDisabled = !isFullscreenBtn || isIPhone();
+	const isFullscreenDisabled = !enableFullscreenBtn || isIPhone();
 
 	const { makeElementFullscreen, isFullScreenAvailable } = useFullscreen(fullscreenId);
 
-	const cameras = (isCamerasBtn && viewport) ? viewport.cameras : {};
-	const areNoCameras = Object.keys(cameras).length === 0;
+	const cameras = (enableCamerasBtn && viewport) ? viewport.cameras : {};
+	const noCamerasAvailable = Object.keys(cameras).length === 0;
 
 	const [isCamerasMenuOpened, setIsCamerasMenuOpened] = useState(false);
 
@@ -88,27 +88,27 @@ export default function ViewportIcons({
 
 	return <section style={style}>
 
-		{ isArBtn && isARVisible && <Tooltip label={isArDisabled ? "AR is unsupported" : "View in AR"}>
+		{ enableArBtn && isArEnabled && <Tooltip label={isViewableInAr ? "Viewing in AR is not available" : "View in AR"}>
 			<div>
-				<ActionIcon onClick={onArClick} disabled={isArDisabled} size={size} variant={ isArDisabled ? variantDisabled : variant} aria-label="View in AR" style={iconStyle}>
-					<IconAugmentedReality color={isArDisabled ? colorDisabled : color} />
+				<ActionIcon onClick={onArClick} disabled={isViewableInAr} size={size} variant={isViewableInAr ? variantDisabled : variant} aria-label="View in AR" style={iconStyle}>
+					<IconAugmentedReality color={isViewableInAr ? colorDisabled : color} />
 				</ActionIcon>
 			</div>
 		</Tooltip> }
 
-		{ isZoomBtn && <Tooltip label="Zoom extents">
-			<ActionIcon onClick={zoomClickHandler} size={size} variant="subtle" aria-label="Zoom extents" style={iconStyle}>
+		{ enableZoomBtn && <Tooltip label="Zoom extents">
+			<ActionIcon onClick={zoomClickHandler} size={size} variant={variant} aria-label="Zoom extents" style={iconStyle}>
 				<IconZoomIn color={color} />
 			</ActionIcon>
 		</Tooltip> }
 
-		{ isFullscreenBtn && <Tooltip label="Fullscreen">
+		{ enableFullscreenBtn && <Tooltip label="Fullscreen">
 			<ActionIcon onClick={makeElementFullscreen} disabled={isFullscreenDisabled || !isFullScreenAvailable.current} size={size} variant={(isFullscreenDisabled || !isFullScreenAvailable.current) ? variantDisabled : variant} aria-label="Fullscreen" style={iconStyle}>
 				<IconMaximize color={(isFullscreenDisabled || !isFullScreenAvailable.current) ? colorDisabled : color} />
 			</ActionIcon>
 		</Tooltip> }
 
-		{ isCamerasBtn &&
+		{ enableCamerasBtn &&
 			<Menu
 				opened={isCamerasMenuOpened}
 				onChange={setIsCamerasMenuOpened}
@@ -116,7 +116,7 @@ export default function ViewportIcons({
 				width={200}
 				position={"bottom-end"}
 			>
-				<ActionIcon onClick={() => setIsCamerasMenuOpened(!isCamerasMenuOpened)} disabled={areNoCameras} size={size} variant="subtle" aria-label="Cameras" style={iconStyle}>
+				<ActionIcon onClick={() => setIsCamerasMenuOpened(!isCamerasMenuOpened)} disabled={noCamerasAvailable} size={size} variant={noCamerasAvailable ? variantDisabled : variant} aria-label="Cameras" style={iconStyle}>
 					<Tooltip disabled={isCamerasMenuOpened} label="Cameras">
 						<Menu.Target>
 							<IconVideo color={color} />

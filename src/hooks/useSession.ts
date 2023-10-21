@@ -1,11 +1,15 @@
 import { ISessionApi } from "@shapediver/viewer";
 import { useEffect, useRef, useState } from "react";
-import { useShapeDiverStoreViewer } from "store/shapediverStoreViewer";
+import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
-import { useShapeDiverStoreParameters } from "store/shapediverStoreParameters";
+import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 
 interface Props extends SessionCreateDto {
-	isParametersRegister?: boolean;
+	/** 
+	 * Set to true to register the session's parameters and exports as 
+	 * abstracted parameters and exports managed by {@link useShapeDiverStoreParameters}. 
+	 */
+	registerParametersAndExports?: boolean;
 }
 
 /**
@@ -15,7 +19,7 @@ interface Props extends SessionCreateDto {
  * @returns
  */
 export function useSession(props: Props) {
-	const { isParametersRegister = false } = props;
+	const { registerParametersAndExports = false } = props;
 	const { createSession, closeSession } = useShapeDiverStoreViewer();
 	const { addSession: addSessionParameters, removeSession: removeSessionParameters } = useShapeDiverStoreParameters();
 	const [sessionApi, setSessionApi] = useState<ISessionApi | undefined>(undefined);
@@ -26,7 +30,7 @@ export function useSession(props: Props) {
 			const api = await createSession(props);
 			setSessionApi(api);
 
-			if (isParametersRegister && api) {
+			if (registerParametersAndExports && api) {
 				addSessionParameters(api);
 			}
 		});
@@ -35,7 +39,7 @@ export function useSession(props: Props) {
 			promiseChain.current = promiseChain.current.then(async () => {
 				await closeSession(props.id);
 
-				if (isParametersRegister) {
+				if (registerParametersAndExports) {
 					removeSessionParameters(props.id);
 				}
 			});
