@@ -8,7 +8,11 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const useStrictMode = true;
+/** 
+ * Note: Activate strict mode during development to detect potential bugs.
+ * @see https://react.dev/reference/react/StrictMode
+ */
+const useStrictMode = false;
 
 root.render(
 	useStrictMode ? <React.StrictMode><App/></React.StrictMode> : <App/>
