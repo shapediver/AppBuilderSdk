@@ -4,13 +4,13 @@ import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
 import { useMantineBranding } from "hooks/useMantineBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
-import { useShapeDiverStoreViewer } from "../store/useShapeDiverStoreViewer";
+import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
+import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 
 /**
  * Function that creates the view page.
@@ -28,8 +28,7 @@ export default function ViewPage() {
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
 		excludeViewports: ["viewport_2"],
 	};
-	const viewport = useShapeDiverStoreViewer(state => state.viewports[viewportId]);
-
+	
 	const { branding } = useMantineBranding();
 
 	useSession({
@@ -37,13 +36,8 @@ export default function ViewPage() {
 		registerParametersAndExports: true,
 	});
 
-	const parameterProps = useShapeDiverStoreParameters(state => Object.keys(state.useParameters(sessionId)).map(id => {
-		return {sessionId, parameterId: id};
-	}));
-
-	const exportProps = useShapeDiverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
-		return {sessionId, exportId: id};
-	}));
+	const parameterProps = useSessionPropsParameter(sessionId);
+	const exportProps = useSessionPropsExport(sessionId);
 
 	const fullscreenId = "viewer-fullscreen-area";
 
@@ -77,7 +71,7 @@ export default function ViewPage() {
 				>
 					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
 						<ViewportIcons
-							viewport={viewport}
+							viewportId={viewportId}
 							enableArBtn
 							enableFullscreenBtn
 							enableZoomBtn

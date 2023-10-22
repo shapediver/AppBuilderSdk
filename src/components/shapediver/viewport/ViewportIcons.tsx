@@ -2,11 +2,11 @@ import React, { CSSProperties, useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
 import { ActionIcon, Menu, Tooltip } from "@mantine/core";
 import { useClickEventHandler } from "hooks/useClickEventHandler";
-import { IViewportApi } from "@shapediver/viewer";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
 import { firstLetterUppercase } from "utils/strings";
 import { ActionIconVariant } from "@mantine/core/lib/ActionIcon/ActionIcon.styles";
+import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 
 interface Props {
 	color?: string
@@ -16,7 +16,7 @@ interface Props {
 	variant?: ActionIconVariant,
 	variantDisabled?: ActionIconVariant,
 	fullscreenId?: string,
-	viewport?: IViewportApi,
+	viewportId: string,
 	enableArBtn?: boolean,
 	enableZoomBtn?: boolean,
 	enableFullscreenBtn?: boolean,
@@ -30,7 +30,7 @@ export default function ViewportIcons({
 	variantDisabled = "transparent",
 	size = 32,
 	fullscreenId = "viewer-fullscreen-area",
-	viewport,
+	viewportId,
 	enableArBtn = false,
 	enableZoomBtn = false,
 	enableFullscreenBtn = false,
@@ -40,6 +40,8 @@ export default function ViewportIcons({
 	const iconStyle = {
 		margin: "3px",
 	};
+
+	const viewport = useShapeDiverStoreViewer(state => state.viewports[viewportId]);
 
 	const isArEnabled = viewport ? viewport.enableAR : false;
 	const isViewableInAr = viewport ? (!viewport.viewableInAR()) : true;
