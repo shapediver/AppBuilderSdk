@@ -1,10 +1,11 @@
 import React, { JSX } from "react";
-import { Accordion, Divider, Loader, useMantineTheme } from "@mantine/core";
+import { Accordion, Button, Divider, Loader, useMantineTheme } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
-import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import { useSortedParametersAndExports } from "hooks/useSortedParametersAndExports";
+import { useParameterChanges } from "hooks/useParameterChanges";
 
 /**
  * Functional component that creates an accordion of parameter and export components.
@@ -19,31 +20,23 @@ interface Props {
 	disableIfDirty?: boolean,
 }
 
-interface ParamOrExportDefinition {
-	parameter?: PropsParameter,
-	export?: PropsExport,
-	definition: IShapeDiverParamOrExportDefinition,
-}
-
 export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
 	const theme = useMantineTheme();
 	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
-	const {parameterStores, exportStores} = useShapeDiverStoreParameters();
 
-	// collect definitions of parameters and exports for sorting and grouping
-	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
-	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
-		const definition = parameterStores[p.sessionId][p.parameterId].getState().definition;
+	// get sorted list of parameter and export definitions
+	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
 
-		return { parameter: p, definition };
-	}));
-
-	sortedParamsAndExports = sortedParamsAndExports.concat((exports || []).map(e => {
-		const definition = exportStores[e.sessionId][e.exportId].getState().definition;
-
-		return { export: e, definition };
-	}));
-
+	// check if there are parameter changes to be confirmed
+	const parameterChanges = useParameterChanges(parameters || []);
+	const hasChanges = parameterChanges.length > 0;
+	const acceptChanges = () => {
+		parameterChanges.forEach(c => c.accept());
+	};
+	const rejectChanges = () => {
+		parameterChanges.forEach(c => c.reject());
+	};
+	
 	// create a data structure to store the elements within groups
 	const elementGroups: {
 		[key: string]: {
@@ -51,10 +44,6 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 			elements: JSX.Element[],
 		}
 	} = {};
-
-	// sort the parameters
-	// const sortedParams = Object.values(parameters).map((ps) => ps((state) => state));
-	sortedParamsAndExports.sort((a, b) => (a.definition.order || Infinity) - (b.definition.order || Infinity));
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
@@ -105,6 +94,35 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 	}
 
 	const elements: JSX.Element[] = [];
+
+	elements.push(
+		<div key={Math.random()} style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+			<Button 
+				style={{
+					width: "70%"
+				}}
+				fullWidth={true}
+				leftIcon={<IconCheck />}
+				variant="default"
+				onClick={acceptChanges}
+				disabled={!hasChanges}
+			>
+			Accept
+			</Button>
+			<Button
+				style={{
+					width: "70%"
+				}}
+				fullWidth={true}
+				leftIcon={<IconX />}
+				variant="default"
+				onClick={rejectChanges}
+				disabled={!hasChanges}
+			>
+			Reject
+			</Button>
+		</div>
+	);
 
 	// loop through the created elementGroups to add them
 	for (const e in elementGroups) {

@@ -31,6 +31,8 @@ function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string
 			}
 			catch // TODO provide possibility to react to exception
 			{
+				console.debug(`Rejecting change of parameter ${paramId} to ${uiValue}, resetting to ${execValue}`);
+				
 				return execValue;
 			}
 		},
@@ -77,11 +79,14 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 			execute: async function (): Promise<T | string> {
 				const state = get().state;
 				const result = await executor.execute(state.uiValue, state.execValue);
+				// TODO in case result is not the current uiValue, we could somehow visualize
+				// the fact that the uiValue gets reset here
 				set((_state) => ({
 					state: {
 						..._state.state,
+						uiValue: result,
 						execValue: result,
-						dirty: result !== _state.state.uiValue
+						dirty: false
 					}
 				}), false, "execute");
 		
@@ -202,14 +207,14 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 				removeChanges(sessionId);
 				reject();
 			};
-		});
 
-		set((_state) => ({
-			parameterChanges: {
-				..._state.parameterChanges,
-				...{ [sessionId]: changes }
-			}
-		}), false, "getChanges");
+			set((_state) => ({
+				parameterChanges: {
+					..._state.parameterChanges,
+					...{ [sessionId]: changes }
+				}
+			}), false, "getChanges");
+		});
 
 		return changes;
 	},
@@ -279,6 +284,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	useExport: (sessionId: string, exportId: string) => {
 		return get().useExports(sessionId)[exportId] || {};
-	}
+	},
+
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Parameters" }));
