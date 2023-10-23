@@ -34,6 +34,7 @@ export default function ViewPage() {
 	useSession({
 		...sessionCreateDto,
 		registerParametersAndExports: true,
+		acceptRejectMode: true,
 	});
 
 	const parameterProps = useSessionPropsParameter(sessionId);

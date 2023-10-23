@@ -29,7 +29,9 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	// check if there are parameter changes to be confirmed
 	const parameterChanges = useParameterChanges(parameters || []);
-	const hasChanges = parameterChanges.length > 0;
+	const disableChangeControls = parameterChanges.length === 0 || 
+		parameterChanges.every(c => c.disableControls) || 
+		parameterChanges.some(c => c.executing);
 	const acceptChanges = () => {
 		parameterChanges.forEach(c => c.accept());
 	};
@@ -105,7 +107,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 				leftIcon={<IconCheck />}
 				variant="default"
 				onClick={acceptChanges}
-				disabled={!hasChanges}
+				disabled={disableChangeControls}
 			>
 			Accept
 			</Button>
@@ -117,7 +119,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 				leftIcon={<IconX />}
 				variant="default"
 				onClick={rejectChanges}
-				disabled={!hasChanges}
+				disabled={disableChangeControls}
 			>
 			Reject
 			</Button>

@@ -13,12 +13,12 @@ import {
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 
-function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string, immediate: boolean, getChanges: (session: ISessionApi) => IParameterChanges): IShapeDiverParameterExecutor<T> {
+function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string, immediate: boolean, getChanges: (session: ISessionApi, disableControls: boolean) => IParameterChanges): IShapeDiverParameterExecutor<T> {
 	const param = session.parameters[paramId] as IParameterApi<T>;
 	
 	return {
 		execute: async (uiValue: T | string, execValue: T | string) => {
-			const changes = getChanges(session);
+			const changes = getChanges(session, immediate);
 			try {
 				console.debug(`Queueing change of parameter ${paramId} to ${uiValue}`);
 				changes.values[paramId] = uiValue;
@@ -165,7 +165,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "removeChanges");
 	},
 
-	getChanges: (session: ISessionApi) : IParameterChanges => {
+	getChanges: (session: ISessionApi, disableControls: boolean) : IParameterChanges => {
 		const { parameterChanges, removeChanges } = get();
 		const { id: sessionId } = session;
 		if ( parameterChanges[sessionId] )
@@ -175,7 +175,9 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 			values: {},
 			accept: () => undefined,
 			reject: () => undefined,
-			wait: Promise.resolve()
+			wait: Promise.resolve(),
+			disableControls,
+			executing: false,
 		};
 	
 		changes.wait = new Promise((resolve, reject) => {
@@ -189,6 +191,15 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 				try {
 					// set values and call customize
 					Object.keys(changes.values).forEach(id => session.parameters[id].value = changes.values[id]);
+					set((_state) => ({
+						parameterChanges: {
+							..._state.parameterChanges,
+							...{ [sessionId]: {
+								..._state.parameterChanges[sessionId],
+								executing: true
+							} }
+						}
+					}), false, "executeChanges");
 					await session.customize();
 					resolve();
 				} 

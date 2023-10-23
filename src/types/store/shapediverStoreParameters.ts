@@ -27,6 +27,10 @@ export interface IParameterChanges {
 	accept: () => void;
 	/** Reject the changes, this rejects wait */
 	reject: () => void;
+	/** disable the controls which allow the user to accept or reject the changes */
+	disableControls: boolean;
+	/** true if changes are currently executing */
+	executing: boolean;
 }
 
 export interface IParameterChangesPerSession { [sessionId: string]: IParameterChanges}
@@ -103,9 +107,10 @@ export interface IShapeDiverStoreParameters {
 	/**
 	 * Get or add pending parameter changes for a given session id.
 	 * @param session 
+	 * @param disableControls if true, disable the controls which allow the user to accept or reject parameter changes
 	 * @returns 
 	 */
-	getChanges: (session: ISessionApi) => IParameterChanges,
+	getChanges: (session: ISessionApi, disableControls: boolean) => IParameterChanges,
 
 	/**
 	 * Remove pending parameter changes for a given session id.
