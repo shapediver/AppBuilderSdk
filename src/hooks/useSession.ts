@@ -31,7 +31,7 @@ export function useSession(props: Props) {
 			setSessionApi(api);
 
 			if (registerParametersAndExports && api) {
-				addSessionParameters(api);
+				addSessionParameters(api, true);
 			}
 		});
 
