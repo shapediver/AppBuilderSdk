@@ -21,15 +21,15 @@ export type IExportStoresPerSession = { [sessionId: string]: IExportStores };
 export interface IParameterChanges {
 	/** The parameter values to change */
 	values: { [parameterId: string]: any };
-	/** Promise to wait for */
+	/** Promise allowing to wait for pending changes */
 	wait: Promise<void>;
 	/** Accept the changes, this resolves wait */
 	accept: () => void;
 	/** Reject the changes, this rejects wait */
 	reject: () => void;
-	/** disable the controls which allow the user to accept or reject the changes */
+	/** Set to true to disable the controls which allow the user to accept or reject the changes */
 	disableControls: boolean;
-	/** true if changes are currently executing */
+	/** True if changes are currently executing */
 	executing: boolean;
 }
 

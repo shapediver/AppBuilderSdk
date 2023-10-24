@@ -30,7 +30,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 	// check if there are parameter changes to be confirmed
 	const parameterChanges = useParameterChanges(parameters || []);
 	const disableChangeControls = parameterChanges.length === 0 || 
-		parameterChanges.every(c => c.disableControls) || 
+		parameterChanges.every(c => c.disableControls ) || 
 		parameterChanges.some(c => c.executing);
 	const acceptChanges = () => {
 		parameterChanges.forEach(c => c.accept());
