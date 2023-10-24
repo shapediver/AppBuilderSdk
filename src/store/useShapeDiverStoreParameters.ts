@@ -19,6 +19,19 @@ function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string
 	return {
 		execute: async (uiValue: T | string, execValue: T | string) => {
 			const changes = getChanges(session, immediate);
+
+			// check whether there is anything to do
+			if (paramId in changes.values && uiValue === execValue) {
+				delete changes.values[paramId];
+				// check if there are any other parameter updates queued
+				if (Object.keys(changes.values).length === 0) {
+					changes.reject();
+
+					return execValue;
+				}
+			}
+			
+			// execute the change
 			try {
 				console.debug(`Queueing change of parameter ${paramId} to ${uiValue}`);
 				changes.values[paramId] = uiValue;
