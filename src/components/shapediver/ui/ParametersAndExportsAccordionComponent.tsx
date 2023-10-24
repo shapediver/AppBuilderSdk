@@ -17,11 +17,11 @@ interface Props {
 	parameters?: PropsParameter[],
 	exports?: PropsExport[],
 	defaultGroupName?: string,
-	disableIfDirty?: boolean,
+	acceptRejectMode?: boolean,
 }
 
 export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
-	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
+	const {parameters, exports, defaultGroupName, acceptRejectMode} = props;
 
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
@@ -76,7 +76,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
-						disableIfDirty={disableIfDirty} />
+						disableIfDirty={!acceptRejectMode} />
 				</div>
 			);
 		}
@@ -96,34 +96,36 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	const elements: JSX.Element[] = [];
 
-	elements.push(
-		<div key={Math.random()} style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-			<Button 
-				style={{
-					width: "70%"
-				}}
-				fullWidth={true}
-				leftSection={<IconCheck />}
-				variant="default"
-				onClick={acceptChanges}
-				disabled={disableChangeControls}
-			>
+	if (acceptRejectMode) {
+		elements.push(
+			<div key="acceptOrReject" style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+				<Button 
+					style={{
+						width: "70%"
+					}}
+					fullWidth={true}
+					leftSection={<IconCheck />}
+					variant="default"
+					onClick={acceptChanges}
+					disabled={disableChangeControls}
+				>
 			Accept
-			</Button>
-			<Button
-				style={{
-					width: "70%"
-				}}
-				fullWidth={true}
-				leftSection={<IconX />}
-				variant="default"
-				onClick={rejectChanges}
-				disabled={disableChangeControls}
-			>
+				</Button>
+				<Button
+					style={{
+						width: "70%"
+					}}
+					fullWidth={true}
+					leftSection={<IconX />}
+					variant="default"
+					onClick={rejectChanges}
+					disabled={disableChangeControls}
+				>
 			Reject
-			</Button>
-		</div>
-	);
+				</Button>
+			</div>
+		);
+	}
 
 	// loop through the created elementGroups to add them
 	for (const e in elementGroups) {

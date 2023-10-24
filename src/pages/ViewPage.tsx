@@ -28,13 +28,14 @@ export default function ViewPage() {
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
 		excludeViewports: ["viewport_2"],
 	};
+	const acceptRejectMode = true;
 	
 	const { branding } = useMantineBranding();
 
 	useSession({
 		...sessionCreateDto,
 		registerParametersAndExports: true,
-		acceptRejectMode: true,
+		acceptRejectMode: acceptRejectMode,
 	});
 
 	const parameterProps = useSessionPropsParameter(sessionId);
@@ -50,7 +51,7 @@ export default function ViewPage() {
 
 		<Tabs.Panel value="parameters" pt="xs">
 			<div>
-				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>
 
