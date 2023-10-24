@@ -42,20 +42,20 @@ export default function ViewPage() {
 
 	const fullscreenId = "viewer-fullscreen-area";
 
-	const aside = <Tabs defaultValue="parameters" style={{ height: "100%"}}>
+	const aside = <Tabs defaultValue="parameters">
 		<Tabs.List>
-			<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
-			<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
+			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
+			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt="xs"  style={{ position: "relative", height: "100%"}}>
-			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
+		<Tabs.Panel value="parameters" pt="xs">
+			<div>
 				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt="xs">
-			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
+			<div>
 				<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>

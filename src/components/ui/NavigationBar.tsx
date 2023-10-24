@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Button } from "@mantine/core";
+import { NavLink } from "@mantine/core";
 import { Link, Outlet } from "react-router-dom";
 
 /**
@@ -11,29 +11,10 @@ import { Link, Outlet } from "react-router-dom";
 export default function NavigationBar() {
 	return (
 		<>
-			<Navbar.Section mx="-xs" px="xs" >
-				<Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/">
-                    Home
-				</Button>
-			</Navbar.Section>
-
-			<Navbar.Section mx="-xs" px="xs" >
-				<Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/view">
-                    View Page
-				</Button>
-			</Navbar.Section>
-
-			<Navbar.Section mx="-xs" px="xs" >
-				<Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/modelSelect">
-                    Select Page
-				</Button>
-			</Navbar.Section>
-
-			<Navbar.Section mx="-xs" px="xs" >
-				<Button variant="default" fullWidth mt="xs" radius="md" component={Link} to="/multipleViewport">
-					Multiple Viewports
-				</Button>
-			</Navbar.Section>
+			<NavLink label="Home" component={Link} to="/" />
+			<NavLink label="View Page" component={Link} to="/view" />
+			<NavLink label="Select Page" component={Link} to="/modelSelect" />
+			<NavLink label="Multiple Viewports" component={Link} to="/multipleViewport" />
 
 			<Outlet />
 		</>

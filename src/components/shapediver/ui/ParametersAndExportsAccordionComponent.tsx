@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { Accordion, Button, Divider, Loader, useMantineTheme } from "@mantine/core";
+import { Accordion, Button, Divider, Loader } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
@@ -21,7 +21,6 @@ interface Props {
 }
 
 export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
-	const theme = useMantineTheme();
 	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
 
 	// get sorted list of parameter and export definitions
@@ -104,7 +103,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 					width: "70%"
 				}}
 				fullWidth={true}
-				leftIcon={<IconCheck />}
+				leftSection={<IconCheck />}
 				variant="default"
 				onClick={acceptChanges}
 				disabled={disableChangeControls}
@@ -116,7 +115,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 					width: "70%"
 				}}
 				fullWidth={true}
-				leftIcon={<IconX />}
+				leftSection={<IconX />}
 				variant="default"
 				onClick={rejectChanges}
 				disabled={disableChangeControls}
@@ -143,7 +142,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 				<Accordion.Control>{g.group.name}</Accordion.Control>
 				<Accordion.Panel
 					key={g.group.id}
-					style={{ background: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0] }}
+					style={{ background: "light-dark(var(--mantine-color-dark-8), var(--mantine-color-gray-0))" }}
 				>
 					{groupElements}
 				</Accordion.Panel>

@@ -24,8 +24,8 @@ export default function HomePage() {
 							alt="Under Construction"
 						/>
 					</Card.Section>
-					<Group position="apart" mt="md" mb="xs">
-						<Text size="sm" color="dimmed">
+					<Group gap="md" mt="md" mb="xs">
+						<Text size="sm" c="dimmed">
 On this example page we present several use cases that utilize React components for the creation of viewports, sessions,
 components representing parameters and exports, and much more. All these components are provided in the repository and can be customized easily.
 						</Text>
@@ -44,11 +44,11 @@ components representing parameters and exports, and much more. All these compone
 								alt="Under Construction"
 							/>
 						</Card.Section>
-						<Group position="apart" mt="md" mb="xs">
-							<Text weight={500}>Model View Page</Text>
+						<Group gap="md" mt="md" mb="xs">
+							<Text fw={500}>Model View Page</Text>
 						</Group>
 
-						<Text size="sm" color="dimmed">
+						<Text size="sm" c="dimmed">
 This example opens a single session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing
 the parameters and exports defined by the model. All components are easily customizable.
 						</Text>
@@ -70,11 +70,11 @@ the parameters and exports defined by the model. All components are easily custo
 								alt="Under Construction"
 							/>
 						</Card.Section>
-						<Group position="apart" mt="md" mb="xs">
-							<Text weight={500}>Model Select Page</Text>
+						<Group gap="md" mt="md" mb="xs">
+							<Text fw={500}>Model Select Page</Text>
 						</Group>
 
-						<Text size="sm" color="dimmed">
+						<Text size="sm" c="dimmed">
 This example displays a single viewport in which sessions with multiple ShapeDiver models can be loaded at once.
 The settings of the model which is selected first are used to configure the viewport (camera, controls, etc).
 						</Text>
@@ -96,11 +96,11 @@ The settings of the model which is selected first are used to configure the view
 								alt="Under Construction"
 							/>
 						</Card.Section>
-						<Group position="apart" mt="md" mb="xs">
-							<Text weight={500}>Multiple models on the same page</Text>
+						<Group gap="md" mt="md" mb="xs">
+							<Text fw={500}>Multiple models on the same page</Text>
 						</Group>
 
-						<Text size="sm" color="dimmed">
+						<Text size="sm" c="dimmed">
 							This example displays a multiple viewports with the same amount of multiple sessions.
 						</Text>
 

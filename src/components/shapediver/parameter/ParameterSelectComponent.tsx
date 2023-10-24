@@ -14,8 +14,8 @@ export default function ParameterSelectComponent(props: PropsParameter): JSX.Ele
 	const { definition, actions, state } = useParameter<any>(sessionId, parameterId);
 	
 	// callback for when the value was changed
-	const handleChange = (value: string) => {
-		if (actions.setUiValue(definition.choices!.indexOf(value) + "")) {
+	const handleChange = (value: string | null) => {
+		if (value && actions.setUiValue(definition.choices!.indexOf(value) + "")) {
 			actions.execute();
 		}
 	};
@@ -24,7 +24,6 @@ export default function ParameterSelectComponent(props: PropsParameter): JSX.Ele
 		<ParameterLabelComponent { ...props } />
 		{ definition && <Select
 			placeholder="Pick one"
-			dropdownPosition="bottom"
 			defaultValue={definition.choices![+definition.defval]}
 			onChange={handleChange}
 			data={definition.choices!}

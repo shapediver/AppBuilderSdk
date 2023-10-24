@@ -91,7 +91,7 @@ export default function ModelSelect() {
 		setSelectedModels(selectedModels);
 	};
 
-	const noModelsNotification = <Notification icon={<IconAlertCircle size={18} />} mt="xs" title="Model Select" disallowClose>
+	const noModelsNotification = <Notification icon={<IconAlertCircle size={18} />} mt="xs" title="Model Select" withCloseButton={false}>
 		Select a model to see it in the viewport!
 	</Notification>;
 
