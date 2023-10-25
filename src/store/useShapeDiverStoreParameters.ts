@@ -21,6 +21,7 @@ function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string
 			const changes = getChanges(session, immediate);
 
 			// check whether there is anything to do
+			//console.log(changes.values);
 			if (paramId in changes.values && uiValue === execValue) {
 				delete changes.values[paramId];
 				// check if there are any other parameter updates queued

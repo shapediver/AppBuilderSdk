@@ -10,7 +10,7 @@ import { useParameter } from "hooks/useParameter";
  * @returns
  */
 export default function ParameterSelectComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty } = props;
+	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
 	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
 	const [value, setValue] = useState(() => state.uiValue);
 
@@ -31,7 +31,7 @@ export default function ParameterSelectComponent(props: PropsParameter): JSX.Ele
 		setValue(state.uiValue);
 	}, [state.uiValue]);
 
-	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
 	return <>
 		<ParameterLabelComponent { ...props } cancel={onCancel} />

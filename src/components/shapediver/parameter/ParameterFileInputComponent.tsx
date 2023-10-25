@@ -12,7 +12,7 @@ import { useParameter } from "hooks/useParameter";
  * @returns
  */
 export default function ParameterFileInputComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty } = props;
+	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
 	const { definition, actions, state } = useParameter<File|string>(sessionId, parameterId);
 	const [ value, setValue ] = useState<File|string>(""); // TODO implement case if default value of File parameter is a string
 	
@@ -34,7 +34,7 @@ export default function ParameterFileInputComponent(props: PropsParameter): JSX.
 		setValue(state.uiValue);
 	}, [state.uiValue]);
 
-	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
 	// create the file endings from all the formats that are specified in the parameter
 	const fileEndings = [...mapMimeTypeToFileEndings(extendMimeTypes(definition.format!))];

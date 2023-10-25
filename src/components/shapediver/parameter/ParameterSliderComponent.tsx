@@ -1,4 +1,4 @@
-import { NumberInput, Slider, TextInput, Tooltip } from "@mantine/core";
+import { NumberInput, Slider, Tooltip } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
@@ -28,11 +28,11 @@ const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
  * @returns
  */
 export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty } = props;
+	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
 	const { definition, actions, state } = useParameter<number>(sessionId, parameterId);
 	const [value, setValue] = useState(() => state.uiValue);
 
-	const debounceTimeout = 1000;
+	const debounceTimeout = acceptRejectMode ? 0 : 1000;
 	const debounceRef = useRef<NodeJS.Timeout>();
 
 	const handleChange = (curval : string | number, timeout? : number) => {
@@ -49,7 +49,7 @@ export default function ParameterSliderComponent(props: PropsParameter): JSX.Ele
 		setValue(state.uiValue);
 	}, [state.uiValue]);
 
-	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
 	// calculate the step size which depends on the parameter type
 	let step = 1;
@@ -78,7 +78,7 @@ export default function ParameterSliderComponent(props: PropsParameter): JSX.Ele
 				max={+definition.max!}
 				step={step}
 				onChange={v => setValue(round(definition, v))}
-				onChangeEnd={v => handleChange(round(definition, v))}
+				onChangeEnd={v => handleChange(round(definition, v), 0)}
 				marks={marks}
 				disabled={disableIfDirty && state.dirty}
 			/> }

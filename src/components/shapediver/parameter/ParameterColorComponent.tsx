@@ -15,7 +15,7 @@ function convertFromSdColor(val: string) {
  * @returns
  */
 export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty } = props;
+	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
 	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
 	const [value, setValue] = useState(() => convertFromSdColor(state.uiValue));
 
@@ -36,7 +36,7 @@ export default function ParameterColorComponent(props: PropsParameter): JSX.Elem
 		setValue(state.uiValue);
 	}, [state.uiValue]);
 
-	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
 	const defaultValue = convertFromSdColor(definition.defval);
 
