@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { Accordion, Button, Divider, Loader } from "@mantine/core";
+import { Accordion, Button, Divider, Loader, ScrollArea } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
@@ -48,7 +48,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
-		return(<Loader style={{ width: "100%" }} mt="xl" size="xl" variant="dots" />);
+		return(<Loader style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} size="xl" variant="dots" />);
 	}
 
 	// loop through the parameters and store the created elements in the elementGroups
@@ -94,10 +94,10 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 		}
 	}
 
-	const elements: JSX.Element[] = [];
+	let acceptRejectElement: JSX.Element | undefined;
 
 	if (acceptRejectMode) {
-		elements.push(
+		acceptRejectElement =
 			<div key="acceptOrReject" style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
 				<Button 
 					style={{
@@ -123,9 +123,10 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 				>
 			Reject
 				</Button>
-			</div>
-		);
+			</div>;
 	}
+
+	const elements: JSX.Element[] = [];
 
 	// loop through the created elementGroups to add them
 	for (const e in elementGroups) {
@@ -152,7 +153,10 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 		);
 	}
 
-	return <Accordion variant="contained" radius="md">
-		{ elements }
+	return <Accordion variant="contained" radius="md" style={{maxHeight: "100%", display: "flex", flexDirection: "column"}}>
+		{ acceptRejectElement }
+		<ScrollArea.Autosize style={{ flex: 1, overflow: "auto"}}>
+			{ elements }
+		</ScrollArea.Autosize>
 	</Accordion>;
 }
