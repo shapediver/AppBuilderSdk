@@ -50,13 +50,13 @@ export default function ViewPage() {
 		</Tabs.List>
 
 		<Tabs.Panel value="parameters" pt="xs">
-			<div>
+			<div style={{overflowY: "auto"}}>{/** TODO Michael make vertical scrolling of parameter/export panels work */}
 				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt="xs">
-			<div>
+			<div style={{overflowY: "auto"}}>{/** TODO Michael make vertical scrolling of parameter/export panels work */}
 				<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>

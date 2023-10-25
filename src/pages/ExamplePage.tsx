@@ -51,18 +51,17 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				>
 					{ aside }
 				</AppShell.Aside>
+				{/** TODO Michael positioning in mobile mode does not work yet */}
 				<AppShell.Main 
-					bg={scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]} 
-					h="100%"
-					w="100%"
-					pos="absolute"
-					//mah={{ base: "calc(100% - 268px);!important", sm: "100%" }}
+					bg={scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}
+					style={isMobile ? { top: "60px", left: "0px", right: "0px", bottom: "300px", position: "absolute"} : { height: "100%", width: "100%", position: "absolute"} }
 				>
 					<Container
 						h="100%"
 						w="100%"
 						p={0}
-						mah={{ base: "calc(100% - 300px);!important", sm: "100%" }}
+						pos="relative"
+						maw={1200}
 					>
 						{ children }
 					</Container>
