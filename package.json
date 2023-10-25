@@ -20,7 +20,13 @@
     "build": "tsc && vite build",
     "optimize": "tsc && vite optimize --force",
     "preview": "vite preview",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "build-dev": "vite build --base=/dev/",
+    "build-staging": "vite build --base=/staging/",
+    "build-prod": "vite build --base=/prod/",
+    "publish-build-dev": "aws s3 sync ./dist s3://${BUCKET}/react-example/dev/ --region us-east-1",
+    "publish-build-staging": "aws s3 sync ./dist s3://${BUCKET/react-example/staging/ --region us-east-1",
+    "publish-build-prod": "aws s3 sync ./dist s3://${BUCKET/react-example/prod/ --region us-east-1"
   },
   "eslintConfig": {
     "extends": [
