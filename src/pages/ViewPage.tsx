@@ -2,7 +2,7 @@ import { Tabs } from "@mantine/core";
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React from "react";
+import React, { useEffect } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
@@ -12,6 +12,7 @@ import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { useMediaQuery } from "@mantine/hooks";
+import { useOutput } from "hooks/useOutput";
 
 /**
  * Function that creates the view page.
@@ -34,11 +35,18 @@ export default function ViewPage() {
 
 	const { branding } = useMantineBranding();
 
+	// use a session with a ShapeDiver model and register its parameters
 	useSession({
 		...sessionCreateDto,
 		registerParametersAndExports: true,
 		acceptRejectMode: acceptRejectMode,
 	});
+
+	// Example on how to access an output and react to its changes
+	const { outputApi, outputNode } = useOutput(sessionId, "Shelf");
+	useEffect(() => {
+		console.debug(`Output ${outputApi?.id} version ${outputApi?.version}`, outputNode);
+	}, [outputNode, outputApi]);
 
 	const parameterProps = useSessionPropsParameter(sessionId);
 	const exportProps = useSessionPropsExport(sessionId);
