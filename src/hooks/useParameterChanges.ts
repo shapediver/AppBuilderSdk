@@ -2,6 +2,11 @@ import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { IParameterChanges } from "types/store/shapediverStoreParameters";
 
+/**
+ * Get parameter change objects for all sessions used by the given parameters.
+ * @param parameters 
+ * @returns 
+ */
 export function useParameterChanges(parameters: PropsParameter[]) {
 	
 	const sessionIds = parameters.map(p => p.sessionId);
