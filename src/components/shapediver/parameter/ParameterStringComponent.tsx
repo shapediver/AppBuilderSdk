@@ -11,11 +11,11 @@ import { useParameter } from "hooks/useParameter";
  * @returns
  */
 export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty } = props;
+	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
 	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
 	const [value, setValue] = useState(() => state.uiValue);
 
-	const debounceTimeout = 1000;
+	const debounceTimeout = acceptRejectMode ? 0 : 1000;
 	const debounceRef = useRef<NodeJS.Timeout>();
 
 	const handleChange = (curval : string, timeout? : number) => {
@@ -32,7 +32,7 @@ export default function ParameterStringComponent(props: PropsParameter): JSX.Ele
 		setValue(state.uiValue);
 	}, [state.uiValue]);
 
-	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
 	return <>
 		<ParameterLabelComponent { ...props } cancel={onCancel} />

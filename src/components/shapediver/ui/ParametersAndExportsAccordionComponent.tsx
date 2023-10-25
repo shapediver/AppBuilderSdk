@@ -17,6 +17,7 @@ interface Props {
 	parameters?: PropsParameter[],
 	exports?: PropsExport[],
 	defaultGroupName?: string,
+	/** If true, the user is presented with "Accept" and "Reject" buttons before changes are executed */
 	acceptRejectMode?: boolean,
 }
 
@@ -76,7 +77,9 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
-						disableIfDirty={!acceptRejectMode} />
+						disableIfDirty={!acceptRejectMode}
+						acceptRejectMode={acceptRejectMode}
+					/>
 				</div>
 			);
 		}

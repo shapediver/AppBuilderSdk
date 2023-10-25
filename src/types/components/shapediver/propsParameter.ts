@@ -14,5 +14,10 @@ export interface PropsParameter extends PropsParameterOrExport {
      * Disable the parameter component if it's in dirty state.
      */
     readonly disableIfDirty?: boolean;
+
+    /** 
+     * If true, the component can assume that changes are not executed immediately.
+     */
+	readonly acceptRejectMode?: boolean,
 }
 
