@@ -46,8 +46,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				</AppShell.Navbar>
 				<AppShell.Aside 
 					p={{ base: 0, sm: "sm", md: "md"}}
-					h={{ base: 300, sm: "100%"}}
-					style={isMobile ? { top: "calc(100% - 300px)", height: "300px", maxHeight: "100%" } : {} }
+					style={isMobile ? { top: "calc(100% - 300px)", height: "300px", maxHeight: "100%" } : { } }
 				>
 					{ aside }
 				</AppShell.Aside>
