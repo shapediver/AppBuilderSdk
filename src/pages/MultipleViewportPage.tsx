@@ -8,6 +8,7 @@ import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
+import { useMediaQuery } from "@mantine/hooks";
 
 /**
  * Function that creates the view page.
@@ -47,6 +48,7 @@ export default function ViewPage() {
 
 	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionBenchKey].id); 
 	const parameterBookshelfProps = useSessionPropsParameter(sessionsCreateDto[sessionBookshelfKey].id);
+	const isMobile = useMediaQuery("(max-width: 765px)");
 
 	const viewports = [
 		...([sessionBenchKey, sessionBenchKey] as Array<keyof typeof sessionsCreateDto>).map((sessionName, i) => {
@@ -77,29 +79,25 @@ export default function ViewPage() {
 		})
 	];
 
-	const aside = <Tabs defaultValue="bench" style={{ height: "100%" }}>
+	const aside = <Tabs defaultValue="bench" style={{ display: "flex", flexDirection: "column", maxHeight: "100%" }}>
 		<Tabs.List>
 			<Tabs.Tab value="bench" leftSection={<IconReplace size={14} />}>Bench</Tabs.Tab>
 			<Tabs.Tab value="bookshelf" leftSection={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="bench" pt="xs" style={{ position: "relative", height: "100%" }}>
-			<div style={{ height: "calc(100% - 40px)", overflowY: "auto" }}>
-				<ParametersAndExportsAccordionComponent parameters={parameterBenchProps} defaultGroupName="Bench parameters" />
-			</div>
+		<Tabs.Panel value="bench" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+			<ParametersAndExportsAccordionComponent parameters={parameterBenchProps} defaultGroupName="Bench parameters" />
 		</Tabs.Panel>
 
-		<Tabs.Panel value="bookshelf" pt="xs">
-			<div style={{ height: "calc(100% - 40px)", overflowY: "auto" }}>
-				<ParametersAndExportsAccordionComponent parameters={parameterBookshelfProps}
-					defaultGroupName="Bookshelf parameters" />
-			</div>
+		<Tabs.Panel value="bookshelf" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+			<ParametersAndExportsAccordionComponent parameters={parameterBookshelfProps}
+				defaultGroupName="Bookshelf parameters" />
 		</Tabs.Panel>
 	</Tabs>;
 
 	return (
 		<ExamplePage aside={aside}>
-			<Grid style={{ height: "100%" }}>
+			<Grid style={{ height: "100%", display: "flex" }}>
 				{viewports}
 			</Grid>
 		</ExamplePage>
