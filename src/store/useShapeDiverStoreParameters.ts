@@ -17,7 +17,7 @@ function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string
 	const param = session.parameters[paramId] as IParameterApi<T>;
 	
 	return {
-		execute: async (uiValue: T | string, execValue: T | string) => {
+		execute: async (uiValue: T | string, execValue: T | string, forceImmediate?: boolean) => {
 			const changes = getChanges(session, immediate);
 
 			// check whether there is anything to do
@@ -36,7 +36,7 @@ function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string
 			try {
 				console.debug(`Queueing change of parameter ${paramId} to ${uiValue}`);
 				changes.values[paramId] = uiValue;
-				if (immediate)
+				if (immediate || forceImmediate)
 					setTimeout(changes.accept, 0);
 				await changes.wait;
 				console.debug(`Executed change of parameter ${paramId} to ${uiValue}`);
@@ -90,9 +90,9 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 
 				return true;
 			},
-			execute: async function (): Promise<T | string> {
+			execute: async function (forceImmediate?: boolean): Promise<T | string> {
 				const state = get().state;
-				const result = await executor.execute(state.uiValue, state.execValue);
+				const result = await executor.execute(state.uiValue, state.execValue, forceImmediate);
 				// TODO in case result is not the current uiValue, we could somehow visualize
 				// the fact that the uiValue gets reset here
 				set((_state) => ({

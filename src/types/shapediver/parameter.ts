@@ -50,9 +50,12 @@ export interface IShapeDiverParameterActions<T> {
      * Note: The returned promise might not resolve for quite some time, e.g. in 
      * case parameter changes are waiting to be confirmed by the user. 
      * 
+     * @@param forceImmediate Set to true if the change should be executed immediately 
+     *                       regardless of other settings.
+     * 
      * @returns the value that was executed. 
      */
-    execute(): Promise<T | string>;
+    execute(forceImmediate?: boolean): Promise<T | string>;
 
     /**
      * Evaluates if a given value is valid for this parameter.
@@ -119,10 +122,12 @@ export interface IShapeDiverParameterExecutor<T> {
      * 
      * @param uiValue The new value to execute.
      * @param execValue The latest successfully executed value.
+     * @param forceImmediate Set to true if the change should be executed immediately 
+     *                       regardless of other settings.
      *
      * @returns the value that was executed, which might be different from uiValue and execValue. 
      */
-    readonly execute: (uiValue : T | string, execValue: T | string) => Promise<T | string>;
+    readonly execute: (uiValue : T | string, execValue: T | string, forceImmediate?: boolean) => Promise<T | string>;
 
     /**
      * Evaluates if a given value is valid.

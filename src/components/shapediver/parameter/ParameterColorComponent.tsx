@@ -27,7 +27,7 @@ export default function ParameterColorComponent(props: PropsParameter): JSX.Elem
 		setValue(curval);
 		debounceRef.current = setTimeout(() => {
 			if (actions.setUiValue(curval)) {
-				actions.execute();
+				actions.execute(!acceptRejectMode);
 			}
 		}, timeout === undefined ? debounceTimeout : timeout);
 	};

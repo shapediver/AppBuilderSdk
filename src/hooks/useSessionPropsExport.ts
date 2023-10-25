@@ -1,3 +1,4 @@
+import { ShapeDiverResponseExportDefinition } from "@shapediver/api.geometry-api-dto-v2";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { PropsExport } from "types/components/shapediver/propsExport";
 
@@ -5,13 +6,18 @@ import { PropsExport } from "types/components/shapediver/propsExport";
  * Hook providing a shortcut to create export props for the ParametersAndExportsAccordionComponent 
  * component, for all exports of a session.
  * @param sessionId 
+ * @param filter optional filter for export definitions
  * @returns 
  */
-export function useSessionPropsExport(sessionId: string) : PropsExport[] {
+export function useSessionPropsExport(sessionId: string, filter?: (param: ShapeDiverResponseExportDefinition) => boolean) : PropsExport[] {
 	
-	const propsParameters = useShapeDiverStoreParameters(state => Object.keys(state.useExports(sessionId)).map(id => {
-		return {sessionId, exportId: id};
-	}));
+	const _filter = filter || (() => true); 
 
-	return propsParameters;
+	const propsExports = useShapeDiverStoreParameters(state => Object
+		.values(state.useExports(sessionId))
+		.filter(store => _filter(store.getState().definition))
+		.map(store => { return {sessionId, exportId: store.getState().definition.id}; })
+	);
+
+	return propsExports;
 }

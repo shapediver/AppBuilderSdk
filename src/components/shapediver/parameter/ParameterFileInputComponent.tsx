@@ -25,7 +25,7 @@ export default function ParameterFileInputComponent(props: PropsParameter): JSX.
 		setValue(curval);
 		debounceRef.current = setTimeout(() => {
 			if (actions.setUiValue(curval)) {
-				actions.execute();
+				actions.execute(!acceptRejectMode);
 			}
 		}, timeout === undefined ? debounceTimeout : timeout);
 	};

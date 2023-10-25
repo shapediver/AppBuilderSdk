@@ -22,7 +22,7 @@ export default function ParameterSelectComponent(props: PropsParameter): JSX.Ele
 		setValue(curval);
 		debounceRef.current = setTimeout(() => {
 			if (actions.setUiValue(curval)) {
-				actions.execute();
+				actions.execute(!acceptRejectMode);
 			}
 		}, timeout === undefined ? debounceTimeout : timeout);
 	};

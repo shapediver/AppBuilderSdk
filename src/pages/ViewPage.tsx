@@ -48,7 +48,10 @@ export default function ViewPage() {
 		console.debug(`Output ${outputApi?.id} version ${outputApi?.version}`, outputNode);
 	}, [outputNode, outputApi]);
 
-	const parameterProps = useSessionPropsParameter(sessionId);
+	// get parameters that don't have a group or whose group name includes "export"
+	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
+	// get parameters whose group name includes "export"
+	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
 	const exportProps = useSessionPropsExport(sessionId);
 
 	const fullscreenId = "viewer-fullscreen-area";
@@ -60,11 +63,11 @@ export default function ViewPage() {
 		</Tabs.List>
 
 		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-			<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
+			<ParametersAndExportsAccordionComponent parameters={parameterProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-			<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
+			<ParametersAndExportsAccordionComponent parameters={exportParameterProps} exports={exportProps} defaultGroupName="Exports" />
 		</Tabs.Panel>
 	</Tabs>;
 

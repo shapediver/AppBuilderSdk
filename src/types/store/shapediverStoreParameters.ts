@@ -27,7 +27,7 @@ export interface IParameterChanges {
 	accept: () => void;
 	/** Reject the changes, this rejects wait */
 	reject: () => void;
-	/** Set to true to disable the controls which allow the user to accept or reject the changes */
+	/** True if the controls which allow the user to accept or reject the changes should be disabled */
 	disableControls: boolean;
 	/** True if changes are currently executing */
 	executing: boolean;
