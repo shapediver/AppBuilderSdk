@@ -47,21 +47,20 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				<AppShell.Aside 
 					p={{ base: 0, sm: "sm", md: "md"}}
 					h={{ base: 300, sm: "100%"}}
-					style={isMobile ? { top: "calc(100% - 300px)"} : {} }
+					style={isMobile ? { top: "calc(100% - 300px)", height: "300px", maxHeight: "100%" } : {} }
 				>
 					{ aside }
 				</AppShell.Aside>
-				{/** TODO Michael positioning in mobile mode does not work yet */}
 				<AppShell.Main 
 					bg={scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}
-					style={isMobile ? { top: "60px", left: "0px", right: "0px", bottom: "300px", position: "absolute"} : { height: "100%", width: "100%", position: "absolute"} }
+					style={isMobile ? { top: "60px", left: "0px", right: "0px", bottom: "300px", minHeight: "0", position: "absolute"} : { height: "100%", width: "100%", position: "absolute"} }
 				>
 					<Container
 						h="100%"
 						w="100%"
 						p={0}
 						pos="relative"
-						maw={1200}
+						maw="100%"
 					>
 						{ children }
 					</Container>
