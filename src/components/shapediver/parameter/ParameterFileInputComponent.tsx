@@ -1,6 +1,6 @@
-import { ActionIcon, FileInput } from "@mantine/core";
-import { IconUpload, IconX } from "@tabler/icons-react";
-import React, { JSX, useState } from "react";
+import { FileInput } from "@mantine/core";
+import { IconUpload } from "@tabler/icons-react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
@@ -13,35 +13,42 @@ import { useParameter } from "hooks/useParameter";
  */
 export default function ParameterFileInputComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
-	const { definition, actions, state } = useParameter<File|null>(sessionId, parameterId);
-	const [ value, setValue ] = useState<File|null>(null);
-	// callback for when the value was changed
-	const handleChange = (value: File | null) => {
-		setValue(value);
+	const { definition, actions, state } = useParameter<File|string>(sessionId, parameterId);
+	const [ value, setValue ] = useState<File|string>(""); // TODO implement case if default value of File parameter is a string
+	
+	const debounceTimeout = 0;
+	const debounceRef = useRef<NodeJS.Timeout>();
 
-		if (actions.setUiValue(value || "")) {
-			actions.execute();
-		}
+	const handleChange = (curval : File|string, timeout? : number) => {
+		console.log(curval);
+		clearTimeout(debounceRef.current);
+		setValue(curval);
+		debounceRef.current = setTimeout(() => {
+			if (actions.setUiValue(curval)) {
+				actions.execute();
+			}
+		}, timeout === undefined ? debounceTimeout : timeout);
 	};
+
+	useEffect(() => {
+		setValue(state.uiValue);
+	}, [state.uiValue]);
+
+	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+
 	// create the file endings from all the formats that are specified in the parameter
 	const fileEndings = [...mapMimeTypeToFileEndings(extendMimeTypes(definition.format!))];
 
 	return <>
-		<ParameterLabelComponent { ...props } />
+		<ParameterLabelComponent { ...props } cancel={onCancel} />
 		{ definition && <FileInput
 			placeholder="File Upload"
 			accept={fileEndings.join(",")}
-			onChange={handleChange}
+			clearable={!!state.execValue}
+			onChange={v => handleChange(v || "")}
 			leftSection={<IconUpload size={14} />}
-			rightSection={
-				<ActionIcon onClick={() => {
-					handleChange(null);
-				}}>
-					<IconX size={16} />
-				</ActionIcon>
-			}
 			disabled={disableIfDirty && state.dirty}
-			value={value}
+			value={typeof(value) === "string" ? null : value}
 		/> }
 	</>;
 }

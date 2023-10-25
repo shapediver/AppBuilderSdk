@@ -1,4 +1,4 @@
-import { Slider, TextInput } from "@mantine/core";
+import { NumberInput, Slider, TextInput, Tooltip } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
 import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
@@ -30,91 +30,70 @@ const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
 export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
 	const { definition, actions, state } = useParameter<number>(sessionId, parameterId);
-	
-	
-	const textInputRef = useRef<HTMLInputElement>(null);
-	const [value, setValue] = useState(0);
-	const [textValue, setTextValue] = useState("");
-	const [step, setStep] = useState(1);
+	const [value, setValue] = useState(() => state.uiValue);
 
-	// callback for when the value was changed
-	const handleChange = (inputValue: number) => {
-		// set the value and customize the session
-		if (actions.setUiValue(round(definition, inputValue))) {
-			actions.execute();
-		}
-	};
+	const debounceTimeout = 1000;
+	const debounceRef = useRef<NodeJS.Timeout>();
 
-	let zoomResizeTimeout: NodeJS.Timeout;
-	// callback for when the text value has been changed
-	// instead of applying the value directly, set a timeout to wait on further input
-	// if this input does not happen within 500ms, clean the value and execute the handleChange-callback
-	const handleChangeDelay = () => {
-		if (textInputRef.current)
-			setTextValue(textInputRef.current.value);
-
-		clearTimeout(zoomResizeTimeout);
-		zoomResizeTimeout = setTimeout(() => {
-			if (!textInputRef.current) return;
-
-			// if the text input value was not a number, reset it to the slider value
-			if (isNaN(+textInputRef.current.value)) return setTextValue(value + "");
-
-			let inputValue: number = +textInputRef.current.value;
-			// if the text input value was not within the min and max, reset it to the slider value
-			if (!(inputValue >= +definition.min! && inputValue <= +definition.max!)) return setTextValue(value + "");
-
-			// round the value according to the parameter type
-			inputValue = round(definition, inputValue);
-
-			// set the slider value and text value accordingly
-			setValue(inputValue);
-			setTextValue(inputValue + "");
-
-			// execute the handleChange callback
-			handleChange(inputValue);
-		}, 500);
+	const handleChange = (curval : string | number, timeout? : number) => {
+		clearTimeout(debounceRef.current);
+		setValue(curval);
+		debounceRef.current = setTimeout(() => {
+			if (actions.setUiValue(curval)) {
+				actions.execute();
+			}
+		}, timeout === undefined ? debounceTimeout : timeout);
 	};
 
 	useEffect(() => {
-		setValue(+definition.defval);
-		setTextValue(definition.defval);
+		setValue(state.uiValue);
+	}, [state.uiValue]);
 
-		// calculate the step size which depends on the parameter type
-		if (definition.type === PARAMETER_TYPE.INT) {
-			setStep(1);
-		} else if (definition.type === PARAMETER_TYPE.EVEN || definition.type === PARAMETER_TYPE.ODD) {
-			setStep(2);
-		} else {
-			setStep(1 / Math.pow(10, definition.decimalplaces!));
-		}
-	}, [definition]);
+	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
+	// calculate the step size which depends on the parameter type
+	let step = 1;
+	if (definition.type === PARAMETER_TYPE.INT) {
+		step = 1;
+	} else if (definition.type === PARAMETER_TYPE.EVEN || definition.type === PARAMETER_TYPE.ODD) {
+		step = 2;
+	} else {
+		step = 1 / Math.pow(10, definition.decimalplaces!);
+	}
+
+	// choose width of numeric input based on number of decimals
+
+	// tooltip, marks
+	const tooltip = `Min: ${definition.min}, Max: ${definition.max}`;
+	const marks = [{value: +definition.min!, label: definition.min}, {value: +definition.max!, label: definition.max}];
+	
 	return <>
-		<ParameterLabelComponent { ...props } />
+		<ParameterLabelComponent { ...props } cancel={onCancel}/>
 		{definition && <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
 			{ definition && <Slider
-				style={{ width: "65%" }}
-				label={round(definition, value)}
-				defaultValue={+value}
+				style={{ width: "55%" }}
+				label={round(definition, +value)}
+				value={+value}
 				min={+definition.min!}
 				max={+definition.max!}
 				step={step}
+				onChange={v => setValue(round(definition, v))}
+				onChangeEnd={v => handleChange(round(definition, v))}
+				marks={marks}
+				disabled={disableIfDirty && state.dirty}
+			/> }
+			{ definition && <Tooltip label={tooltip} position="bottom"><NumberInput
+				style={{ width: "40%" }}
 				value={value}
-				onChange={(v) => {
-					setValue(v);
-					setTextValue(round(definition, v) + "");
-				}}
-				onChangeEnd={handleChange}
+				min={+definition.min!}
+				max={+definition.max!}
+				step={step}
+				decimalScale={definition.decimalplaces}
+				fixedDecimalScale={true}
+				clampBehavior="strict"
+				onChange={v => handleChange(round(definition, +v))}
 				disabled={disableIfDirty && state.dirty}
-			/> }
-			{ definition && <TextInput
-				ref={textInputRef}
-				style={{ width: "30%" }}
-				value={textValue}
-				onChange={handleChangeDelay}
-				disabled={disableIfDirty && state.dirty}
-			/> }
+			/></Tooltip> }
 		</div>}
 	</>;
 }
