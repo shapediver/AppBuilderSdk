@@ -11,6 +11,7 @@ import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
+import { useMediaQuery } from "@mantine/hooks";
 
 /**
  * Function that creates the view page.
@@ -29,7 +30,8 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 	const acceptRejectMode = true;
-	
+	const isMobile = useMediaQuery("(max-width: 765px)");
+
 	const { branding } = useMantineBranding();
 
 	useSession({
@@ -43,22 +45,18 @@ export default function ViewPage() {
 
 	const fullscreenId = "viewer-fullscreen-area";
 
-	const aside = <Tabs defaultValue="parameters">
+	const aside = <Tabs defaultValue="parameters" style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
 		<Tabs.List>
 			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt="xs">
-			<div style={{overflowY: "auto"}}>{/** TODO Michael make vertical scrolling of parameter/export panels work */}
-				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
-			</div>
+		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+			<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
 		</Tabs.Panel>
 
-		<Tabs.Panel value="exports" pt="xs">
-			<div style={{overflowY: "auto"}}>{/** TODO Michael make vertical scrolling of parameter/export panels work */}
-				<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
-			</div>
+		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+			<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
 		</Tabs.Panel>
 	</Tabs>;
 
