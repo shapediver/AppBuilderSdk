@@ -6,6 +6,7 @@ import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
 import { firstLetterUppercase } from "utils/strings";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
+import { FLAG_TYPE } from "@shapediver/viewer";
 
 interface Props {
 	color?: string
@@ -45,10 +46,12 @@ export default function ViewportIcons({
 	const isArEnabled = viewport ? viewport.enableAR : false;
 	const isViewableInAr = viewport ? (!viewport.viewableInAR()) : true;
 
-	const onArClick = () => {
+	const onArClick = async () => {
 		if (!viewport) return;
-
-		viewport.viewInAR();
+		const token = viewport.addFlag(FLAG_TYPE.BUSY_MODE);
+		if (viewport.viewableInAR()) 
+			await viewport.viewInAR();
+		viewport.removeFlag(token);
 	};
 
 	const onZoomClick = () => {
