@@ -50,10 +50,9 @@ export interface IShapeDiverParameterActions<T> {
      * Note: The returned promise might not resolve for quite some time, e.g. in 
      * case parameter changes are waiting to be confirmed by the user. 
      * 
-     * @returns true in case execution was successful, false in case it failed or
-     *          was rejected by the user. 
+     * @returns the value that was executed. 
      */
-    execute(): Promise<boolean>;
+    execute(): Promise<T | string>;
 
     /**
      * Evaluates if a given value is valid for this parameter.
@@ -121,10 +120,9 @@ export interface IShapeDiverParameterExecutor<T> {
      * @param uiValue The new value to execute.
      * @param execValue The latest successfully executed value.
      *
-     * @returns true in case execution was successful, false in case it failed or
-     *          was rejected by the user. 
+     * @returns the value that was executed, which might be different from uiValue and execValue. 
      */
-    readonly execute: (uiValue : T | string, execValue: T | string) => Promise<boolean>;
+    readonly execute: (uiValue : T | string, execValue: T | string) => Promise<T | string>;
 
     /**
      * Evaluates if a given value is valid.

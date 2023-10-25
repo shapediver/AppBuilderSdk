@@ -5,28 +5,48 @@ import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
 	IExportStores, IExportStoresPerSession,
+	IParameterChanges,
+	IParameterChangesPerSession,
 	IParameterStores,
 	IParameterStoresPerSession,
 	IShapeDiverStoreParameters
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 
-function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string): IShapeDiverParameterExecutor<T> {
+function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string, immediate: boolean, getChanges: (session: ISessionApi, disableControls: boolean) => IParameterChanges): IShapeDiverParameterExecutor<T> {
 	const param = session.parameters[paramId] as IParameterApi<T>;
 	
 	return {
 		execute: async (uiValue: T | string, execValue: T | string) => {
+			const changes = getChanges(session, immediate);
+
+			// check whether there is anything to do
+			if (paramId in changes.values && uiValue === execValue) {
+				delete changes.values[paramId];
+				// check if there are any other parameter updates queued
+				if (Object.keys(changes.values).length === 0) {
+					changes.reject();
+
+					return execValue;
+				}
+			}
+			
+			// execute the change
 			try {
-				param.value = uiValue;
-				await session.customize();
+				console.debug(`Queueing change of parameter ${paramId} to ${uiValue}`);
+				changes.values[paramId] = uiValue;
+				if (immediate)
+					setTimeout(changes.accept, 0);
+				await changes.wait;
+				console.debug(`Executed change of parameter ${paramId} to ${uiValue}`);
 				
-				return true;
+				return uiValue;
 			}
 			catch // TODO provide possibility to react to exception
 			{
-				param.value = execValue;
+				console.debug(`Rejecting change of parameter ${paramId} to ${uiValue}, resetting to ${execValue}`);
 				
-				return false;
+				return execValue;
 			}
 		},
 		isValid: (uiValue: T | string, throwError?: boolean) => param.isValid(uiValue, throwError),
@@ -47,7 +67,7 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 		dirty: false
 	};
 
-	return create<IShapeDiverParameter<T>>((set, get) => ({
+	return create<IShapeDiverParameter<T>>()(devtools((set, get) => ({
 		definition,
 		/**
 		 * The dynamic properties (aka the "state") of a parameter.
@@ -65,30 +85,24 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 						uiValue,
 						dirty: uiValue !== _state.state.execValue
 					}
-				}));
+				}), false, "setUiValue");
 
 				return true;
 			},
-			execute: async function (): Promise<boolean> {
+			execute: async function (): Promise<T | string> {
 				const state = get().state;
 				const result = await executor.execute(state.uiValue, state.execValue);
-				if (result)
-					set((_state) => ({
-						state: {
-							..._state.state,
-							execValue: state.uiValue,
-							dirty: false
-						}
-					}));
-				else
-					set((_state) => ({
-						state: {
-							..._state.state,
-							uiValue: state.execValue,
-							dirty: false
-						}
-					}));
-
+				// TODO in case result is not the current uiValue, we could somehow visualize
+				// the fact that the uiValue gets reset here
+				set((_state) => ({
+					state: {
+						..._state.state,
+						uiValue: result,
+						execValue: result,
+						dirty: false
+					}
+				}), false, "execute");
+		
 				return result;
 			},
 			isValid: function (value: any, throwError?: boolean | undefined): boolean {
@@ -102,7 +116,7 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 						uiValue: definition.defval,
 						dirty: definition.defval !== _state.state.execValue
 					}
-				}));
+				}), false, "resetToDefaultValue");
 			},
 			resetToExecValue: function (): void {
 				const state = get().state;
@@ -112,10 +126,11 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 						uiValue: state.execValue,
 						dirty: false
 					}
-				}));
+				}), false, "resetToExecValue");
 			},
 		}
-	}));
+	}
+	), { ...devtoolsSettings, name: `ShapeDiver | Parameter | ${definition.id}` }));
 }
 
 /**
@@ -146,24 +161,102 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	parameterStores: {},
 	exportStores: {},
+	parameterChanges: {},
 
-	addSession: (session: ISessionApi) => {
+	removeChanges: (sessionId: string) => {
+		const { parameterChanges } = get();
+
+		// create a new object, omitting the session to be removed
+		const changes: IParameterChangesPerSession = {};
+		Object.keys(parameterChanges).forEach(id => {
+			if (id !== sessionId)
+				changes[id] = parameterChanges[id];
+		});
+		
+		set(() => ({
+			parameterChanges: changes,
+		}), false, "removeChanges");
+	},
+
+	getChanges: (session: ISessionApi, disableControls: boolean) : IParameterChanges => {
+		const { parameterChanges, removeChanges } = get();
+		const { id: sessionId } = session;
+		if ( parameterChanges[sessionId] )
+			return parameterChanges[sessionId];
+
+		const changes: IParameterChanges = {
+			values: {},
+			accept: () => undefined,
+			reject: () => undefined,
+			wait: Promise.resolve(),
+			disableControls,
+			executing: false,
+		};
+	
+		changes.wait = new Promise((resolve, reject) => {
+			changes.accept = async () => {
+				// store previous values (we restore them in case of error)
+				const previousValues = Object.keys(changes.values).reduce((acc, paramId) => {
+					acc[paramId] = session.parameters[paramId].value;
+					
+					return acc;
+				}, {} as { [paramId: string]: unknown});
+				try {
+					// set values and call customize
+					Object.keys(changes.values).forEach(id => session.parameters[id].value = changes.values[id]);
+					set((_state) => ({
+						parameterChanges: {
+							..._state.parameterChanges,
+							...{ [sessionId]: {
+								..._state.parameterChanges[sessionId],
+								executing: true
+							} }
+						}
+					}), false, "executeChanges");
+					await session.customize();
+					resolve();
+				} 
+				catch (e: any)
+				{
+					// in case of an error, restore the previous values
+					Object.keys(previousValues).forEach(id => session.parameters[id].value = previousValues[id]);
+					reject(e);
+				}
+				finally 
+				{
+					removeChanges(sessionId);
+				}
+			};
+			changes.reject = () => {
+				removeChanges(sessionId);
+				reject();
+			};
+
+			set((_state) => ({
+				parameterChanges: {
+					..._state.parameterChanges,
+					...{ [sessionId]: changes }
+				}
+			}), false, "getChanges");
+		});
+
+		return changes;
+	},
+
+	addSession: (session: ISessionApi, immediate) => {
 		const sessionId = session.id;
-		const { parameterStores: parameters, exportStores: exports} = get();
+		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
 
 		set((_state) => ({
-			parameterStores:  {
+			parameterStores: {
 				..._state.parameterStores,
 				...parameters[sessionId]
 					? {} // Keep existing parameter stores
-					: {
-						..._state.parameterStores,
-						[sessionId]: Object.keys(session.parameters).reduce((acc, paramId) => {
-							acc[paramId] = createParameterStore(createDefaultParameterExecutor(session, paramId));
+					: {	[sessionId]: Object.keys(session.parameters).reduce((acc, paramId) => {
+						acc[paramId] = createParameterStore(createDefaultParameterExecutor(session, paramId, immediate, getChanges));
 
-							return acc;
-						}, {} as IParameterStores)
-					} // Create new parameter stores
+						return acc;
+					}, {} as IParameterStores) } // Create new parameter stores
 			},
 			exportStores: {
 				..._state.exportStores,
@@ -200,7 +293,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 			exportStores: exports,
 		}), false, "removeSession");
 	},
-
+	
 	useParameters: (sessionId: string) => {
 		return get().parameterStores[sessionId] || {};
 	},
@@ -215,6 +308,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	useExport: (sessionId: string, exportId: string) => {
 		return get().useExports(sessionId)[exportId] || {};
-	}
+	},
+
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Parameters" }));

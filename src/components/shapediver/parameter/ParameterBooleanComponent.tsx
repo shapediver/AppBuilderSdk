@@ -1,5 +1,5 @@
 import { Switch } from "@mantine/core";
-import React, { JSX, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameter } from "hooks/useParameter";
@@ -12,25 +12,36 @@ import { useParameter } from "hooks/useParameter";
 export default function ParameterBooleanComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
 	const { definition, actions, state } = useParameter<boolean>(sessionId, parameterId);
-	
-	const [defaultValue] = useState(() => definition.defval.toLowerCase() === "true");
+	const [value, setValue] = useState(() => state.uiValue);
 
-	const handleChange = (value: boolean) => {
-		// set the value and customize the session
-		if (actions.setUiValue(value)) {
-			actions.execute();
-		}
+	const debounceTimeout = 0;
+	const debounceRef = useRef<NodeJS.Timeout>();
+
+	const handleChange = (curval : string | boolean, timeout? : number) => {
+		clearTimeout(debounceRef.current);
+		setValue(curval);
+		debounceRef.current = setTimeout(() => {
+			if (actions.setUiValue(curval)) {
+				actions.execute();
+			}
+		}, timeout === undefined ? debounceTimeout : timeout);
 	};
 
+	useEffect(() => {
+		setValue(state.uiValue);
+	}, [state.uiValue]);
+
+	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+
 	return <>
-		<ParameterLabelComponent { ...props} />
+		<ParameterLabelComponent { ...props} cancel={onCancel} />
 		{definition && <Switch
 			styles={() => ({
 				track: { cursor: "pointer" },
 			})}
 			size="md"
-			defaultChecked={defaultValue}
-			onChange={(event) => handleChange(event.currentTarget.checked)}
+			checked={value === true || value.toString().toLowerCase() === "true"}
+			onChange={(e) => handleChange(e.currentTarget.checked)}
 			disabled={disableIfDirty && state.dirty}
 		/>}
 	</>;

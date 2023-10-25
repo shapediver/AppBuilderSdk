@@ -1,11 +1,10 @@
 import React, { CSSProperties, useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
-import { ActionIcon, Menu, Tooltip } from "@mantine/core";
+import { ActionIcon, ActionIconVariant, Menu, Tooltip } from "@mantine/core";
 import { useClickEventHandler } from "hooks/useClickEventHandler";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
 import { firstLetterUppercase } from "utils/strings";
-import { ActionIconVariant } from "@mantine/core/lib/ActionIcon/ActionIcon.styles";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 
 interface Props {

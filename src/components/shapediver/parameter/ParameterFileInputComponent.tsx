@@ -32,7 +32,7 @@ export default function ParameterFileInputComponent(props: PropsParameter): JSX.
 			placeholder="File Upload"
 			accept={fileEndings.join(",")}
 			onChange={handleChange}
-			icon={<IconUpload size={14} />}
+			leftSection={<IconUpload size={14} />}
 			rightSection={
 				<ActionIcon onClick={() => {
 					handleChange(null);

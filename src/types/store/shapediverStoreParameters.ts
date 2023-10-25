@@ -16,6 +16,26 @@ export type IExportStores = { [parameterId: string]: IExportStore }
 export type IExportStoresPerSession = { [sessionId: string]: IExportStores };
 
 /**
+ * Pending parameter changes (waiting to be executed).
+ */
+export interface IParameterChanges {
+	/** The parameter values to change */
+	values: { [parameterId: string]: any };
+	/** Promise allowing to wait for pending changes */
+	wait: Promise<void>;
+	/** Accept the changes, this resolves wait */
+	accept: () => void;
+	/** Reject the changes, this rejects wait */
+	reject: () => void;
+	/** Set to true to disable the controls which allow the user to accept or reject the changes */
+	disableControls: boolean;
+	/** True if changes are currently executing */
+	executing: boolean;
+}
+
+export interface IParameterChangesPerSession { [sessionId: string]: IParameterChanges}
+
+/**
  * Interface for the store of parameters and exports. 
  * The parameters and exports managed by this store are abstractions of the 
  * parameters and exports defined by a ShapeDiver 3D Viewer session. 
@@ -36,11 +56,17 @@ export interface IShapeDiverStoreParameters {
 	exportStores: IExportStoresPerSession;
 
 	/**
+	 * Pending parameter changes.
+	 */
+	parameterChanges: IParameterChangesPerSession;
+
+	/**
 	 * Add parameter and export stores for all parameters and exports of the session.
 	 * @param session
+	 * @param immediate If true, execute parameter changes immediately.
 	 * @returns
 	 */
-	addSession: (session: ISessionApi) => void,
+	addSession: (session: ISessionApi, immediate: boolean) => void,
 
 	/**
 	 * Remove parameter and exports stores for all parameters and exports of the session.
@@ -77,4 +103,19 @@ export interface IShapeDiverStoreParameters {
 	 * @returns
 	 */
 	useExport: (sessionId: string, exportId: string) => IExportStore;
+
+	/**
+	 * Get or add pending parameter changes for a given session id.
+	 * @param session 
+	 * @param disableControls if true, disable the controls which allow the user to accept or reject parameter changes
+	 * @returns 
+	 */
+	getChanges: (session: ISessionApi, disableControls: boolean) => IParameterChanges,
+
+	/**
+	 * Remove pending parameter changes for a given session id.
+	 * @param sessionId 
+	 * @returns 
+	 */
+	removeChanges: (sessionId: string) => void,
 }

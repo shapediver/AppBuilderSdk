@@ -10,6 +10,11 @@ interface Props extends SessionCreateDto {
 	 * abstracted parameters and exports managed by {@link useShapeDiverStoreParameters}. 
 	 */
 	registerParametersAndExports?: boolean;
+
+	/**
+	 * Set to true to require confirmation of the user to accept or reject changed parameter values.
+	 */
+	acceptRejectMode?: boolean;
 }
 
 /**
@@ -19,7 +24,7 @@ interface Props extends SessionCreateDto {
  * @returns
  */
 export function useSession(props: Props) {
-	const { registerParametersAndExports = false } = props;
+	const { registerParametersAndExports = false, acceptRejectMode = false } = props;
 	const { createSession, closeSession } = useShapeDiverStoreViewer();
 	const { addSession: addSessionParameters, removeSession: removeSessionParameters } = useShapeDiverStoreParameters();
 	const [sessionApi, setSessionApi] = useState<ISessionApi | undefined>(undefined);
@@ -31,7 +36,7 @@ export function useSession(props: Props) {
 			setSessionApi(api);
 
 			if (registerParametersAndExports && api) {
-				addSessionParameters(api);
+				addSessionParameters(api, !acceptRejectMode);
 			}
 		});
 

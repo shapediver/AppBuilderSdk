@@ -1,10 +1,11 @@
 import React, { JSX } from "react";
-import { Accordion, Divider, Loader, useMantineTheme } from "@mantine/core";
+import { Accordion, Button, Divider, Loader } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
-import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import { useSortedParametersAndExports } from "hooks/useSortedParametersAndExports";
+import { useParameterChanges } from "hooks/useParameterChanges";
 
 /**
  * Functional component that creates an accordion of parameter and export components.
@@ -16,34 +17,27 @@ interface Props {
 	parameters?: PropsParameter[],
 	exports?: PropsExport[],
 	defaultGroupName?: string,
-	disableIfDirty?: boolean,
-}
-
-interface ParamOrExportDefinition {
-	parameter?: PropsParameter,
-	export?: PropsExport,
-	definition: IShapeDiverParamOrExportDefinition,
+	acceptRejectMode?: boolean,
 }
 
 export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
-	const theme = useMantineTheme();
-	const {parameters, exports, defaultGroupName, disableIfDirty} = props;
-	const {parameterStores, exportStores} = useShapeDiverStoreParameters();
+	const {parameters, exports, defaultGroupName, acceptRejectMode} = props;
 
-	// collect definitions of parameters and exports for sorting and grouping
-	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
-	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
-		const definition = parameterStores[p.sessionId][p.parameterId].getState().definition;
+	// get sorted list of parameter and export definitions
+	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
 
-		return { parameter: p, definition };
-	}));
-
-	sortedParamsAndExports = sortedParamsAndExports.concat((exports || []).map(e => {
-		const definition = exportStores[e.sessionId][e.exportId].getState().definition;
-
-		return { export: e, definition };
-	}));
-
+	// check if there are parameter changes to be confirmed
+	const parameterChanges = useParameterChanges(parameters || []);
+	const disableChangeControls = parameterChanges.length === 0 || 
+		parameterChanges.every(c => c.disableControls ) || 
+		parameterChanges.some(c => c.executing);
+	const acceptChanges = () => {
+		parameterChanges.forEach(c => c.accept());
+	};
+	const rejectChanges = () => {
+		parameterChanges.forEach(c => c.reject());
+	};
+	
 	// create a data structure to store the elements within groups
 	const elementGroups: {
 		[key: string]: {
@@ -51,10 +45,6 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 			elements: JSX.Element[],
 		}
 	} = {};
-
-	// sort the parameters
-	// const sortedParams = Object.values(parameters).map((ps) => ps((state) => state));
-	sortedParamsAndExports.sort((a, b) => (a.definition.order || Infinity) - (b.definition.order || Infinity));
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
@@ -86,7 +76,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
-						disableIfDirty={disableIfDirty} />
+						disableIfDirty={!acceptRejectMode} />
 				</div>
 			);
 		}
@@ -106,6 +96,37 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	const elements: JSX.Element[] = [];
 
+	if (acceptRejectMode) {
+		elements.push(
+			<div key="acceptOrReject" style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+				<Button 
+					style={{
+						width: "70%"
+					}}
+					fullWidth={true}
+					leftSection={<IconCheck />}
+					variant="default"
+					onClick={acceptChanges}
+					disabled={disableChangeControls}
+				>
+			Accept
+				</Button>
+				<Button
+					style={{
+						width: "70%"
+					}}
+					fullWidth={true}
+					leftSection={<IconX />}
+					variant="default"
+					onClick={rejectChanges}
+					disabled={disableChangeControls}
+				>
+			Reject
+				</Button>
+			</div>
+		);
+	}
+
 	// loop through the created elementGroups to add them
 	for (const e in elementGroups) {
 		const g = elementGroups[e];
@@ -123,7 +144,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 				<Accordion.Control>{g.group.name}</Accordion.Control>
 				<Accordion.Panel
 					key={g.group.id}
-					style={{ background: theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0] }}
+					style={{ background: "light-dark(var(--mantine-color-dark-8), var(--mantine-color-gray-0))" }}
 				>
 					{groupElements}
 				</Accordion.Panel>

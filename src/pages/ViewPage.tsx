@@ -28,12 +28,14 @@ export default function ViewPage() {
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
 		excludeViewports: ["viewport_2"],
 	};
+	const acceptRejectMode = true;
 	
 	const { branding } = useMantineBranding();
 
 	useSession({
 		...sessionCreateDto,
 		registerParametersAndExports: true,
+		acceptRejectMode: acceptRejectMode,
 	});
 
 	const parameterProps = useSessionPropsParameter(sessionId);
@@ -41,20 +43,20 @@ export default function ViewPage() {
 
 	const fullscreenId = "viewer-fullscreen-area";
 
-	const aside = <Tabs defaultValue="parameters" style={{ height: "100%"}}>
+	const aside = <Tabs defaultValue="parameters">
 		<Tabs.List>
-			<Tabs.Tab value="parameters" icon={<IconReplace size={14} />}>Parameters</Tabs.Tab>
-			<Tabs.Tab value="exports" icon={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
+			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
+			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt="xs"  style={{ position: "relative", height: "100%"}}>
-			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
-				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} disableIfDirty={true} defaultGroupName="Exports" />
+		<Tabs.Panel value="parameters" pt="xs">
+			<div style={{overflowY: "auto"}}>{/** TODO Michael make vertical scrolling of parameter/export panels work */}
+				<ParametersAndExportsAccordionComponent parameters={parameterProps} exports={exportProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt="xs">
-			<div style={{ height: "calc(100% - 40px)", overflowY: "auto"}}>
+			<div style={{overflowY: "auto"}}>{/** TODO Michael make vertical scrolling of parameter/export panels work */}
 				<ParametersAndExportsAccordionComponent exports={exportProps} defaultGroupName="Exports" />
 			</div>
 		</Tabs.Panel>

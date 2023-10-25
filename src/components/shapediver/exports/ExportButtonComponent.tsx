@@ -58,7 +58,7 @@ export default function ExportButtonComponent(props: PropsExport): JSX.Element {
 						width: "70%"
 					}}
 					fullWidth={true}
-					leftIcon={definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
+					leftSection={definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
 					variant="default"
 					onClick={onClick}
 				>

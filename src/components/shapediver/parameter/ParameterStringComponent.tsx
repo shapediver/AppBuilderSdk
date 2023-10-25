@@ -1,8 +1,9 @@
 import { TextInput } from "@mantine/core";
-import React, { JSX, useRef } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameter } from "hooks/useParameter";
+
 
 /**
  * Functional component that creates a string input component for a string parameter.
@@ -12,34 +13,32 @@ import { useParameter } from "hooks/useParameter";
 export default function ParameterStringComponent(props: PropsParameter): JSX.Element {
 	const { sessionId, parameterId, disableIfDirty } = props;
 	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
-	const textInputRef = useRef<HTMLInputElement>(null);
+	const [value, setValue] = useState(() => state.uiValue);
 
-	// function to apply the value to the parameter and customize the scene
-	const handleChange = (value: string) => {
-		// set the value and customize the session
-		if (actions.setUiValue(value)) {
-			actions.execute();
-		}
+	const debounceTimeout = 1000;
+	const debounceRef = useRef<NodeJS.Timeout>();
+
+	const handleChange = (curval : string, timeout? : number) => {
+		clearTimeout(debounceRef.current);
+		setValue(curval);
+		debounceRef.current = setTimeout(() => {
+			if (actions.setUiValue(curval)) {
+				actions.execute();
+			}
+		}, timeout === undefined ? debounceTimeout : timeout);
 	};
 
-	let zoomResizeTimeout: NodeJS.Timeout;
-	// callback for when the text value has been changed
-	// instead of applying the value directly, set a timeout to wait on further input
-	// if this input does not happen within 500ms, execute the handleChange-callback
-	const handleChangeDelay = () => {
-		clearTimeout(zoomResizeTimeout);
-		zoomResizeTimeout = setTimeout(() => {
-			if (textInputRef.current)
-				handleChange(textInputRef.current.value);
-		}, 1000);
-	};
+	useEffect(() => {
+		setValue(state.uiValue);
+	}, [state.uiValue]);
+
+	const onCancel = state.dirty ? () => handleChange(state.execValue, 0) : undefined;
 
 	return <>
-		<ParameterLabelComponent { ...props } />
+		<ParameterLabelComponent { ...props } cancel={onCancel} />
 		{definition && <TextInput
-			ref={textInputRef}
-			defaultValue={state.uiValue}
-			onChange={handleChangeDelay}
+			value={value}
+			onChange={(e) => handleChange(e.target.value)}
 			disabled={disableIfDirty && state.dirty}
 			maxLength={definition.max}
 		/>}

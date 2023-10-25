@@ -79,8 +79,8 @@ export default function ViewPage() {
 
 	const aside = <Tabs defaultValue="bench" style={{ height: "100%" }}>
 		<Tabs.List>
-			<Tabs.Tab value="bench" icon={<IconReplace size={14} />}>Bench</Tabs.Tab>
-			<Tabs.Tab value="bookshelf" icon={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
+			<Tabs.Tab value="bench" leftSection={<IconReplace size={14} />}>Bench</Tabs.Tab>
+			<Tabs.Tab value="bookshelf" leftSection={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
 		</Tabs.List>
 
 		<Tabs.Panel value="bench" pt="xs" style={{ position: "relative", height: "100%" }}>
