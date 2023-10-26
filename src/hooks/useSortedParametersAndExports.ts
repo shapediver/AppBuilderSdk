@@ -11,7 +11,7 @@ interface ParamOrExportDefinition {
 
 /**
  * Hook providing a sorted list of definitions of parameters and exports, used
- * for creating parameter and export UI components. 
+ * by {@link ParametersAndExportsAccordionComponent} for creating parameter and export UI components. 
  * @param parameters 
  * @param exports 
  * @returns 

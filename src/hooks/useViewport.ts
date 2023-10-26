@@ -4,7 +4,7 @@ import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 
 /**
  * Hook for creating a viewport of the ShapeDiver 3D Viewer.
- * Typically, you want to directly use the ViewportComponent instead
+ * Typically, you want to directly use the {@link ViewportComponent} instead
  * of calling this hook yourself.
  * @see {@link useShapeDiverStoreViewer} to access the API of the viewport.
  * @param props

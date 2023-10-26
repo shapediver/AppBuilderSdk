@@ -5,7 +5,8 @@ import { SessionCreateDto } from "types/store/shapediverStoreViewer";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 
 /**
- * DTO for use with {@link useSession} and {@link useSessions}
+ * DTO for use with {@link useSession} and {@link useSessions}. 
+ * Extends {@link SessionCreateDto}. 
  */
 export interface IUseSessionDto extends SessionCreateDto {
 	/** 
@@ -22,8 +23,13 @@ export interface IUseSessionDto extends SessionCreateDto {
 
 /**
  * Hook for creating a session with a ShapeDiver model using the ShapeDiver 3D Viewer.
+ * Optionally registers all parameters and exports defined by the model as abstracted 
+ * parameters and exports for use by the UI components.
+ * 
  * @see {@link useShapeDiverStoreViewer} to access the API of the session.
- * @param props
+ * @see {@link useShapeDiverStoreParameters} to access the abstracted parameters and exports.
+ *
+ * @param props {@link IUseSessionDto}
  * @returns
  */
 export function useSession(props: IUseSessionDto) {

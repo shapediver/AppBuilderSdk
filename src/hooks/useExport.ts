@@ -3,6 +3,9 @@ import { IShapeDiverExport } from "types/shapediver/export";
 
 /**
  * Hook providing a shortcut to abstracted exports managed by {@link useShapeDiverStoreParameters}. 
+ * 
+ * @see {@link IShapeDiverExport}
+ * 
  * @param sessionId 
  * @param exportId 
  * @returns 

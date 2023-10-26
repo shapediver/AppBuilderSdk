@@ -4,6 +4,8 @@ import { IParameterChanges } from "types/store/shapediverStoreParameters";
 
 /**
  * Get parameter change objects for all sessions used by the given parameters.
+ * @see {@link IParameterChanges}
+ * 
  * @param parameters 
  * @returns 
  */

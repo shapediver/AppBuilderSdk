@@ -3,6 +3,9 @@ import { IShapeDiverParameter } from "types/shapediver/parameter";
 
 /**
  * Hook providing a shortcut to abstracted parameters managed by {@link useShapeDiverStoreParameters}. 
+ * 
+ * @see {@link IShapeDiverParameter<T>}
+ * 
  * @param sessionId 
  * @param parameterId 
  * @returns 

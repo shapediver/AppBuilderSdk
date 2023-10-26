@@ -3,8 +3,8 @@ import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters
 import { PropsExport } from "types/components/shapediver/propsExport";
 
 /**
- * Hook providing a shortcut to create export props for the ParametersAndExportsAccordionComponent 
- * component, for all exports of a session.
+ * Hook providing a shortcut to create export props for the {@link ParametersAndExportsAccordionComponent}
+ * component, for all exports of one or several sessions, using an optional filter. 
  * @param sessionId 
  * @param filter optional filter for export definitions
  * @returns 

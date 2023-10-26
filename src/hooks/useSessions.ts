@@ -5,9 +5,14 @@ import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters
 import { IUseSessionDto } from "./useSession";
 
 /**
- * Hook for creating multiple sessions with a ShapeDiver model using the ShapeDiver 3D Viewer.
+ * Hook for creating multiple sessions with ShapeDiver models using the ShapeDiver 3D Viewer. 
+ * Optionally registers all parameters and exports defined by the models as abstracted 
+ * parameters and exports for use by the UI components.
+ * 
  * @see {@link useShapeDiverStoreViewer} to access the API of the session.
- * @param props
+ * @see {@link useShapeDiverStoreParameters} to access the abstracted parameters and exports.
+ * 
+ * @param props {@link IUseSessionDto}
  * @returns
  */
 export function useSessions(props: IUseSessionDto[]) {

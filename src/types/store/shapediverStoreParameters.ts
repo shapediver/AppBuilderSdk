@@ -29,7 +29,7 @@ export interface IParameterChanges {
 	reject: () => void;
 	/** True if the controls which allow the user to accept or reject the changes should be disabled */
 	disableControls: boolean;
-	/** True if changes are currently executing */
+	/** True if changes are currently being executed */
 	executing: boolean;
 }
 
