@@ -1,6 +1,7 @@
-import { Image, Container, Card, Group, Text, Button } from "@mantine/core";
+import { Image, Container, Card, Group, Text, Button, Blockquote } from "@mantine/core";
 import { Link } from "react-router-dom";
 import React from "react";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 /**
  * Function that creates the home page.
@@ -28,6 +29,11 @@ export default function HomePage() {
 						<Text size="sm" c="dimmed">
 On this example page we present several use cases that utilize React components for the creation of viewports, sessions,
 components representing parameters and exports, and much more. All these components are provided in the repository and can be customized easily.
+
+							<Blockquote color="blue" icon={<IconInfoCircle />} mt="xl">
+						Check out the code for this example <a href="https://github.com/shapediver/ShapeDiverReactExample">here</a>
+							</Blockquote>
+
 						</Text>
 					</Group>
 				</Card>
