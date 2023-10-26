@@ -28,11 +28,11 @@ export default function HomePage() {
 					</Card.Section>
 					<Group gap="md" mt="md" mb="xs">
 						<Text size="sm" c="dimmed">
-On this example page we present several use cases that utilize React components for the creation of viewports, sessions,
-components representing parameters and exports, and much more. All these components are provided in the repository and can be customized easily.
+On this example page we present several use cases that utilize custom React components and hooks for the creation of viewports, sessions,
+controls for parameters and exports, and much more. All these components and hooks are provided in the repository and can be customized easily.
 						</Text>
 						<Blockquote color="blue" icon={<IconInfoCircle />} mt="xl">
-Check out the code for this example <a href="https://github.com/shapediver/ShapeDiverReactExample">here</a>.
+Check out the source code for this example <a href="https://github.com/shapediver/ShapeDiverReactExample">here</a>.
 						</Blockquote>
 					</Group>
 				</Card>
@@ -53,7 +53,7 @@ Check out the code for this example <a href="https://github.com/shapediver/Shape
 						</Group>
 
 						<Text size="sm" c="dimmed">
-This example opens a single session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing
+This example opens a session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing
 the parameters and exports defined by the model. All components are easily customizable.
 						</Text>
 
@@ -77,8 +77,9 @@ the parameters and exports defined by the model. All components are easily custo
 						</Group>
 
 						<Text size="sm" c="dimmed">
-This example displays a single viewport in which sessions with multiple ShapeDiver models can be loaded at once.
-The settings of the model which is selected first are used to configure the viewport (camera, controls, etc).
+This example displays a single viewport into which sessions with multiple ShapeDiver models can be loaded at once.
+The settings of the model which is selected first are used to configure the viewport (camera, controls, etc). 
+Parameter and export controls are shown for all selected models. 
 						</Text>
 
 						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/modelSelect">
@@ -99,15 +100,15 @@ The settings of the model which is selected first are used to configure the view
 							/>
 						</Card.Section>
 						<Group gap="md" mt="md" mb="xs">
-							<Text fw={500}>Multiple models on the same page</Text>
+							<Text fw={500}>Multiple Viewports and Models Page</Text>
 						</Group>
 
 						<Text size="sm" c="dimmed">
-							This example displays a multiple viewports with the same amount of multiple sessions.
+							This example displays multiple viewports and models.
 						</Text>
 
 						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/multipleViewport">
-							On to the multiple Models Page!
+							On to the Multiple Viewports and Models page!
 						</Button>
 					</Card>
 				</div>
