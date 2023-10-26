@@ -4,7 +4,10 @@ import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 
-interface Props extends SessionCreateDto {
+/**
+ * DTO for use with {@link useSession} and {@link useSessions}
+ */
+export interface IUseSessionDto extends SessionCreateDto {
 	/** 
 	 * Set to true to register the session's parameters and exports as 
 	 * abstracted parameters and exports managed by {@link useShapeDiverStoreParameters}. 
@@ -23,7 +26,7 @@ interface Props extends SessionCreateDto {
  * @param props
  * @returns
  */
-export function useSession(props: Props) {
+export function useSession(props: IUseSessionDto) {
 	const { registerParametersAndExports = false, acceptRejectMode = false } = props;
 	const { createSession, closeSession } = useShapeDiverStoreViewer();
 	const { addSession: addSessionParameters, removeSession: removeSessionParameters } = useShapeDiverStoreParameters();

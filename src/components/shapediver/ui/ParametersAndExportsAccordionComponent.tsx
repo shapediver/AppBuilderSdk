@@ -53,11 +53,9 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 	}
 
 	// loop through the parameters and store the created elements in the elementGroups
-	for (let i = 0; i < sortedParamsAndExports.length; i++) {
-		const param = sortedParamsAndExports[i];
-
+	sortedParamsAndExports.forEach(param => {
 		// if a parameter is hidden, skip it
-		if (param.definition.hidden) continue;
+		if (param.definition.hidden) return;
 
 		// read out the group or specify a new one if none has been provided
 		const group = param.definition.group || { id: "default", name: defaultGroupName || "Default Group" };
@@ -95,7 +93,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 				</div>
 			);
 		}
-	}
+	});
 
 	let acceptRejectElement: JSX.Element | undefined;
 

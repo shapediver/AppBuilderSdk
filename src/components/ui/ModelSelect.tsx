@@ -1,10 +1,13 @@
-import { MultiSelect, Notification } from "@mantine/core";
-import { useModelSelectStore } from "store/useModelSelectStore";
-import React, { useEffect, useState } from "react";
+import { MultiSelect, Notification, Tabs } from "@mantine/core";
+import { ISelectedModel, useModelSelectStore } from "store/useModelSelectStore";
+import React, { } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { SessionCreateDto } from "types/store/shapediverStoreViewer";
-import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 import { ShapeDiverExampleModels } from "tickets";
+import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
+import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsExport } from "hooks/useSessionPropsExport";
+import { useIsMobile } from "hooks/useIsMobile";
+import { useSessions } from "hooks/useSessions";
 
 /**
  * Function that creates a select element in which models can be selected.
@@ -13,70 +16,68 @@ import { ShapeDiverExampleModels } from "tickets";
  * @returns
  */
 export default function ModelSelect() {
-	const setSelectedModels = useModelSelectStore((state) => state.setSelectedModels);
-	const sessionsSync = useShapeDiverStoreViewer((state) => state.syncSessions);
-	const [loading, setLoading] = useState(false);
-	const selectedModels = useModelSelectStore(state => state.selectedModels);
 
-	const onModelsChange = async () => {
-		setLoading(true);
-		// for each selected model, create a SessionComponent
-		// const elements: JSX.Element[] = [];
-		const sessionsCreateDto: SessionCreateDto[] = [];
+	const { selectedModels, setSelectedModels } = useModelSelectStore((state) => state);
+	const acceptRejectMode = true;
+	const isMobile = useIsMobile();
+	
+	useSessions(selectedModels);
 
-		for (let i = 0; i < selectedModels.length; i++) {
-			sessionsCreateDto.push({
-				id: "selected_session_" + selectedModels[i].slug,
-				ticket: selectedModels[i].ticket,
-				modelViewUrl: selectedModels[i].modelViewUrl,
-				excludeViewports: ["viewport_1"],
-			});
-		}
-
-		await sessionsSync(sessionsCreateDto);
-
-		setLoading(false);
-	};
-
-	useEffect(() => {
-		onModelsChange();
-	}, [ selectedModels ]);
-
-	useEffect(() => {
-		return () => {
-			sessionsSync([]);
-		};
-	}, []);
-
-	// callback for when the value was changed
+	// callback to handle changes of the model selection
 	const handleChange = (values: string[]) => {
-		const selectedModels: {
-            slug: string,
-            ticket: string,
-            modelViewUrl: string
-        }[] = [];
-
-		for (let i = 0; i < values.length; i++) {
-			selectedModels.push(ShapeDiverExampleModels[values[i]]);
-		}
-
+		const selectedModels: ISelectedModel[] = values.map(v => { 
+			return {
+				...ShapeDiverExampleModels[v], 
+				id: ShapeDiverExampleModels[v].slug,
+				name: v, 
+				acceptRejectMode,
+				registerParametersAndExports: true
+			};
+		});
 		setSelectedModels(selectedModels);
 	};
 
+	// show a notification in case no models are selected
 	const noModelsNotification = <Notification icon={<IconAlertCircle size={18} />} mt="xs" title="Model Select" withCloseButton={false}>
 		Select a model to see it in the viewport!
 	</Notification>;
+
+	// create parameter and export panels per model
+	const sessionIds = selectedModels.map(m => m.slug);
+
+	// get parameter and export props for all sessions
+	const parameterProps = useSessionPropsParameter(sessionIds);
+	const exportProps = useSessionPropsExport(sessionIds);
+
+	const tabs = selectedModels.length === 0 ? <></> : <Tabs defaultValue={selectedModels[0].slug} style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
+		<Tabs.List>
+			{
+				selectedModels.map(model => <Tabs.Tab key={model.slug} value={model.slug}>{model.name}</Tabs.Tab>)
+			}
+		</Tabs.List>
+		{
+			selectedModels.map(model => 
+				<Tabs.Panel key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+					<ParametersAndExportsAccordionComponent 
+						parameters={parameterProps.filter(p => p.sessionId === model.slug)} 
+						exports={exportProps.filter(p => p.sessionId === model.slug)} 
+						acceptRejectMode={acceptRejectMode} 
+					/>
+				</Tabs.Panel>
+			)
+		}
+	</Tabs>;
 
 	return (
 		<>
 			<MultiSelect
 				data={Object.keys(ShapeDiverExampleModels)}
-				label="Select a ticket"
+				label="Select models"
 				placeholder="Pick the models you want to see"
-				readOnly={loading}
 				onChange={handleChange}
 			/>
 			{ selectedModels.length === 0 && noModelsNotification }
+			{ selectedModels.length > 0 && tabs }
 		</>
 	);
 }

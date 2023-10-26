@@ -9,14 +9,16 @@ import { PropsExport } from "types/components/shapediver/propsExport";
  * @param filter optional filter for export definitions
  * @returns 
  */
-export function useSessionPropsExport(sessionId: string, filter?: (param: ShapeDiverResponseExportDefinition) => boolean) : PropsExport[] {
+export function useSessionPropsExport(sessionId: string | string[], filter?: (param: ShapeDiverResponseExportDefinition) => boolean) : PropsExport[] {
 	
 	const _filter = filter || (() => true); 
 
-	const propsExports = useShapeDiverStoreParameters(state => Object
-		.values(state.useExports(sessionId))
-		.filter(store => _filter(store.getState().definition))
-		.map(store => { return {sessionId, exportId: store.getState().definition.id}; })
+	const propsExports = useShapeDiverStoreParameters(state => (Array.isArray(sessionId) ? sessionId : [sessionId])
+		.flatMap(sessionId => Object
+			.values(state.getExports(sessionId))
+			.filter(store => _filter(store.getState().definition))
+			.map(store => { return {sessionId, exportId: store.getState().definition.id}; })
+		)
 	);
 
 	return propsExports;

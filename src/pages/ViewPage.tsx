@@ -57,7 +57,7 @@ export default function ViewPage() {
 
 	const fullscreenId = "viewer-fullscreen-area";
 
-	const aside = <Tabs defaultValue="parameters" style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
+	const parameterTabs = <Tabs defaultValue="parameters" style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
 		<Tabs.List>
 			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
@@ -74,7 +74,7 @@ export default function ViewPage() {
 
 	return (
 		<>
-			<ExamplePage className={fullscreenId} aside={aside}>
+			<ExamplePage className={fullscreenId} aside={parameterTabs}>
 				<ViewportComponent
 					id={viewportId}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
