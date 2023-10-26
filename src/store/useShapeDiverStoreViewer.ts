@@ -182,14 +182,16 @@ export const useShapeDiverStoreViewer = create<IShapeDiverStoreViewer>()(devtool
 
 		// promises
 		const sessionsToDeletePromises = sessionsToDelete.map((sessionToDelete) => closeSession(sessionToDelete.id));
-		const sessionsToCreatePromise = Promise.all([...sessionsToCreate.map((sessionDataNew) => createSession(sessionDataNew.data))]);
+		const sessionsToCreatePromise = sessionsToCreate.map((sessionDataNew) => createSession(sessionDataNew.data));
 
 		await Promise.all([
 			...sessionsToDeletePromises,
-			sessionsToCreatePromise,
+			...sessionsToCreatePromise,
 		]);
 
-		return sessionsToCreatePromise;
+		const sessionApis = get().sessions;
+
+		return sessionDtos.map(dto => sessionApis[dto.id]);
 	},
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Viewer" }));

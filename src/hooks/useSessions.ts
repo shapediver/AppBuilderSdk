@@ -11,28 +11,27 @@ import { IUseSessionDto } from "./useSession";
  * @returns
  */
 export function useSessions(props: IUseSessionDto[]) {
-	const { createSession, closeSession } = useShapeDiverStoreViewer();
+	const { syncSessions } = useShapeDiverStoreViewer();
 	const { addSession: addSessionParameters, removeSession: removeSessionParameters } = useShapeDiverStoreParameters();
 	const [sessionApis, setSessionApis] = useState<(ISessionApi | undefined)[]>([]);
 	const promiseChain = useRef(Promise.resolve());
 
 	useEffect(() => {
 		promiseChain.current = promiseChain.current.then(async () => {
-			const results = await Promise.all( props.map(async p => { return { api: await createSession(p), p }; } ) );
-			setSessionApis(results.map(p => p.api));
+			const apis = await syncSessions(props);
+			setSessionApis(apis);
 
-			results.map(result => {
-				if (result.p.registerParametersAndExports && result.api) {
+			apis.map(( api, index ) => {
+				const dto = props[index];
+				if (dto.registerParametersAndExports && api) {
 					/** execute changes immediately if the component is not running in accept/reject mode */
-					addSessionParameters(result.api, !result.p.acceptRejectMode);
+					addSessionParameters(api, !dto.acceptRejectMode);
 				}
 			});
 		});
 
 		return () => {
 			promiseChain.current = promiseChain.current.then(async () => {
-				await Promise.all( props.map( p => closeSession(p.id) ));
-
 				props.map(p => {
 					if (p.registerParametersAndExports) {
 						removeSessionParameters(p.id);
