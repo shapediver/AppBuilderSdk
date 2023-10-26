@@ -13,6 +13,7 @@ import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { useMediaQuery } from "@mantine/hooks";
 import { useOutput } from "hooks/useOutput";
+import { ShapeDiverExampleModels } from "tickets";
 
 /**
  * Function that creates the view page.
@@ -26,8 +27,8 @@ export default function ViewPage() {
 	const sessionId = "session_1";
 	const sessionCreateDto = {
 		id: sessionId,
-		ticket: "340ff308354b56f5cd0a631f668d48d934a38187c50ff049a19fd3565d316307cb042aaebfdccde871a81f5552c58c04907686e51cada8e8ea7878cfde011ff9d494a54acd68ccf39d9ecfac98bb6a9a2521fc9711294949c1557365b64bbce9e44d420d1b0a64-e5fb4e0ba6c4d6e047685318325f3704",
-		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com",
+		ticket: ShapeDiverExampleModels["Sideboard"].ticket,
+		modelViewUrl: ShapeDiverExampleModels["Sideboard"].modelViewUrl,
 		excludeViewports: ["viewport_2"],
 	};
 	const acceptRejectMode = true;
