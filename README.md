@@ -4,6 +4,8 @@ This project introduces some useful [React](https://react.dev/) components and h
 
 :warning: Work in progress, please expect frequent changes and refactoring!
 
+:info: You can see a deployed version of this example [here](https://react-example.shapediver.com/prod/).
+
 ## Some hints about ShapeDiver
 
 The complete API documentation of the ShapeDiver 3D Viewer can be found [here](https://viewer.shapediver.com/v3/latest/api/index.html). 
