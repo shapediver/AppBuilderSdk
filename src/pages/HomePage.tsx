@@ -2,6 +2,7 @@ import { Image, Container, Card, Group, Text, Button, Blockquote } from "@mantin
 import { Link } from "react-router-dom";
 import React from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
+import classes from "pages/HomePage.module.css";
 
 /**
  * Function that creates the home page.
@@ -14,7 +15,7 @@ import { IconInfoCircle } from "@tabler/icons-react";
 export default function HomePage() {
 	return (
 		<>
-			<Container style={{ paddingTop: "3rem" }} size="lg" px="lg">
+			<Container className={classes.container} size="lg" px="lg">
 				<h1>ShapeDiver React Example</h1>
 
 				<Card shadow="sm" p="lg" radius="md">
@@ -36,9 +37,8 @@ Check out the code for this example <a href="https://github.com/shapediver/Shape
 					</Group>
 				</Card>
 
-				<div style={{ display: "flex", justifyContent: "space-between", paddingTop: "2rem" }}>
-
-					<Card style={{ width: "50%" }} shadow="sm" p="lg" radius="md" withBorder>
+				<div className={classes.pageContainer}>
+					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
 						<Card.Section>
 							<Image
 								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
@@ -62,9 +62,7 @@ the parameters and exports defined by the model. All components are easily custo
 						</Button>
 					</Card>
 
-					<div style={{ width: "1rem" }}></div>
-
-					<Card style={{ width: "50%" }} shadow="sm" p="lg" radius="md" withBorder>
+					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
 						<Card.Section>
 							<Image
 								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
@@ -89,8 +87,8 @@ The settings of the model which is selected first are used to configure the view
 					</Card>
 				</div>
 
-				<div style={{ display: "flex", justifyContent: "space-between", paddingTop: "2rem" }}>
-					<Card style={{ width: "50%" }} shadow="sm" p="lg" radius="md" withBorder>
+				<div className={classes.pageContainer}>
+					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
 						<Card.Section>
 							<Image
 								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
