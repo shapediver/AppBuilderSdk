@@ -36,6 +36,7 @@ export function useSession(props: Props) {
 			setSessionApi(api);
 
 			if (registerParametersAndExports && api) {
+				/** execute changes immediately if the component is not running in accept/reject mode */
 				addSessionParameters(api, !acceptRejectMode);
 			}
 		});

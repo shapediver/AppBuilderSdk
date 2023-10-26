@@ -1,9 +1,9 @@
 import { ActionIcon, ColorInput } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import React, { JSX, useEffect, useRef, useState } from "react";
+import React, { JSX } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameter } from "hooks/useParameter";
+import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
 
 function convertFromSdColor(val: string) {
 	return val.replace("0x", "#").substring(0, 7);
@@ -15,28 +15,15 @@ function convertFromSdColor(val: string) {
  * @returns
  */
 export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
-	const { definition, actions, state } = useParameter<string>(sessionId, parameterId);
-	const [value, setValue] = useState(() => convertFromSdColor(state.uiValue));
-
-	const debounceTimeout = 0;
-	const debounceRef = useRef<NodeJS.Timeout>();
-
-	const handleChange = (curval : string, timeout? : number) => {
-		clearTimeout(debounceRef.current);
-		setValue(curval);
-		debounceRef.current = setTimeout(() => {
-			if (actions.setUiValue(curval)) {
-				actions.execute(!acceptRejectMode);
-			}
-		}, timeout === undefined ? debounceTimeout : timeout);
-	};
-
-	useEffect(() => {
-		setValue(state.uiValue);
-	}, [state.uiValue]);
-
-	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	
+	const {
+		definition,
+		value,
+		setValue,
+		handleChange,
+		onCancel,
+		disabled
+	} = useParameterComponentCommons<string>(props, 0, state => state.uiValue);
 
 	const defaultValue = convertFromSdColor(definition.defval);
 
@@ -56,7 +43,7 @@ export default function ParameterColorComponent(props: PropsParameter): JSX.Elem
 				</ActionIcon>
 			}
 			onChangeEnd={handleChange}
-			readOnly={disableIfDirty && state.dirty}
+			readOnly={disabled}
 		/> }
 	</>;
 }

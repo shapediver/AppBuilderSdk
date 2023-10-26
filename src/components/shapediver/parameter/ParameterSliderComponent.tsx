@@ -1,10 +1,10 @@
 import { NumberInput, Slider, Tooltip } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
-import React, { JSX, useEffect, useRef, useState } from "react";
+import React, { JSX } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameter } from "hooks/useParameter";
+import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
 
 /**
  * Round the number depending on the parameter type.
@@ -28,28 +28,15 @@ const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
  * @returns
  */
 export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
-	const { sessionId, parameterId, disableIfDirty, acceptRejectMode } = props;
-	const { definition, actions, state } = useParameter<number>(sessionId, parameterId);
-	const [value, setValue] = useState(() => state.uiValue);
-
-	const debounceTimeout = acceptRejectMode ? 0 : 1000;
-	const debounceRef = useRef<NodeJS.Timeout>();
-
-	const handleChange = (curval : string | number, timeout? : number) => {
-		clearTimeout(debounceRef.current);
-		setValue(curval);
-		debounceRef.current = setTimeout(() => {
-			if (actions.setUiValue(curval)) {
-				actions.execute(!acceptRejectMode);
-			}
-		}, timeout === undefined ? debounceTimeout : timeout);
-	};
-
-	useEffect(() => {
-		setValue(state.uiValue);
-	}, [state.uiValue]);
-
-	const onCancel = acceptRejectMode && state.dirty ? () => handleChange(state.execValue, 0) : undefined;
+	
+	const {
+		definition,
+		value,
+		setValue,
+		handleChange,
+		onCancel,
+		disabled
+	} = useParameterComponentCommons<number>(props);
 
 	// calculate the step size which depends on the parameter type
 	let step = 1;
@@ -80,7 +67,7 @@ export default function ParameterSliderComponent(props: PropsParameter): JSX.Ele
 				onChange={v => setValue(round(definition, v))}
 				onChangeEnd={v => handleChange(round(definition, v), 0)}
 				marks={marks}
-				disabled={disableIfDirty && state.dirty}
+				disabled={disabled}
 			/> }
 			{ definition && <Tooltip label={tooltip} position="bottom"><NumberInput
 				style={{ width: "40%" }}
@@ -92,7 +79,7 @@ export default function ParameterSliderComponent(props: PropsParameter): JSX.Ele
 				fixedDecimalScale={true}
 				clampBehavior="strict"
 				onChange={v => handleChange(round(definition, +v))}
-				disabled={disableIfDirty && state.dirty}
+				disabled={disabled}
 			/></Tooltip> }
 		</div>}
 	</>;
