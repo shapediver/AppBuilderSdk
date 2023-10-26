@@ -4,6 +4,8 @@ import ModelSelect from "components/ui/ModelSelect";
 import React from "react";
 import ExamplePage from "pages/ExamplePage";
 import { useMantineBranding } from "hooks/useMantineBranding";
+import ViewportAdditionalUIWrapper, { Positions } from "components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportIcons from "components/shapediver/viewport/ViewportIcons";
 
 /**
  * Function that creates the model select page.
@@ -15,14 +17,27 @@ import { useMantineBranding } from "hooks/useMantineBranding";
 export default function ModelSelectPage() {
 	const { branding } = useMantineBranding();
 
+	const viewportId = "viewport_2";
+	const fullscreenId = "viewer-fullscreen-area";
+
 	return (
-		<ExamplePage aside={<ModelSelect />}>
+		<ExamplePage className={fullscreenId} aside={<ModelSelect />}>
 			<ViewportComponent
-				id='viewport_2'
+				id={viewportId}
 				sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
 				showStatistics={true}
 				branding={branding}
-			/>
+			>
+				<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
+					<ViewportIcons
+						viewportId={viewportId}
+						enableArBtn
+						enableFullscreenBtn
+						enableZoomBtn
+						enableCamerasBtn
+					/>
+				</ViewportAdditionalUIWrapper>
+			</ViewportComponent>
 		</ExamplePage>
 	);
 }

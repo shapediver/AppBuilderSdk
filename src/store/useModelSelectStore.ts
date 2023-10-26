@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface SelectedModel {
-    id: string,
+    slug: string,
     ticket: string,
     modelViewUrl: string
 }

@@ -31,7 +31,12 @@ export const useFullscreen = (fullscreenId: string) => {
 		cbDocument.current = document;
 		const element = cbDocument.current.getElementsByClassName(fullscreenId).item(0);
 
-		if (!element) throw new Error(`Fullscreen element with ID ${fullscreenId} not found.`);
+		if (!element) {
+			console.debug(`Fullscreen element with ID ${fullscreenId} not found.`);
+			isFullScreenAvailable.current = false;
+			
+			return;
+		}
 
 		eventsFullScreen.forEach((event) => {
 			element.addEventListener(event, onFullScreenChange);
@@ -47,7 +52,7 @@ export const useFullscreen = (fullscreenId: string) => {
 				});
 			}
 		};
-	}, []);
+	}, [fullscreenId]);
 
 	const makeElementFullscreen = () => {
 		if (cbDocument.current.fullscreenElement) {
@@ -61,7 +66,12 @@ export const useFullscreen = (fullscreenId: string) => {
 		} else {
 			const element = document.getElementsByClassName(fullscreenId).item(0);
 
-			if (!element) throw new Error(`Fullscreen element with ID ${fullscreenId} not found.`);
+			if (!element) {
+				console.debug(`Fullscreen element with ID ${fullscreenId} not found.`);
+				isFullScreenAvailable.current = false;
+				
+				return;
+			}
 
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
