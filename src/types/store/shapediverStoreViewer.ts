@@ -86,5 +86,5 @@ export interface IShapeDiverStoreViewer {
 	 * @param sessionsDto
 	 * @returns
 	 */
-	syncSessions: (sessionDtos: SessionCreateDto[]) => Promise<void[]>,
+	syncSessions: (sessionDtos: SessionCreateDto[]) => Promise<(ISessionApi | undefined)[]>,
 }

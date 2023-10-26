@@ -295,20 +295,20 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "removeSession");
 	},
 	
-	useParameters: (sessionId: string) => {
+	getParameters: (sessionId: string) => {
 		return get().parameterStores[sessionId] || {};
 	},
 
-	useParameter: (sessionId: string, paramId: string) => {
-		return get().useParameters(sessionId)[paramId] || {};
+	getParameter: (sessionId: string, paramId: string) => {
+		return get().getParameters(sessionId)[paramId] || {};
 	},
 
-	useExports: (sessionId: string) => {
+	getExports: (sessionId: string) => {
 		return get().exportStores[sessionId] || {};
 	},
 
-	useExport: (sessionId: string, exportId: string) => {
-		return get().useExports(sessionId)[exportId] || {};
+	getExport: (sessionId: string, exportId: string) => {
+		return get().getExports(sessionId)[exportId] || {};
 	},
 
 }

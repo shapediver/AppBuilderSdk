@@ -158,7 +158,7 @@ export const useShapeDiverStoreViewer = create<IShapeDiverStoreViewer>()(devtool
 		}, false, "closeSession");
 	},
 
-	syncSessions: async (sessionDtos: SessionCreateDto[]) => {
+	syncSessions: async (sessionDtos: SessionCreateDto[]) : Promise<(ISessionApi | undefined)[]> => {
 		const { sessions, createSession, closeSession } = get();
 		// Helps to skip typescript filter error
 		const isSession = (session: ISessionCompare | undefined): session is ISessionCompare => !!session;
@@ -180,12 +180,16 @@ export const useShapeDiverStoreViewer = create<IShapeDiverStoreViewer>()(devtool
 			return existingSessionData.findIndex((sessionCompareExist) => sessionCompareExist.identifier === sessionCompareNew.identifier) === -1;
 		});
 
-		return Promise.all([
-			...sessionsToDelete.map((sessionToDelete) => closeSession(sessionToDelete.id)),
-			...sessionsToCreate.map((sessionDataNew) => {
-				createSession(sessionDataNew.data);
-			}),
+		// promises
+		const sessionsToDeletePromises = sessionsToDelete.map((sessionToDelete) => closeSession(sessionToDelete.id));
+		const sessionsToCreatePromise = Promise.all([...sessionsToCreate.map((sessionDataNew) => createSession(sessionDataNew.data))]);
+
+		await Promise.all([
+			...sessionsToDeletePromises,
+			sessionsToCreatePromise,
 		]);
+
+		return sessionsToCreatePromise;
 	},
 }
 ), { ...devtoolsSettings, name: "ShapeDiver | Viewer" }));

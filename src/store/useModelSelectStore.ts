@@ -1,9 +1,9 @@
 import { create } from "zustand";
+import { IUseSessionDto } from "hooks/useSession";
 
-export interface ISelectedModel {
+export interface ISelectedModel extends IUseSessionDto  {
+	name: string,
     slug: string,
-    ticket: string,
-    modelViewUrl: string
 }
 
 interface IModelSelectState {

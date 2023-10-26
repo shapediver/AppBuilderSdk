@@ -81,28 +81,28 @@ export interface IShapeDiverStoreParameters {
 	 * @param sessionId
 	 * @returns
 	 */
-	useParameters: (sessionId: string) => IParameterStores;
+	getParameters: (sessionId: string) => IParameterStores;
 
 	/**
 	 * Get a single parameter store.
 	 * @param sessionId
 	 * @returns
 	 */
-	useParameter: (sessionId: string, paramId: string) => IParameterStore;
+	getParameter: (sessionId: string, paramId: string) => IParameterStore;
 
 	/**
 	 * Get all export stores for a given session id.
 	 * @param sessionId
 	 * @returns
 	 */
-	useExports: (sessionId: string) => IExportStores;
+	getExports: (sessionId: string) => IExportStores;
 
 	/**
 	 * Get a single export store.
 	 * @param sessionId
 	 * @returns
 	 */
-	useExport: (sessionId: string, exportId: string) => IExportStore;
+	getExport: (sessionId: string, exportId: string) => IExportStore;
 
 	/**
 	 * Get or add pending parameter changes for a given session id.
