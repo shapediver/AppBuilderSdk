@@ -1,5 +1,5 @@
 import { MultiSelect, Notification } from "@mantine/core";
-import { useModelSelectStore } from "store/useModelSelectStore";
+import { ISelectedModel, useModelSelectStore } from "store/useModelSelectStore";
 import React, { useEffect, useState } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
@@ -13,6 +13,7 @@ import { ShapeDiverExampleModels } from "tickets";
  * @returns
  */
 export default function ModelSelect() {
+
 	const setSelectedModels = useModelSelectStore((state) => state.setSelectedModels);
 	const sessionsSync = useShapeDiverStoreViewer((state) => state.syncSessions);
 	const [loading, setLoading] = useState(false);
@@ -20,18 +21,14 @@ export default function ModelSelect() {
 
 	const onModelsChange = async () => {
 		setLoading(true);
-		// for each selected model, create a SessionComponent
-		// const elements: JSX.Element[] = [];
-		const sessionsCreateDto: SessionCreateDto[] = [];
 
-		for (let i = 0; i < selectedModels.length; i++) {
-			sessionsCreateDto.push({
-				id: "selected_session_" + selectedModels[i].slug,
-				ticket: selectedModels[i].ticket,
-				modelViewUrl: selectedModels[i].modelViewUrl,
-				excludeViewports: ["viewport_1"],
-			});
-		}
+		// for each selected model, create a SessionComponent
+		const sessionsCreateDto: SessionCreateDto[] = selectedModels.map(model => { return {
+			id: "selected_session_" + model.slug,
+			ticket: model.ticket,
+			modelViewUrl: model.modelViewUrl,
+			excludeViewports: ["viewport_1"],
+		}; });
 
 		await sessionsSync(sessionsCreateDto);
 
@@ -42,27 +39,13 @@ export default function ModelSelect() {
 		onModelsChange();
 	}, [ selectedModels ]);
 
-	useEffect(() => {
-		return () => {
-			sessionsSync([]);
-		};
-	}, []);
-
-	// callback for when the value was changed
+	// callback to handle changes of the model selection
 	const handleChange = (values: string[]) => {
-		const selectedModels: {
-            slug: string,
-            ticket: string,
-            modelViewUrl: string
-        }[] = [];
-
-		for (let i = 0; i < values.length; i++) {
-			selectedModels.push(ShapeDiverExampleModels[values[i]]);
-		}
-
+		const selectedModels: ISelectedModel[] = values.map(v => ShapeDiverExampleModels[v]);
 		setSelectedModels(selectedModels);
 	};
 
+	// notification in case no models are selected
 	const noModelsNotification = <Notification icon={<IconAlertCircle size={18} />} mt="xs" title="Model Select" withCloseButton={false}>
 		Select a model to see it in the viewport!
 	</Notification>;
@@ -71,7 +54,7 @@ export default function ModelSelect() {
 		<>
 			<MultiSelect
 				data={Object.keys(ShapeDiverExampleModels)}
-				label="Select a ticket"
+				label="Select models"
 				placeholder="Pick the models you want to see"
 				readOnly={loading}
 				onChange={handleChange}
