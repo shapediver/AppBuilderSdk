@@ -2,7 +2,8 @@ import React, { } from "react";
 import { AppShell, Burger, Container, Group, useMantineTheme } from "@mantine/core";
 import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
-import { useColorScheme, useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useColorScheme, useDisclosure } from "@mantine/hooks";
+import { useIsMobile } from "hooks/useIsMobile";
 
 /**
  * Function that creates the view page.
@@ -23,7 +24,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 	const scheme = useColorScheme();
 	const theme = useMantineTheme();
 	const [opened, { toggle }] = useDisclosure();
-	const isMobile = useMediaQuery("(max-width: 765px)");
+	const isMobile = useIsMobile();
 	
 	//styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}
 	return (

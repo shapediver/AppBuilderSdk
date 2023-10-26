@@ -11,9 +11,9 @@ import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
-import { useMediaQuery } from "@mantine/hooks";
 import { useOutput } from "hooks/useOutput";
 import { ShapeDiverExampleModels } from "tickets";
+import { useIsMobile } from "hooks/useIsMobile";
 
 /**
  * Function that creates the view page.
@@ -32,7 +32,7 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 	const acceptRejectMode = true;
-	const isMobile = useMediaQuery("(max-width: 765px)");
+	const isMobile = useIsMobile();
 
 	const { branding } = useMantineBranding();
 

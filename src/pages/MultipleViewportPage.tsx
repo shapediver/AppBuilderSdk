@@ -8,8 +8,8 @@ import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
-import { useMediaQuery } from "@mantine/hooks";
 import { ShapeDiverExampleModels } from "tickets";
+import { useIsMobile } from "hooks/useIsMobile";
 
 /**
  * Function that creates the view page.
@@ -49,7 +49,7 @@ export default function ViewPage() {
 
 	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id); 
 	const parameterBookshelfProps = useSessionPropsParameter(sessionsCreateDto[sessionBookshelfKey].id);
-	const isMobile = useMediaQuery("(max-width: 765px)");
+	const isMobile = useIsMobile();
 
 	const viewports = [
 		...([sessionSideboardKey, sessionSideboardKey] as Array<keyof typeof sessionsCreateDto>).map((sessionName, i) => {
