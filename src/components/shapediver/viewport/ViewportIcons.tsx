@@ -1,6 +1,6 @@
 import React, { CSSProperties, useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
-import { ActionIcon, ActionIconVariant, Menu, Tooltip } from "@mantine/core";
+import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip } from "@mantine/core";
 import { useClickEventHandler } from "hooks/useClickEventHandler";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
@@ -44,14 +44,37 @@ export default function ViewportIcons({
 	const viewport = useShapeDiverStoreViewer(state => state.viewports[viewportId]);
 
 	const isArEnabled = viewport ? viewport.enableAR : false;
-	const isViewableInAr = viewport ? (!viewport.viewableInAR()) : true;
+	const isViewableInAr = viewport ? viewport.viewableInAR() : false;
+	const [ arLink, setArLink ] = useState("");
+	const [ isArLoading, setIsArLoading ] = useState(false);
+	const [ isModalArOpened, setIsModalArOpened ] = useState(false);
+
+	const onViewInARDesktopLinkRequest = async () => {
+		if (!viewport) return;
+
+		try {
+			setIsModalArOpened(true);
+			setIsArLoading(true);
+			const arLink = await viewport.createArSessionLink();
+			setArLink(arLink);
+		} catch (e) {
+			alert("Error while creating AR session link");
+		} finally {
+			setIsArLoading(false);
+		}
+	};
 
 	const onArClick = async () => {
 		if (!viewport) return;
-		const token = viewport.addFlag(FLAG_TYPE.BUSY_MODE);
-		if (viewport.viewableInAR()) 
-			await viewport.viewInAR();
-		viewport.removeFlag(token);
+
+		if (isViewableInAr) {
+			const token = viewport.addFlag(FLAG_TYPE.BUSY_MODE);
+			if (viewport.viewableInAR())
+				await viewport.viewInAR();
+			viewport.removeFlag(token);
+		} else {
+			await onViewInARDesktopLinkRequest();
+		}
 	};
 
 	const onZoomClick = () => {
@@ -92,13 +115,24 @@ export default function ViewportIcons({
 
 	return <section style={style}>
 
-		{ enableArBtn && isArEnabled && <Tooltip label={isViewableInAr ? "Viewing in AR is not available" : "View in AR"}>
+		{ enableArBtn && isArEnabled && <Tooltip label="View in AR">
 			<div>
-				<ActionIcon onClick={onArClick} disabled={isViewableInAr} size={size} variant={isViewableInAr ? variantDisabled : variant} aria-label="View in AR" style={iconStyle}>
-					<IconAugmentedReality color={isViewableInAr ? colorDisabled : color} />
+				<ActionIcon onClick={onArClick} disabled={isArLoading} size={size} variant={isViewableInAr ? variantDisabled : variant} aria-label="View in AR" style={iconStyle}>
+					<IconAugmentedReality color={isArLoading ? colorDisabled : color} />
 				</ActionIcon>
 			</div>
 		</Tooltip> }
+
+		{ enableArBtn && <Modal opened={isModalArOpened} onClose={() => setIsModalArOpened(false)} title="Scan the code" centered>
+			<p>Scan the QR code below using your mobile device to see the model in AR. The code is compatible with Android and iOS devices.</p>
+			<section style={{ width: "100%", display: "flex", justifyContent: "center"}}>
+				{isArLoading ? <section style={{ height: "180px", display: "flex", justifyContent: "center", alignItems: "center"}}><Loader color="blue" /></section> : <img
+					src={arLink}
+					height="180px"
+					alt="ar_link"
+				/> }
+			</section>
+		</Modal>}
 
 		{ enableZoomBtn && <Tooltip label="Zoom extents">
 			<ActionIcon onClick={zoomClickHandler} size={size} variant={variant} aria-label="Zoom extents" style={iconStyle}>
