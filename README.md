@@ -2,9 +2,11 @@
 
 This project introduces some useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer). 
 
-:warning: Work in progress, please expect frequent changes and refactoring!
+> [!NOTE] 
+> You can see a deployed version of this example [here](https://react-example.shapediver.com/prod/).
 
-:info: You can see a deployed version of this example [here](https://react-example.shapediver.com/prod/).
+> [!WARNING]
+> Work in progress, please expect frequent changes and refactoring!
 
 ## Some hints about ShapeDiver
 
