@@ -1,6 +1,6 @@
 import { ISessionApi } from "@shapediver/viewer";
 import { IShapeDiverExport } from "types/shapediver/export";
-import { IShapeDiverParameter } from "types/shapediver/parameter";
+import { IShapeDiverParameter, IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { StoreApi, UseBoundStore } from "zustand";
 
 export type IParameterStore = UseBoundStore<StoreApi<IShapeDiverParameter<any>>>;
@@ -36,6 +36,31 @@ export interface IParameterChanges {
 export interface IParameterChangesPerSession { [sessionId: string]: IParameterChanges}
 
 /**
+ * Definition of a generic parameter, which is not necessarily implemented by a parameter of a ShapeDiver model. 
+ * @see {@link IGenericParameterExecutor}
+ * @see {@link IShapeDiverStoreParameters}
+ */
+export interface IGenericParameterDefinition {
+
+	/** The static definition of the parameter. */
+	definition: IShapeDiverParameterDefinition,
+
+	/**
+     * Evaluates if a given value is valid for this parameter.
+     *
+     * @param value the value to evaluate
+     * @param throwError if true, an error is thrown if validation does not pass (default: false)
+     */
+    isValid(value: any, throwError?: boolean): boolean;
+}
+
+/**
+ * Executor function for generic parameters. 
+ * @see {@link IGenericParameterDefinition}
+ */
+export type IGenericParameterExecutor = (values: { [key: string]: any }, sessionId: string) => Promise<unknown>;
+
+/**
  * Interface for the store of parameters and exports. 
  * The parameters and exports managed by this store are abstractions of the 
  * parameters and exports defined by a ShapeDiver 3D Viewer session. 
@@ -67,6 +92,21 @@ export interface IShapeDiverStoreParameters {
 	 * @returns
 	 */
 	addSession: (session: ISessionApi, immediate: boolean) => void,
+
+	/**
+	 * Add generic parameters. 
+	 * @param sessionId The namespace to use.
+	 * @param immediate If true, execute parameter changes immediately.
+	 * @param definitions Definitions of the parameters.
+	 * @param executor Executor of parameter changes.
+	 * @returns 
+	 */
+	addGeneric: (
+		sessionId: string, 
+		immediate: boolean, 
+		definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 
+		executor: IGenericParameterExecutor
+	) => void,
 
 	/**
 	 * Remove parameter and exports stores for all parameters and exports of the session.
@@ -106,11 +146,12 @@ export interface IShapeDiverStoreParameters {
 
 	/**
 	 * Get or add pending parameter changes for a given session id.
-	 * @param session 
+	 * @param sessionId 
+	 * @param executor 
 	 * @param disableControls if true, disable the controls which allow the user to accept or reject parameter changes
 	 * @returns 
 	 */
-	getChanges: (session: ISessionApi, disableControls: boolean) => IParameterChanges,
+	getChanges: (sessionId: string, executor: IGenericParameterExecutor, disableControls: boolean) => IParameterChanges,
 
 	/**
 	 * Remove pending parameter changes for a given session id.

@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { IShapeDiverParameter, IShapeDiverParameterExecutor, IShapeDiverParameterState } from "types/shapediver/parameter";
-import { IParameterApi, ISessionApi } from "@shapediver/viewer";
+import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
 	IExportStores, IExportStoresPerSession,
+	IGenericParameterDefinition,
+	IGenericParameterExecutor,
 	IParameterChanges,
 	IParameterChangesPerSession,
 	IParameterStores,
@@ -13,12 +15,12 @@ import {
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 
-function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string, immediate: boolean, getChanges: (session: ISessionApi, disableControls: boolean) => IParameterChanges): IShapeDiverParameterExecutor<T> {
-	const param = session.parameters[paramId] as IParameterApi<T>;
+function createParameterExecutor<T>(sessionId: string, param: IGenericParameterDefinition, immediate: boolean, getChanges: () => IParameterChanges): IShapeDiverParameterExecutor<T> {
+	const paramId = param.definition.id;
 	
 	return {
 		execute: async (uiValue: T | string, execValue: T | string, forceImmediate?: boolean) => {
-			const changes = getChanges(session, immediate);
+			const changes = getChanges();
 
 			// check whether there is anything to do
 			if (paramId in changes.values && uiValue === execValue) {
@@ -51,9 +53,35 @@ function createDefaultParameterExecutor<T>(session: ISessionApi, paramId: string
 			}
 		},
 		isValid: (uiValue: T | string, throwError?: boolean) => param.isValid(uiValue, throwError),
-		definition: param
+		definition: param.definition
 	};
 }
+
+function createGenericParameterExecutorForSession(session: ISessionApi) : IGenericParameterExecutor { 
+	
+	return (values) => {
+
+		// store previous values (we restore them in case of error)
+		const previousValues = Object.keys(values).reduce((acc, paramId) => {
+			acc[paramId] = session.parameters[paramId].value;
+			
+			return acc;
+		}, {} as { [paramId: string]: unknown});
+		try {
+			// set values and call customize
+			Object.keys(values).forEach(id => session.parameters[id].value = values[id]);
+
+			return session.customize();
+		} 
+		catch (e: any)
+		{
+			// in case of an error, restore the previous values
+			Object.keys(previousValues).forEach(id => session.parameters[id].value = previousValues[id]);
+			throw e;
+		}
+	};
+}
+
 
 /**
  * Create store for a single parameter.
@@ -179,9 +207,8 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "removeChanges");
 	},
 
-	getChanges: (session: ISessionApi, disableControls: boolean) : IParameterChanges => {
+	getChanges: (sessionId: string, executor: IGenericParameterExecutor, disableControls: boolean) : IParameterChanges => {
 		const { parameterChanges, removeChanges } = get();
-		const { id: sessionId } = session;
 		if ( parameterChanges[sessionId] )
 			return parameterChanges[sessionId];
 
@@ -196,15 +223,10 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	
 		changes.wait = new Promise((resolve, reject) => {
 			changes.accept = async () => {
-				// store previous values (we restore them in case of error)
-				const previousValues = Object.keys(changes.values).reduce((acc, paramId) => {
-					acc[paramId] = session.parameters[paramId].value;
-					
-					return acc;
-				}, {} as { [paramId: string]: unknown});
 				try {
-					// set values and call customize
-					Object.keys(changes.values).forEach(id => session.parameters[id].value = changes.values[id]);
+					// get executor promise, but don't wait for it yet
+					const promise = executor(changes.values, sessionId);
+					// set "executing" mode
 					set((_state) => ({
 						parameterChanges: {
 							..._state.parameterChanges,
@@ -214,13 +236,12 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 							} }
 						}
 					}), false, "executeChanges");
-					await session.customize();
+					// wait for execution
+					await promise;
 					resolve();
 				} 
 				catch (e: any)
 				{
-					// in case of an error, restore the previous values
-					Object.keys(previousValues).forEach(id => session.parameters[id].value = previousValues[id]);
 					reject(e);
 				}
 				finally 
@@ -247,6 +268,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	addSession: (session: ISessionApi, immediate) => {
 		const sessionId = session.id;
 		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
+		const executor = createGenericParameterExecutorForSession(session);
 
 		set((_state) => ({
 			parameterStores: {
@@ -254,7 +276,12 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 				...parameters[sessionId]
 					? {} // Keep existing parameter stores
 					: {	[sessionId]: Object.keys(session.parameters).reduce((acc, paramId) => {
-						acc[paramId] = createParameterStore(createDefaultParameterExecutor(session, paramId, immediate, getChanges));
+						const param = session.parameters[paramId];
+						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, 
+							{ definition: param, isValid: (value, throwError) => param.isValid(value, throwError) }, 
+							immediate, 
+							() => getChanges(sessionId, executor, immediate)
+						));
 
 						return acc;
 					}, {} as IParameterStores) } // Create new parameter stores
@@ -270,6 +297,26 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					}, {} as IExportStores) } // Create new export stores
 			}
 		}), false, "addSession");
+	},
+
+	addGeneric: (sessionId: string, immediate: boolean, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
+		const { parameterStores: parameters, getChanges } = get();
+
+		set((_state) => ({
+			parameterStores: {
+				..._state.parameterStores,
+				...parameters[sessionId]
+					? {} // Keep existing parameter stores
+					: {	[sessionId]: (Array.isArray(definitions) ? definitions : [definitions]).reduce((acc, def) => {
+						const paramId = def.definition.id;
+						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, def, immediate, 
+							() => getChanges(sessionId, executor, immediate)
+						));
+
+						return acc;
+					}, {} as IParameterStores) } // Create new parameter stores
+			}
+		}), false, "addGeneric");
 	},
 
 	removeSession: (sessionId: string) => {
