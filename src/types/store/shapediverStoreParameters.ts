@@ -51,7 +51,7 @@ export interface IGenericParameterDefinition {
      * @param value the value to evaluate
      * @param throwError if true, an error is thrown if validation does not pass (default: false)
      */
-    isValid(value: any, throwError?: boolean): boolean;
+    isValid?: (value: any, throwError?: boolean) => boolean;
 }
 
 /**

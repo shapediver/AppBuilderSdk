@@ -76,8 +76,7 @@ export default function ViewPage() {
 	// 			defval: "0xffffffff", 
 	// 			type: "Color", 
 	// 			hidden: false 
-	// 		}, 
-	// 		isValid: () => true
+	// 		}
 	// 	}, 
 	// 	(values) => new Promise(resolve => {
 	// 		if ("myparam" in values)
@@ -88,7 +87,7 @@ export default function ViewPage() {
 	// );
 
 	// apply the custom material
-	//useNodeMaterial(outputNode, materialProperties);
+	// useNodeMaterial(outputNode, materialProperties);
 
 	const myParameterProps = useSessionPropsParameter("mysession");
 
