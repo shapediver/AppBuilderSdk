@@ -24,11 +24,12 @@ import { useIsMobile } from "hooks/useIsMobile";
  */
 export default function ViewPage() {
 	const viewportId = "viewport_1";
-	const sessionId = "session_1";
+	const modelName = "Sideboard"; //"AR Cube";
+	const sessionId = ShapeDiverExampleModels[modelName].slug;
 	const sessionCreateDto = {
 		id: sessionId,
-		ticket: ShapeDiverExampleModels["Sideboard"].ticket,
-		modelViewUrl: ShapeDiverExampleModels["Sideboard"].modelViewUrl,
+		ticket: ShapeDiverExampleModels[modelName].ticket,
+		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,
 		excludeViewports: ["viewport_2"],
 	};
 	const acceptRejectMode = true;
