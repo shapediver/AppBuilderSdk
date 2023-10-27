@@ -16,7 +16,7 @@ export const ShapeDiverExampleModels : {
 		ticket: "f447479a164edd5eaff704f15bc181404f35b949d399e4428c3328846b26a3649bb846228eeda0d93dcd4395232c6af56fcbb48c576cfddcdbc8c5137c71e0a26f776309a0f539a6cfa2efbc2851f953f0abf283365ade3afbb907dadda0b8b147e3579d012fac-fdc1e8ec7c10b9bdaf652491cf5524c5",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
-	"Naming scheme demo with attributes": {
+	"Naming scheme demo": {
 		slug: "react-example-nameattributedemo",
 		ticket: "a98830fa6a55d3067b65a5c2efeef66d64d6e8515e6e9689d68941efe0b8fd926c48709ab07ecb6e47876d257190da01894089e6460375a65a7adbdfd9cd5d98b48b45771f179c74ea230ef17436fbfc305eef243c5046041b92c29db278526dd9526663eba65c-a1366728a5e03b883327536c67b9d609",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"

@@ -58,7 +58,7 @@ export interface IGenericParameterDefinition {
  * Executor function for generic parameters. 
  * @see {@link IGenericParameterDefinition}
  */
-export type IGenericParameterExecutor = (values: { [key: string]: any }, sessionId: string) => Promise<unknown>;
+export type IGenericParameterExecutor = (values: { [key: string]: any }, sessionId: string) => Promise<unknown|void>;
 
 /**
  * Interface for the store of parameters and exports. 
