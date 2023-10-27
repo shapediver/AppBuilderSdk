@@ -97,6 +97,12 @@ export interface IShapeDiverParameter<T> extends IShapeDiverParamOrExport {
      * Actions which can be taken on the parameter.
      */
     readonly actions: IShapeDiverParameterActions<T>;
+
+    /**
+     * If true, changes are not executed immediately, but the user is presented with a 
+     * possibility to accept or reject the changes. 
+     */
+    readonly acceptRejectMode: boolean;
 }
 
 /**

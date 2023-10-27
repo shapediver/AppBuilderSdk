@@ -61,7 +61,6 @@ export default function ModelSelect() {
 					<ParametersAndExportsAccordionComponent 
 						parameters={parameterProps.filter(p => p.sessionId === model.slug)} 
 						exports={exportProps.filter(p => p.sessionId === model.slug)} 
-						acceptRejectMode={acceptRejectMode} 
 					/>
 				</Tabs.Panel>
 			)

@@ -46,7 +46,7 @@ export function useSession(props: IUseSessionDto) {
 
 			if (registerParametersAndExports && api) {
 				/** execute changes immediately if the component is not running in accept/reject mode */
-				addSessionParameters(api, !acceptRejectMode);
+				addSessionParameters(api, acceptRejectMode);
 			}
 		});
 

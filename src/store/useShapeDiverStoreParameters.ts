@@ -86,7 +86,7 @@ function createGenericParameterExecutorForSession(session: ISessionApi) : IGener
 /**
  * Create store for a single parameter.
  */
-function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
+function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>, acceptRejectMode: boolean) {
 	const definition = executor.definition;
 
 	/** The static definition of a parameter. */
@@ -98,6 +98,7 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>) {
 
 	return create<IShapeDiverParameter<T>>()(devtools((set, get) => ({
 		definition,
+		acceptRejectMode,
 		/**
 		 * The dynamic properties (aka the "state") of a parameter.
 		 * Reactive components can react to this state, but not update it.
@@ -265,7 +266,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		return changes;
 	},
 
-	addSession: (session: ISessionApi, immediate) => {
+	addSession: (session: ISessionApi, acceptRejectMode: boolean) => {
 		const sessionId = session.id;
 		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
 		const executor = createGenericParameterExecutorForSession(session);
@@ -279,9 +280,9 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 						const param = session.parameters[paramId];
 						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, 
 							{ definition: param, isValid: (value, throwError) => param.isValid(value, throwError) }, 
-							immediate, 
-							() => getChanges(sessionId, executor, immediate)
-						));
+							!acceptRejectMode, 
+							() => getChanges(sessionId, executor, !acceptRejectMode)
+						), acceptRejectMode);
 
 						return acc;
 					}, {} as IParameterStores) } // Create new parameter stores
@@ -299,7 +300,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "addSession");
 	},
 
-	addGeneric: (sessionId: string, immediate: boolean, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
+	addGeneric: (sessionId: string, acceptRejectMode: boolean, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
 		const { parameterStores: parameters, getChanges } = get();
 
 		set((_state) => ({
@@ -309,9 +310,9 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					? {} // Keep existing parameter stores
 					: {	[sessionId]: (Array.isArray(definitions) ? definitions : [definitions]).reduce((acc, def) => {
 						const paramId = def.definition.id;
-						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, def, immediate, 
-							() => getChanges(sessionId, executor, immediate)
-						));
+						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, def, !acceptRejectMode, 
+							() => getChanges(sessionId, executor, !acceptRejectMode)
+						), acceptRejectMode);
 
 						return acc;
 					}, {} as IParameterStores) } // Create new parameter stores

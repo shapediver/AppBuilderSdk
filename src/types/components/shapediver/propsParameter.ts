@@ -18,6 +18,6 @@ export interface PropsParameter extends PropsParameterOrExport {
     /** 
      * If true, the component can assume that changes are not executed immediately.
      */
-	readonly acceptRejectMode?: boolean,
+	readonly acceptRejectMode: boolean,
 }
 

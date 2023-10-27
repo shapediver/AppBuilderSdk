@@ -17,7 +17,11 @@ export function useSessionPropsParameter(sessionId: string | string[], filter?: 
 		.flatMap(sessionId => Object
 			.values(state.getParameters(sessionId))
 			.filter(store => _filter(store.getState().definition))
-			.map(store => { return {sessionId, parameterId: store.getState().definition.id}; })
+			.map(store => { 
+				const pstate = store.getState();
+				
+				return { sessionId, parameterId: pstate.definition.id, acceptRejectMode: pstate.acceptRejectMode}; 
+			})
 		)
 	);
 

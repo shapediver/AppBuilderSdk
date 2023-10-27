@@ -88,22 +88,22 @@ export interface IShapeDiverStoreParameters {
 	/**
 	 * Add parameter and export stores for all parameters and exports of the session.
 	 * @param session
-	 * @param immediate If true, execute parameter changes immediately.
+	 * @param acceptRejectMode If true, changes are not executed immediately.
 	 * @returns
 	 */
-	addSession: (session: ISessionApi, immediate: boolean) => void,
+	addSession: (session: ISessionApi, acceptRejectMode: boolean) => void,
 
 	/**
 	 * Add generic parameters. 
 	 * @param sessionId The namespace to use.
-	 * @param immediate If true, execute parameter changes immediately.
+	 * @param acceptRejectMode If true, changes are not executed immediately.
 	 * @param definitions Definitions of the parameters.
 	 * @param executor Executor of parameter changes.
 	 * @returns 
 	 */
 	addGeneric: (
 		sessionId: string, 
-		immediate: boolean, 
+		acceptRejectMode: boolean, 
 		definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 
 		executor: IGenericParameterExecutor
 	) => void,

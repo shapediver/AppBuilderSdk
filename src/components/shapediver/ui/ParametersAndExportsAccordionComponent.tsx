@@ -17,15 +17,15 @@ interface Props {
 	parameters?: PropsParameter[],
 	exports?: PropsExport[],
 	defaultGroupName?: string,
-	/** If true, the user is presented with "Accept" and "Reject" buttons before changes are executed */
-	acceptRejectMode?: boolean,
 }
 
 export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
-	const {parameters, exports, defaultGroupName, acceptRejectMode} = props;
+	const {parameters, exports, defaultGroupName} = props;
 
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
+
+	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
 
 	// check if there are parameter changes to be confirmed
 	const parameterChanges = useParameterChanges(parameters || []);
@@ -76,7 +76,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
 						disableIfDirty={!acceptRejectMode}
-						acceptRejectMode={acceptRejectMode}
+						acceptRejectMode={param.parameter.acceptRejectMode}
 					/>
 				</div>
 			);

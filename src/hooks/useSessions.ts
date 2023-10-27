@@ -30,7 +30,7 @@ export function useSessions(props: IUseSessionDto[]) {
 				const dto = props[index];
 				if (dto.registerParametersAndExports && api) {
 					/** execute changes immediately if the component is not running in accept/reject mode */
-					addSessionParameters(api, !dto.acceptRejectMode);
+					addSessionParameters(api, !!dto.acceptRejectMode);
 				}
 			});
 		});

@@ -43,17 +43,34 @@ export default function ViewPage() {
 		acceptRejectMode: acceptRejectMode,
 	});
 
+	// get parameters that don't have a group or whose group name includes "export"
+	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
+	// get parameters whose group name includes "export"
+	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
+	const exportProps = useSessionPropsExport(sessionId);
+
+	// define a generic parameter
+	// useDefineGenericParameters("mysession", !acceptRejectMode, 
+	// 	{
+	// 		definition: {
+	// 			id: "myparam", 
+	// 			name: "Test", 
+	// 			defval: "", 
+	// 			type: "String", 
+	// 			hidden: false 
+	// 		}, 
+	// 		isValid: () => true
+	// 	}, 
+	// 	(values) => Promise.resolve(console.log(values))
+	// );
+
 	// Example on how to access an output and react to its changes
 	const { outputApi, outputNode } = useOutput(sessionId, "Shelf");
 	useEffect(() => {
 		console.debug(`Output ${outputApi?.id} version ${outputApi?.version}`, outputNode);
 	}, [outputNode, outputApi]);
 
-	// get parameters that don't have a group or whose group name includes "export"
-	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
-	// get parameters whose group name includes "export"
-	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
-	const exportProps = useSessionPropsExport(sessionId);
+	const myParameterProps = useSessionPropsParameter("mysession");
 
 	const fullscreenId = "viewer-fullscreen-area";
 
@@ -64,7 +81,10 @@ export default function ViewPage() {
 		</Tabs.List>
 
 		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-			<ParametersAndExportsAccordionComponent parameters={parameterProps} acceptRejectMode={acceptRejectMode} defaultGroupName="Exports" />
+			<ParametersAndExportsAccordionComponent 
+				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
+				defaultGroupName="My parameters"
+			/>
 		</Tabs.Panel>
 
 		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
