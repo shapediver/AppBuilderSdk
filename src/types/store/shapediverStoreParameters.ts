@@ -51,14 +51,14 @@ export interface IGenericParameterDefinition {
      * @param value the value to evaluate
      * @param throwError if true, an error is thrown if validation does not pass (default: false)
      */
-    isValid(value: any, throwError?: boolean): boolean;
+    isValid?: (value: any, throwError?: boolean) => boolean;
 }
 
 /**
  * Executor function for generic parameters. 
  * @see {@link IGenericParameterDefinition}
  */
-export type IGenericParameterExecutor = (values: { [key: string]: any }, sessionId: string) => Promise<unknown>;
+export type IGenericParameterExecutor = (values: { [key: string]: any }, sessionId: string) => Promise<unknown|void>;
 
 /**
  * Interface for the store of parameters and exports. 

@@ -1,8 +1,8 @@
 import { Tabs } from "@mantine/core";
-import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
@@ -14,6 +14,8 @@ import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { useOutput } from "hooks/useOutput";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
+import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
+import { useNodeMaterial } from "hooks/useNodeMaterial";
 
 /**
  * Function that creates the view page.
@@ -24,11 +26,12 @@ import { useIsMobile } from "hooks/useIsMobile";
  */
 export default function ViewPage() {
 	const viewportId = "viewport_1";
-	const sessionId = "session_1";
+	const modelName = "Sideboard";
+	const sessionId = ShapeDiverExampleModels[modelName].slug;
 	const sessionCreateDto = {
 		id: sessionId,
-		ticket: ShapeDiverExampleModels["Sideboard"].ticket,
-		modelViewUrl: ShapeDiverExampleModels["Sideboard"].modelViewUrl,
+		ticket: ShapeDiverExampleModels[modelName].ticket,
+		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,
 		excludeViewports: ["viewport_2"],
 	};
 	const acceptRejectMode = true;
@@ -37,38 +40,54 @@ export default function ViewPage() {
 	const { branding } = useMantineBranding();
 
 	// use a session with a ShapeDiver model and register its parameters
-	useSession({
+	const { sessionApi } = useSession({
 		...sessionCreateDto,
 		registerParametersAndExports: true,
 		acceptRejectMode: acceptRejectMode,
 	});
-
+	useEffect(() => {
+		if (sessionApi)
+			console.debug(`Available output names: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
+	}, [sessionApi]);
+	
 	// get parameters that don't have a group or whose group name includes "export"
 	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
 	// get parameters whose group name includes "export"
 	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
 	const exportProps = useSessionPropsExport(sessionId);
 
-	// define a generic parameter
+	// Example on how to access an output and react to its changes
+	const outputNameOrId = "Shelf";
+	const { outputApi, outputNode } = useOutput(sessionId, outputNameOrId);
+	useEffect(() => {
+		if (outputApi)
+			console.debug(`Output ${outputApi?.id} (${outputApi?.displayname ? outputApi?.displayname : outputApi?.name}) version ${outputApi?.version}`, outputNode);
+		else
+			console.debug(`Output with name "${outputNameOrId}" could not be found, check the available output names`);
+	}, [outputNode, outputApi]);
+
+	// define a generic parameter which influences a custom material definition
+	// const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({});
 	// useDefineGenericParameters("mysession", !acceptRejectMode, 
 	// 	{
 	// 		definition: {
 	// 			id: "myparam", 
-	// 			name: "Test", 
-	// 			defval: "", 
-	// 			type: "String", 
+	// 			name: "Custom color", 
+	// 			defval: "0xffffffff", 
+	// 			type: "Color", 
 	// 			hidden: false 
-	// 		}, 
-	// 		isValid: () => true
+	// 		}
 	// 	}, 
-	// 	(values) => Promise.resolve(console.log(values))
+	// 	(values) => new Promise(resolve => {
+	// 		if ("myparam" in values)
+	// 			setMaterialProperties({ color: values["myparam"] });
+
+	// 		resolve(values);
+	// 	})			
 	// );
 
-	// Example on how to access an output and react to its changes
-	const { outputApi, outputNode } = useOutput(sessionId, "Shelf");
-	useEffect(() => {
-		console.debug(`Output ${outputApi?.id} version ${outputApi?.version}`, outputNode);
-	}, [outputNode, outputApi]);
+	// apply the custom material
+	// useNodeMaterial(outputNode, materialProperties);
 
 	const myParameterProps = useSessionPropsParameter("mysession");
 

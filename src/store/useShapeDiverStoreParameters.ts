@@ -52,7 +52,7 @@ function createParameterExecutor<T>(sessionId: string, param: IGenericParameterD
 				return execValue;
 			}
 		},
-		isValid: (uiValue: T | string, throwError?: boolean) => param.isValid(uiValue, throwError),
+		isValid: (uiValue: T | string, throwError?: boolean) => param.isValid ? param.isValid(uiValue, throwError) : true,
 		definition: param.definition
 	};
 }
