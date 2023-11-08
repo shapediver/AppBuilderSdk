@@ -111,6 +111,29 @@ Parameter and export controls are shown for all selected models.
 							On to the Multiple Viewports and Models page!
 						</Button>
 					</Card>
+
+					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
+						<Card.Section>
+							<Image
+								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+								height={160}
+								style={{ padding: "1rem" }}
+								fit="contain"
+								alt="Under Construction"
+							/>
+						</Card.Section>
+						<Group gap="md" mt="md" mb="xs">
+							<Text fw={500}>Custom UI Page</Text>
+						</Group>
+
+						<Text size="sm" c="dimmed">
+This example shows how to use Grasshopper to influence the parameter panel (show/hide parameters, add custom parameters).
+						</Text>
+
+						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/customui">
+              On to the Custom UI page!
+						</Button>
+					</Card>
 				</div>
 			</Container>
 		</>

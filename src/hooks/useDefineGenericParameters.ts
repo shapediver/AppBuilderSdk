@@ -29,7 +29,7 @@ export function useDefineGenericParameters(sessionId: string, acceptRejectMode: 
 		return () => {
 			removeSession(sessionId);
 		};
-	}, [sessionId]);
+	}, [sessionId, definitions]);
 
 	return {
 		

@@ -8,6 +8,7 @@ import NoMatchPage from "pages/NoMatchPage";
 import ViewPage from "pages/ViewPage";
 import MultipleViewportPage from "pages/MultipleViewportPage";
 import * as ShapeDiverViewer from "@shapediver/viewer";
+import CustomUiPage from "pages/CustomUiPage";
 
 declare global {
 	interface Window {
@@ -29,6 +30,7 @@ export default function App() {
 					<Route path="view" element={<ViewPage />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
 					<Route path="multipleViewport" element={<MultipleViewportPage />} />
+					<Route path="customui" element={<CustomUiPage />} />
 					<Route path="*" element={<NoMatchPage />} />
 				</Routes>
 			</HashRouter>
