@@ -124,8 +124,9 @@ export interface IShapeDiverStoreParameters {
 	getParameters: (sessionId: string) => IParameterStores;
 
 	/**
-	 * Get a single parameter store.
+	 * Get a single parameter store by parameter id or name.
 	 * @param sessionId
+	 * @param paramId
 	 * @returns
 	 */
 	getParameter: (sessionId: string, paramId: string) => IParameterStore;
@@ -138,8 +139,9 @@ export interface IShapeDiverStoreParameters {
 	getExports: (sessionId: string) => IExportStores;
 
 	/**
-	 * Get a single export store.
+	 * Get a single export store by export id or name.
 	 * @param sessionId
+	 * @param exportId
 	 * @returns
 	 */
 	getExport: (sessionId: string, exportId: string) => IExportStore;

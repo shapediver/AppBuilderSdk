@@ -7,7 +7,7 @@ import { IShapeDiverParameter } from "types/shapediver/parameter";
  * @see {@link IShapeDiverParameter<T>}
  * 
  * @param sessionId 
- * @param parameterId 
+ * @param parameterId Id, name, or displayname of the parameter
  * @returns 
  */
 export function useParameter<T>(sessionId: string, parameterId: string) {

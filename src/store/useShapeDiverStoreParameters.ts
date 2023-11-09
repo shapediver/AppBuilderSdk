@@ -4,11 +4,13 @@ import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
+	IExportStore,
 	IExportStores, IExportStoresPerSession,
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
 	IParameterChanges,
 	IParameterChangesPerSession,
+	IParameterStore,
 	IParameterStores,
 	IParameterStoresPerSession,
 	IShapeDiverStoreParameters
@@ -348,7 +350,11 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	},
 
 	getParameter: (sessionId: string, paramId: string) => {
-		return get().getParameters(sessionId)[paramId] || {};
+		return Object.values(get().getParameters(sessionId)).find(p => {
+			const def = p.getState().definition;
+
+			return def.id === paramId || def.name === paramId || def.displayname === paramId;
+		}) as IParameterStore;
 	},
 
 	getExports: (sessionId: string) => {
@@ -356,7 +362,11 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	},
 
 	getExport: (sessionId: string, exportId: string) => {
-		return get().getExports(sessionId)[exportId] || {};
+		return Object.values(get().getExports(sessionId)).find(p => {
+			const def = p.getState().definition;
+
+			return def.id === exportId || def.name === exportId || def.displayname === exportId;
+		}) as IExportStore;
 	},
 
 }
