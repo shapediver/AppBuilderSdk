@@ -99,9 +99,11 @@ export function useSessionWithCustomUi(props: Props) {
 			|| `parameter:${param.displayname}` === v
 			|| param.group?.name === v
 			|| `group:${param.group?.name}` === v
-			// we hide the custom UI input parameter
-			|| param.name.toLowerCase() === CUSTOM_DATA_OUTPUT_NAME.toLowerCase()
 		) )
+			return false;
+
+		// we always hide the custom UI input parameter
+		if (param.name.toLowerCase() === CUSTOM_DATA_OUTPUT_NAME.toLowerCase())
 			return false;
 	
 		return true;
