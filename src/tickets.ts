@@ -37,8 +37,8 @@ export const ShapeDiverExampleModels : {
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
 	"CustomUiBookshelf": {
-		slug: "react-bookshelf-customui",
-		ticket: "46ce24fadc89106aee5e2bb9105c25266b956d656a77729aedb531f9cec406025fe7831306e960b93a3c153a89d223a916814f18c122af9029a5163f7d0292285171210a12c5b8b204d509e7ee62a4877ed8334cc0249f33d05ea8124b223581fefc4a4315ee5e-2fae8f434d07588b6ea67ac47c102521",
+		slug: "react-bookshelf-exportable-customui",
+		ticket: "0be61d6f551424911dc15ca992c76cf2eab5c32aceccfbde18beb98bc98c769409c03c6e41dcac36051ee2fd066bb21e7cde6567f86287997e6cf58185fc88c8116b8058bba83e4528a2eb6cc8bb78e339a618f489696ac887ea2a762c331e7256ebbcd52a0052-e5245082baf9f79145f9b6bdc2fcf867",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
 };
