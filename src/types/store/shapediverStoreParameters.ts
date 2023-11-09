@@ -61,6 +61,11 @@ export interface IGenericParameterDefinition {
 export type IGenericParameterExecutor = (values: { [key: string]: any }, sessionId: string) => Promise<unknown|void>;
 
 /**
+ * Selector for deciding whether a parameter should use accept/reject mode or immediate execution.
+ */
+export type IAcceptRejectModeSelector = (param: IShapeDiverParameterDefinition) => boolean;
+
+/**
  * Interface for the store of parameters and exports. 
  * The parameters and exports managed by this store are abstractions of the 
  * parameters and exports defined by a ShapeDiver 3D Viewer session. 
@@ -88,22 +93,22 @@ export interface IShapeDiverStoreParameters {
 	/**
 	 * Add parameter and export stores for all parameters and exports of the session.
 	 * @param session
-	 * @param acceptRejectMode If true, changes are not executed immediately.
+	 * @param acceptRejectMode If true, changes are not executed immediately. May be specified as a boolean or a function of the parameter definition.
 	 * @returns
 	 */
-	addSession: (session: ISessionApi, acceptRejectMode: boolean) => void,
+	addSession: (session: ISessionApi, acceptRejectMode: boolean | IAcceptRejectModeSelector) => void,
 
 	/**
 	 * Add generic parameters. 
 	 * @param sessionId The namespace to use.
-	 * @param acceptRejectMode If true, changes are not executed immediately.
+	 * @param acceptRejectMode If true, changes are not executed immediately. May be specified as a boolean or a function of the parameter definition.
 	 * @param definitions Definitions of the parameters.
 	 * @param executor Executor of parameter changes.
 	 * @returns 
 	 */
 	addGeneric: (
 		sessionId: string, 
-		acceptRejectMode: boolean, 
+		acceptRejectMode: boolean | IAcceptRejectModeSelector, 
 		definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 
 		executor: IGenericParameterExecutor
 	) => void,

@@ -4,6 +4,7 @@ import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
+	IAcceptRejectModeSelector,
 	IExportStore,
 	IExportStores, IExportStoresPerSession,
 	IGenericParameterDefinition,
@@ -268,10 +269,11 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		return changes;
 	},
 
-	addSession: (session: ISessionApi, acceptRejectMode: boolean) => {
+	addSession: (session: ISessionApi, _acceptRejectMode: boolean | IAcceptRejectModeSelector) => {
 		const sessionId = session.id;
 		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
 		const executor = createGenericParameterExecutorForSession(session);
+		const acceptRejectModeSelector = typeof(_acceptRejectMode) === "boolean" ? () => _acceptRejectMode : _acceptRejectMode;
 
 		set((_state) => ({
 			parameterStores: {
@@ -280,6 +282,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					? {} // Keep existing parameter stores
 					: {	[sessionId]: Object.keys(session.parameters).reduce((acc, paramId) => {
 						const param = session.parameters[paramId];
+						const acceptRejectMode = acceptRejectModeSelector(param);
 						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, 
 							{ definition: param, isValid: (value, throwError) => param.isValid(value, throwError) }, 
 							!acceptRejectMode, 
@@ -302,8 +305,9 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "addSession");
 	},
 
-	addGeneric: (sessionId: string, acceptRejectMode: boolean, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
+	addGeneric: (sessionId: string, _acceptRejectMode: boolean | IAcceptRejectModeSelector, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
 		const { parameterStores: parameters, getChanges } = get();
+		const acceptRejectModeSelector = typeof(_acceptRejectMode) === "boolean" ? () => _acceptRejectMode : _acceptRejectMode;
 
 		set((_state) => ({
 			parameterStores: {
@@ -312,6 +316,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					? {} // Keep existing parameter stores
 					: {	[sessionId]: (Array.isArray(definitions) ? definitions : [definitions]).reduce((acc, def) => {
 						const paramId = def.definition.id;
+						const acceptRejectMode = acceptRejectModeSelector(def.definition);
 						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, def, !acceptRejectMode, 
 							() => getChanges(sessionId, executor, !acceptRejectMode)
 						), acceptRejectMode);
