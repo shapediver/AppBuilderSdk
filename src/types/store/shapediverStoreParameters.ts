@@ -134,7 +134,7 @@ export interface IShapeDiverStoreParameters {
 	 * @param paramId
 	 * @returns
 	 */
-	getParameter: (sessionId: string, paramId: string) => IParameterStore;
+	getParameter: (sessionId: string, paramId: string) => IParameterStore | undefined;
 
 	/**
 	 * Get all export stores for a given session id.
@@ -149,7 +149,7 @@ export interface IShapeDiverStoreParameters {
 	 * @param exportId
 	 * @returns
 	 */
-	getExport: (sessionId: string, exportId: string) => IExportStore;
+	getExport: (sessionId: string, exportId: string) => IExportStore | undefined;
 
 	/**
 	 * Get or add pending parameter changes for a given session id.

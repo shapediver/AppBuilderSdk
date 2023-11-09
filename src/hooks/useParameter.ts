@@ -13,7 +13,7 @@ import { IShapeDiverParameter } from "types/shapediver/parameter";
 export function useParameter<T>(sessionId: string, parameterId: string) {
 	
 	const parametersStore = useShapeDiverStoreParameters();
-	const parameter = parametersStore.getParameter(sessionId, parameterId)(state => state as IShapeDiverParameter<T>);
+	const parameter = parametersStore.getParameter(sessionId, parameterId)!(state => state as IShapeDiverParameter<T>);
 
 	return parameter;
 }
