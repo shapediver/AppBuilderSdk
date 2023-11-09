@@ -10,10 +10,10 @@ import { IShapeDiverParameter } from "types/shapediver/parameter";
  * @param parameterId Id, name, or displayname of the parameter
  * @returns 
  */
-export function useParameter<T>(sessionId: string, parameterId: string) {
+export function useParameterStateless<T>(sessionId: string, parameterId: string) {
 	
 	const parametersStore = useShapeDiverStoreParameters();
-	const parameter = parametersStore.getParameter(sessionId, parameterId)!(state => state as IShapeDiverParameter<T>);
+	const paramStore = parametersStore.getParameter(sessionId, parameterId);
 
-	return parameter;
+	return paramStore ? paramStore.getState() as IShapeDiverParameter<T> : undefined;
 }

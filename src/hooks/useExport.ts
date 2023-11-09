@@ -7,13 +7,13 @@ import { IShapeDiverExport } from "types/shapediver/export";
  * @see {@link IShapeDiverExport}
  * 
  * @param sessionId 
- * @param exportId 
+ * @param exportId Id, name, or displayname of the export
  * @returns 
  */
 export function useExport(sessionId: string, exportId: string) {
 	
 	const parametersStore = useShapeDiverStoreParameters();
-	const parameter = parametersStore.getExport(sessionId, exportId)(state => state as IShapeDiverExport);
+	const parameter = parametersStore.getExport(sessionId, exportId)!(state => state as IShapeDiverExport);
 
 	return parameter;
 }

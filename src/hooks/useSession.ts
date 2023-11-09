@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
+import { IAcceptRejectModeSelector } from "types/store/shapediverStoreParameters";
 
 /**
  * DTO for use with {@link useSession} and {@link useSessions}. 
@@ -18,7 +19,7 @@ export interface IUseSessionDto extends SessionCreateDto {
 	/**
 	 * Set to true to require confirmation of the user to accept or reject changed parameter values.
 	 */
-	acceptRejectMode?: boolean;
+	acceptRejectMode?: boolean | IAcceptRejectModeSelector;
 }
 
 /**
