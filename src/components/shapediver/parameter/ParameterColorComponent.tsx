@@ -1,6 +1,6 @@
 import { ActionIcon, ColorInput } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import React, { JSX, useEffect } from "react";
+import React, { useEffect } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
@@ -14,8 +14,8 @@ function convertFromSdColor(val: string) {
  *
  * @returns
  */
-export default function ParameterColorComponent(props: PropsParameter): JSX.Element {
-	
+export default function ParameterColorComponent(props: PropsParameter) {
+
 	const {
 		definition,
 		value,

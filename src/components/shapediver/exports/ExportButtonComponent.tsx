@@ -1,11 +1,12 @@
 import { Button, Loader } from "@mantine/core";
 import { EXPORT_TYPE } from "@shapediver/viewer";
 import { IconDownload, IconMailForward } from "@tabler/icons-react";
-import React, { JSX, useState } from "react";
+import React, { useState } from "react";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
 import { fetchFileWithToken } from "utils/file";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { useExport } from "hooks/useExport";
+import classes from "./ExportButtonComponent.module.css";
 
 /**
  * Functional component that creates a button that triggers an export.
@@ -13,10 +14,10 @@ import { useExport } from "hooks/useExport";
  *
  * @returns
  */
-export default function ExportButtonComponent(props: PropsExport): JSX.Element {
+export default function ExportButtonComponent(props: PropsExport) {
 	const { sessionId, exportId } = props;
 	const { definition, actions } = useExport(sessionId, exportId);
-	
+
 	const exportRequest = async () => {
 		// request the export
 		const response = await actions.request();
@@ -49,14 +50,9 @@ export default function ExportButtonComponent(props: PropsExport): JSX.Element {
 	return (
 		<>
 			<ExportLabelComponent { ...props } />
-			{ definition && <div style={{
-				display: "flex",
-				justifyContent: "space-between",
-			}}>
+			{ definition && <div className={classes.container}>
 				<Button
-					style={{
-						width: "70%"
-					}}
+					className={classes.button}
 					fullWidth={true}
 					leftSection={definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
 					variant="default"

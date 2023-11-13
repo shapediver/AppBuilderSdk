@@ -1,10 +1,11 @@
 import { NumberInput, Slider, Tooltip } from "@mantine/core";
 import { PARAMETER_TYPE } from "@shapediver/viewer";
-import React, { JSX } from "react";
+import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
+import classes from "./ParameterSliderComponent.module.css";
 
 /**
  * Round the number depending on the parameter type.
@@ -22,13 +23,13 @@ const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
 };
 
 /**
- * Functional component that creates a slider component for a number parameter. 
- * Additionally, a text input is added on the side. 
+ * Functional component that creates a slider component for a number parameter.
+ * Additionally, a text input is added on the side.
  *
  * @returns
  */
-export default function ParameterSliderComponent(props: PropsParameter): JSX.Element {
-	
+export default function ParameterSliderComponent(props: PropsParameter) {
+
 	const {
 		definition,
 		value,
@@ -53,10 +54,10 @@ export default function ParameterSliderComponent(props: PropsParameter): JSX.Ele
 	// tooltip, marks
 	const tooltip = `Min: ${definition.min}, Max: ${definition.max}`;
 	const marks = [{value: +definition.min!, label: definition.min}, {value: +definition.max!, label: definition.max}];
-	
+
 	return <>
 		<ParameterLabelComponent { ...props } cancel={onCancel}/>
-		{definition && <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+		{definition && <div className={classes.container}>
 			{ definition && <Slider
 				style={{ width: "55%" }}
 				label={round(definition, +value)}

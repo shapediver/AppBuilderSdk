@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core";
 import { useExport } from "hooks/useExport";
-import React, { JSX } from "react";
+import React from "react";
 import { PropsExport } from "types/components/shapediver/propsExport";
 
 /**
@@ -8,9 +8,8 @@ import { PropsExport } from "types/components/shapediver/propsExport";
  *
  * @returns
  */
-export default function ExportLabelComponent(props: PropsExport): JSX.Element {
-	const { sessionId, exportId } = props;
+export default function ExportLabelComponent({ sessionId, exportId }: PropsExport) {
 	const { definition } = useExport(sessionId, exportId);
-	
+
 	return <Text style={{ paddingBottom: "0.25rem" }} size="sm" fw={500}>{definition.displayname || definition.name}</Text>;
 }

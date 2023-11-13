@@ -8,6 +8,7 @@ import ParametersAndExportsAccordionComponent from "components/shapediver/ui/Par
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useSessions } from "hooks/useSessions";
+import classes from "./ModelSelect.module.css";
 
 /**
  * Function that creates a select element in which models can be selected.
@@ -20,16 +21,16 @@ export default function ModelSelect() {
 	const { selectedModels, setSelectedModels } = useModelSelectStore((state) => state);
 	const acceptRejectMode = true;
 	const isMobile = useIsMobile();
-	
+
 	useSessions(selectedModels);
 
 	// callback to handle changes of the model selection
 	const handleChange = (values: string[]) => {
-		const selectedModels: ISelectedModel[] = values.map(v => { 
+		const selectedModels: ISelectedModel[] = values.map(v => {
 			return {
-				...ShapeDiverExampleModels[v], 
+				...ShapeDiverExampleModels[v],
 				id: ShapeDiverExampleModels[v].slug,
-				name: v, 
+				name: v,
 				acceptRejectMode,
 				registerParametersAndExports: true,
 				excludeViewports: ["viewport_1"]
@@ -50,18 +51,18 @@ export default function ModelSelect() {
 	const parameterProps = useSessionPropsParameter(sessionIds);
 	const exportProps = useSessionPropsExport(sessionIds);
 
-	const tabs = selectedModels.length === 0 ? <></> : <Tabs defaultValue={selectedModels[0].slug} style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
+	const tabs = selectedModels.length === 0 ? <></> : <Tabs defaultValue={selectedModels[0].slug} className={classes.tabs}>
 		<Tabs.List>
 			{
 				selectedModels.map(model => <Tabs.Tab key={model.slug} value={model.slug}>{model.name}</Tabs.Tab>)
 			}
 		</Tabs.List>
 		{
-			selectedModels.map(model => 
-				<Tabs.Panel key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-					<ParametersAndExportsAccordionComponent 
-						parameters={parameterProps.filter(p => p.sessionId === model.slug)} 
-						exports={exportProps.filter(p => p.sessionId === model.slug)} 
+			selectedModels.map(model =>
+				<Tabs.Panel key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+					<ParametersAndExportsAccordionComponent
+						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
+						exports={exportProps.filter(p => p.sessionId === model.slug)}
 					/>
 				</Tabs.Panel>
 			)

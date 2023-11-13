@@ -6,6 +6,7 @@ import { PropsExport } from "types/components/shapediver/propsExport";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useSortedParametersAndExports } from "hooks/useSortedParametersAndExports";
 import { useParameterChanges } from "hooks/useParameterChanges";
+import classes from "./ParametersAndExportsAccordionComponent.module.css";
 
 /**
  * Functional component that creates an accordion of parameter and export components.
@@ -19,9 +20,7 @@ interface Props {
 	defaultGroupName?: string,
 }
 
-export default function ParametersAndExportsAccordionComponent(props: Props): JSX.Element {
-	const {parameters, exports, defaultGroupName} = props;
-
+export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
 
@@ -29,8 +28,8 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	// check if there are parameter changes to be confirmed
 	const parameterChanges = useParameterChanges(parameters || []);
-	const disableChangeControls = parameterChanges.length === 0 || 
-		parameterChanges.every(c => c.disableControls ) || 
+	const disableChangeControls = parameterChanges.length === 0 ||
+		parameterChanges.every(c => c.disableControls ) ||
 		parameterChanges.some(c => c.executing);
 	const acceptChanges = () => {
 		parameterChanges.forEach(c => c.accept());
@@ -38,7 +37,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 	const rejectChanges = () => {
 		parameterChanges.forEach(c => c.reject());
 	};
-	
+
 	// create a data structure to store the elements within groups
 	const elementGroups: {
 		[key: string]: {
@@ -49,7 +48,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
-		return(<Loader style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} size="xl" variant="dots" />);
+		return(<Loader className={classes.loader} size="xl" variant="dots" />);
 	}
 
 	// loop through the parameters and store the created elements in the elementGroups
@@ -99,11 +98,9 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 
 	if (acceptRejectMode) {
 		acceptRejectElement =
-			<div key="acceptOrReject" style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
-				<Button 
-					style={{
-						width: "70%"
-					}}
+			<div key="acceptOrReject" className={classes.acceptRejectContainer}>
+				<Button
+					className={classes.acceptRejectButton}
 					fullWidth={true}
 					leftSection={<IconCheck />}
 					variant="default"
@@ -113,9 +110,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 			Accept
 				</Button>
 				<Button
-					style={{
-						width: "70%"
-					}}
+					className={classes.acceptRejectButton}
 					fullWidth={true}
 					leftSection={<IconX />}
 					variant="default"
@@ -144,19 +139,16 @@ export default function ParametersAndExportsAccordionComponent(props: Props): JS
 		elements.push(
 			<Accordion.Item key={g.group.id} value={g.group.id}>
 				<Accordion.Control>{g.group.name}</Accordion.Control>
-				<Accordion.Panel
-					key={g.group.id}
-					style={{ background: "light-dark(var(--mantine-color-dark-8), var(--mantine-color-gray-0))" }}
-				>
+				<Accordion.Panel key={g.group.id}>
 					{groupElements}
 				</Accordion.Panel>
 			</Accordion.Item>
 		);
 	}
 
-	return <Accordion variant="contained" radius="md" style={{maxHeight: "100%", display: "flex", flexDirection: "column"}}>
+	return <Accordion variant="contained" radius="md" className={classes.container}>
 		{ acceptRejectElement }
-		<ScrollArea.Autosize style={{ flex: 1, overflow: "auto"}}>
+		<ScrollArea.Autosize className={classes.scrollArea}>
 			{ elements }
 		</ScrollArea.Autosize>
 	</Accordion>;

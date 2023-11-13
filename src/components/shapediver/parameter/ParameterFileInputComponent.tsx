@@ -1,6 +1,6 @@
 import { FileInput } from "@mantine/core";
 import { IconUpload } from "@tabler/icons-react";
-import React, { JSX } from "react";
+import React from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
@@ -11,8 +11,8 @@ import { useParameterComponentCommons } from "hooks/useParameterComponentCommons
  *
  * @returns
  */
-export default function ParameterFileInputComponent(props: PropsParameter): JSX.Element {
-	
+export default function ParameterFileInputComponent(props: PropsParameter) {
+
 	const {
 		definition,
 		value,

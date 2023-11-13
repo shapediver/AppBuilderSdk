@@ -1,6 +1,7 @@
-import React, { JSX } from "react";
+import React from "react";
 import { useViewport } from "hooks/useViewport";
 import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
+import classes from "./ViewportComponent.module.css";
 
 
 interface Props extends ViewportCreateDto {
@@ -11,17 +12,12 @@ interface Props extends ViewportCreateDto {
  *
  * @returns
  */
-export default function ViewportComponent(props: Props): JSX.Element {
+export default function ViewportComponent(props: Props) {
 	const { children = <></> } = props;
 	const { canvasRef } = useViewport(props);
 
 	return (
-		<div style={{
-			position: "relative",
-			width: "100%",
-			height: "100%",
-			overflow: "hidden"
-		}}>
+		<div className={classes.container}>
 			<canvas ref={canvasRef} />
 			{children}
 		</div>

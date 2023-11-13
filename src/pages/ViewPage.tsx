@@ -1,8 +1,8 @@
 import { Tabs } from "@mantine/core";
-import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
@@ -14,8 +14,7 @@ import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { useOutput } from "hooks/useOutput";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
-import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
-import { useNodeMaterial } from "hooks/useNodeMaterial";
+import classes from "./ViewPage.module.css";
 
 /**
  * Function that creates the view page.
@@ -49,7 +48,7 @@ export default function ViewPage() {
 		if (sessionApi)
 			console.debug(`Available output names: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
 	}, [sessionApi]);
-	
+
 	// get parameters that don't have a group or whose group name includes "export"
 	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
 	// get parameters whose group name includes "export"
@@ -68,22 +67,22 @@ export default function ViewPage() {
 
 	// define a generic parameter which influences a custom material definition
 	// const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({});
-	// useDefineGenericParameters("mysession", !acceptRejectMode, 
+	// useDefineGenericParameters("mysession", !acceptRejectMode,
 	// 	{
 	// 		definition: {
-	// 			id: "myparam", 
-	// 			name: "Custom color", 
-	// 			defval: "0xffffffff", 
-	// 			type: "Color", 
-	// 			hidden: false 
+	// 			id: "myparam",
+	// 			name: "Custom color",
+	// 			defval: "0xffffffff",
+	// 			type: "Color",
+	// 			hidden: false
 	// 		}
-	// 	}, 
+	// 	},
 	// 	(values) => new Promise(resolve => {
 	// 		if ("myparam" in values)
 	// 			setMaterialProperties({ color: values["myparam"] });
 
 	// 		resolve(values);
-	// 	})			
+	// 	})
 	// );
 
 	// apply the custom material
@@ -93,20 +92,20 @@ export default function ViewPage() {
 
 	const fullscreenId = "viewer-fullscreen-area";
 
-	const parameterTabs = <Tabs defaultValue="parameters" style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
+	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
 		<Tabs.List>
 			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-			<ParametersAndExportsAccordionComponent 
+		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
 				defaultGroupName="My parameters"
 			/>
 		</Tabs.Panel>
 
-		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
 			<ParametersAndExportsAccordionComponent parameters={exportParameterProps} exports={exportProps} defaultGroupName="Exports" />
 		</Tabs.Panel>
 	</Tabs>;
