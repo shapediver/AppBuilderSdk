@@ -15,6 +15,8 @@ The complete API documentation of the ShapeDiver 3D Viewer can be found [here](h
 This example includes some [tickets](https://help.shapediver.com/doc/enable-embedding) of ShapeDiver models for testing. 
 You can [author](https://help.shapediver.com/doc/grasshopper) and [upload](https://help.shapediver.com/doc/uploading-models) your own Grasshopper models.  
 
+You can insert tickets for your own models here: [src/tickets.ts](src/tickets.ts)
+
 ## Dependencies
 
 ### Basics
