@@ -48,7 +48,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
-		return(<Loader className={classes.loader} size="xl" variant="dots" />);
+		return(<section className={classes.loader}><Loader size="xl" variant="dots" /></section>);
 	}
 
 	// loop through the parameters and store the created elements in the elementGroups
