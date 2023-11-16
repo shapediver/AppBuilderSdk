@@ -1,0 +1,21 @@
+.appShellAsideMobile {
+	top: calc(100% - 300px);
+	height: 300px;
+	max-height: 100%;
+}
+
+.appShellMain {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+
+.appShellMain.appShellMainMobile {
+	top: 60px;
+	left: 0;
+	right: 0;
+	height: calc(100% - 300px - 60px);
+	min-height: 0;
+	position: fixed;
+}
+

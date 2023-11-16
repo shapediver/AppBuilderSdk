@@ -1,5 +1,5 @@
 import { Select } from "@mantine/core";
-import React, { JSX } from "react";
+import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
@@ -9,8 +9,8 @@ import { useParameterComponentCommons } from "hooks/useParameterComponentCommons
  *
  * @returns
  */
-export default function ParameterSelectComponent(props: PropsParameter): JSX.Element {
-	
+export default function ParameterSelectComponent(props: PropsParameter) {
+
 	const {
 		definition,
 		value,

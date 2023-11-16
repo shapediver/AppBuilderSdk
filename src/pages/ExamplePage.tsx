@@ -1,9 +1,10 @@
-import React, { } from "react";
+import React from "react";
 import { AppShell, Burger, Container, Group, useMantineTheme } from "@mantine/core";
 import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
 import { useColorScheme, useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/useIsMobile";
+import classes from "./ExamplePage.module.css";
 
 /**
  * Function that creates the view page.
@@ -25,7 +26,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 	const theme = useMantineTheme();
 	const [opened, { toggle }] = useDisclosure();
 	const isMobile = useIsMobile();
-	
+
 	//styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}
 	return (
 		<>
@@ -45,15 +46,14 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				<AppShell.Navbar p={{base: "0", lg: "md"}} hidden={!opened}>
 					<NavigationBar />
 				</AppShell.Navbar>
-				<AppShell.Aside 
+				<AppShell.Aside
 					p={{ base: 0, sm: "sm", md: "md"}}
-					style={isMobile ? { top: "calc(100% - 300px)", height: "300px", maxHeight: "100%" } : { } }
-				>
+					className={`${isMobile ? classes.appShellAsideMobile : ""}`}>
 					{ aside }
 				</AppShell.Aside>
-				<AppShell.Main 
+				<AppShell.Main
 					bg={scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}
-					style={isMobile ? { top: "60px", left: "0px", right: "0px", bottom: "300px", minHeight: "0", position: "absolute"} : { height: "100%", width: "100%", position: "absolute"} }
+					className={`${classes.appShellMain} ${isMobile ? classes.appShellMainMobile : ""}`}
 				>
 					<Container
 						h="100%"

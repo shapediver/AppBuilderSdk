@@ -1,8 +1,8 @@
-import { Image, Container, Card, Group, Text, Button, Blockquote } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Image, Container, Card, Group, Text, Blockquote } from "@mantine/core";
 import React from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import classes from "pages/HomePage.module.css";
+import ModelCard from "components/ui/ModelCard";
 
 /**
  * Function that creates the home page.
@@ -15,7 +15,7 @@ import classes from "pages/HomePage.module.css";
 export default function HomePage() {
 	return (
 		<>
-			<Container className={classes.container} size="lg" px="lg">
+			<Container size="lg" px="lg">
 				<h1>ShapeDiver React Example</h1>
 
 				<Card shadow="sm" p="lg" radius="md">
@@ -38,102 +38,44 @@ Check out the source code for this example <a href="https://github.com/shapedive
 				</Card>
 
 				<div className={classes.pageContainer}>
-					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
-						<Card.Section>
-							<Image
-								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
-								height={160}
-								style={{ padding: "1rem" }}
-								fit="contain"
-								alt="Under Construction"
-							/>
-						</Card.Section>
-						<Group gap="md" mt="md" mb="xs">
-							<Text fw={500}>Model View Page</Text>
-						</Group>
+					<ModelCard
+						title="Model View Page"
+						description="This example opens a session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing
+the parameters and exports defined by the model. All components are easily customizable."
+						btnText="On to the View Page!"
+						btnLink="/view"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
 
-						<Text size="sm" c="dimmed">
-This example opens a session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing
-the parameters and exports defined by the model. All components are easily customizable.
-						</Text>
+					<ModelCard
+						title="Model Select Page"
+						description="This example displays a single viewport into which sessions with multiple ShapeDiver models can be loaded at once.
+The settings of the model which is selected first are used to configure the viewport (camera, controls, etc).
+Parameter and export controls are shown for all selected models."
+						btnText="On to the Model Select Page!"
+						btnLink="/modelSelect"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
 
-						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/view">
-              On to the View Page!
-						</Button>
-					</Card>
+					<ModelCard
+						title="Multiple Viewports and Models Page"
+						description="This example displays multiple viewports and models."
+						btnText="On to the Multiple Viewports and Models page!"
+						btnLink="/multipleViewport"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
 
-					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
-						<Card.Section>
-							<Image
-								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
-								height={160}
-								style={{ padding: "1rem" }}
-								fit="contain"
-								alt="Under Construction"
-							/>
-						</Card.Section>
-						<Group gap="md" mt="md" mb="xs">
-							<Text fw={500}>Model Select Page</Text>
-						</Group>
-
-						<Text size="sm" c="dimmed">
-This example displays a single viewport into which sessions with multiple ShapeDiver models can be loaded at once.
-The settings of the model which is selected first are used to configure the viewport (camera, controls, etc). 
-Parameter and export controls are shown for all selected models. 
-						</Text>
-
-						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/modelSelect">
-              On to the Model Select Page!
-						</Button>
-					</Card>
-				</div>
-
-				<div className={classes.pageContainer}>
-					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
-						<Card.Section>
-							<Image
-								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
-								height={160}
-								style={{ padding: "1rem" }}
-								fit="contain"
-								alt="Under Construction"
-							/>
-						</Card.Section>
-						<Group gap="md" mt="md" mb="xs">
-							<Text fw={500}>Multiple Viewports and Models Page</Text>
-						</Group>
-
-						<Text size="sm" c="dimmed">
-							This example displays multiple viewports and models.
-						</Text>
-
-						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/multipleViewport">
-							On to the Multiple Viewports and Models page!
-						</Button>
-					</Card>
-
-					<Card className={classes.pageCard} shadow="sm" p="lg" radius="md" withBorder>
-						<Card.Section>
-							<Image
-								src="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
-								height={160}
-								style={{ padding: "1rem" }}
-								fit="contain"
-								alt="Under Construction"
-							/>
-						</Card.Section>
-						<Group gap="md" mt="md" mb="xs">
-							<Text fw={500}>Custom UI Page</Text>
-						</Group>
-
-						<Text size="sm" c="dimmed">
-This example shows how to use Grasshopper to influence the parameter panel (show/hide parameters, add custom parameters).
-						</Text>
-
-						<Button variant="light" color="blue" fullWidth mt="md" radius="md" component={Link} to="/customui">
-              On to the Custom UI page!
-						</Button>
-					</Card>
+					<ModelCard
+						title="Custom UI Page"
+						description="This example shows how to use Grasshopper to influence the parameter panel (show/hide parameters, add custom parameters)."
+						btnText="On to the Custom UI page!"
+						btnLink="/customui"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
 				</div>
 			</Container>
 		</>

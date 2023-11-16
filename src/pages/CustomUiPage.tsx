@@ -11,6 +11,7 @@ import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useSessionWithCustomUi } from "hooks/useSessionWithCustomUi";
+import classes from "./CustomUiPage.module.css";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "CustomUiBookshelf";
@@ -37,24 +38,24 @@ export default function ViewPage() {
 	const isMobile = useIsMobile();
 	const { branding } = useMantineBranding();
 	const { parameterProps, exportProps } = useSessionWithCustomUi({sessionDto: SESSION_DTO, acceptRejectMode: ACCEPT_REJECT_MODE});
-	
-	const parameterTabs = <Tabs defaultValue="parameters" style={{display: "flex", flexDirection: "column", maxHeight: "100%"}}>
+
+	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
 		<Tabs.List>
 			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-			<ParametersAndExportsAccordionComponent 
+		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps}
 				defaultGroupName="My parameters"
 			/>
 		</Tabs.Panel>
 
-		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
-			<ParametersAndExportsAccordionComponent 
-				exports={exportProps} 
-				defaultGroupName="Exports" 
+		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+			<ParametersAndExportsAccordionComponent
+				exports={exportProps}
+				defaultGroupName="Exports"
 			/>
 		</Tabs.Panel>
 	</Tabs>;

@@ -7,6 +7,7 @@ import { useFullscreen } from "utils/useFullscreen";
 import { firstLetterUppercase } from "utils/strings";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 import { FLAG_TYPE } from "@shapediver/viewer";
+import classes from "./ViewportIcons.module.css";
 
 interface Props {
 	color?: string
@@ -125,8 +126,8 @@ export default function ViewportIcons({
 
 		{ enableArBtn && <Modal opened={isModalArOpened} onClose={() => setIsModalArOpened(false)} title="Scan the code" centered>
 			<p>Scan the QR code below using your mobile device to see the model in AR. The code is compatible with Android and iOS devices.</p>
-			<section style={{ width: "100%", display: "flex", justifyContent: "center"}}>
-				{isArLoading ? <section style={{ height: "180px", display: "flex", justifyContent: "center", alignItems: "center"}}><Loader color="blue" /></section> : <img
+			<section className={classes.containerAr}>
+				{isArLoading ? <section className={classes.loaderAr}><Loader color="blue" /></section> : <img
 					src={arLink}
 					height="180px"
 					alt="ar_link"

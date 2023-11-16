@@ -2,6 +2,7 @@ import { Image, ActionIcon, useMantineColorScheme, Group } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
 import { useLinkClickHandler } from "react-router-dom";
 import React from "react";
+import classes from "./HeaderBar.module.css";
 
 /**
  * Functional component that creates an image and a icon for the header bar.
@@ -17,8 +18,8 @@ export default function HeaderBar() {
 		<Group justify="space-between" w="100%">
 			<Image
 				hiddenFrom="sm"
+				className={classes.image}
 				style={{
-					cursor: "pointer",
 					width: "165px",
 					filter: colorScheme === "dark" ? "" : "invert(1)",
 				}}
@@ -30,8 +31,8 @@ export default function HeaderBar() {
 			/>
 			<Image
 				visibleFrom="sm"
+				className={classes.image}
 				style={{
-					cursor: "pointer",
 					width: "250px",
 					filter: colorScheme === "dark" ? "" : "invert(1)",
 				}}

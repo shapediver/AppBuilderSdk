@@ -10,6 +10,7 @@ import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
+import classes from "./MultipleViewportPage.module.css";
 
 /**
  * Function that creates the view page.
@@ -47,7 +48,7 @@ export default function ViewPage() {
 		registerParametersAndExports: true,
 	});
 
-	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id); 
+	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id);
 	const parameterBookshelfProps = useSessionPropsParameter(sessionsCreateDto[sessionBookshelfKey].id);
 	const isMobile = useIsMobile();
 
@@ -80,17 +81,17 @@ export default function ViewPage() {
 		})
 	];
 
-	const aside = <Tabs defaultValue="bench" style={{ display: "flex", flexDirection: "column", maxHeight: "100%" }}>
+	const aside = <Tabs defaultValue="bench" className={classes.asideTabs}>
 		<Tabs.List>
 			<Tabs.Tab value="bench" leftSection={<IconReplace size={14} />}>Bench</Tabs.Tab>
 			<Tabs.Tab value="bookshelf" leftSection={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="bench" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+		<Tabs.Panel value="bench" pt={isMobile ? "" : "xs"} className={classes.asideTabsPanel}>
 			<ParametersAndExportsAccordionComponent parameters={parameterBenchProps} defaultGroupName="Bench parameters" />
 		</Tabs.Panel>
 
-		<Tabs.Panel value="bookshelf" pt={isMobile ? "" : "xs"} style={{ flexGrow: "1", overflow: "auto", maxHeight: "100%" }}>
+		<Tabs.Panel value="bookshelf" pt={isMobile ? "" : "xs"} className={classes.asideTabsPanel}>
 			<ParametersAndExportsAccordionComponent parameters={parameterBookshelfProps}
 				defaultGroupName="Bookshelf parameters" />
 		</Tabs.Panel>
@@ -98,7 +99,7 @@ export default function ViewPage() {
 
 	return (
 		<ExamplePage aside={aside}>
-			<Grid style={{ height: "100%", display: "flex" }}>
+			<Grid className={classes.containerGrid}>
 				{viewports}
 			</Grid>
 		</ExamplePage>

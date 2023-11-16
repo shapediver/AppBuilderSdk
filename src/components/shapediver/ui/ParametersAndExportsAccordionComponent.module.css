@@ -1,0 +1,28 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	max-height: 100%;
+}
+
+.scrollArea {
+	flex-grow: 1;
+	overflow: auto;
+}
+
+.loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.acceptRejectContainer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	align-items: center;
+}
+
+.acceptRejectBtn {
+	width: 70%;
+}

@@ -3,22 +3,24 @@
 }
 
 .pageContainer {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    column-gap: 1rem;
-    flex-direction: column;
-}
-
-.pageCard {
-    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 1rem 1rem;
+    margin: 1rem 0;
+    box-sizing: border-box;
 }
 
 @media (min-width: 48em) {
     .pageContainer {
-        flex-direction: row;
+        grid-template-columns: repeat(2, calc(50% - 0.5rem)); /* prevent the gap shift - 1rem between 2 columns divided by 2 */
     }
 }
+
+@media (min-width: 62em) {
+    .pageContainer {
+        grid-template-columns: repeat(4, calc(25% - 0.75rem)); /* prevent the gap shift - 3rems between 4 columns divided by 4 */
+    }
+}
+
 
 
