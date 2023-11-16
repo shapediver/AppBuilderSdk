@@ -53,7 +53,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				</AppShell.Aside>
 				<AppShell.Main
 					bg={scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}
-					className={`${isMobile ? classes.appShellMainMobile : classes.appShellMain}`}
+					className={`${classes.appShellMain} ${isMobile ? classes.appShellMainMobile : ""}`}
 				>
 					<Container
 						h="100%"
