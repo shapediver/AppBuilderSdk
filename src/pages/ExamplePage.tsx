@@ -5,6 +5,7 @@ import HeaderBar from "components/ui/HeaderBar";
 import { useColorScheme, useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/useIsMobile";
 import classes from "./ExamplePage.module.css";
+import { useIsLandscape } from "hooks/useIsLandscape";
 
 /**
  * Function that creates the view page.
@@ -26,6 +27,9 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 	const theme = useMantineTheme();
 	const [opened, { toggle }] = useDisclosure();
 	const isMobile = useIsMobile();
+	const isLandscape = useIsLandscape();
+	console.log("isMobile", isMobile);
+	console.log("isLandscape", isLandscape);
 
 	//styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}
 	return (
@@ -46,7 +50,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 					<NavigationBar />
 				</AppShell.Navbar>
 				<AppShell.Main
-					className={`${classes.appShellMain} ${isMobile ? "" : classes.appShellMainLg}`}
+					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
 				>
 					<section
 						className={classes.appShellMainMain}
@@ -55,7 +59,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 						{ children }
 					</section>
 					<section
-						className={`${classes.appShellMainAside} ${isMobile ? "" : classes.appShellMainAsideLg}`}
+						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""} ${isLandscape && !isMobile ? classes.appShellMainAsideLandscapeLg : ""}`}
 					>
 						{ aside }
 					</section>

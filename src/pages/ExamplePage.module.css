@@ -9,7 +9,7 @@
     "aside aside aside";
 }
 
-.appShellMainLg {
+.appShellMainLandscape {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-template-areas:
@@ -27,7 +27,10 @@
     height: 300px;
 }
 
-.appShellMainAsideLg {
-    padding: 1rem;
+.appShellMainAsideLandscape {
     height: auto;
+}
+
+.appShellMainAsideLandscapeLg {
+    padding: 1rem;
 }
