@@ -71,7 +71,7 @@ export function useSessionWithCustomUi(props: Props) {
 	);
 
 	// get output "CUSTOM_DATA_OUTPUT_NAME", react to its changes, and set the custom UI state
-	const { outputApi, outputNode } = useOutput(sessionId, CUSTOM_DATA_OUTPUT_NAME);
+	const { outputApi } = useOutput(sessionId, CUSTOM_DATA_OUTPUT_NAME);
 	useEffect(() => {
 		if (outputApi) {
 			if ( outputApi.content && outputApi.content.length > 0 && outputApi.content[0].data ) {
@@ -88,7 +88,7 @@ export function useSessionWithCustomUi(props: Props) {
 				console.debug(`Output with name "${CUSTOM_DATA_OUTPUT_NAME}" does not contain expected custom UI data`);
 		} else
 			console.debug(`Output with name "${CUSTOM_DATA_OUTPUT_NAME}" could not be found, check the available output names`);
-	}, [outputNode, outputApi]);
+	}, [outputApi]);
 
 	// get parameters that should not be hidden
 	const sessionParameterProps = useSessionPropsParameter(sessionId, param => {
