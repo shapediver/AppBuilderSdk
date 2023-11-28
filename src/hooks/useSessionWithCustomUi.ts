@@ -5,9 +5,9 @@ import { useSessionPropsParameter } from "./useSessionPropsParameter";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useSessionPropsExport } from "./useSessionPropsExport";
 import { useDefineGenericParameters } from "./useDefineGenericParameters";
-import { useOutput } from "./useOutput";
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
 import { useParameterStateless } from "./useParameterStateless";
+import { useOutputContent } from "./useOutputContent";
 
 interface Props {
 	sessionDto: SessionCreateDto,
@@ -71,11 +71,11 @@ export function useSessionWithCustomUi(props: Props) {
 	);
 
 	// get output "CUSTOM_DATA_OUTPUT_NAME", react to its changes, and set the custom UI state
-	const { outputApi } = useOutput(sessionId, CUSTOM_DATA_OUTPUT_NAME);
+	const { outputApi, outputContent } = useOutputContent(sessionId, CUSTOM_DATA_OUTPUT_NAME);
 	useEffect(() => {
 		if (outputApi) {
-			if ( outputApi.content && outputApi.content.length > 0 && outputApi.content[0].data ) {
-				const customUiData = outputApi.content[0].data as ICustomUiData;
+			if ( outputContent && outputContent.length > 0 && outputContent[0].data ) {
+				const customUiData = outputContent[0].data as ICustomUiData;
 				console.debug(`Output ${outputApi?.id} (${outputApi?.displayname ? outputApi?.displayname : outputApi?.name}) version ${outputApi?.version}`, customUiData);
 				
 				customParameterValues.current = {};
@@ -88,7 +88,7 @@ export function useSessionWithCustomUi(props: Props) {
 				console.debug(`Output with name "${CUSTOM_DATA_OUTPUT_NAME}" does not contain expected custom UI data`);
 		} else
 			console.debug(`Output with name "${CUSTOM_DATA_OUTPUT_NAME}" could not be found, check the available output names`);
-	}, [outputApi]);
+	}, [outputApi, outputContent]);
 
 	// get parameters that should not be hidden
 	const sessionParameterProps = useSessionPropsParameter(sessionId, param => {
