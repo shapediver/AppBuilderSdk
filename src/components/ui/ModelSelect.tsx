@@ -9,6 +9,7 @@ import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useSessions } from "hooks/useSessions";
 import classes from "./ModelSelect.module.css";
+import ParametersAndExportsAccordionTab from "../shapediver/ui/ParametersAndExportsAccordionTab";
 
 /**
  * Function that creates a select element in which models can be selected.
@@ -59,12 +60,12 @@ export default function ModelSelect() {
 		</Tabs.List>
 		{
 			selectedModels.map(model =>
-				<Tabs.Panel key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+				<ParametersAndExportsAccordionTab key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"}>
 					<ParametersAndExportsAccordionComponent
 						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
 						exports={exportProps.filter(p => p.sessionId === model.slug)}
 					/>
-				</Tabs.Panel>
+				</ParametersAndExportsAccordionTab>
 			)
 		}
 	</Tabs>;

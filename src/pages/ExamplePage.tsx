@@ -1,10 +1,11 @@
 import React from "react";
-import { AppShell, Burger, Container, Group, useMantineTheme } from "@mantine/core";
+import { AppShell, Burger, Group, useMantineTheme } from "@mantine/core";
 import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
 import { useColorScheme, useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/useIsMobile";
 import classes from "./ExamplePage.module.css";
+import { useIsLandscape } from "hooks/useIsLandscape";
 
 /**
  * Function that creates the view page.
@@ -26,16 +27,16 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 	const theme = useMantineTheme();
 	const [opened, { toggle }] = useDisclosure();
 	const isMobile = useIsMobile();
+	const isLandscape = useIsLandscape();
 
 	//styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}
 	return (
 		<>
 			<AppShell
-				padding={{ base: 0, sm: "sm"}}
+				padding={{ base: 0}}
 				className={className}
 				header={{ height: 60 }}
 				navbar={{ breakpoint: "md", width: { md: 150, lg: 200 }, collapsed: { mobile: !opened }  }}
-				aside={{ breakpoint: "sm", width: { sm: 300, lg: 300 } }}
 			>
 				<AppShell.Header>
 					<Group h="100%" px="md" justify="space-between" wrap="nowrap">
@@ -43,27 +44,23 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 						<HeaderBar />
 					</Group>
 				</AppShell.Header>
-				<AppShell.Navbar p={{base: "0", lg: "md"}} hidden={!opened}>
+				<AppShell.Navbar p={{base: "0", lg: "md"}} hidden={!opened} zIndex={20}>
 					<NavigationBar />
 				</AppShell.Navbar>
-				<AppShell.Aside
-					p={{ base: 0, sm: "sm", md: "md"}}
-					className={`${isMobile ? classes.appShellAsideMobile : ""}`}>
-					{ aside }
-				</AppShell.Aside>
 				<AppShell.Main
-					bg={scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}
-					className={`${classes.appShellMain} ${isMobile ? classes.appShellMainMobile : ""}`}
+					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
 				>
-					<Container
-						h="100%"
-						w="100%"
-						p={0}
-						pos="relative"
-						maw="100%"
+					<section
+						className={classes.appShellMainMain}
+						style={{ backgroundColor: scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}}
 					>
 						{ children }
-					</Container>
+					</section>
+					<section
+						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""} ${isLandscape && !isMobile ? classes.appShellMainAsideLandscapeLg : ""}`}
+					>
+						{ aside }
+					</section>
 				</AppShell.Main>
 			</AppShell>
 		</>

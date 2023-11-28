@@ -6,11 +6,12 @@ import ExamplePage from "pages/ExamplePage";
 import { useMantineBranding } from "hooks/useMantineBranding";
 import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
-import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
 import classes from "./MultipleViewportPage.module.css";
+import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 
 /**
  * Function that creates the view page.
@@ -87,14 +88,14 @@ export default function ViewPage() {
 			<Tabs.Tab value="bookshelf" leftSection={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="bench" pt={isMobile ? "" : "xs"} className={classes.asideTabsPanel}>
+		<ParametersAndExportsAccordionTab value="bench" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent parameters={parameterBenchProps} defaultGroupName="Bench parameters" />
-		</Tabs.Panel>
+		</ParametersAndExportsAccordionTab>
 
-		<Tabs.Panel value="bookshelf" pt={isMobile ? "" : "xs"} className={classes.asideTabsPanel}>
+		<ParametersAndExportsAccordionTab value="bookshelf" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent parameters={parameterBookshelfProps}
 				defaultGroupName="Bookshelf parameters" />
-		</Tabs.Panel>
+		</ParametersAndExportsAccordionTab>
 	</Tabs>;
 
 	return (
