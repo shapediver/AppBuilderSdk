@@ -146,10 +146,12 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 		);
 	}
 
-	return <Accordion variant="contained" radius="md" className={classes.container}>
+	return <>
 		{ acceptRejectElement }
 		<ScrollArea.Autosize className={classes.scrollArea}>
-			{ elements }
+			<Accordion variant="contained" radius="md" className={classes.container}>
+				{ elements }
+			</Accordion>
 		</ScrollArea.Autosize>
-	</Accordion>;
+	</>;
 }
