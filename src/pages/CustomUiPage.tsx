@@ -12,6 +12,7 @@ import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
 import { useSessionWithCustomUi } from "hooks/useSessionWithCustomUi";
 import classes from "./CustomUiPage.module.css";
+import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "CustomUiBookshelf";
@@ -45,19 +46,19 @@ export default function ViewPage() {
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+		<ParametersAndExportsAccordionTab value="parameters" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps}
 				defaultGroupName="My parameters"
 			/>
-		</Tabs.Panel>
+		</ParametersAndExportsAccordionTab>
 
-		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+		<ParametersAndExportsAccordionTab value="exports" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent
 				exports={exportProps}
 				defaultGroupName="Exports"
 			/>
-		</Tabs.Panel>
+		</ParametersAndExportsAccordionTab>
 	</Tabs>;
 
 	return (

@@ -25,10 +25,17 @@
 .appShellMainAside {
     grid-area: aside;
     height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: auto;
+    max-height: 100%;
 }
 
 .appShellMainAsideLandscape {
-    height: auto;
+    height: calc(100vh - 60px);
+    max-height: calc(100vh - 60px);
 }
 
 .appShellMainAsideLandscapeLg {

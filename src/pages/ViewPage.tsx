@@ -15,6 +15,7 @@ import { useOutput } from "hooks/useOutput";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
 import classes from "./ViewPage.module.css";
+import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 
 /**
  * Function that creates the view page.
@@ -98,16 +99,16 @@ export default function ViewPage() {
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
-		<Tabs.Panel value="parameters" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+		<ParametersAndExportsAccordionTab value="parameters" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
 				defaultGroupName="My parameters"
 			/>
-		</Tabs.Panel>
+		</ParametersAndExportsAccordionTab>
 
-		<Tabs.Panel value="exports" pt={isMobile ? "" : "xs"} className={classes.tabsPanel}>
+		<ParametersAndExportsAccordionTab  value="exports" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent parameters={exportParameterProps} exports={exportProps} defaultGroupName="Exports" />
-		</Tabs.Panel>
+		</ParametersAndExportsAccordionTab>
 	</Tabs>;
 
 	return (

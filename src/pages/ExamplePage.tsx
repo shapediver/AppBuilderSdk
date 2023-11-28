@@ -28,8 +28,6 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 	const [opened, { toggle }] = useDisclosure();
 	const isMobile = useIsMobile();
 	const isLandscape = useIsLandscape();
-	console.log("isMobile", isMobile);
-	console.log("isLandscape", isLandscape);
 
 	//styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}
 	return (
