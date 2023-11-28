@@ -16,7 +16,7 @@ const updateCallbacks : OutputUpdateCallbacks = {};
  * 
  * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
  * 
- * Makes use of @see {@link useOutput}.
+ * Makes use of {@link useOutput}.
  * 
  * @param sessionId 
  * @param outputIdOrName 

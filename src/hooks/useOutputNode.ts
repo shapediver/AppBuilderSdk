@@ -12,7 +12,7 @@ type UpdateCallback = (newNode?: ITreeNode, oldNode?: ITreeNode) => Promise<void
  * 
  * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
  * 
- * Makes use of @see {@link useOutputUpdateCallback}.
+ * Makes use of {@link useOutputUpdateCallback} and {@link useOutput}.
  * 
  * @param sessionId 
  * @param outputIdOrName 

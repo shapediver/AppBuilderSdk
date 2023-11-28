@@ -34,7 +34,7 @@ const getMaterials = (
 /**
  * Hook allowing to update the material of an output.
  * 
- * Makes use of @see {@link useOutputNode}.
+ * Makes use of {@link useOutputNode}.
  * 
  * @param sessionId 
  * @param outputIdOrName 
@@ -102,6 +102,7 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 		if (outputNode && !initialUpdateApplied)
 			setInitialUpdateApplied(true);
 
+		// TODO ideally here we should return a cleanup function, which restores the original material
 	}, [outputNode, materialProperties]);
 
 	return {
