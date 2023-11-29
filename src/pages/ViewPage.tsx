@@ -18,7 +18,6 @@ import ParametersAndExportsAccordionTab from "../components/shapediver/ui/Parame
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/useOutputMaterial";
-import { useOutputUpdateCallback } from "hooks/useOutputUpdateCallback";
 
 /**
  * Function that creates the view page.
@@ -88,8 +87,7 @@ export default function ViewPage() {
 
 	// apply the custom material
 	useOutputMaterial(sessionId, outputNameOrId, materialProperties);
-	useOutputUpdateCallback(sessionId, outputNameOrId, "xx", console.debug);
-
+	
 	/////	
 	// END - Example on how to apply a custom material to an output
 	/////	
