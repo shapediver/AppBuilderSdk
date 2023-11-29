@@ -4,7 +4,7 @@ import { useOutput } from "./useOutput";
 
 type UpdateCallback = (newNode?: ITreeNode, oldNode?: ITreeNode) => Promise<void> | void;
 
-type OutputUpdateCallbacks = { [key: string]: UpdateCallback};
+type OutputUpdateCallbacks = { [key: string]: { [key: string]: UpdateCallback } };
 
 /** 
  * Callbacks to use for IOutputApi.updateCallback
@@ -32,18 +32,22 @@ export function useOutputUpdateCallback(sessionId: string, outputIdOrName: strin
 	const { outputApi } = useOutput(sessionId, outputIdOrName);
 
 	useEffect(() => {
-		const key = `${sessionId}_${outputIdOrName}_${callbackId}`;
-		updateCallbacks[key] = updateCallback;
+		const key = `${sessionId}_${outputIdOrName}`;
+		if (!updateCallbacks[key]) {
+			updateCallbacks[key] = {};
+		}
+		updateCallbacks[key][callbackId] = updateCallback;
 				
 		return () => {
-			delete updateCallbacks[key];
+			delete updateCallbacks[key][callbackId];
 		};
 	}, [sessionId, outputIdOrName, callbackId, updateCallback]);
 
 	useEffect(() => {
 		if (outputApi) {
+			const key = `${sessionId}_${outputIdOrName}`;
 			outputApi.updateCallback = async (newNode?: ITreeNode, oldNode?: ITreeNode) => {
-				await Promise.all(Object.values(updateCallbacks).map(cb => cb(newNode, oldNode)));
+				await Promise.all(Object.values(updateCallbacks[key]).map(cb => cb(newNode, oldNode)));
 			};
 		}
 
