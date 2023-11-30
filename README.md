@@ -44,6 +44,7 @@ Related hooks:
 
   * [useViewport](src/hooks/useViewport.ts)
   * [useSession](src/hooks/useSession.ts)
+  * [useSessions](src/hooks/useSessions.ts)
 
 Related components: 
 
@@ -59,12 +60,16 @@ Implementation: [useShapeDiverStoreParameters](src/store/useShapeDiverStoreParam
 
 Related hooks: 
 
+  * [useSessionPropsParameter](src/hooks/useSessionPropsParameter.ts)
+  * [useSessionPropsExport](src/hooks/useSessionPropsExport.ts)
   * [useParameter](src/hooks/useParameter.ts)
   * [useExport](src/hooks/useExport.ts)
+  * [useParameterComponentCommons](src/hooks/useParameterComponentCommons.ts)
+  * [useSortedParametersAndExports](src/hooks/useSortedParametersAndExports.ts)
 
 Related components: 
  
-  * [ParameterStringComponent](src/components/shapediver/parameter/ParameterStringComponent.tsx) implements a string parameter component and makes use of `useParameter`
+  * [Parameter components](src/components/shapediver/parameter) for the most common parameter types supported by ShapeDiver, uses `useParameterComponentCommons`
   * [ExportButtonComponent](src/components/shapediver/exports/ExportButtonComponent.tsx) allows to trigger an export and makes use of `useExport`
   * [ParametersAndExportsAccordionComponent](src/components/shapediver/ui/ParametersAndExportsAccordionComponent.tsx) implements an accordion of grouped parameter and export components
 
