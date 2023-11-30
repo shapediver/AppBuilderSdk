@@ -1,8 +1,8 @@
 import { Tabs } from "@mantine/core";
-import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconReplace } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
@@ -11,11 +11,13 @@ import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
-import { useOutput } from "hooks/useOutput";
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
 import classes from "./ViewPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
+import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
+import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
+import { useOutputMaterial } from "hooks/useOutputMaterial";
 
 /**
  * Function that creates the view page.
@@ -56,40 +58,39 @@ export default function ViewPage() {
 	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
 	const exportProps = useSessionPropsExport(sessionId);
 
-	// Example on how to access an output and react to its changes
+	/////	
+	// START - Example on how to apply a custom material to an output
+	/////	
 	const outputNameOrId = "Shelf";
-	const { outputApi, outputNode } = useOutput(sessionId, outputNameOrId);
-	useEffect(() => {
-		if (outputApi)
-			console.debug(`Output ${outputApi?.id} (${outputApi?.displayname ? outputApi?.displayname : outputApi?.name}) version ${outputApi?.version}`, outputNode);
-		else
-			console.debug(`Output with name "${outputNameOrId}" could not be found, check the available output names`);
-	}, [outputNode, outputApi]);
-
+	
 	// define a generic parameter which influences a custom material definition
-	// const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({});
-	// useDefineGenericParameters("mysession", !acceptRejectMode,
-	// 	{
-	// 		definition: {
-	// 			id: "myparam",
-	// 			name: "Custom color",
-	// 			defval: "0xffffffff",
-	// 			type: "Color",
-	// 			hidden: false
-	// 		}
-	// 	},
-	// 	(values) => new Promise(resolve => {
-	// 		if ("myparam" in values)
-	// 			setMaterialProperties({ color: values["myparam"] });
+	const [materialParameters] = useState<IGenericParameterDefinition>({
+		definition: {
+			id: "myparam",
+			name: "Custom color",
+			defval: "0xffffffff",
+			type: "Color",
+			hidden: false
+		}
+	});
+	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ color: materialParameters.definition.defval });
+	useDefineGenericParameters("mysession", !acceptRejectMode,
+		materialParameters,
+		(values) => new Promise(resolve => {
+			if ("myparam" in values)
+				setMaterialProperties({ color: values["myparam"] });
 
-	// 		resolve(values);
-	// 	})
-	// );
+			resolve(values);
+		})
+	);
+	const myParameterProps = useSessionPropsParameter("mysession");
 
 	// apply the custom material
-	// useNodeMaterial(outputNode, materialProperties);
-
-	const myParameterProps = useSessionPropsParameter("mysession");
+	useOutputMaterial(sessionId, outputNameOrId, materialProperties);
+	
+	/////	
+	// END - Example on how to apply a custom material to an output
+	/////	
 
 	const fullscreenId = "viewer-fullscreen-area";
 
@@ -102,7 +103,7 @@ export default function ViewPage() {
 		<ParametersAndExportsAccordionTab value="parameters" pt={isMobile ? "" : "xs"}>
 			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
-				defaultGroupName="My parameters"
+				defaultGroupName="Custom material"
 			/>
 		</ParametersAndExportsAccordionTab>
 
