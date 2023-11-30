@@ -95,6 +95,7 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 		if ( materialPropertiesRef.current === materialProperties && initialUpdateApplied )
 			return;
 	
+		// the material definition has changed, or the initial update has not been applied yet --> apply the callback
 		materialPropertiesRef.current = materialProperties;
 		callback(outputNode);
 
