@@ -2,8 +2,14 @@ import { IOutputApi, ITreeNode } from "@shapediver/viewer";
 import { useEffect } from "react";
 import { useOutput } from "./useOutput";
 
+/**
+ * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html#updateCallback
+ */
 type UpdateCallback = (newNode?: ITreeNode, oldNode?: ITreeNode) => Promise<void> | void;
 
+/**
+ * Output update callbacks by (session id and output id or name), and callback id.
+ */
 type OutputUpdateCallbacks = { [key: string]: { [key: string]: UpdateCallback } };
 
 /** 
@@ -31,6 +37,7 @@ export function useOutputUpdateCallback(sessionId: string, outputIdOrName: strin
 } {
 	const { outputApi } = useOutput(sessionId, outputIdOrName);
 
+	// manage callbacks
 	useEffect(() => {
 		const key = `${sessionId}_${outputIdOrName}`;
 		if (!updateCallbacks[key]) {
@@ -43,6 +50,7 @@ export function useOutputUpdateCallback(sessionId: string, outputIdOrName: strin
 		};
 	}, [sessionId, outputIdOrName, callbackId, updateCallback]);
 
+	// register the single callback which will call all registered callbacks
 	useEffect(() => {
 		if (outputApi) {
 			const key = `${sessionId}_${outputIdOrName}`;

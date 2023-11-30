@@ -60,6 +60,9 @@ Implementation: [useShapeDiverStoreParameters](src/store/useShapeDiverStoreParam
 
 Related hooks: 
 
+  * [useSession](src/hooks/useSession.ts)
+  * [useSessions](src/hooks/useSessions.ts)
+  * [useDefineGenericParameters](src/hooks/useDefineGenericParameters.ts)
   * [useSessionPropsParameter](src/hooks/useSessionPropsParameter.ts)
   * [useSessionPropsExport](src/hooks/useSessionPropsExport.ts)
   * [useParameter](src/hooks/useParameter.ts)
