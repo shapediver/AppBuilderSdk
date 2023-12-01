@@ -123,6 +123,7 @@ export function useSessionWithCustomUi(props: Props) {
 	useEffect(() => {
 		if (outputApi) {
 			if ( outputContent && outputContent.length > 0 && outputContent[0].data ) {
+				// TODO here we need to validate the data, instead of just casting it to ICustomUiData
 				const customUiData = outputContent[0].data as ICustomUiData;
 				console.debug(`Output ${outputApi?.id} (${outputApi?.displayname ? outputApi?.displayname : outputApi?.name}) version ${outputApi?.version}`, customUiData);
 				
