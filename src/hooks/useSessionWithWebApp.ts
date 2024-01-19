@@ -45,6 +45,11 @@ interface IWebAppWidgetPropsAccordion {
 	parameters: IWebAppParameterRef[]
 	/** References to exports which shall be displayed by the accordion. */
 	exports: IWebAppExportRef[]
+	/** 
+	 * Optional name of group that should be used for all parameters/exports without a group.
+	 * In case this is not specified, parameters/exports without a group will be displayed without an accordion.
+	 */
+	defaultGroupName?: string
 }
 
 /** Properties of a text widget. */
@@ -72,11 +77,19 @@ interface IWebAppWidget {
 }
 
 /** 
+ * Types of icons for tabs 
+ * @see https://tabler.io/icons
+ */
+type WebAppContainerTabIconType = "replace" | "download";
+
+/** 
  * A tab displayed in a container.
  */
 interface IWebAppContainerTab {
 	/** Name of the tab. */
 	name: string
+	/** Optional icon of the tab. */
+	icon: WebAppContainerTabIconType
 	/** Widgets displayed in the tab. */
 	widgets: IWebAppWidget[]
 }
@@ -101,6 +114,9 @@ interface IWebAppContainer {
  * This is the root of the custom UI definition.
  */
 interface IWebApp {
+
+	/** Version of the schema. */
+	version: "1.0"
 
 	/** 
 	 * Optional list of custom parameters that can be referenced 
