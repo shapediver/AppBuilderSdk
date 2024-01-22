@@ -5,7 +5,7 @@ import { useSession } from "hooks/useSession";
 import ExamplePage from "pages/ExamplePage";
 import { useMantineBranding } from "hooks/useMantineBranding";
 import { Grid, Tabs } from "@mantine/core";
-import { IconFileDownload, IconReplace } from "@tabler/icons-react";
+import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
@@ -84,7 +84,7 @@ export default function ViewPage() {
 
 	const aside = <Tabs defaultValue="bench" className={classes.asideTabs}>
 		<Tabs.List>
-			<Tabs.Tab value="bench" leftSection={<IconReplace size={14} />}>Bench</Tabs.Tab>
+			<Tabs.Tab value="bench" leftSection={<IconAdjustmentsHorizontal size={14} />}>Bench</Tabs.Tab>
 			<Tabs.Tab value="bookshelf" leftSection={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
 		</Tabs.List>
 
