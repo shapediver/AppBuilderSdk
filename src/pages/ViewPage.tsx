@@ -1,6 +1,6 @@
 import { Tabs } from "@mantine/core";
 import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import { IconFileDownload, IconReplace } from "@tabler/icons-react";
+import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
@@ -96,7 +96,7 @@ export default function ViewPage() {
 
 	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
 		<Tabs.List>
-			<Tabs.Tab value="parameters" leftSection={<IconReplace size={14} />}>Parameters</Tabs.Tab>
+			<Tabs.Tab value="parameters" leftSection={<IconAdjustmentsHorizontal size={14} />}>Parameters</Tabs.Tab>
 			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
 		</Tabs.List>
 
