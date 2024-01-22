@@ -35,7 +35,10 @@ export function useSortedParametersAndExports(parameters?: PropsParameter[], exp
 	}));
 
 	// sort the parameters
-	sortedParamsAndExports.sort((a, b) => (a.definition.order || Infinity) - (b.definition.order || Infinity));
+	sortedParamsAndExports.sort((a, b) => 
+		(typeof a.definition.order === "number" ? a.definition.order : Infinity) 
+		- (typeof b.definition.order === "number" ? b.definition.order : Infinity)
+	);
 
 	return sortedParamsAndExports;
 }
