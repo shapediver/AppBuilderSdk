@@ -17,15 +17,25 @@ import classes from "./ParametersAndExportsAccordionComponent.module.css";
 interface Props {
 	parameters?: PropsParameter[],
 	exports?: PropsExport[],
+	/** 
+	 * Name of group to use for parameters and exports which are not assigned to a group. 
+	 * Leave this empty to not display such parameters and exports inside of an accordion.
+	 */
 	defaultGroupName?: string,
+	/**
+	 * Set this to true to avoid groups containing a single parameter or export component. 
+	 * In case this is not set or false, parameters and exports of groups with a single 
+	 * compnent will be displayed without using an accordion.
+	 */
+	avoidSingleComponentGroups?: boolean,
 }
 
-export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName}: Props) {
+export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, avoidSingleComponentGroups}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
-
+	avoidSingleComponentGroups = false;
 	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
-
+	
 	// check if there are parameter changes to be confirmed
 	const parameterChanges = useParameterChanges(parameters || []);
 	const disableChangeControls = parameterChanges.length === 0 ||
@@ -40,11 +50,10 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
-		[key: string]: {
-			group: { id: string, name: string }
+			group?: { id: string, name: string }
 			elements: JSX.Element[],
-		}
-	} = {};
+	}[] = [];
+	const groupIds: { [key: string]: number } = {};
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
@@ -57,19 +66,21 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 		if (param.definition.hidden) return;
 
 		// read out the group or specify a new one if none has been provided
-		const group = param.definition.group || { id: "default", name: defaultGroupName || "Default Group" };
-		if (!elementGroups[group.id]) {
-			elementGroups[group.id] = {
-				group,
-				elements: []
-			};
+		const group = param.definition.group || ( defaultGroupName ? { id: "default", name: defaultGroupName } : undefined);
+		if (!group) {
+			elementGroups.push({ elements: [] });
 		}
-
+		else if (!(group.id in groupIds)) {
+			elementGroups.push({ group, elements: [] });
+			groupIds[group.id] = elementGroups.length - 1;
+		}
+		const groupId = group ? groupIds[group.id] : elementGroups.length - 1;
+	
 		if (param.parameter) {
 			// Get the element for the parameter and add it to the group
 			const ParameterComponent = getParameterComponent(param.definition);
 
-			elementGroups[group.id].elements.push(
+			elementGroups[groupId].elements.push(
 				<div key={param.definition.id}>
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
@@ -84,7 +95,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 			// Get the element for the export and add it to the group
 			const ExportComponent = getExportComponent(param.definition);
 
-			elementGroups[group.id].elements.push(
+			elementGroups[groupId].elements.push(
 				<div key={param.definition.id}>
 					<ExportComponent
 						sessionId={param.export.sessionId}
@@ -125,9 +136,9 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	const elements: JSX.Element[] = [];
 
 	// loop through the created elementGroups to add them
-	for (const e in elementGroups) {
-		const g = elementGroups[e];
-
+	let accordionItems: JSX.Element[] = [];
+	for (const g of elementGroups) {
+	
 		// add dividers between the elements
 		const groupElements: JSX.Element[] = [];
 		g.elements.forEach((element, index) => {
@@ -135,23 +146,40 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 			if (index !== g.elements.length - 1) groupElements.push(<Divider key={element.key + "_divider"} my="sm" />);
 		});
 
-		// create an Accordion.Item for each element
+		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {
+			accordionItems.push(
+				<Accordion.Item key={g.group.id} value={g.group.id}>
+					<Accordion.Control>{g.group.name}</Accordion.Control>
+					<Accordion.Panel key={g.group.id}>
+						{groupElements}
+					</Accordion.Panel>
+				</Accordion.Item>
+			);
+		}
+		else {
+			if (accordionItems.length > 0) {
+				elements.push(
+					<Accordion variant="contained" radius="md" className={classes.container} key={accordionItems[0].key}>
+						{ accordionItems }
+					</Accordion>
+				);
+				accordionItems = [];
+			}
+			elements.push(groupElements[0]);
+		}
+	}
+	if (accordionItems.length > 0) {
 		elements.push(
-			<Accordion.Item key={g.group.id} value={g.group.id}>
-				<Accordion.Control>{g.group.name}</Accordion.Control>
-				<Accordion.Panel key={g.group.id}>
-					{groupElements}
-				</Accordion.Panel>
-			</Accordion.Item>
+			<Accordion variant="contained" radius="md" className={classes.container} key={accordionItems[0].key}>
+				{ accordionItems }
+			</Accordion>
 		);
 	}
-
+	
 	return <>
 		{ acceptRejectElement }
 		<ScrollArea.Autosize className={classes.scrollArea}>
-			<Accordion variant="contained" radius="md" className={classes.container}>
-				{ elements }
-			</Accordion>
+			<>{ elements }</>
 		</ScrollArea.Autosize>
 	</>;
 }
