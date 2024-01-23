@@ -65,6 +65,7 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 				const material = new MaterialStandardData(materialProps);
 				data.material = material;
 			}
+			data.updateVersion();
 		});
 
 		node.updateVersion();

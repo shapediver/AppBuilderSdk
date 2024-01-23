@@ -1,5 +1,5 @@
 import { Tabs } from "@mantine/core";
-import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
@@ -62,25 +62,65 @@ export default function ViewPage() {
 	// START - Example on how to apply a custom material to an output
 	/////	
 	const outputNameOrId = "Shelf";
+
+	// create parameter definitions for the custom material
+	const definitions: { [key: string]: IGenericParameterDefinition } = {
+		color: {
+			definition: {
+				id: "colorParam",
+				name: "Custom color",
+				defval: "0xffffffff",
+				type: "Color",
+				hidden: false
+			}
+		},
+		map: {
+			definition: {
+				id: "mapParam",
+				name: "Custom map",
+				defval: "",
+				type: "String",
+				hidden: false
+			}
+		}
+	};
 	
 	// define a generic parameter which influences a custom material definition
-	const [materialParameters] = useState<IGenericParameterDefinition>({
-		definition: {
-			id: "myparam",
-			name: "Custom color",
-			defval: "0xffffffff",
-			type: "Color",
-			hidden: false
-		}
-	});
-	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ color: materialParameters.definition.defval });
+	const [materialParameters] = useState<IGenericParameterDefinition[]>(Object.values(definitions));
+
+	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ color: definitions.color.definition.defval, map: undefined });
+
 	useDefineGenericParameters("mysession", !acceptRejectMode,
 		materialParameters,
 		(values) => new Promise(resolve => {
-			if ("myparam" in values)
-				setMaterialProperties({ color: values["myparam"] });
+			if ("colorParam" in values)
+				setMaterialProperties({ color: values["colorParam"] });
 
-			resolve(values);
+			// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
+			// this also means that we resolve the promise only after the map has been loaded or if no map is specified
+			if ("mapParam" in values) {
+				const mapParam = values["mapParam"];
+				if(mapParam !== "") {
+					MaterialEngine.instance.loadMap(mapParam).then(map => {
+						if(map) {
+							setMaterialProperties({ map: map });
+						} else {
+							setMaterialProperties({ map: undefined });
+							console.warn(`Could not load map ${mapParam}`);
+						}
+					}).catch(e => {
+						setMaterialProperties({ map: undefined });
+						console.warn(`Could not load map ${mapParam}: ${e}`);
+					}).finally(() => {
+						resolve(values);
+					});
+				} else {
+					setMaterialProperties({ map: undefined });
+					resolve(values);
+				}
+			} else {
+				resolve(values);
+			}
 		})
 	);
 	const myParameterProps = useSessionPropsParameter("mysession");
