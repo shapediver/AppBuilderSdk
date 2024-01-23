@@ -1,10 +1,17 @@
-import { IGeometryData, IMaterialStandardDataProperties, IOutputApi, ITreeNode, MaterialStandardData } from "@shapediver/viewer";
+import { IGeometryData, IMaterialGemDataProperties, IMaterialSpecularGlossinessDataProperties, IMaterialStandardDataProperties, IMaterialUnlitDataProperties, IOutputApi, ITreeNode, MaterialGemData, MaterialSpecularGlossinessData, MaterialStandardData, MaterialUnlitData } from "@shapediver/viewer";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutputNode } from "./useOutputNode";
 
 
 const isGeometryData = (data: any): data is IGeometryData =>
 	"mode" in data && "primitive" in data && "material" in data;
+
+export enum MaterialType {
+	Standard = "Standard",
+	SpecularGlossiness = "SpecularGlossiness",
+	Unlit = "Unlit",
+	Gem = "Gem"
+}
 
 const getGeometryData = (
 	node: ITreeNode
@@ -28,7 +35,7 @@ const getGeometryData = (
  * @param outputIdOrName 
  * @param materialProperties 
  */
-export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialStandardDataProperties) : {
+export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialStandardDataProperties | IMaterialSpecularGlossinessDataProperties | IMaterialUnlitDataProperties | IMaterialGemDataProperties, materialType: MaterialType = MaterialType.Standard ) : {
 	/**
 	 * API of the output
 	 * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
@@ -52,17 +59,33 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 		// get all geometry and materials below the node
 		const geometryData = getGeometryData(node);
 
+		let MaterialClassType: typeof MaterialStandardData | typeof MaterialSpecularGlossinessData | typeof MaterialUnlitData | typeof MaterialGemData;
+		switch (materialType) {
+		case MaterialType.SpecularGlossiness:
+			MaterialClassType = MaterialSpecularGlossinessData;
+			break;
+		case MaterialType.Unlit:
+			MaterialClassType = MaterialUnlitData;
+			break;
+		case MaterialType.Gem:
+			MaterialClassType = MaterialGemData;
+			break;
+		default:
+			MaterialClassType = MaterialStandardData;
+		}
+
 		// update all geometry materials
 		geometryData.forEach(data => {
-			if (data.material && data instanceof MaterialStandardData) {
+			if (data.material && data.material instanceof MaterialClassType) {
 				// update existing material
 				for ( const p in materialProps)
-					(<any>data.material)[p as keyof MaterialStandardData] =
-					materialProps[p as keyof IMaterialStandardDataProperties];
+					(<any>data.material)[p as keyof typeof MaterialClassType] 
+					= materialProps[p as keyof typeof materialProps];
+
 				data.material.updateVersion();
 			} else {
 				// no material found: define new material
-				const material = new MaterialStandardData(materialProps);
+				const material = new MaterialClassType(materialProps);
 				data.material = material;
 			}
 			data.updateVersion();

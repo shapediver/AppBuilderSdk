@@ -1,5 +1,5 @@
 import { Tabs } from "@mantine/core";
-import { IMaterialStandardDataProperties, MaterialEngine, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine, PARAMETER_TYPE, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ import classes from "./ViewPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
-import { useOutputMaterial } from "hooks/useOutputMaterial";
+import { MaterialType, useOutputMaterial } from "hooks/useOutputMaterial";
 
 /**
  * Function that creates the view page.
@@ -69,7 +69,7 @@ export default function ViewPage() {
 			definition: {
 				id: "colorParam",
 				name: "Custom color",
-				defval: "0xffffffff",
+				defval: "0x0d44f0ff",
 				type: "Color",
 				hidden: false
 			}
@@ -82,19 +82,38 @@ export default function ViewPage() {
 				type: "String",
 				hidden: false
 			}
+		},
+		roughness: {
+			definition: {
+				id: "roughnessParam",
+				name: "Custom roughness",
+				defval: "0",
+				type: PARAMETER_TYPE.FLOAT,
+				min: 0,
+				max: 1,
+				decimalplaces: 4,
+				hidden: false
+			}
 		}
 	};
 	
 	// define a generic parameter which influences a custom material definition
 	const [materialParameters] = useState<IGenericParameterDefinition[]>(Object.values(definitions));
 
-	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ color: definitions.color.definition.defval, map: undefined });
+	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ 
+		color: definitions.color.definition.defval, 
+		map: undefined, 
+		roughness: +definitions.roughness.definition.defval
+	});
 
 	useDefineGenericParameters("mysession", !acceptRejectMode,
 		materialParameters,
 		(values) => new Promise(resolve => {
 			if ("colorParam" in values)
 				setMaterialProperties({ color: values["colorParam"] });
+				
+			if ("roughnessParam" in values)
+				setMaterialProperties({ roughness: values["roughnessParam"] });
 
 			// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
 			// this also means that we resolve the promise only after the map has been loaded or if no map is specified
@@ -126,7 +145,7 @@ export default function ViewPage() {
 	const myParameterProps = useSessionPropsParameter("mysession");
 
 	// apply the custom material
-	useOutputMaterial(sessionId, outputNameOrId, materialProperties);
+	useOutputMaterial(sessionId, outputNameOrId, materialProperties, MaterialType.Unlit);
 	
 	/////	
 	// END - Example on how to apply a custom material to an output
