@@ -1,4 +1,4 @@
-import { IGeometryData, IMaterialAbstractData, IMaterialStandardDataProperties, IOutputApi, ITreeNode, MaterialStandardData } from "@shapediver/viewer";
+import { IGeometryData, IMaterialStandardDataProperties, IOutputApi, ITreeNode, MaterialStandardData } from "@shapediver/viewer";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutputNode } from "./useOutputNode";
 
@@ -17,18 +17,6 @@ const getGeometryData = (
 	});
 	
 	return geometryData;
-};
-
-const getMaterials = (
-	geometryData: IGeometryData[]
-): IMaterialAbstractData[] => {
-	const materials: { [id: string]: IMaterialAbstractData } = {};
-	geometryData.forEach(data => {
-		if (data.material && !(data.material.id in materials))
-			materials[data.material.id] = data.material;
-	});
-
-	return Object.values(materials);
 };
 
 /**
@@ -63,23 +51,21 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 
 		// get all geometry and materials below the node
 		const geometryData = getGeometryData(node);
-		const materials = getMaterials(geometryData);
-	
-		if (materials.length > 0) {
-			// update existing materials
-			materials.forEach((m) => {
+
+		// update all geometry materials
+		geometryData.forEach(data => {
+			if (data.material && data instanceof MaterialStandardData) {
+				// update existing material
 				for ( const p in materialProps)
-					(<any>m)[p as keyof MaterialStandardData] =
+					(<any>data.material)[p as keyof MaterialStandardData] =
 					materialProps[p as keyof IMaterialStandardDataProperties];
-				m.updateVersion();
-			});
-		}
-		else
-		{
-			// no material found: define new material
-			const material = new MaterialStandardData(materialProps);
-			geometryData.forEach(data => data.material = material);
-		}
+				data.material.updateVersion();
+			} else {
+				// no material found: define new material
+				const material = new MaterialStandardData(materialProps);
+				data.material = material;
+			}
+		});
 
 		node.updateVersion();
 	}, []);
