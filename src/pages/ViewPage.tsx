@@ -63,29 +63,35 @@ export default function ViewPage() {
 	/////	
 	const outputNameOrId = "Shelf";
 
+	const enum PARAMETER_NAMES {
+		COLOR = "color",
+		MAP = "map",
+		ROUGHNESS = "roughness"
+	}
+
 	// create parameter definitions for the custom material
-	const definitions: { [key: string]: IGenericParameterDefinition } = {
-		color: {
+	const definitions: IGenericParameterDefinition[] = [
+		{
 			definition: {
-				id: "colorParam",
+				id: PARAMETER_NAMES.COLOR,
 				name: "Custom color",
 				defval: "0x0d44f0ff",
 				type: "Color",
 				hidden: false
 			}
 		},
-		map: {
+		{
 			definition: {
-				id: "mapParam",
+				id: PARAMETER_NAMES.MAP,
 				name: "Custom map",
 				defval: "",
 				type: "String",
 				hidden: false
 			}
 		},
-		roughness: {
+		{
 			definition: {
-				id: "roughnessParam",
+				id: PARAMETER_NAMES.ROUGHNESS,
 				name: "Custom roughness",
 				defval: "0",
 				type: PARAMETER_TYPE.FLOAT,
@@ -93,32 +99,33 @@ export default function ViewPage() {
 				max: 1,
 				decimalplaces: 4,
 				hidden: false
+
 			}
 		}
-	};
+	];
 	
 	// define a generic parameter which influences a custom material definition
-	const [materialParameters] = useState<IGenericParameterDefinition[]>(Object.values(definitions));
+	const [materialParameters] = useState<IGenericParameterDefinition[]>(definitions);
 
 	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ 
-		color: definitions.color.definition.defval, 
+		color: definitions.find(d => d.definition.id === PARAMETER_NAMES.COLOR)!.definition.defval, 
 		map: undefined, 
-		roughness: +definitions.roughness.definition.defval
+		roughness: +definitions.find(d => d.definition.id === PARAMETER_NAMES.ROUGHNESS)!.definition.defval
 	});
 
 	useDefineGenericParameters("mysession", !acceptRejectMode,
 		materialParameters,
 		async (values) => {
-			if ("colorParam" in values)
-				setMaterialProperties({ color: values["colorParam"] });
+			if (PARAMETER_NAMES.COLOR in values)
+				setMaterialProperties({ color: values[PARAMETER_NAMES.COLOR] });
 
-			if ("roughnessParam" in values)
-				setMaterialProperties({ roughness: values["roughnessParam"] });
+			if (PARAMETER_NAMES.ROUGHNESS in values)
+				setMaterialProperties({ roughness: values[PARAMETER_NAMES.ROUGHNESS] });
 
 			// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
 			// this also means that we resolve the promise only after the map has been loaded or if no map is specified
-			if ("mapParam" in values) {
-				const mapParam = values["mapParam"];
+			if (PARAMETER_NAMES.MAP in values) {
+				const mapParam = values[PARAMETER_NAMES.MAP];
 				if (mapParam !== "") {
 					try {
 						const map = await MaterialEngine.instance.loadMap(mapParam);
