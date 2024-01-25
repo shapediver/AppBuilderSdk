@@ -108,10 +108,10 @@ export default function ViewPage() {
 
 	useDefineGenericParameters("mysession", !acceptRejectMode,
 		materialParameters,
-		(values) => new Promise(resolve => {
+		async (values) => {
 			if ("colorParam" in values)
 				setMaterialProperties({ color: values["colorParam"] });
-				
+
 			if ("roughnessParam" in values)
 				setMaterialProperties({ roughness: values["roughnessParam"] });
 
@@ -119,28 +119,26 @@ export default function ViewPage() {
 			// this also means that we resolve the promise only after the map has been loaded or if no map is specified
 			if ("mapParam" in values) {
 				const mapParam = values["mapParam"];
-				if(mapParam !== "") {
-					MaterialEngine.instance.loadMap(mapParam).then(map => {
-						if(map) {
+				if (mapParam !== "") {
+					try {
+						const map = await MaterialEngine.instance.loadMap(mapParam);
+						if (map) {
 							setMaterialProperties({ map: map });
 						} else {
 							setMaterialProperties({ map: undefined });
 							console.warn(`Could not load map ${mapParam}`);
 						}
-					}).catch(e => {
+					} catch (e) {
 						setMaterialProperties({ map: undefined });
 						console.warn(`Could not load map ${mapParam}: ${e}`);
-					}).finally(() => {
-						resolve(values);
-					});
+					}
 				} else {
 					setMaterialProperties({ map: undefined });
-					resolve(values);
 				}
-			} else {
-				resolve(values);
 			}
-		})
+
+			return values;
+		}
 	);
 	const myParameterProps = useSessionPropsParameter("mysession");
 
