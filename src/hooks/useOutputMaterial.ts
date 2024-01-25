@@ -74,6 +74,7 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 			MaterialClassType = MaterialStandardData;
 		}
 
+		let newMaterial: MaterialStandardData | MaterialSpecularGlossinessData | MaterialUnlitData | MaterialGemData | undefined;
 		// update all geometry materials
 		geometryData.forEach(data => {
 			if (data.material && data.material instanceof MaterialClassType) {
@@ -84,9 +85,12 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 
 				data.material.updateVersion();
 			} else {
+				// if we didn't already create a new material, do it now
+				if (!newMaterial)
+					newMaterial = new MaterialClassType(materialProps);
+
 				// no material found: define new material
-				const material = new MaterialClassType(materialProps);
-				data.material = material;
+				data.material = newMaterial;
 			}
 			data.updateVersion();
 		});
