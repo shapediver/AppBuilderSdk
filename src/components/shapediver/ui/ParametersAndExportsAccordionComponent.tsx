@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { Accordion, Button, Divider, Loader, ScrollArea } from "@mantine/core";
+import { Accordion, Button, Loader, Paper, ScrollArea } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
@@ -17,14 +17,14 @@ import classes from "./ParametersAndExportsAccordionComponent.module.css";
 interface Props {
 	parameters?: PropsParameter[],
 	exports?: PropsExport[],
-	/** 
-	 * Name of group to use for parameters and exports which are not assigned to a group. 
+	/**
+	 * Name of group to use for parameters and exports which are not assigned to a group.
 	 * Leave this empty to not display such parameters and exports inside of an accordion.
 	 */
 	defaultGroupName?: string,
 	/**
-	 * Set this to true to avoid groups containing a single parameter or export component. 
-	 * In case this is not set or false, parameters and exports of groups with a single 
+	 * Set this to true to avoid groups containing a single parameter or export component.
+	 * In case this is not set or false, parameters and exports of groups with a single
 	 * compnent will be displayed without using an accordion.
 	 */
 	avoidSingleComponentGroups?: boolean,
@@ -35,7 +35,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
 	avoidSingleComponentGroups = false;
 	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
-	
+
 	// check if there are parameter changes to be confirmed
 	const parameterChanges = useParameterChanges(parameters || []);
 	const disableChangeControls = parameterChanges.length === 0 ||
@@ -75,7 +75,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 			groupIds[group.id] = elementGroups.length - 1;
 		}
 		const groupId = group ? groupIds[group.id] : elementGroups.length - 1;
-	
+
 		if (param.parameter) {
 			// Get the element for the parameter and add it to the group
 			const ParameterComponent = getParameterComponent(param.definition);
@@ -138,12 +138,14 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	// loop through the created elementGroups to add them
 	let accordionItems: JSX.Element[] = [];
 	for (const g of elementGroups) {
-	
-		// add dividers between the elements
+
 		const groupElements: JSX.Element[] = [];
-		g.elements.forEach((element, index) => {
-			groupElements.push(element);
-			if (index !== g.elements.length - 1) groupElements.push(<Divider key={element.key + "_divider"} my="sm" />);
+		g.elements.forEach((element) => {
+			groupElements.push(
+				<Paper withBorder radius="md" shadow="m" my="xs" py="md" px="xs">
+					{ element }
+				</Paper>
+			);
 		});
 
 		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {
@@ -175,7 +177,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 			</Accordion>
 		);
 	}
-	
+
 	return <>
 		{ acceptRejectElement }
 		<ScrollArea.Autosize className={classes.scrollArea}>
