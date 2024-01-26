@@ -150,7 +150,7 @@ export default function ViewPage() {
 	const myParameterProps = useSessionPropsParameter("mysession");
 
 	// apply the custom material
-	useOutputMaterial(sessionId, outputNameOrId, materialProperties, MaterialType.Unlit);
+	useOutputMaterial(sessionId, outputNameOrId, materialProperties, MaterialType.Standard);
 	
 	/////	
 	// END - Example on how to apply a custom material to an output

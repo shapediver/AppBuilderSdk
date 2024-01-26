@@ -1,10 +1,6 @@
-import { IGeometryData, IMaterialGemDataProperties, IMaterialSpecularGlossinessDataProperties, IMaterialStandardDataProperties, IMaterialUnlitDataProperties, IOutputApi, ITreeNode, MaterialGemData, MaterialSpecularGlossinessData, MaterialStandardData, MaterialUnlitData } from "@shapediver/viewer";
+import { GeometryData, IGeometryData, IMaterialAbstractData, IMaterialGemDataProperties, IMaterialSpecularGlossinessDataProperties, IMaterialStandardDataProperties, IMaterialUnlitDataProperties, IOutputApi, ITreeNode, MaterialGemData, MaterialSpecularGlossinessData, MaterialStandardData, MaterialUnlitData } from "@shapediver/viewer";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutputNode } from "./useOutputNode";
-
-
-const isGeometryData = (data: any): data is IGeometryData =>
-	"mode" in data && "primitive" in data && "material" in data;
 
 export enum MaterialType {
 	Standard = "Standard",
@@ -13,18 +9,30 @@ export enum MaterialType {
 	Gem = "Gem"
 }
 
+/**
+ * We traverse the node and all its children, and collect all geometry data.
+ * Within the geometry data, the material property can then be updated.
+ * 
+ * @param node 
+ * @returns 
+ */
 const getGeometryData = (
 	node: ITreeNode
 ): IGeometryData[] => {
 	const geometryData: IGeometryData[] = [];
 	node.traverseData(data => {
-		if (isGeometryData(data)) {
+		if (data instanceof GeometryData) {
 			geometryData.push(data);
 		}
 	});
 	
 	return geometryData;
 };
+
+/**
+ * We keep track of the original materials, so that we can restore them in the end.
+ */
+const originalGeometryAndMaterialAssignment: { geometry: IGeometryData, material: IMaterialAbstractData | null }[] = [];
 
 /**
  * Hook allowing to update the material of an output.
@@ -59,39 +67,25 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 		// get all geometry and materials below the node
 		const geometryData = getGeometryData(node);
 
-		let MaterialClassType: typeof MaterialStandardData | typeof MaterialSpecularGlossinessData | typeof MaterialUnlitData | typeof MaterialGemData;
+		let newMaterial: MaterialStandardData | MaterialSpecularGlossinessData | MaterialUnlitData | MaterialGemData;
 		switch (materialType) {
 		case MaterialType.SpecularGlossiness:
-			MaterialClassType = MaterialSpecularGlossinessData;
+			newMaterial = new MaterialSpecularGlossinessData(materialProps);
 			break;
 		case MaterialType.Unlit:
-			MaterialClassType = MaterialUnlitData;
+			newMaterial = new MaterialUnlitData(materialProps);
 			break;
 		case MaterialType.Gem:
-			MaterialClassType = MaterialGemData;
+			newMaterial = new MaterialGemData(materialProps);
 			break;
 		default:
-			MaterialClassType = MaterialStandardData;
+			newMaterial = new MaterialStandardData(materialProps);
 		}
 
-		let newMaterial: MaterialStandardData | MaterialSpecularGlossinessData | MaterialUnlitData | MaterialGemData | undefined;
 		// update all geometry materials
 		geometryData.forEach(data => {
-			if (data.material && data.material instanceof MaterialClassType) {
-				// update existing material
-				for ( const p in materialProps)
-					(<any>data.material)[p as keyof typeof MaterialClassType] 
-					= materialProps[p as keyof typeof materialProps];
-
-				data.material.updateVersion();
-			} else {
-				// if we didn't already create a new material, do it now
-				if (!newMaterial)
-					newMaterial = new MaterialClassType(materialProps);
-
-				// no material found: define new material
-				data.material = newMaterial;
-			}
+			originalGeometryAndMaterialAssignment.push({ geometry: data, material: data.material });
+			data.material = newMaterial;
 			data.updateVersion();
 		});
 
@@ -117,7 +111,19 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 		if (outputNode && !initialUpdateApplied)
 			setInitialUpdateApplied(true);
 
-		// TODO ideally here we should return a cleanup function, which restores the original material
+		return () => {
+			// restore the original materials
+			originalGeometryAndMaterialAssignment.forEach(assignment => {
+				assignment.geometry.material = assignment.material;
+				assignment.geometry.updateVersion();
+			});
+
+			// clear the array
+			originalGeometryAndMaterialAssignment.length = 0;
+
+			// update the node
+			outputNode?.updateVersion();
+		};
 	}, [outputNode, materialProperties]);
 
 	return {
