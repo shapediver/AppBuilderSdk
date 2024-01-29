@@ -32,7 +32,7 @@ const getGeometryData = (
 /**
  * We keep track of the original materials, so that we can restore them in the end.
  */
-const originalGeometryAndMaterialAssignment: { geometry: IGeometryData, material: IMaterialAbstractData | null }[] = [];
+const originalGeometryAndMaterialAssignment: { [key: string]: { geometry: IGeometryData, material: IMaterialAbstractData | null }} = {};
 
 /**
  * Hook allowing to update the material of an output.
@@ -84,7 +84,7 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 
 		// update all geometry materials
 		geometryData.forEach(data => {
-			originalGeometryAndMaterialAssignment.push({ geometry: data, material: data.material });
+			originalGeometryAndMaterialAssignment[data.id] = { geometry: data, material: data.material };
 			data.material = newMaterial;
 			data.updateVersion();
 		});
@@ -112,17 +112,25 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 			setInitialUpdateApplied(true);
 
 		return () => {
+			if(!outputNode) return;
+
+			// get all geometry below the node
+			const geometryData = getGeometryData(outputNode);
+
 			// restore the original materials
-			originalGeometryAndMaterialAssignment.forEach(assignment => {
-				assignment.geometry.material = assignment.material;
-				assignment.geometry.updateVersion();
+			geometryData.forEach(data => {
+				const originalAssignment = originalGeometryAndMaterialAssignment[data.id];
+				if (originalAssignment) {
+					data.material = originalAssignment.material;
+					data.updateVersion();
+				}
+
+				// delete the entry
+				delete originalGeometryAndMaterialAssignment[data.id];
 			});
 
-			// clear the array
-			originalGeometryAndMaterialAssignment.length = 0;
-
 			// update the node
-			outputNode?.updateVersion();
+			outputNode.updateVersion();
 		};
 	}, [outputNode, materialProperties]);
 
