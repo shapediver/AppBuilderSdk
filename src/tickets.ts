@@ -13,7 +13,7 @@ export const ShapeDiverExampleModels : {
 	},
 	"AR Cube": {
 		slug: "react-ar-cube",
-		ticket: "f447479a164edd5eaff704f15bc181404f35b949d399e4428c3328846b26a3649bb846228eeda0d93dcd4395232c6af56fcbb48c576cfddcdbc8c5137c71e0a26f776309a0f539a6cfa2efbc2851f953f0abf283365ade3afbb907dadda0b8b147e3579d012fac-fdc1e8ec7c10b9bdaf652491cf5524c5",
+		ticket: "3b5fbadd8b20ede476feeba00fa2aaebde1e3d9500b6ff87c30da56afd9fac39a435d0cb08de109c9857f7a626a2a275b9902678ead17b9596119142562aa75bca8efa7cbe646577811c9b0e0c7a30f91f06a81ec50fe63cb7bc3bce8c7fd625fd20f14cd3273f-5ac2798236496b0fd3df167bc1f00a76",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
 	"Naming scheme demo": {
@@ -41,4 +41,9 @@ export const ShapeDiverExampleModels : {
 		ticket: "0be61d6f551424911dc15ca992c76cf2eab5c32aceccfbde18beb98bc98c769409c03c6e41dcac36051ee2fd066bb21e7cde6567f86287997e6cf58185fc88c8116b8058bba83e4528a2eb6cc8bb78e339a618f489696ac887ea2a762c331e7256ebbcd52a0052-e5245082baf9f79145f9b6bdc2fcf867",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
+	"AccordionTest": {
+		slug: "arrs-improved-materials-r6-8",
+		ticket: "b613bb9d71824b0199c4699836d446b7cac7d672db7d504f94d78edf8c15c96b573cbdf38a46afff861b0463aa1be5fa6c49774e9df8d1a0272e682a63cd6146a95ab055beff8dc8d8fa55988062718aa37fdbf48344300ae44b2cab5740f97a0daab943200aa3-3f23fbdbf5e6da2c0948caa7c60c45e9",
+		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
+	}
 };
