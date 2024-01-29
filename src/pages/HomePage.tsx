@@ -42,7 +42,7 @@ Check out the source code for this example <a href="https://github.com/shapedive
 						title="Model View Page"
 						description="This example opens a session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing
 the parameters and exports defined by the model. All components are easily customizable."
-						btnText="On to the View Page!"
+						btnText="Open example"
 						btnLink="/view"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
@@ -53,7 +53,7 @@ the parameters and exports defined by the model. All components are easily custo
 						description="This example displays a single viewport into which sessions with multiple ShapeDiver models can be loaded at once.
 The settings of the model which is selected first are used to configure the viewport (camera, controls, etc).
 Parameter and export controls are shown for all selected models."
-						btnText="On to the Model Select Page!"
+						btnText="Open example"
 						btnLink="/modelSelect"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
@@ -62,7 +62,7 @@ Parameter and export controls are shown for all selected models."
 					<ModelCard
 						title="Multiple Viewports and Models Page"
 						description="This example displays multiple viewports and models."
-						btnText="On to the Multiple Viewports and Models page!"
+						btnText="Open example"
 						btnLink="/multipleViewport"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
@@ -71,7 +71,7 @@ Parameter and export controls are shown for all selected models."
 					<ModelCard
 						title="Custom UI Page"
 						description="This example shows how to use Grasshopper to influence the parameter panel (show/hide parameters, add custom parameters)."
-						btnText="On to the Custom UI page!"
+						btnText="Open example"
 						btnLink="/customui"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
