@@ -1,5 +1,19 @@
-import { GeometryData, IGeometryData, IMaterialAbstractData, IMaterialGemDataProperties, IMaterialSpecularGlossinessDataProperties, IMaterialStandardDataProperties, IMaterialUnlitDataProperties, IOutputApi, ITreeNode, MaterialGemData, MaterialSpecularGlossinessData, MaterialStandardData, MaterialUnlitData } from "@shapediver/viewer";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { 
+	GeometryData, 
+	IGeometryData, 
+	IMaterialAbstractData, 
+	IMaterialGemDataProperties, 
+	IMaterialSpecularGlossinessDataProperties, 
+	IMaterialStandardDataProperties, 
+	IMaterialUnlitDataProperties, 
+	IOutputApi, 
+	ITreeNode,
+	MaterialGemData, 
+	MaterialSpecularGlossinessData, 
+	MaterialStandardData, 
+	MaterialUnlitData 
+} from "@shapediver/viewer";
+import { useCallback, useEffect, useRef } from "react";
 import { useOutputNode } from "./useOutputNode";
 
 export enum MaterialType {
@@ -32,7 +46,25 @@ const getGeometryData = (
 /**
  * We keep track of the original materials, so that we can restore them in the end.
  */
-const originalGeometryAndMaterialAssignment: { [key: string]: { geometry: IGeometryData, material: IMaterialAbstractData | null }} = {};
+const originalMaterials: { [key: string]: { [key: string]: IMaterialAbstractData | null } } = {};
+
+/**
+ * TODO remove this once IMaterialAbstractDataProperties is exported from the viewer in a future release.
+ */
+type IMaterialAbstractDataProperties = IMaterialStandardDataProperties | IMaterialSpecularGlossinessDataProperties | IMaterialUnlitDataProperties | IMaterialGemDataProperties;
+
+const createMaterial = (materialProperties: IMaterialAbstractDataProperties, materialType: MaterialType) : IMaterialAbstractData => {
+	switch (materialType) {
+	case MaterialType.SpecularGlossiness:
+		return new MaterialSpecularGlossinessData(materialProperties);
+	case MaterialType.Unlit:
+		return new MaterialUnlitData(materialProperties);
+	case MaterialType.Gem:
+		return new MaterialGemData(materialProperties);
+	default:
+		return new MaterialStandardData(materialProperties);
+	}
+};
 
 /**
  * Hook allowing to update the material of an output.
@@ -43,7 +75,7 @@ const originalGeometryAndMaterialAssignment: { [key: string]: { geometry: IGeome
  * @param outputIdOrName 
  * @param materialProperties 
  */
-export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialStandardDataProperties | IMaterialSpecularGlossinessDataProperties | IMaterialUnlitDataProperties | IMaterialGemDataProperties, materialType: MaterialType = MaterialType.Standard ) : {
+export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialAbstractDataProperties, materialType: MaterialType = MaterialType.Standard ) : {
 	/**
 	 * API of the output
 	 * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
@@ -55,84 +87,74 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 	 */
 	outputNode: ITreeNode | undefined
 } {
-
-	const materialPropertiesRef = useRef(materialProperties);
+	const materialPropertiesRef = useRef<IMaterialAbstractDataProperties | undefined>(undefined);
+	const materialTypeRef = useRef<MaterialType | undefined>(undefined);
 	
-	// callback which will be executed on output update, and once the node is available
-	const callback = useCallback( (node?: ITreeNode) => {
-		const materialProps = materialPropertiesRef.current;
-		if (!node)
-			return;
+	// callback which will be executed on update of the output node
+	const callback = useCallback( (newNode?: ITreeNode, oldNode?: ITreeNode) => {
+	
+		// restore original materials
+		// TODO there seems to be a bug, oldNode.id should not be a new id
+		console.debug("newNode.id", newNode?.id, "oldNode?.id", oldNode?.id, originalMaterials);
+		if (oldNode && originalMaterials[oldNode.id]) {
+			const geometryData = getGeometryData(oldNode);
+		
+			geometryData.forEach(data => {
+				const originalMaterial = originalMaterials[oldNode.id][data.id];
+				if (originalMaterial) {
+					data.material = originalMaterial;
+					data.updateVersion();
+				}
+			});
 
-		// get all geometry and materials below the node
-		const geometryData = getGeometryData(node);
+			delete originalMaterials[oldNode.id];
+			// TODO remove this
+			console.debug("restore oldNode", Object.keys(originalMaterials));
 
-		let newMaterial: MaterialStandardData | MaterialSpecularGlossinessData | MaterialUnlitData | MaterialGemData;
-		switch (materialType) {
-		case MaterialType.SpecularGlossiness:
-			newMaterial = new MaterialSpecularGlossinessData(materialProps);
-			break;
-		case MaterialType.Unlit:
-			newMaterial = new MaterialUnlitData(materialProps);
-			break;
-		case MaterialType.Gem:
-			newMaterial = new MaterialGemData(materialProps);
-			break;
-		default:
-			newMaterial = new MaterialStandardData(materialProps);
+			oldNode.updateVersion();
 		}
 
-		// update all geometry materials
-		geometryData.forEach(data => {
-			originalGeometryAndMaterialAssignment[data.id] = { geometry: data, material: data.material };
-			data.material = newMaterial;
-			data.updateVersion();
-		});
+		// create and set the new material
+		if (newNode && materialPropertiesRef.current && materialTypeRef.current) {
+			const geometryData = getGeometryData(newNode);
 
-		node.updateVersion();
+			// backup original materials
+			if (!originalMaterials[newNode.id]) {
+				originalMaterials[newNode.id] = {};
+				geometryData.forEach(data => {
+					originalMaterials[newNode.id][data.id] = data.material;
+				});
+			}
+
+			// TODO do we need to newly create the material on every update?
+			const newMaterial = createMaterial(materialPropertiesRef.current, materialTypeRef.current);
+			geometryData.forEach(data => {
+				data.material = newMaterial;
+				data.updateVersion();
+			});
+
+			// TODO remove this
+			console.debug("backup newNode", Object.keys(originalMaterials), originalMaterials[newNode.id]);
+
+			newNode.updateVersion();
+		}
+		
 	}, []);
 
 	// define the node update callback
 	const { outputApi, outputNode } = useOutputNode(sessionId, outputIdOrName, callback);
-
-	// apply the callback once the node is available, or if the material definition changes
-	const [ initialUpdateApplied, setInitialUpdateApplied ] = useState(false);
-
-	useEffect(() => {
-		// do not apply the callback if the material definition has not changed, and the initial update has already been applied
-		if ( materialPropertiesRef.current === materialProperties && initialUpdateApplied )
-			return;
 	
-		// the material definition has changed, or the initial update has not been applied yet --> apply the callback
+	// use an effect to apply changes to the material, and to apply the callback once the node is available
+	useEffect(() => {
+		
+		// TODO remove this
+		console.debug("Applying material change", outputIdOrName, materialProperties);
+	
 		materialPropertiesRef.current = materialProperties;
+		materialTypeRef.current = materialType;
 		callback(outputNode);
-
-		// remember that the initial update has been applied
-		if (outputNode && !initialUpdateApplied)
-			setInitialUpdateApplied(true);
-
-		return () => {
-			if(!outputNode) return;
-
-			// get all geometry below the node
-			const geometryData = getGeometryData(outputNode);
-
-			// restore the original materials
-			geometryData.forEach(data => {
-				const originalAssignment = originalGeometryAndMaterialAssignment[data.id];
-				if (originalAssignment) {
-					data.material = originalAssignment.material;
-					data.updateVersion();
-				}
-
-				// delete the entry
-				delete originalGeometryAndMaterialAssignment[data.id];
-			});
-
-			// update the node
-			outputNode.updateVersion();
-		};
-	}, [outputNode, materialProperties]);
+		
+	}, [materialProperties, materialType]);
 
 	return {
 		outputApi,

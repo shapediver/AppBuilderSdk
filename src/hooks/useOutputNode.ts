@@ -35,24 +35,25 @@ export function useOutputNode(sessionId: string, outputIdOrName: string, callbac
 	const [node, setNode] = useState<ITreeNode | undefined>(outputApi?.node);
 
 	// combine the optional user-defined callback with setting the current node
-	const cb = useCallback( (node?: ITreeNode) => {
+	const cb = useCallback( (node?: ITreeNode, oldnode?: ITreeNode) => {
+		// TODO remove this
+		console.debug("node", node, "oldnode", oldnode);
 		setNode(node);
 		
-		return callback && callback(node);
+		return callback && callback(node, oldnode);
 	}, [callback] );
 
 	const callbackId = useId();
 	useOutputUpdateCallback(sessionId, outputIdOrName, callbackId, cb);
 	
 	// use an effect to set the initial node
-	const [ initialNodeSet, setInitialNode ] = useState(false);
 	useEffect(() => {
-		if (!initialNodeSet && outputApi?.node) {
-			if (node !== outputApi.node)
-				setNode(outputApi.node);
-			setInitialNode(true);
-		}
-	}, [outputApi, initialNodeSet]);
+		cb(outputApi?.node);
+		
+		return () => {
+			cb(undefined, outputApi?.node);
+		};
+	}, [outputApi]);
 
 	return {
 		outputApi,
