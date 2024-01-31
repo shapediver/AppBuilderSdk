@@ -44,12 +44,15 @@ const getGeometryData = (
 };
 
 /**
- * We keep track of the original materials, so that we can restore them in the end.
+ * We keep track of the original materials, so that we can restore them if the node to
+ * which the material is applied changes.
+ * This object is keyed by ITreeNode.id and IGeometryData.id
  */
 const originalMaterials: { [key: string]: { [key: string]: IMaterialAbstractData | null } } = {};
 
 /**
  * TODO remove this once IMaterialAbstractDataProperties is exported from the viewer in a future release.
+ * see https://shapediver.atlassian.net/browse/SS-7366
  */
 type IMaterialAbstractDataProperties = IMaterialStandardDataProperties | IMaterialSpecularGlossinessDataProperties | IMaterialUnlitDataProperties | IMaterialGemDataProperties;
 
@@ -87,15 +90,13 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 	 */
 	outputNode: ITreeNode | undefined
 } {
-	const materialPropertiesRef = useRef<IMaterialAbstractDataProperties | undefined>(undefined);
-	const materialTypeRef = useRef<MaterialType | undefined>(undefined);
+	const materialRef = useRef<IMaterialAbstractData | null>(null);
 	
 	// callback which will be executed on update of the output node
 	const callback = useCallback( (newNode?: ITreeNode, oldNode?: ITreeNode) => {
 	
-		// restore original materials
-		// TODO there seems to be a bug, oldNode.id should not be a new id
-		console.debug("newNode.id", newNode?.id, "oldNode?.id", oldNode?.id, originalMaterials);
+		// restore original materials if there is an old node (a node to be replaced)
+		// TODO test this again once https://shapediver.atlassian.net/browse/SS-7366 is fixed
 		if (oldNode && originalMaterials[oldNode.id]) {
 			const geometryData = getGeometryData(oldNode);
 		
@@ -108,14 +109,12 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 			});
 
 			delete originalMaterials[oldNode.id];
-			// TODO remove this
-			console.debug("restore oldNode", Object.keys(originalMaterials));
-
+		
 			oldNode.updateVersion();
 		}
 
-		// create and set the new material
-		if (newNode && materialPropertiesRef.current && materialTypeRef.current) {
+		// create and set the new material if there is a new node
+		if (newNode) {
 			const geometryData = getGeometryData(newNode);
 
 			// backup original materials
@@ -126,15 +125,10 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 				});
 			}
 
-			// TODO do we need to newly create the material on every update?
-			const newMaterial = createMaterial(materialPropertiesRef.current, materialTypeRef.current);
 			geometryData.forEach(data => {
-				data.material = newMaterial;
+				data.material = materialRef.current;
 				data.updateVersion();
 			});
-
-			// TODO remove this
-			console.debug("backup newNode", Object.keys(originalMaterials), originalMaterials[newNode.id]);
 
 			newNode.updateVersion();
 		}
@@ -146,12 +140,13 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 	
 	// use an effect to apply changes to the material, and to apply the callback once the node is available
 	useEffect(() => {
-		
-		// TODO remove this
-		console.debug("Applying material change", outputIdOrName, materialProperties);
 	
-		materialPropertiesRef.current = materialProperties;
-		materialTypeRef.current = materialType;
+		if (materialProperties && materialType) {
+			materialRef.current = createMaterial(materialProperties, materialType);
+		}
+		else {
+			materialRef.current = null;
+		}
 		callback(outputNode);
 		
 	}, [materialProperties, materialType]);
