@@ -9,7 +9,7 @@ import { useMantineBranding } from "hooks/useMantineBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useIsMobile } from "hooks/useMantineIsMobile";
 import { useSessionWithCustomUi } from "hooks/useSessionWithCustomUi";
 import classes from "./CustomUiPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";

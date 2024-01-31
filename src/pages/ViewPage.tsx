@@ -12,7 +12,7 @@ import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useIsMobile } from "hooks/useMantineIsMobile";
 import classes from "./ViewPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
@@ -107,7 +107,7 @@ export default function ViewPage() {
 			definition: {
 				id: PARAMETER_NAMES.APPLY_TO_SHELF,
 				name: "Apply to shelf",
-				defval: "true",
+				defval: "false",
 				type: PARAMETER_TYPE.BOOL,
 				hidden: false
 			}
@@ -132,7 +132,7 @@ export default function ViewPage() {
 	});
 
 	// state for the custom material application
-	const [outputNameShelf, setOutputNameShelf] = useState<string>("Shelf");
+	const [outputNameShelf, setOutputNameShelf] = useState<string>("");
 	const [outputNamePlane, setOutputNamePlane] = useState<string>("");
 
 	// define the custom material parameters and a handler for the parameter changes
