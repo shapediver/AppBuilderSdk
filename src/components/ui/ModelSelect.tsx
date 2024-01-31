@@ -50,7 +50,7 @@ export default function ModelSelect() {
 
 	// get parameter and export props for all sessions
 	const parameterProps = useSessionPropsParameter(sessionIds);
-	//const exportProps = useSessionPropsExport(sessionIds);
+	const exportProps = useSessionPropsExport(sessionIds);
 
 	const tabs = selectedModels.length === 0 ? <></> : <Tabs defaultValue={selectedModels[0].slug} className={classes.tabs}>
 		<Tabs.List>
@@ -63,7 +63,7 @@ export default function ModelSelect() {
 				<ParametersAndExportsAccordionTab key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"}>
 					<ParametersAndExportsAccordionComponent
 						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
-						//exports={exportProps.filter(p => p.sessionId === model.slug)}
+						exports={exportProps.filter(p => p.sessionId === model.slug)}
 					/>
 				</ParametersAndExportsAccordionTab>
 			)
