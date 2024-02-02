@@ -1,23 +1,21 @@
-import { Tabs } from "@mantine/core";
 import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
-import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/useSession";
-import ExamplePage from "pages/ExamplePage";
 import { useMantineBranding } from "hooks/useMantineBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
-import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
-import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useIsMobile";
-import classes from "./ViewPage.module.css";
-import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/useOutputMaterial";
+import WebAppTemplatePage from "./WebAppTemplatePage";
+import { Button } from "@mantine/core";
+import classes from "./WebAppExampleOnePage.module.css";
+import TextWidgetComponent from "../components/shapediver/ui/TextWidgetComponent";
+import ImageWidgetComponent from "../components/shapediver/ui/ImageWidgetComponent";
+import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "../hooks/useSessionPropsParameter";
 import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
 
 /**
@@ -27,7 +25,7 @@ import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons
  *
  * @returns
  */
-export default function ViewPage() {
+export default function WebAppExampleOnePage() {
 	const viewportId = "viewport_1";
 	const modelName = "Sideboard";
 	const sessionId = ShapeDiverExampleModels[modelName].slug;
@@ -38,7 +36,11 @@ export default function ViewPage() {
 		excludeViewports: ["viewport_2"],
 	};
 	const acceptRejectMode = true;
-	const isMobile = useIsMobile();
+
+	const [isTopDisplayed, setIsTopDisplayed] = useState(true);
+	const [isLeftDisplayed, setIsLeftDisplayed] = useState(true);
+	const [isRightDisplayed, setIsRightDisplayed] = useState(true);
+	const [isBottomDisplayed, setIsBottomDisplayed] = useState(true);
 
 	const { branding } = useMantineBranding();
 
@@ -48,16 +50,11 @@ export default function ViewPage() {
 		registerParametersAndExports: true,
 		acceptRejectMode: acceptRejectMode,
 	});
+
 	useEffect(() => {
 		if (sessionApi)
 			console.debug(`Available output names: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
 	}, [sessionApi]);
-
-	// get parameters that don't have a group or whose group name includes "export"
-	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
-	// get parameters whose group name includes "export"
-	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
-	const exportProps = useSessionPropsExport(sessionId);
 
 	/////
 	// START - Example on how to apply a custom material to an output
@@ -84,7 +81,6 @@ export default function ViewPage() {
 			resolve(values);
 		})
 	);
-	const myParameterProps = useSessionPropsParameter("mysession");
 
 	// apply the custom material
 	useOutputMaterial(sessionId, outputNameOrId, materialProperties);
@@ -93,35 +89,51 @@ export default function ViewPage() {
 	// END - Example on how to apply a custom material to an output
 	/////
 
-	const fullscreenId = "viewer-fullscreen-area";
+	const markdown = `
+# Heading level 1
+## Heading level 2
+### Heading level 3
 
-	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
-		<Tabs.List>
-			<Tabs.Tab value="parameters" leftSection={<IconAdjustmentsHorizontal size={14} />}>Parameters</Tabs.Tab>
-			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
-		</Tabs.List>
+**bold text**.
 
-		<ParametersAndExportsAccordionTab value="parameters" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent
-				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
-				defaultGroupName="Custom material"
-				topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-			/>
-		</ParametersAndExportsAccordionTab>
+Italicized text is the *cat's meow*.
 
-		<ParametersAndExportsAccordionTab  value="exports" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent
-				parameters={exportParameterProps}
-				exports={exportProps}
-				defaultGroupName="Exports"
-				topSection={<AcceptRejectButtons parameters={exportParameterProps}/>}
-			/>
-		</ParametersAndExportsAccordionTab>
-	</Tabs>;
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
+
+* Bullet in an unordered list.
+`;
+
+	// get parameters that don't have a group or whose group name includes "export"
+	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
+
+	const parameterTabs = <ParametersAndExportsAccordionComponent
+		parameters={parameterProps.length > 0 ? parameterProps : []	}
+		topSection={<AcceptRejectButtons parameters={parameterProps}/>}
+		avoidSingleComponentGroups={true}
+	/>;
 
 	return (
 		<>
-			<ExamplePage className={fullscreenId} aside={parameterTabs}>
+			<Button.Group className={classes.buttonsTop}>
+				<Button variant="filled" onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
+				<Button variant="filled" onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
+				<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
+				<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
+			</Button.Group>
+
+			<WebAppTemplatePage
+				top={isTopDisplayed ? <section className={classes.sectionTop}>Top</section> : undefined}
+				left={isLeftDisplayed ? <section className={classes.sectionLeft}>
+					<TextWidgetComponent>{markdown}</TextWidgetComponent>
+				</section> : undefined}
+				right={isRightDisplayed ? <section className={classes.sectionRight}>{ parameterTabs }</section> : undefined}
+				bottom={isBottomDisplayed ? <section className={classes.sectionBottom}>
+					<ImageWidgetComponent
+						src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
+						w="100%"
+						h="100%"
+					/></section> : undefined}
+			>
 				<ViewportComponent
 					id={viewportId}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
@@ -138,7 +150,7 @@ export default function ViewPage() {
 						/>
 					</ViewportAdditionalUIWrapper>
 				</ViewportComponent>
-			</ExamplePage>
+			</WebAppTemplatePage>
 		</>
 	);
 }

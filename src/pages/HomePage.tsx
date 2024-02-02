@@ -76,6 +76,15 @@ Parameter and export controls are shown for all selected models."
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
 					/>
+
+					<ModelCard
+						title="New Layout Test"
+						description="This example of new layout."
+						btnText="Open example"
+						btnLink="/webApp"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
 				</div>
 			</Container>
 		</>

@@ -12,6 +12,7 @@ import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/useIsMobile";
 import classes from "./MultipleViewportPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
+import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
 
 /**
  * Function that creates the view page.
@@ -89,12 +90,19 @@ export default function ViewPage() {
 		</Tabs.List>
 
 		<ParametersAndExportsAccordionTab value="bench" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent parameters={parameterBenchProps} defaultGroupName="Bench parameters" />
+			<ParametersAndExportsAccordionComponent
+				parameters={parameterBenchProps}
+				defaultGroupName="Bench parameters"
+				topSection={<AcceptRejectButtons parameters={parameterBenchProps}/>}
+			/>
 		</ParametersAndExportsAccordionTab>
 
 		<ParametersAndExportsAccordionTab value="bookshelf" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent parameters={parameterBookshelfProps}
-				defaultGroupName="Bookshelf parameters" />
+			<ParametersAndExportsAccordionComponent
+				parameters={parameterBookshelfProps}
+				defaultGroupName="Bookshelf parameters"
+				topSection={<AcceptRejectButtons parameters={parameterBookshelfProps}/>}
+			/>
 		</ParametersAndExportsAccordionTab>
 	</Tabs>;
 
