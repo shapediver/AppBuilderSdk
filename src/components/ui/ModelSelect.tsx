@@ -5,7 +5,8 @@ import { IconAlertCircle } from "@tabler/icons-react";
 import { ShapeDiverExampleModels } from "tickets";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useSessionPropsExport } from "hooks/useSessionPropsExport";
+import { useIsMobile } from "hooks/useMantineIsMobile";
 import { useSessions } from "hooks/useSessions";
 import classes from "./ModelSelect.module.css";
 import ParametersAndExportsAccordionTab from "../shapediver/ui/ParametersAndExportsAccordionTab";
@@ -50,7 +51,7 @@ export default function ModelSelect() {
 
 	// get parameter and export props for all sessions
 	const parameterProps = useSessionPropsParameter(sessionIds);
-	//const exportProps = useSessionPropsExport(sessionIds);
+	const exportProps = useSessionPropsExport(sessionIds);
 
 	const tabs = selectedModels.length === 0 ? <></> : <Tabs defaultValue={selectedModels[0].slug} className={classes.tabs}>
 		<Tabs.List>
@@ -63,7 +64,7 @@ export default function ModelSelect() {
 				<ParametersAndExportsAccordionTab key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"}>
 					<ParametersAndExportsAccordionComponent
 						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
-						//exports={exportProps.filter(p => p.sessionId === model.slug)}
+						exports={exportProps.filter(p => p.sessionId === model.slug)}
 						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
 					/>
 				</ParametersAndExportsAccordionTab>

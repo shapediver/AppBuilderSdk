@@ -9,7 +9,7 @@ import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useIsMobile } from "hooks/useMantineIsMobile";
 import classes from "./MultipleViewportPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";

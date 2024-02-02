@@ -1,5 +1,5 @@
 import { Tabs } from "@mantine/core";
-import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine, PARAMETER_TYPE, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
@@ -12,12 +12,12 @@ import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useIsMobile";
+import { useIsMobile } from "hooks/useMantineIsMobile";
 import classes from "./ViewPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
-import { useOutputMaterial } from "hooks/useOutputMaterial";
+import { MaterialType, useOutputMaterial } from "hooks/useOutputMaterial";
 import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
 
 /**
@@ -62,32 +62,127 @@ export default function ViewPage() {
 	/////
 	// START - Example on how to apply a custom material to an output
 	/////
-	const outputNameOrId = "Shelf";
 
-	// define a generic parameter which influences a custom material definition
-	const [materialParameters] = useState<IGenericParameterDefinition>({
-		definition: {
-			id: "myparam",
-			name: "Custom color",
-			defval: "0xffffffff",
-			type: "Color",
-			hidden: false
+	// define the parameter names for the custom material
+	const enum PARAMETER_NAMES {
+		COLOR = "color",
+		MAP = "map",
+		ROUGHNESS = "roughness",
+		APPLY_TO_SHELF = "applyToShelf",
+		APPLY_TO_PLANE = "applyToPlane"
+	}
+
+	// define parameters for the custom material
+	const materialDefinitions: IGenericParameterDefinition[] = [
+		{
+			definition: {
+				id: PARAMETER_NAMES.COLOR,
+				name: "Custom color",
+				defval: "0x0d44f0ff",
+				type: "Color",
+				hidden: false
+			}
+		},
+		{
+			definition: {
+				id: PARAMETER_NAMES.MAP,
+				name: "Custom map",
+				defval: "",
+				type: "String",
+				hidden: false
+			}
+		},
+		{
+			definition: {
+				id: PARAMETER_NAMES.ROUGHNESS,
+				name: "Custom roughness",
+				defval: "0",
+				type: PARAMETER_TYPE.FLOAT,
+				min: 0,
+				max: 1,
+				decimalplaces: 4,
+				hidden: false
+			}
+		},
+		{
+			definition: {
+				id: PARAMETER_NAMES.APPLY_TO_SHELF,
+				name: "Apply to shelf",
+				defval: "false",
+				type: PARAMETER_TYPE.BOOL,
+				hidden: false
+			}
+		},
+		{
+			definition: {
+				id: PARAMETER_NAMES.APPLY_TO_PLANE,
+				name: "Apply to plane",
+				defval: "false",
+				type: PARAMETER_TYPE.BOOL,
+				hidden: false
+			}
 		}
-	});
-	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ color: materialParameters.definition.defval });
-	useDefineGenericParameters("mysession", !acceptRejectMode,
-		materialParameters,
-		(values) => new Promise(resolve => {
-			if ("myparam" in values)
-				setMaterialProperties({ color: values["myparam"] });
+	];
+	const [materialParameters] = useState<IGenericParameterDefinition[]>(materialDefinitions);
 
-			resolve(values);
-		})
+	// state for the custom material properties
+	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({
+		color: materialParameters.find(d => d.definition.id === PARAMETER_NAMES.COLOR)!.definition.defval,
+		map: undefined,
+		roughness: +materialParameters.find(d => d.definition.id === PARAMETER_NAMES.ROUGHNESS)!.definition.defval
+	});
+
+	// state for the custom material application
+	const [outputNameShelf, setOutputNameShelf] = useState<string>("");
+	const [outputNamePlane, setOutputNamePlane] = useState<string>("");
+
+	// define the custom material parameters and a handler for the parameter changes
+	const customSessionId = "mysession";
+	useDefineGenericParameters(customSessionId, !acceptRejectMode,
+		materialParameters,
+		async (values) => {
+			if (PARAMETER_NAMES.COLOR in values)
+				setMaterialProperties({ ...materialProperties, color: values[PARAMETER_NAMES.COLOR] });
+
+			if (PARAMETER_NAMES.ROUGHNESS in values)
+				setMaterialProperties({ ...materialProperties, roughness: values[PARAMETER_NAMES.ROUGHNESS] });
+
+			// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
+			// this also means that we resolve the promise only after the map has been loaded or if no map is specified
+			if (PARAMETER_NAMES.MAP in values) {
+				const mapParam = values[PARAMETER_NAMES.MAP];
+				if (mapParam !== "") {
+					try {
+						const map = await MaterialEngine.instance.loadMap(mapParam);
+						if (map) {
+							setMaterialProperties({ ...materialProperties, map: map });
+						} else {
+							setMaterialProperties({ ...materialProperties, map: undefined });
+							console.warn(`Could not load map ${mapParam}`);
+						}
+					} catch (e) {
+						setMaterialProperties({ ...materialProperties, map: undefined });
+						console.warn(`Could not load map ${mapParam}: ${e}`);
+					}
+				} else {
+					setMaterialProperties({ ...materialProperties, map: undefined });
+				}
+			}
+
+			if (PARAMETER_NAMES.APPLY_TO_SHELF in values)
+				setOutputNameShelf(""+values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true" ? "Shelf" : "");
+
+			if (PARAMETER_NAMES.APPLY_TO_PLANE in values)
+				setOutputNamePlane(""+values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true" ? "Image Plane" : "");
+
+			return values;
+		}
 	);
-	const myParameterProps = useSessionPropsParameter("mysession");
+	const myParameterProps = useSessionPropsParameter(customSessionId);
 
 	// apply the custom material
-	useOutputMaterial(sessionId, outputNameOrId, materialProperties);
+	useOutputMaterial(sessionId, outputNameShelf, materialProperties, MaterialType.Standard);
+	useOutputMaterial(sessionId, outputNamePlane, materialProperties, MaterialType.Standard);
 
 	/////
 	// END - Example on how to apply a custom material to an output

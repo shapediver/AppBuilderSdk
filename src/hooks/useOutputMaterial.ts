@@ -1,17 +1,41 @@
-import { IGeometryData, IMaterialAbstractData, IMaterialStandardDataProperties, IOutputApi, ITreeNode, MaterialStandardData } from "@shapediver/viewer";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { 
+	GeometryData, 
+	IGeometryData, 
+	IMaterialAbstractData, 
+	IMaterialGemDataProperties, 
+	IMaterialSpecularGlossinessDataProperties, 
+	IMaterialStandardDataProperties, 
+	IMaterialUnlitDataProperties, 
+	IOutputApi, 
+	ITreeNode,
+	MaterialGemData, 
+	MaterialSpecularGlossinessData, 
+	MaterialStandardData, 
+	MaterialUnlitData 
+} from "@shapediver/viewer";
+import { useCallback, useEffect, useRef } from "react";
 import { useOutputNode } from "./useOutputNode";
 
+export enum MaterialType {
+	Standard = "Standard",
+	SpecularGlossiness = "SpecularGlossiness",
+	Unlit = "Unlit",
+	Gem = "Gem"
+}
 
-const isGeometryData = (data: any): data is IGeometryData =>
-	"mode" in data && "primitive" in data && "material" in data;
-
+/**
+ * We traverse the node and all its children, and collect all geometry data.
+ * Within the geometry data, the material property can then be updated.
+ * 
+ * @param node 
+ * @returns 
+ */
 const getGeometryData = (
 	node: ITreeNode
 ): IGeometryData[] => {
 	const geometryData: IGeometryData[] = [];
 	node.traverseData(data => {
-		if (isGeometryData(data)) {
+		if (data instanceof GeometryData) {
 			geometryData.push(data);
 		}
 	});
@@ -19,16 +43,30 @@ const getGeometryData = (
 	return geometryData;
 };
 
-const getMaterials = (
-	geometryData: IGeometryData[]
-): IMaterialAbstractData[] => {
-	const materials: { [id: string]: IMaterialAbstractData } = {};
-	geometryData.forEach(data => {
-		if (data.material && !(data.material.id in materials))
-			materials[data.material.id] = data.material;
-	});
+/**
+ * We keep track of the original materials, so that we can restore them if the node to
+ * which the material is applied changes.
+ * This object is keyed by ITreeNode.id and IGeometryData.id
+ */
+const originalMaterials: { [key: string]: { [key: string]: IMaterialAbstractData | null } } = {};
 
-	return Object.values(materials);
+/**
+ * TODO remove this once IMaterialAbstractDataProperties is exported from the viewer in a future release.
+ * see https://shapediver.atlassian.net/browse/SS-7366
+ */
+type IMaterialAbstractDataProperties = IMaterialStandardDataProperties | IMaterialSpecularGlossinessDataProperties | IMaterialUnlitDataProperties | IMaterialGemDataProperties;
+
+const createMaterial = (materialProperties: IMaterialAbstractDataProperties, materialType: MaterialType) : IMaterialAbstractData => {
+	switch (materialType) {
+	case MaterialType.SpecularGlossiness:
+		return new MaterialSpecularGlossinessData(materialProperties);
+	case MaterialType.Unlit:
+		return new MaterialUnlitData(materialProperties);
+	case MaterialType.Gem:
+		return new MaterialGemData(materialProperties);
+	default:
+		return new MaterialStandardData(materialProperties);
+	}
 };
 
 /**
@@ -40,7 +78,7 @@ const getMaterials = (
  * @param outputIdOrName 
  * @param materialProperties 
  */
-export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialStandardDataProperties) : {
+export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialAbstractDataProperties, materialType: MaterialType = MaterialType.Standard ) : {
 	/**
 	 * API of the output
 	 * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
@@ -52,59 +90,66 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 	 */
 	outputNode: ITreeNode | undefined
 } {
-
-	const materialPropertiesRef = useRef(materialProperties);
+	const materialRef = useRef<IMaterialAbstractData | null>(null);
 	
-	// callback which will be executed on output update, and once the node is available
-	const callback = useCallback( (node?: ITreeNode) => {
-		const materialProps = materialPropertiesRef.current;
-		if (!node)
-			return;
-
-		// get all geometry and materials below the node
-		const geometryData = getGeometryData(node);
-		const materials = getMaterials(geometryData);
+	// callback which will be executed on update of the output node
+	const callback = useCallback( (newNode?: ITreeNode, oldNode?: ITreeNode) => {
 	
-		if (materials.length > 0) {
-			// update existing materials
-			materials.forEach((m) => {
-				for ( const p in materialProps)
-					(<any>m)[p as keyof MaterialStandardData] =
-					materialProps[p as keyof IMaterialStandardDataProperties];
-				m.updateVersion();
+		// restore original materials if there is an old node (a node to be replaced)
+		// TODO test this again once https://shapediver.atlassian.net/browse/SS-7366 is fixed
+		if (oldNode && originalMaterials[oldNode.id]) {
+			const geometryData = getGeometryData(oldNode);
+		
+			geometryData.forEach(data => {
+				const originalMaterial = originalMaterials[oldNode.id][data.id];
+				if (originalMaterial) {
+					data.material = originalMaterial;
+					data.updateVersion();
+				}
 			});
-		}
-		else
-		{
-			// no material found: define new material
-			const material = new MaterialStandardData(materialProps);
-			geometryData.forEach(data => data.material = material);
+
+			delete originalMaterials[oldNode.id];
+		
+			oldNode.updateVersion();
 		}
 
-		node.updateVersion();
+		// create and set the new material if there is a new node
+		if (newNode) {
+			const geometryData = getGeometryData(newNode);
+
+			// backup original materials
+			if (!originalMaterials[newNode.id]) {
+				originalMaterials[newNode.id] = {};
+				geometryData.forEach(data => {
+					originalMaterials[newNode.id][data.id] = data.material;
+				});
+			}
+
+			geometryData.forEach(data => {
+				data.material = materialRef.current;
+				data.updateVersion();
+			});
+
+			newNode.updateVersion();
+		}
+		
 	}, []);
 
 	// define the node update callback
 	const { outputApi, outputNode } = useOutputNode(sessionId, outputIdOrName, callback);
-
-	// apply the callback once the node is available, or if the material definition changes
-	const [ initialUpdateApplied, setInitialUpdateApplied ] = useState(false);
-
-	useEffect(() => {
-		// do not apply the callback if the material definition has not changed, and the initial update has already been applied
-		if ( materialPropertiesRef.current === materialProperties && initialUpdateApplied )
-			return;
 	
-		// the material definition has changed, or the initial update has not been applied yet --> apply the callback
-		materialPropertiesRef.current = materialProperties;
+	// use an effect to apply changes to the material, and to apply the callback once the node is available
+	useEffect(() => {
+	
+		if (materialProperties && materialType) {
+			materialRef.current = createMaterial(materialProperties, materialType);
+		}
+		else {
+			materialRef.current = null;
+		}
 		callback(outputNode);
-
-		// remember that the initial update has been applied
-		if (outputNode && !initialUpdateApplied)
-			setInitialUpdateApplied(true);
-
-		// TODO ideally here we should return a cleanup function, which restores the original material
-	}, [outputNode, materialProperties]);
+		
+	}, [materialProperties, materialType]);
 
 	return {
 		outputApi,
