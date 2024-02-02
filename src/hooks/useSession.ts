@@ -33,20 +33,25 @@ export interface IUseSessionDto extends SessionCreateDto {
  * @param props {@link IUseSessionDto}
  * @returns
  */
-export function useSession(props: IUseSessionDto) {
-	const { registerParametersAndExports = false, acceptRejectMode = false } = props;
+export function useSession(props: IUseSessionDto | undefined) {
 	const { createSession, closeSession } = useShapeDiverStoreViewer();
 	const { addSession: addSessionParameters, removeSession: removeSessionParameters } = useShapeDiverStoreParameters();
 	const [sessionApi, setSessionApi] = useState<ISessionApi | undefined>(undefined);
 	const promiseChain = useRef(Promise.resolve());
 
 	useEffect(() => {
+		
+		if (!props?.id) {
+			return;
+		}
+
+		const { registerParametersAndExports = true, acceptRejectMode = false } = props;
+	
 		promiseChain.current = promiseChain.current.then(async () => {
 			const api = await createSession(props);
 			setSessionApi(api);
 
 			if (registerParametersAndExports && api) {
-				/** execute changes immediately if the component is not running in accept/reject mode */
 				addSessionParameters(api, acceptRejectMode);
 			}
 		});
@@ -60,7 +65,7 @@ export function useSession(props: IUseSessionDto) {
 				}
 			});
 		};
-	}, [props.id]);
+	}, [props?.id]);
 
 	return {
 		sessionApi
