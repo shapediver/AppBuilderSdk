@@ -25,7 +25,7 @@ export default function WebAppTemplatePage({
 		gridTemplateAreas: "'main main main main'",
 	});
 
-	const generateLayoutStyles = () => {
+	const generateLayoutStyles = (isTop: boolean, isLeft: boolean, isRight: boolean, isBottom: boolean) => {
 		const m = "main";
 		const t = "top";
 		const l = "left";
@@ -33,35 +33,51 @@ export default function WebAppTemplatePage({
 		const b = "bottom";
 
 		const area = [
-			[m, m, m, m],
-			[m, m, m, m],
-			[m, m, m, m],
-			[m, m, m, m],
+			[m, m, m, m, m, m],
+			[m, m, m, m, m, m],
+			[m, m, m, m, m, m],
+			[m, m, m, m, m, m],
 		];
 
-		if (top) {
-			area[0] = [t, t, t, t];
+		if (isTop) {
+			area[0] = [t, t, t, t, t, t];
 		}
 
-		if (left) {
-			area[0][0] = top ? t : l;
+		if (isLeft) {
+			area[0][0] = isTop ? t : l;
 			area[1][0] = l;
 			area[2][0] = l;
 			area[3][0] = l;
+
+			if (!isRight) {
+				area[0][1] = isTop ? t : l;
+				area[1][1] = l;
+				area[2][1] = l;
+				area[3][1] = l;
+			}
 		}
 
-		if (right) {
-			area[0][3] = top ? t : r;
-			area[1][3] = r;
-			area[2][3] = r;
-			area[3][3] = r;
+		if (isRight) {
+			area[0][5] = isTop ? t : r;
+			area[1][5] = r;
+			area[2][5] = r;
+			area[3][5] = r;
+
+			if (!isLeft) {
+				area[0][4] = isTop ? t : r;
+				area[1][4] = r;
+				area[2][4] = r;
+				area[3][4] = r;
+			}
 		}
 
-		if (bottom) {
-			area[3][0] = left ? l : b;
-			area[3][1] = b;
+		if (isBottom) {
+			area[3][0] = isLeft ? l : b;
+			area[3][1] = (isLeft && !isRight) ? l : b;
 			area[3][2] = b;
-			area[3][3] = right ? r : b;
+			area[3][3] = b;
+			area[3][4] = (isRight && !isLeft) ? r : b;
+			area[3][5] = isRight ? r : b;
 		}
 
 		let gridTemplateAreas = "";
@@ -77,14 +93,16 @@ export default function WebAppTemplatePage({
 
 		gridTemplateAreas = gridTemplateAreas.trim();
 
+		console.log("gridTemplateAreas", gridTemplateAreas);
+
 		return {
 			gridTemplateAreas,
 		};
 	};
 
 	useEffect(() => {
-		setRootStyle(generateLayoutStyles());
-	}, [children, left, right, bottom, top]);
+		setRootStyle(generateLayoutStyles(!!top, !!left, !!right, !!bottom));
+	}, [left, right, bottom, top]);
 
 	return (
 		<>

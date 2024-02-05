@@ -10,7 +10,7 @@ import { IGenericParameterDefinition } from "types/store/shapediverStoreParamete
 import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/useOutputMaterial";
 import WebAppTemplatePage from "./WebAppTemplatePage";
-import { Button } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
 import classes from "./WebAppExampleOnePage.module.css";
 import TextWidgetComponent from "../components/shapediver/ui/TextWidgetComponent";
 import ImageWidgetComponent from "../components/shapediver/ui/ImageWidgetComponent";
@@ -26,6 +26,11 @@ import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons
  * @returns
  */
 export default function WebAppExampleOnePage() {
+	const sectionTopBgColor = "#cefdfd";
+	const sectionLeftBgColor = "#efdcf5";
+	const sectionRightBgColor = "inherit";
+	const sectionBottomBgColor = "#dcf59d";
+
 	const viewportId = "viewport_1";
 	const modelName = "Sideboard";
 	const sessionId = ShapeDiverExampleModels[modelName].slug;
@@ -122,17 +127,33 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 			</Button.Group>
 
 			<WebAppTemplatePage
-				top={isTopDisplayed ? <section className={classes.sectionTop}>Top</section> : undefined}
-				left={isLeftDisplayed ? <section className={classes.sectionLeft}>
+				top={isTopDisplayed ? <Container
+					fluid
+					className={classes.sectionTop}
+					style={{ backgroundColor: sectionTopBgColor }}
+				>Top</Container> : undefined}
+				left={isLeftDisplayed ? <Container
+					fluid
+					className={classes.sectionLeft}
+					style={{ backgroundColor: sectionLeftBgColor }}
+				>
 					<TextWidgetComponent>{markdown}</TextWidgetComponent>
-				</section> : undefined}
-				right={isRightDisplayed ? <section className={classes.sectionRight}>{ parameterTabs }</section> : undefined}
-				bottom={isBottomDisplayed ? <section className={classes.sectionBottom}>
+				</Container> : undefined}
+				right={isRightDisplayed ? <Container
+					fluid
+					className={classes.sectionRight}
+					style={{ backgroundColor: sectionRightBgColor }}
+				>{ parameterTabs }</Container> : undefined}
+				bottom={isBottomDisplayed ? <Container
+					fluid
+					className={classes.sectionBottom}
+					style={{ backgroundColor: sectionBottomBgColor }}
+				>
 					<ImageWidgetComponent
 						src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 						w="100%"
 						h="100%"
-					/></section> : undefined}
+					/></Container> : undefined}
 			>
 				<ViewportComponent
 					id={viewportId}
