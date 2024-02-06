@@ -122,7 +122,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 		const groupElements: JSX.Element[] = [];
 		g.elements.forEach((element) => {
 			groupElements.push(
-				<Paper withBorder radius="md" shadow="m" my="xs" py="md" px="xs" key={element.key}>
+				<Paper withBorder radius="md" shadow="m" mb="xs" py="md" px="xs" key={element.key}>
 					{ element }
 				</Paper>
 			);

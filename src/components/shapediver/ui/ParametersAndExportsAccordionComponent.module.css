@@ -4,8 +4,9 @@
 	max-height: 100%;
 
 	:global(.mantine-Accordion-content) {
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
+		padding-left: var(--mantine-spacing-xs);
+		padding-right: var(--mantine-spacing-xs);
+		padding-bottom: 0;
 	}
 }
 
@@ -20,15 +21,4 @@
 	align-items: center;
 	height: 200px;
 	width: 100%;
-}
-
-.acceptRejectContainer {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	align-items: center;
-}
-
-.acceptRejectBtn {
-	width: 70%;
 }

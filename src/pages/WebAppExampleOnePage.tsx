@@ -136,6 +136,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					fluid
 					className={classes.sectionLeft}
 					style={{ backgroundColor: sectionLeftBgColor }}
+					p="xs"
 				>
 					<TextWidgetComponent>{markdown}</TextWidgetComponent>
 				</Container> : undefined}
@@ -143,11 +144,13 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					fluid
 					className={classes.sectionRight}
 					style={{ backgroundColor: sectionRightBgColor }}
+					p="xs"
 				>{ parameterTabs }</Container> : undefined}
 				bottom={isBottomDisplayed ? <Container
 					fluid
 					className={classes.sectionBottom}
 					style={{ backgroundColor: sectionBottomBgColor }}
+					p="xs"
 				>
 					<ImageWidgetComponent
 						src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"

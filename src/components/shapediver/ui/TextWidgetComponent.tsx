@@ -14,7 +14,7 @@ interface Props {
 
 
 export default function TextWidgetComponent({ children = "" }: Props) {
-	return <Paper withBorder radius="md" shadow="m" my="xs" py="md" px="xs">
+	return <Paper withBorder radius="md" shadow="m" mb="xs" py="xs" px="xs">
 		<Markdown>{ children }</Markdown>
 	</Paper>;
 }
