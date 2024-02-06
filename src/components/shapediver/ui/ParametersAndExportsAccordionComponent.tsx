@@ -13,7 +13,13 @@ import classes from "./ParametersAndExportsAccordionComponent.module.css";
  */
 
 interface Props {
+	/**
+	 * The parameters to be displayed in the accordion.
+	 */
 	parameters?: PropsParameter[],
+	/**
+	 * The exports to be displayed in the accordion.
+	 */
 	exports?: PropsExport[],
 	/**
 	 * Name of group to use for parameters and exports which are not assigned to a group.
@@ -26,10 +32,19 @@ interface Props {
 	 * compnent will be displayed without using an accordion.
 	 */
 	avoidSingleComponentGroups?: boolean,
+	/**
+	 * Merge accordions of subsequent groups into one.
+	 */
+	mergeAccordions?: boolean,
+	/**
+	 * Component to be displayed at the top of the accordion. Typically used for 
+	 * accept / reject buttons.
+	 */
 	topSection?: React.ReactNode,
 }
 
-export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, avoidSingleComponentGroups = false, topSection}: Props) {
+export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, 
+	avoidSingleComponentGroups = false, mergeAccordions = false, topSection}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
 	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
@@ -92,6 +107,13 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	});
 
 	const elements: JSX.Element[] = [];
+	const addAccordion = (items: JSX.Element[]) => {
+		elements.push(
+			<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={items[0].key}>
+				{ items }
+			</Accordion>
+		);
+	};
 
 	// loop through the created elementGroups to add them
 	let accordionItems: JSX.Element[] = [];
@@ -108,34 +130,28 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {
 			accordionItems.push(
-				<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={g.group.id}>
-					<Accordion.Item value={g.group.id}>
-						<Accordion.Control>{g.group.name}</Accordion.Control>
-						<Accordion.Panel key={g.group.id}>
-							{groupElements}
-						</Accordion.Panel>
-					</Accordion.Item>
-				</Accordion>
+				<Accordion.Item key={g.group.id} value={g.group.id}>
+					<Accordion.Control>{g.group.name}</Accordion.Control>
+					<Accordion.Panel key={g.group.id}>
+						{groupElements}
+					</Accordion.Panel>
+				</Accordion.Item>
 			);
+			if (!mergeAccordions) {
+				addAccordion(accordionItems);
+				accordionItems = [];
+			}
 		}
 		else {
 			if (accordionItems.length > 0) {
-				elements.push(
-					<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={accordionItems[0].key}>
-						{ accordionItems }
-					</Accordion>
-				);
+				addAccordion(accordionItems);
 				accordionItems = [];
 			}
 			elements.push(groupElements[0]);
 		}
 	}
 	if (accordionItems.length > 0) {
-		elements.push(
-			<>
-				{ accordionItems }
-			</>
-		);
+		addAccordion(accordionItems);
 	}
 
 	return <>
