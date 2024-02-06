@@ -32,14 +32,3 @@
 .acceptRejectBtn {
 	width: 70%;
 }
-
-:global(.mantine-Accordion-item) {
-	border-top: calc(0.0625rem*var(--mantine-scale)) solid var(--_item-border-color) !important;
-	border-radius: var(--_accordion-radius) !important;
-	margin-bottom: 0.5rem;
-}
-
-:global(.mantine-Accordion-control) {
-	border-radius: var(--_accordion-radius) !important;
-}
-

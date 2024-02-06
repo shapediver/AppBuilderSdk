@@ -108,18 +108,20 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {
 			accordionItems.push(
-				<Accordion.Item key={g.group.id} value={g.group.id}>
-					<Accordion.Control>{g.group.name}</Accordion.Control>
-					<Accordion.Panel key={g.group.id}>
-						{groupElements}
-					</Accordion.Panel>
-				</Accordion.Item>
+				<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={g.group.id}>
+					<Accordion.Item value={g.group.id}>
+						<Accordion.Control>{g.group.name}</Accordion.Control>
+						<Accordion.Panel key={g.group.id}>
+							{groupElements}
+						</Accordion.Panel>
+					</Accordion.Item>
+				</Accordion>
 			);
 		}
 		else {
 			if (accordionItems.length > 0) {
 				elements.push(
-					<Accordion variant="contained" radius="md" className={classes.container} key={accordionItems[0].key}>
+					<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={accordionItems[0].key}>
 						{ accordionItems }
 					</Accordion>
 				);
@@ -130,9 +132,9 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	}
 	if (accordionItems.length > 0) {
 		elements.push(
-			<Accordion variant="contained" radius="md" className={classes.container} key={accordionItems[0].key}>
+			<>
 				{ accordionItems }
-			</Accordion>
+			</>
 		);
 	}
 
