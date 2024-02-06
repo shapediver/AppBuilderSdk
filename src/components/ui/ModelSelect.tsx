@@ -1,6 +1,6 @@
 import { MultiSelect, Notification, Tabs } from "@mantine/core";
 import { ISelectedModel, useModelSelectStore } from "store/useModelSelectStore";
-import React, { } from "react";
+import React from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { ShapeDiverExampleModels } from "tickets";
 import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
@@ -10,6 +10,7 @@ import { useIsMobile } from "hooks/useMantineIsMobile";
 import { useSessions } from "hooks/useSessions";
 import classes from "./ModelSelect.module.css";
 import ParametersAndExportsAccordionTab from "../shapediver/ui/ParametersAndExportsAccordionTab";
+import AcceptRejectButtons from "../shapediver/ui/AcceptRejectButtons";
 
 /**
  * Function that creates a select element in which models can be selected.
@@ -64,6 +65,7 @@ export default function ModelSelect() {
 					<ParametersAndExportsAccordionComponent
 						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
 						exports={exportProps.filter(p => p.sessionId === model.slug)}
+						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
 					/>
 				</ParametersAndExportsAccordionTab>
 			)

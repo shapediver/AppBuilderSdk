@@ -1,0 +1,30 @@
+.webAppTemplatePage {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    height: 100vh;
+}
+
+.webAppTemplatePageTop, .webAppTemplatePageBottom, .webAppTemplatePageLeft, .webAppTemplatePageRight, .webAppTemplatePageBottom {
+    overflow: auto;
+}
+
+.webAppTemplatePageMain {
+    grid-area: main;
+}
+
+.webAppTemplatePageTop {
+    grid-area: top;
+}
+
+.webAppTemplatePageLeft {
+    grid-area: left;
+}
+
+.webAppTemplatePageRight {
+    grid-area: right;
+}
+
+.webAppTemplatePageBottom {
+    grid-area: bottom;
+}

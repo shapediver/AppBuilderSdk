@@ -18,6 +18,7 @@ import ParametersAndExportsAccordionTab from "../components/shapediver/ui/Parame
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
 import { MaterialType, useOutputMaterial } from "hooks/useOutputMaterial";
+import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
 
 /**
  * Function that creates the view page.
@@ -58,9 +59,9 @@ export default function ViewPage() {
 	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
 	const exportProps = useSessionPropsExport(sessionId);
 
-	/////	
+	/////
 	// START - Example on how to apply a custom material to an output
-	/////	
+	/////
 
 	// define the parameter names for the custom material
 	const enum PARAMETER_NAMES {
@@ -122,12 +123,12 @@ export default function ViewPage() {
 			}
 		}
 	];
-	const [materialParameters] = useState<IGenericParameterDefinition[]>(materialDefinitions);	
-	
+	const [materialParameters] = useState<IGenericParameterDefinition[]>(materialDefinitions);
+
 	// state for the custom material properties
-	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ 
-		color: materialParameters.find(d => d.definition.id === PARAMETER_NAMES.COLOR)!.definition.defval, 
-		map: undefined, 
+	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({
+		color: materialParameters.find(d => d.definition.id === PARAMETER_NAMES.COLOR)!.definition.defval,
+		map: undefined,
 		roughness: +materialParameters.find(d => d.definition.id === PARAMETER_NAMES.ROUGHNESS)!.definition.defval
 	});
 
@@ -182,10 +183,10 @@ export default function ViewPage() {
 	// apply the custom material
 	useOutputMaterial(sessionId, outputNameShelf, materialProperties, MaterialType.Standard);
 	useOutputMaterial(sessionId, outputNamePlane, materialProperties, MaterialType.Standard);
-	
-	/////	
+
+	/////
 	// END - Example on how to apply a custom material to an output
-	/////	
+	/////
 
 	const fullscreenId = "viewer-fullscreen-area";
 
@@ -199,11 +200,17 @@ export default function ViewPage() {
 			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
 				defaultGroupName="Custom material"
+				topSection={<AcceptRejectButtons parameters={parameterProps}/>}
 			/>
 		</ParametersAndExportsAccordionTab>
 
 		<ParametersAndExportsAccordionTab  value="exports" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent parameters={exportParameterProps} exports={exportProps} defaultGroupName="Exports" />
+			<ParametersAndExportsAccordionComponent
+				parameters={exportParameterProps}
+				exports={exportProps}
+				defaultGroupName="Exports"
+				topSection={<AcceptRejectButtons parameters={exportParameterProps}/>}
+			/>
 		</ParametersAndExportsAccordionTab>
 	</Tabs>;
 

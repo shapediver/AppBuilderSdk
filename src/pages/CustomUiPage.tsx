@@ -13,6 +13,7 @@ import { useIsMobile } from "hooks/useMantineIsMobile";
 import { useSessionWithCustomUi } from "hooks/useSessionWithCustomUi";
 import classes from "./CustomUiPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
+import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "CustomUiBookshelf";
@@ -50,6 +51,7 @@ export default function ViewPage() {
 			<ParametersAndExportsAccordionComponent
 				parameters={parameterProps}
 				defaultGroupName="My parameters"
+				topSection={<AcceptRejectButtons parameters={parameterProps}/>}
 			/>
 		</ParametersAndExportsAccordionTab>
 

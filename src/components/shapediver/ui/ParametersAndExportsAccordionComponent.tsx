@@ -1,11 +1,9 @@
 import React, { JSX } from "react";
-import { Accordion, Button, Loader, Paper, ScrollArea } from "@mantine/core";
+import { Accordion, Loader, Paper, ScrollArea } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { IconCheck, IconX } from "@tabler/icons-react";
 import { useSortedParametersAndExports } from "hooks/useSortedParametersAndExports";
-import { useParameterChanges } from "hooks/useParameterChanges";
 import classes from "./ParametersAndExportsAccordionComponent.module.css";
 
 /**
@@ -28,25 +26,13 @@ interface Props {
 	 * compnent will be displayed without using an accordion.
 	 */
 	avoidSingleComponentGroups?: boolean,
+	topSection?: React.ReactNode,
 }
 
-export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, avoidSingleComponentGroups}: Props) {
+export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, avoidSingleComponentGroups = false, topSection}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
-	avoidSingleComponentGroups = false;
 	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
-
-	// check if there are parameter changes to be confirmed
-	const parameterChanges = useParameterChanges(parameters || []);
-	const disableChangeControls = parameterChanges.length === 0 ||
-		parameterChanges.every(c => c.disableControls ) ||
-		parameterChanges.some(c => c.executing);
-	const acceptChanges = () => {
-		parameterChanges.forEach(c => c.accept());
-	};
-	const rejectChanges = () => {
-		parameterChanges.forEach(c => c.reject());
-	};
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
@@ -105,34 +91,6 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 		}
 	});
 
-	let acceptRejectElement: JSX.Element | undefined;
-
-	if (acceptRejectMode) {
-		acceptRejectElement =
-			<div key="acceptOrReject" className={classes.acceptRejectContainer}>
-				<Button
-					className={classes.acceptRejectButton}
-					fullWidth={true}
-					leftSection={<IconCheck />}
-					variant="default"
-					onClick={acceptChanges}
-					disabled={disableChangeControls}
-				>
-			Accept
-				</Button>
-				<Button
-					className={classes.acceptRejectButton}
-					fullWidth={true}
-					leftSection={<IconX />}
-					variant="default"
-					onClick={rejectChanges}
-					disabled={disableChangeControls}
-				>
-			Reject
-				</Button>
-			</div>;
-	}
-
 	const elements: JSX.Element[] = [];
 
 	// loop through the created elementGroups to add them
@@ -150,18 +108,20 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {
 			accordionItems.push(
-				<Accordion.Item key={g.group.id} value={g.group.id}>
-					<Accordion.Control>{g.group.name}</Accordion.Control>
-					<Accordion.Panel key={g.group.id}>
-						{groupElements}
-					</Accordion.Panel>
-				</Accordion.Item>
+				<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={g.group.id}>
+					<Accordion.Item value={g.group.id}>
+						<Accordion.Control>{g.group.name}</Accordion.Control>
+						<Accordion.Panel key={g.group.id}>
+							{groupElements}
+						</Accordion.Panel>
+					</Accordion.Item>
+				</Accordion>
 			);
 		}
 		else {
 			if (accordionItems.length > 0) {
 				elements.push(
-					<Accordion variant="contained" radius="md" className={classes.container} key={accordionItems[0].key}>
+					<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={accordionItems[0].key}>
 						{ accordionItems }
 					</Accordion>
 				);
@@ -172,14 +132,14 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	}
 	if (accordionItems.length > 0) {
 		elements.push(
-			<Accordion variant="contained" radius="md" className={classes.container} key={accordionItems[0].key}>
+			<>
 				{ accordionItems }
-			</Accordion>
+			</>
 		);
 	}
 
 	return <>
-		{ acceptRejectElement }
+		{ topSection }
 		<ScrollArea.Autosize className={classes.scrollArea}>
 			<>{ elements }</>
 		</ScrollArea.Autosize>
