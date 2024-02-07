@@ -4,7 +4,7 @@ import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
+import { useParameterComponentCommons } from "hooks/shapediver/useParameterComponentCommons";
 import classes from "./ParameterSliderComponent.module.css";
 
 /**

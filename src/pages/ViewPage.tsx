@@ -4,22 +4,22 @@ import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSession } from "hooks/useSession";
+import { useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/useMantineBranding";
+import { useMantineBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
-import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
-import { useSessionPropsExport } from "hooks/useSessionPropsExport";
+import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
+import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useMantineIsMobile";
+import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./ViewPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
-import { MaterialType, useOutputMaterial } from "hooks/useOutputMaterial";
+import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
+import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
 import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
-import useWebAppSettings from "hooks/useWebAppSettings";
+import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
 
 /**
  * Function that creates the view page.

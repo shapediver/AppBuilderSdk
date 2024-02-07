@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import useAsync from "./useAsync";
+import useAsync from "../misc/useAsync";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
 
 /**

@@ -3,7 +3,7 @@ import { Accordion, Loader, Paper, ScrollArea } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { useSortedParametersAndExports } from "hooks/useSortedParametersAndExports";
+import { useSortedParametersAndExports } from "hooks/shapediver/useSortedParametersAndExports";
 import classes from "./ParametersAndExportsAccordionComponent.module.css";
 
 /**

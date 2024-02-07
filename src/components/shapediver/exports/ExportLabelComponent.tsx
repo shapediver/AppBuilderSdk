@@ -1,5 +1,5 @@
 import { Text } from "@mantine/core";
-import { useExport } from "hooks/useExport";
+import { useExport } from "hooks/shapediver/useExport";
 import React from "react";
 import { PropsExport } from "types/components/shapediver/propsExport";
 

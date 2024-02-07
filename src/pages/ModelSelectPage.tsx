@@ -3,7 +3,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import ModelSelect from "components/ui/ModelSelect";
 import React from "react";
 import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/useMantineBranding";
+import { useMantineBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "components/shapediver/viewport/ViewportIcons";
 

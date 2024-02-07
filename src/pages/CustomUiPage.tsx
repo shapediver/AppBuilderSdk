@@ -5,12 +5,12 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/useMantineBranding";
+import { useMantineBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useMantineIsMobile";
-import { useSessionWithCustomUi } from "hooks/useSessionWithCustomUi";
+import { useIsMobile } from "hooks/ui/useIsMobile";
+import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
 import classes from "./CustomUiPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";

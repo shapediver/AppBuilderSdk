@@ -1,5 +1,5 @@
 import { PropsParameter } from "../../../types/components/shapediver/propsParameter";
-import { useParameterChanges } from "../../../hooks/useParameterChanges";
+import { useParameterChanges } from "../../../hooks/shapediver/useParameterChanges";
 import classes from "./AcceptRejectButtons.module.css";
 import { Button, Container } from "@mantine/core";
 import { IconCheck, IconX } from "@tabler/icons-react";
