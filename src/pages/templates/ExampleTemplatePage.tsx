@@ -4,7 +4,7 @@ import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
 import { useColorScheme, useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/ui/useIsMobile";
-import classes from "./ExamplePage.module.css";
+import classes from "./ExampleTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
 
 /**

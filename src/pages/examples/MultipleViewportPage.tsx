@@ -2,7 +2,7 @@ import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
 import { useSession } from "hooks/shapediver/useSession";
-import ExamplePage from "pages/ExamplePage";
+import ExamplePage from "pages/templates/ExampleTemplatePage";
 import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
@@ -11,8 +11,8 @@ import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParame
 import { ShapeDiverExampleModels } from "tickets";
 import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./MultipleViewportPage.module.css";
-import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
-import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionTab from "../../components/shapediver/ui/ParametersAndExportsAccordionTab";
+import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 
 /**
  * Function that creates the view page.

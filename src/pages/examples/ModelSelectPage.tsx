@@ -2,7 +2,7 @@ import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import ModelSelect from "components/ui/ModelSelect";
 import React from "react";
-import ExamplePage from "pages/ExamplePage";
+import ExamplePage from "pages/templates/ExampleTemplatePage";
 import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "components/shapediver/viewport/ViewportIcons";

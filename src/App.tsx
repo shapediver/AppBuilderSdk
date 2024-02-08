@@ -3,13 +3,13 @@ import { MantineProvider } from "@mantine/core";
 import React, { useEffect } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import HomePage from "pages/HomePage";
-import ModelSelectPage from "pages/ModelSelectPage";
-import NoMatchPage from "pages/NoMatchPage";
-import ViewPage from "pages/ViewPage";
-import MultipleViewportPage from "pages/MultipleViewportPage";
+import ModelSelectPage from "pages/examples/ModelSelectPage";
+import NoMatchPage from "pages/misc/NoMatchPage";
+import ViewPage from "pages/examples/ViewPage";
+import MultipleViewportPage from "pages/examples/MultipleViewportPage";
 import * as ShapeDiverViewer from "@shapediver/viewer";
-import CustomUiPage from "pages/CustomUiPage";
-import WebAppExampleOnePage from "./pages/WebAppExampleOnePage";
+import CustomUiPage from "pages/examples/CustomUiPage";
+import WebAppExampleOnePage from "./pages/webapp/WebAppExampleOnePage";
 
 declare global {
 	interface Window {

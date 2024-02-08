@@ -3,20 +3,20 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { useEffect, useState } from "react";
 import { useSession } from "hooks/shapediver/useSession";
 import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
-import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
-import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
+import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
-import WebAppTemplatePage from "./WebAppTemplatePage";
+import WebAppTemplatePage from "../templates/WebAppTemplatePage";
 import { Button, Container } from "@mantine/core";
 import classes from "./WebAppExampleOnePage.module.css";
-import TextWidgetComponent from "../components/shapediver/ui/TextWidgetComponent";
-import ImageWidgetComponent from "../components/shapediver/ui/ImageWidgetComponent";
-import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "../hooks/shapediver/useSessionPropsParameter";
-import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
+import TextWidgetComponent from "../../components/shapediver/ui/TextWidgetComponent";
+import ImageWidgetComponent from "../../components/shapediver/ui/ImageWidgetComponent";
+import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "../../hooks/shapediver/useSessionPropsParameter";
+import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
 
 const VIEWPORT_ID = "viewport_1";
