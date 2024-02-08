@@ -38,16 +38,16 @@ const ACCEPT_REJECT_MODE = true;
  * @returns
  */
 export default function WebAppExampleOnePage() {
-	const sectionTopBgColor = "#cefdfd";
-	const sectionLeftBgColor = "#efdcf5";
+	const sectionTopBgColor = "inherit";
+	const sectionLeftBgColor = "inherit";
 	const sectionRightBgColor = "inherit";
-	const sectionBottomBgColor = "#dcf59d";
+	const sectionBottomBgColor = "inherit";
 
 	const { settings } = useWebAppSettings(SESSION_DTO);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionDto?.id ?? "";
 
-	const [isTopDisplayed, setIsTopDisplayed] = useState(true);
+	const [isTopDisplayed, setIsTopDisplayed] = useState(false);
 	const [isLeftDisplayed, setIsLeftDisplayed] = useState(true);
 	const [isRightDisplayed, setIsRightDisplayed] = useState(true);
 	const [isBottomDisplayed, setIsBottomDisplayed] = useState(true);
