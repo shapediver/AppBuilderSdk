@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/shapediver/useViewerBranding";
+import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
@@ -38,6 +38,7 @@ export default function ViewPage() {
 		id: ShapeDiverExampleModels[modelName].slug,
 		ticket: ShapeDiverExampleModels[modelName].ticket,
 		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,
+		acceptRejectMode: true
 	});
 
 	const sessionCreateDto = settings ? settings.sessions[0] : undefined;
@@ -187,7 +188,7 @@ export default function ViewPage() {
 
 	const fullscreenId = "viewer-fullscreen-area";
 	const isMobile = useIsMobile();
-	const { branding } = useMantineBranding();
+	const { branding } = useViewerBranding();
 
 	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
 		<Tabs.List>

@@ -3,7 +3,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React from "react";
 import { useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/shapediver/useViewerBranding";
+import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
@@ -39,15 +39,13 @@ export default function ViewPage() {
 		},
 	};
 
-	const { branding } = useMantineBranding();
+	const { branding } = useViewerBranding();
 
 	useSession({
 		...sessionsCreateDto[sessionSideboardKey],
-		registerParametersAndExports: true,
 	});
 	useSession({
 		...sessionsCreateDto[sessionBookshelfKey],
-		registerParametersAndExports: true,
 	});
 
 	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id);

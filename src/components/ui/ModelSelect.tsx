@@ -34,7 +34,6 @@ export default function ModelSelect() {
 				id: ShapeDiverExampleModels[v].slug,
 				name: v,
 				acceptRejectMode,
-				registerParametersAndExports: true,
 				excludeViewports: ["viewport_1"]
 			};
 		});

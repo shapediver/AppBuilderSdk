@@ -5,7 +5,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/shapediver/useViewerBranding";
+import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
@@ -14,6 +14,7 @@ import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi"
 import classes from "./CustomUiPage.module.css";
 import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
+import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "CustomUiBookshelf";
@@ -23,8 +24,8 @@ const SESSION_DTO = {
 	ticket: ShapeDiverExampleModels[MODEL_NAME].ticket,
 	modelViewUrl: ShapeDiverExampleModels[MODEL_NAME].modelViewUrl,
 	excludeViewports: ["viewport_2"],
+	acceptRejectMode: true
 };
-const ACCEPT_REJECT_MODE = true;
 
 const VIEWER_FULLSCREEN_ID = "viewer-fullscreen-area";
 
@@ -38,8 +39,11 @@ const VIEWER_FULLSCREEN_ID = "viewer-fullscreen-area";
 export default function ViewPage() {
 
 	const isMobile = useIsMobile();
-	const { branding } = useMantineBranding();
-	const { parameterProps, exportProps } = useSessionWithCustomUi({sessionDto: SESSION_DTO, acceptRejectMode: ACCEPT_REJECT_MODE});
+	const { branding } = useViewerBranding();
+
+	const { settings } = useWebAppSettings(SESSION_DTO);
+	const sessionDto = settings ? settings.sessions[0] : undefined;
+	const { parameterProps, exportProps } = useSessionWithCustomUi(sessionDto);
 
 	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
 		<Tabs.List>
