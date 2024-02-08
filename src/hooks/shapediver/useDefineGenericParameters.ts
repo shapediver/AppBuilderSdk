@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
-import { IGenericParameterDefinition, IGenericParameterExecutor } from "types/store/shapediverStoreParameters";
+import { IAcceptRejectModeSelector, IGenericParameterDefinition, IGenericParameterExecutor } from "types/store/shapediverStoreParameters";
 
 
 /**
@@ -16,7 +16,7 @@ import { IGenericParameterDefinition, IGenericParameterExecutor } from "types/st
  * @param executor Executor of parameter changes.
  * @returns
  */
-export function useDefineGenericParameters(sessionId: string, acceptRejectMode: boolean, 
+export function useDefineGenericParameters(sessionId: string, acceptRejectMode: boolean | IAcceptRejectModeSelector, 
 	definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 
 	executor: IGenericParameterExecutor) {
 	

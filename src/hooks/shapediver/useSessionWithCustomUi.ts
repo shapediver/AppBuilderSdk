@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { SessionCreateDto } from "types/store/shapediverStoreViewer";
-import { useSession } from "./useSession";
+import { IUseSessionDto, useSession } from "./useSession";
 import { useSessionPropsParameter } from "./useSessionPropsParameter";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useSessionPropsExport } from "./useSessionPropsExport";
@@ -8,18 +7,6 @@ import { useDefineGenericParameters } from "./useDefineGenericParameters";
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
 import { useParameterStateless } from "./useParameterStateless";
 import { useOutputContent } from "./useOutputContent";
-
-interface Props {
-	/**
-	 * Data of session to create.
-	 */
-	sessionDto: SessionCreateDto,
-
-	/**
-	 * Set to true to require confirmation of the user to accept or reject changed parameter values.
-	 */
-	acceptRejectMode: boolean,
-}
 
 /** Prefix used to register custom parameters */
 const CUSTOM_SESSION_ID_POSTFIX = "_customui";
@@ -74,22 +61,20 @@ interface ICustomUiState {
  * @param props 
  * @returns 
  */
-export function useSessionWithCustomUi(props: Props) {
-	const { sessionDto, acceptRejectMode } = props;
-	const sessionId = sessionDto.id;
+export function useSessionWithCustomUi(props: IUseSessionDto | undefined) {
+	const sessionId = props?.id || "";
 	const sessionIdCustomUi = sessionId + CUSTOM_SESSION_ID_POSTFIX;
 
 	// use a session with a ShapeDiver model and register its parameters and exports
-	const { sessionApi } = useSession({
-		...sessionDto,
-		registerParametersAndExports: true,
+	const { sessionApi } = useSession(props ? {
+		...props,
 		// the custom UI input parameter shall always execute immediately
-		acceptRejectMode: param => param.name === CUSTOM_DATA_INPUT_NAME ? false : acceptRejectMode,
-	});
+		acceptRejectMode: param => param.name === CUSTOM_DATA_INPUT_NAME ? false : !!props.acceptRejectMode,
+	} : undefined);
 
 	useEffect(() => {
 		if (sessionApi)
-			console.debug(`Available output names for session ${sessionDto.id}: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
+			console.debug(`Available output names for session ${sessionApi.id}: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
 	}, [sessionApi]);
 	
 	// values of the custom parameters
@@ -102,7 +87,7 @@ export function useSessionWithCustomUi(props: Props) {
 	const customUiParam = useParameterStateless<string>(sessionId, CUSTOM_DATA_INPUT_NAME);
 
 	// define custom parameters and an execution callback for them
-	useDefineGenericParameters(sessionIdCustomUi, acceptRejectMode, 
+	useDefineGenericParameters(sessionIdCustomUi, props?.acceptRejectMode ?? false, 
 		customUiState.parameters,
 		(values) => new Promise((resolve, reject) => {
 			Object.keys(values).forEach(key => customParameterValues.current[key] = values[key]);

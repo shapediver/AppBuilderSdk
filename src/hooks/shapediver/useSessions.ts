@@ -28,7 +28,8 @@ export function useSessions(props: IUseSessionDto[]) {
 
 			apis.map(( api, index ) => {
 				const dto = props[index];
-				if (dto.registerParametersAndExports && api) {
+				const { registerParametersAndExports = true } = dto;
+				if (registerParametersAndExports && api) {
 					/** execute changes immediately if the component is not running in accept/reject mode */
 					addSessionParameters(api, !!dto.acceptRejectMode);
 				}
@@ -38,7 +39,8 @@ export function useSessions(props: IUseSessionDto[]) {
 		return () => {
 			promiseChain.current = promiseChain.current.then(async () => {
 				props.map(p => {
-					if (p.registerParametersAndExports) {
+					const { registerParametersAndExports = true } = p;
+					if (registerParametersAndExports) {
 						removeSessionParameters(p.id);
 					}
 				});

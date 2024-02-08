@@ -1,7 +1,7 @@
 import React, { CSSProperties, useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
 import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip } from "@mantine/core";
-import { useClickEventHandler } from "hooks/useClickEventHandler";
+import { useClickEventHandler } from "hooks/misc/useClickEventHandler";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
 import { firstLetterUppercase } from "utils/strings";

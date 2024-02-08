@@ -4,21 +4,22 @@ import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSession } from "hooks/useSession";
-import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/useMantineBranding";
-import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
-import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
-import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
-import { useSessionPropsExport } from "hooks/useSessionPropsExport";
+import { useSession } from "hooks/shapediver/useSession";
+import ExamplePage from "pages/templates/ExampleTemplatePage";
+import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
+import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
+import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
+import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useMantineIsMobile";
+import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./ViewPage.module.css";
-import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
+import ParametersAndExportsAccordionTab from "../../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
-import { MaterialType, useOutputMaterial } from "hooks/useOutputMaterial";
-import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
+import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
+import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
+import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
+import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
 
 /**
  * Function that creates the view page.
@@ -28,26 +29,23 @@ import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons
  * @returns
  */
 export default function ViewPage() {
+
 	const viewportId = "viewport_1";
+
 	const modelName = "Sideboard";
-	const sessionId = ShapeDiverExampleModels[modelName].slug;
-	const sessionCreateDto = {
-		id: sessionId,
+	
+	const { settings } = useWebAppSettings({
+		id: ShapeDiverExampleModels[modelName].slug,
 		ticket: ShapeDiverExampleModels[modelName].ticket,
 		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,
-		excludeViewports: ["viewport_2"],
-	};
-	const acceptRejectMode = true;
-	const isMobile = useIsMobile();
+		acceptRejectMode: true
+	});
 
-	const { branding } = useMantineBranding();
+	const sessionCreateDto = settings ? settings.sessions[0] : undefined;
+	const sessionId = sessionCreateDto?.id ?? "";
 
 	// use a session with a ShapeDiver model and register its parameters
-	const { sessionApi } = useSession({
-		...sessionCreateDto,
-		registerParametersAndExports: true,
-		acceptRejectMode: acceptRejectMode,
-	});
+	const { sessionApi } = useSession(sessionCreateDto);
 	useEffect(() => {
 		if (sessionApi)
 			console.debug(`Available output names: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
@@ -138,7 +136,7 @@ export default function ViewPage() {
 
 	// define the custom material parameters and a handler for the parameter changes
 	const customSessionId = "mysession";
-	useDefineGenericParameters(customSessionId, !acceptRejectMode,
+	useDefineGenericParameters(customSessionId, false /* acceptRejectMode */,
 		materialParameters,
 		async (values) => {
 			if (PARAMETER_NAMES.COLOR in values)
@@ -189,6 +187,8 @@ export default function ViewPage() {
 	/////
 
 	const fullscreenId = "viewer-fullscreen-area";
+	const isMobile = useIsMobile();
+	const { branding } = useViewerBranding();
 
 	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
 		<Tabs.List>

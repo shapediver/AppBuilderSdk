@@ -1,7 +1,7 @@
 import { useMantineTheme } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 
-export function useMantineBranding() {
+export function useViewerBranding() {
 	const scheme = useColorScheme();
 	const theme = useMantineTheme();
 

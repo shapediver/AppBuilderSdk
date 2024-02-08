@@ -3,11 +3,11 @@ import { ISelectedModel, useModelSelectStore } from "store/useModelSelectStore";
 import React from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { ShapeDiverExampleModels } from "tickets";
-import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
+import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsExport } from "hooks/useSessionPropsExport";
-import { useIsMobile } from "hooks/useMantineIsMobile";
-import { useSessions } from "hooks/useSessions";
+import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
+import { useIsMobile } from "hooks/ui/useIsMobile";
+import { useSessions } from "hooks/shapediver/useSessions";
 import classes from "./ModelSelect.module.css";
 import ParametersAndExportsAccordionTab from "../shapediver/ui/ParametersAndExportsAccordionTab";
 import AcceptRejectButtons from "../shapediver/ui/AcceptRejectButtons";
@@ -34,7 +34,6 @@ export default function ModelSelect() {
 				id: ShapeDiverExampleModels[v].slug,
 				name: v,
 				acceptRejectMode,
-				registerParametersAndExports: true,
 				excludeViewports: ["viewport_1"]
 			};
 		});

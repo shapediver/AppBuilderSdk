@@ -2,7 +2,7 @@ import { TextInput } from "@mantine/core";
 import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameterComponentCommons } from "hooks/useParameterComponentCommons";
+import { useParameterComponentCommons } from "hooks/shapediver/useParameterComponentCommons";
 
 
 /**

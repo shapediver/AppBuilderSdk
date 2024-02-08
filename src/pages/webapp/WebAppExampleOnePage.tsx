@@ -1,22 +1,34 @@
 import { IMaterialStandardDataProperties, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
-import { useSession } from "hooks/useSession";
-import { useMantineBranding } from "hooks/useMantineBranding";
-import ViewportAdditionalUIWrapper, { Positions } from "../components/shapediver/viewport/ViewportAdditionalUIWrapper";
-import ViewportIcons from "../components/shapediver/viewport/ViewportIcons";
+import { useSession } from "hooks/shapediver/useSession";
+import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
+import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "hooks/useDefineGenericParameters";
-import { useOutputMaterial } from "hooks/useOutputMaterial";
-import WebAppTemplatePage from "./WebAppTemplatePage";
+import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
+import { useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
+import WebAppTemplatePage from "../templates/WebAppTemplatePage";
 import { Button, Container } from "@mantine/core";
 import classes from "./WebAppExampleOnePage.module.css";
-import TextWidgetComponent from "../components/shapediver/ui/TextWidgetComponent";
-import ImageWidgetComponent from "../components/shapediver/ui/ImageWidgetComponent";
-import ParametersAndExportsAccordionComponent from "../components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "../hooks/useSessionPropsParameter";
-import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
+import TextWidgetComponent from "../../components/shapediver/ui/TextWidgetComponent";
+import ImageWidgetComponent from "../../components/shapediver/ui/ImageWidgetComponent";
+import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "../../hooks/shapediver/useSessionPropsParameter";
+import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
+import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
+
+const VIEWPORT_ID = "viewport_1";
+const MODEL_NAME = "Sideboard";
+const SESSION_ID = ShapeDiverExampleModels[MODEL_NAME].slug;
+const SESSION_DTO = {
+	id: SESSION_ID,
+	ticket: ShapeDiverExampleModels[MODEL_NAME].ticket,
+	modelViewUrl: ShapeDiverExampleModels[MODEL_NAME].modelViewUrl,
+	excludeViewports: ["viewport_2"],
+};
+const ACCEPT_REJECT_MODE = true;
 
 /**
  * Function that creates the view page.
@@ -26,35 +38,27 @@ import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons
  * @returns
  */
 export default function WebAppExampleOnePage() {
-	const sectionTopBgColor = "#cefdfd";
-	const sectionLeftBgColor = "#efdcf5";
+	const sectionTopBgColor = "inherit";
+	const sectionLeftBgColor = "inherit";
 	const sectionRightBgColor = "inherit";
-	const sectionBottomBgColor = "#dcf59d";
+	const sectionBottomBgColor = "inherit";
 
-	const viewportId = "viewport_1";
-	const modelName = "Sideboard";
-	const sessionId = ShapeDiverExampleModels[modelName].slug;
-	const sessionCreateDto = {
-		id: sessionId,
-		ticket: ShapeDiverExampleModels[modelName].ticket,
-		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,
-		excludeViewports: ["viewport_2"],
-	};
-	const acceptRejectMode = true;
+	const { settings } = useWebAppSettings(SESSION_DTO);
+	const sessionDto = settings ? settings.sessions[0] : undefined;
+	const sessionId = sessionDto?.id ?? "";
 
-	const [isTopDisplayed, setIsTopDisplayed] = useState(true);
+	const [isTopDisplayed, setIsTopDisplayed] = useState(false);
 	const [isLeftDisplayed, setIsLeftDisplayed] = useState(true);
 	const [isRightDisplayed, setIsRightDisplayed] = useState(true);
 	const [isBottomDisplayed, setIsBottomDisplayed] = useState(true);
 
-	const { branding } = useMantineBranding();
+	const { branding } = useViewerBranding();
 
 	// use a session with a ShapeDiver model and register its parameters
-	const { sessionApi } = useSession({
-		...sessionCreateDto,
-		registerParametersAndExports: true,
-		acceptRejectMode: acceptRejectMode,
-	});
+	const { sessionApi } = useSession(sessionDto ? {
+		...sessionDto,
+		acceptRejectMode: ACCEPT_REJECT_MODE,
+	} : undefined);
 
 	useEffect(() => {
 		if (sessionApi)
@@ -77,7 +81,7 @@ export default function WebAppExampleOnePage() {
 		}
 	});
 	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({ color: materialParameters.definition.defval });
-	useDefineGenericParameters("mysession", !acceptRejectMode,
+	useDefineGenericParameters("mysession", !ACCEPT_REJECT_MODE,
 		materialParameters,
 		(values) => new Promise(resolve => {
 			if ("myparam" in values)
@@ -136,6 +140,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					fluid
 					className={classes.sectionLeft}
 					style={{ backgroundColor: sectionLeftBgColor }}
+					p="xs"
 				>
 					<TextWidgetComponent>{markdown}</TextWidgetComponent>
 				</Container> : undefined}
@@ -143,11 +148,13 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					fluid
 					className={classes.sectionRight}
 					style={{ backgroundColor: sectionRightBgColor }}
+					p="xs"
 				>{ parameterTabs }</Container> : undefined}
 				bottom={isBottomDisplayed ? <Container
 					fluid
 					className={classes.sectionBottom}
 					style={{ backgroundColor: sectionBottomBgColor }}
+					p="xs"
 				>
 					<ImageWidgetComponent
 						src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
@@ -156,14 +163,14 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					/></Container> : undefined}
 			>
 				<ViewportComponent
-					id={viewportId}
+					id={VIEWPORT_ID}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
 					showStatistics={true}
 					branding={branding}
 				>
 					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
 						<ViewportIcons
-							viewportId={viewportId}
+							viewportId={VIEWPORT_ID}
 							enableArBtn
 							enableFullscreenBtn
 							enableZoomBtn

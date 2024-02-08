@@ -1,7 +1,7 @@
 import { PropsParameter } from "../../../types/components/shapediver/propsParameter";
-import { useParameterChanges } from "../../../hooks/useParameterChanges";
+import { useParameterChanges } from "../../../hooks/shapediver/useParameterChanges";
 import classes from "./AcceptRejectButtons.module.css";
-import { Button } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import React from "react";
 
@@ -24,9 +24,8 @@ export default function AcceptRejectButtons({ parameters }: Props) {
 	};
 
 	return <>
-		<div key="acceptOrReject" className={classes.acceptRejectContainer}>
+		<Container key="acceptOrReject" p="0" mb="xs" className={classes.acceptRejectContainer}>
 			<Button
-				className={classes.acceptRejectButton}
 				fullWidth={true}
 				leftSection={<IconCheck />}
 				variant="default"
@@ -36,7 +35,6 @@ export default function AcceptRejectButtons({ parameters }: Props) {
 				Accept
 			</Button>
 			<Button
-				className={classes.acceptRejectButton}
 				fullWidth={true}
 				leftSection={<IconX />}
 				variant="default"
@@ -45,6 +43,6 @@ export default function AcceptRejectButtons({ parameters }: Props) {
 			>
 				Reject
 			</Button>
-		</div>
+		</Container>
 	</>;
 }

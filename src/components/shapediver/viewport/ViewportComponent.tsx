@@ -1,5 +1,5 @@
 import React from "react";
-import { useViewport } from "hooks/useViewport";
+import { useViewport } from "hooks/shapediver/useViewport";
 import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 import classes from "./ViewportComponent.module.css";
 

@@ -1,18 +1,18 @@
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
-import { useSession } from "hooks/useSession";
-import ExamplePage from "pages/ExamplePage";
-import { useMantineBranding } from "hooks/useMantineBranding";
+import { useSession } from "hooks/shapediver/useSession";
+import ExamplePage from "pages/templates/ExampleTemplatePage";
+import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import { Grid, Tabs } from "@mantine/core";
 import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "hooks/useSessionPropsParameter";
+import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/useMantineIsMobile";
+import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./MultipleViewportPage.module.css";
-import ParametersAndExportsAccordionTab from "../components/shapediver/ui/ParametersAndExportsAccordionTab";
-import AcceptRejectButtons from "../components/shapediver/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionTab from "../../components/shapediver/ui/ParametersAndExportsAccordionTab";
+import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 
 /**
  * Function that creates the view page.
@@ -39,15 +39,13 @@ export default function ViewPage() {
 		},
 	};
 
-	const { branding } = useMantineBranding();
+	const { branding } = useViewerBranding();
 
 	useSession({
 		...sessionsCreateDto[sessionSideboardKey],
-		registerParametersAndExports: true,
 	});
 	useSession({
 		...sessionsCreateDto[sessionBookshelfKey],
-		registerParametersAndExports: true,
 	});
 
 	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id);
