@@ -1,6 +1,4 @@
-import { Tabs } from "@mantine/core";
 import { IMaterialStandardDataProperties, MaterialEngine, PARAMETER_TYPE, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
@@ -12,14 +10,13 @@ import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/ui/useIsMobile";
-import classes from "./ViewPage.module.css";
-import ParametersAndExportsAccordionTab from "../../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
 import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
+import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
+import { IconTypeEnum } from "types/shapediver/icons";
 
 /**
  * Function that creates the view page.
@@ -187,32 +184,38 @@ export default function ViewPage() {
 	/////
 
 	const fullscreenId = "viewer-fullscreen-area";
-	const isMobile = useIsMobile();
 	const { branding } = useViewerBranding();
 
-	const parameterTabs = <Tabs defaultValue="parameters" className={classes.tabs}>
-		<Tabs.List>
-			<Tabs.Tab value="parameters" leftSection={<IconAdjustmentsHorizontal size={14} />}>Parameters</Tabs.Tab>
-			<Tabs.Tab value="exports" leftSection={<IconFileDownload size={14} />}>Exports</Tabs.Tab>
-		</Tabs.List>
+	const tabProps: ITabsComponentProps = {
+		defaultValue: "Parameters",
+		tabs: [
+			{
+				name: "Parameters",
+				icon: IconTypeEnum.AdjustmentsHorizontal,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
+						parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
+						defaultGroupName="Custom material"
+						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
+					/>
+				]
+			},
+			{
+				name: "Exports",
+				icon: IconTypeEnum.Download,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
+						parameters={exportParameterProps}
+						exports={exportProps}
+						defaultGroupName="Exports"
+						topSection={<AcceptRejectButtons parameters={exportParameterProps}/>}
+					/>
+				]
+			}
+		]
+	};
 
-		<ParametersAndExportsAccordionTab value="parameters" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent
-				parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
-				defaultGroupName="Custom material"
-				topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-			/>
-		</ParametersAndExportsAccordionTab>
-
-		<ParametersAndExportsAccordionTab  value="exports" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent
-				parameters={exportParameterProps}
-				exports={exportProps}
-				defaultGroupName="Exports"
-				topSection={<AcceptRejectButtons parameters={exportParameterProps}/>}
-			/>
-		</ParametersAndExportsAccordionTab>
-	</Tabs>;
+	const parameterTabs = <TabsComponent {...tabProps} />;
 
 	return (
 		<>

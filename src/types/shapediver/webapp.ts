@@ -1,5 +1,6 @@
 import { IShapeDiverExportDefinition } from "types/shapediver/export";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
+import { IconType } from "./icons";
 
 /** Type used for parameter definitions */
 export type IWebAppParameterDefinition = IShapeDiverParameterDefinition;
@@ -76,19 +77,13 @@ export interface IWebAppWidget {
 }
 
 /** 
- * Types of icons for tabs 
- * @see https://tabler.io/icons
- */
-export type WebAppContainerTabIconType = "adjustments" | "adjustments-horizontal" | "arrow-back" | "arrow-down" | "arrow-forward" | "arrow-left" | "arrow-right" | "arrow-up" | "augmented-reality" | "augmented-reality-off" | "bookmark" | "bookmark-off" | "bookmarks" | "bookmarks-off" | "books" | "books-off" | "camera" | "camera-off" | "copy" | "dots" | "dots-vertical" | "download" | "download-off" | "file-download" | "file-export" | "file-import" | "key" | "key-off" | "link" | "link-off" | "maximize" | "maximize-off" | "network" | "network-off" | "photo" | "photo-off" | "refresh" | "refresh-off" | "reload" | "replace" | "settings" | "share" | "share-2" | "share-3" | "share-off" | "upload" | "user" | "user-off" | "users" | "video" | "video-off" | "world" | "world-off" | "zoom-scan";
-
-/** 
  * A tab displayed in a container.
  */
 export interface IWebAppTab {
 	/** Name of the tab. */
 	name: string
 	/** Optional icon of the tab. */
-	icon?: WebAppContainerTabIconType
+	icon?: IconType
 	/** Widgets displayed in the tab. */
 	widgets: IWebAppWidget[]
 }

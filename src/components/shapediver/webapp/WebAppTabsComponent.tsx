@@ -1,10 +1,7 @@
 import React from "react";
 import { IWebAppTab } from "types/shapediver/webapp";
-import classes from "./WebAppTabsComponent.module.css";
-import { Tabs } from "@mantine/core";
 import WebAppWidgetsComponent from "./WebAppWidgetsComponent";
-import ParametersAndExportsAccordionTab from "../ui/ParametersAndExportsAccordionTab";
-import { useIsMobile } from "hooks/ui/useIsMobile";
+import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 
 interface Props {
 	sessionId: string,
@@ -14,26 +11,22 @@ interface Props {
 
 export default function WebAppTabsComponent({ sessionId, version, tabs }: Props) {
 
-	const isMobile = useIsMobile();
-
 	if (!tabs || tabs.length === 0) {
 		return <></>;
 	}
 
-	return <Tabs defaultValue={tabs[0].name} className={classes.tabs}>
-		<Tabs.List>
-			{
-				// TODO tab.icon
-				tabs.map((tab, index) => <Tabs.Tab key={index} value={tab.name}>{tab.name}</Tabs.Tab>)
-			}
-		</Tabs.List>
-		{
-			tabs.map((tab, index) => 
-				<ParametersAndExportsAccordionTab key={index} value={tab.name} pt={isMobile ? "" : "xs"}>
-					<WebAppWidgetsComponent key={index} sessionId={sessionId} version={version} widgets={tab.widgets} />
-				</ParametersAndExportsAccordionTab>
-			)
-		}
-	</Tabs>;
+	const tabProps: ITabsComponentProps = {
+		defaultValue: tabs[0].name,
+		tabs: tabs.map(tab => {
+			return {
+				name: tab.name,
+				children: [
+					<WebAppWidgetsComponent key={0} sessionId={sessionId} version={version} widgets={tab.widgets} />
+				]
+			};
+		})
+	};
+
+	return <TabsComponent {...tabProps} />;
 
 }

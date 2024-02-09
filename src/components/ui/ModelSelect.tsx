@@ -1,4 +1,4 @@
-import { MultiSelect, Notification, Tabs } from "@mantine/core";
+import { MultiSelect, Notification } from "@mantine/core";
 import { ISelectedModel, useModelSelectStore } from "store/useModelSelectStore";
 import React from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
@@ -6,11 +6,9 @@ import { ShapeDiverExampleModels } from "tickets";
 import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
-import { useIsMobile } from "hooks/ui/useIsMobile";
 import { useSessions } from "hooks/shapediver/useSessions";
-import classes from "./ModelSelect.module.css";
-import ParametersAndExportsAccordionTab from "../shapediver/ui/ParametersAndExportsAccordionTab";
 import AcceptRejectButtons from "../shapediver/ui/AcceptRejectButtons";
+import TabsComponent, { ITabsComponentProps } from "./TabsComponent";
 
 /**
  * Function that creates a select element in which models can be selected.
@@ -22,7 +20,6 @@ export default function ModelSelect() {
 
 	const { selectedModels, setSelectedModels } = useModelSelectStore((state) => state);
 	const acceptRejectMode = true;
-	const isMobile = useIsMobile();
 
 	useSessions(selectedModels);
 
@@ -52,24 +49,23 @@ export default function ModelSelect() {
 	const parameterProps = useSessionPropsParameter(sessionIds);
 	const exportProps = useSessionPropsExport(sessionIds);
 
-	const tabs = selectedModels.length === 0 ? <></> : <Tabs defaultValue={selectedModels[0].slug} className={classes.tabs}>
-		<Tabs.List>
-			{
-				selectedModels.map(model => <Tabs.Tab key={model.slug} value={model.slug}>{model.name}</Tabs.Tab>)
-			}
-		</Tabs.List>
-		{
-			selectedModels.map(model =>
-				<ParametersAndExportsAccordionTab key={model.slug} value={model.slug} pt={isMobile ? "" : "xs"}>
-					<ParametersAndExportsAccordionComponent
+	const tabProps: ITabsComponentProps = {
+		defaultValue: selectedModels.length === 0 ? "" : selectedModels[0].slug,
+		tabs: selectedModels.map(model => {
+			return {
+				name: model.slug,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
 						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
 						exports={exportProps.filter(p => p.sessionId === model.slug)}
 						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
 					/>
-				</ParametersAndExportsAccordionTab>
-			)
-		}
-	</Tabs>;
+				]
+			};
+		})
+	};
+
+	const tabs = <TabsComponent {...tabProps} />;
 
 	return (
 		<>

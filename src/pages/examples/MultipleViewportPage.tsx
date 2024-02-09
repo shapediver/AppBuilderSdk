@@ -1,18 +1,17 @@
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React from "react";
-import { useSession } from "hooks/shapediver/useSession";
+import { IUseSessionDto, useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
 import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
-import { Grid, Tabs } from "@mantine/core";
-import { IconFileDownload, IconAdjustmentsHorizontal } from "@tabler/icons-react";
+import { Grid } from "@mantine/core";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
-import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./MultipleViewportPage.module.css";
-import ParametersAndExportsAccordionTab from "../../components/shapediver/ui/ParametersAndExportsAccordionTab";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
+import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
+import { IconTypeEnum } from "types/shapediver/icons";
 
 /**
  * Function that creates the view page.
@@ -24,18 +23,19 @@ export default function ViewPage() {
 	const sessionSideboardKey = "Sideboard";
 	const sessionBookshelfKey = "Bookshelf";
 
-	const sessionsCreateDto = {
+	const sessionsCreateDto : { [key: string]: IUseSessionDto } = {
 		[sessionSideboardKey]: {
 			id:  ShapeDiverExampleModels[sessionSideboardKey].slug,
 			ticket: ShapeDiverExampleModels[sessionSideboardKey].ticket,
 			modelViewUrl: ShapeDiverExampleModels[sessionSideboardKey].modelViewUrl,
-			excludeViewports: ["viewport_multiple_2", "viewport_multiple_3"]
+			excludeViewports: ["viewport_multiple_2", "viewport_multiple_3"],
 		},
 		[sessionBookshelfKey]: {
 			id: ShapeDiverExampleModels[sessionBookshelfKey].slug,
 			ticket: ShapeDiverExampleModels[sessionBookshelfKey].ticket,
 			modelViewUrl: ShapeDiverExampleModels[sessionBookshelfKey].modelViewUrl,
-			excludeViewports: ["viewport_multiple_0", "viewport_multiple_1"]
+			excludeViewports: ["viewport_multiple_0", "viewport_multiple_1"],
+			acceptRejectMode: true,
 		},
 	};
 
@@ -50,8 +50,7 @@ export default function ViewPage() {
 
 	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id);
 	const parameterBookshelfProps = useSessionPropsParameter(sessionsCreateDto[sessionBookshelfKey].id);
-	const isMobile = useIsMobile();
-
+	
 	const viewports = [
 		...([sessionSideboardKey, sessionSideboardKey] as Array<keyof typeof sessionsCreateDto>).map((sessionName, i) => {
 			const sessionCreateDto = sessionsCreateDto[sessionName];
@@ -81,28 +80,36 @@ export default function ViewPage() {
 		})
 	];
 
-	const aside = <Tabs defaultValue="bench" className={classes.asideTabs}>
-		<Tabs.List>
-			<Tabs.Tab value="bench" leftSection={<IconAdjustmentsHorizontal size={14} />}>Bench</Tabs.Tab>
-			<Tabs.Tab value="bookshelf" leftSection={<IconFileDownload size={14} />}>Bookshelf</Tabs.Tab>
-		</Tabs.List>
+	const tabProps: ITabsComponentProps = {
+		defaultValue: "Bench",
+		tabs: [
+			{
+				name: "Bench",
+				icon: IconTypeEnum.AdjustmentsHorizontal,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
+						parameters={parameterBenchProps}
+						defaultGroupName="Bench parameters"
+						topSection={<AcceptRejectButtons parameters={parameterBenchProps}/>}
+					/>
+				]
+			},
+			{
+				name: "Bookshelf",
+				icon: IconTypeEnum.Download,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
+						parameters={parameterBookshelfProps}
+						defaultGroupName="Bookshelf parameters"
+						topSection={<AcceptRejectButtons parameters={parameterBookshelfProps}/>}
+					/>
+				]
+			}
+		]
+	};
 
-		<ParametersAndExportsAccordionTab value="bench" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent
-				parameters={parameterBenchProps}
-				defaultGroupName="Bench parameters"
-				topSection={<AcceptRejectButtons parameters={parameterBenchProps}/>}
-			/>
-		</ParametersAndExportsAccordionTab>
 
-		<ParametersAndExportsAccordionTab value="bookshelf" pt={isMobile ? "" : "xs"}>
-			<ParametersAndExportsAccordionComponent
-				parameters={parameterBookshelfProps}
-				defaultGroupName="Bookshelf parameters"
-				topSection={<AcceptRejectButtons parameters={parameterBookshelfProps}/>}
-			/>
-		</ParametersAndExportsAccordionTab>
-	</Tabs>;
+	const aside = <TabsComponent {...tabProps} />;
 
 	return (
 		<ExamplePage aside={aside}>
