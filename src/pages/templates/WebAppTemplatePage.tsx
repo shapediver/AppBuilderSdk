@@ -93,7 +93,7 @@ export default function WebAppTemplatePage({
 
 		gridTemplateAreas = gridTemplateAreas.trim();
 
-		console.log("gridTemplateAreas", gridTemplateAreas);
+		//console.debug("gridTemplateAreas", gridTemplateAreas);
 
 		return {
 			gridTemplateAreas,

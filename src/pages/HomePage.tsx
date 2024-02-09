@@ -78,8 +78,17 @@ Parameter and export controls are shown for all selected models."
 					/>
 
 					<ModelCard
-						title="New Layout Test"
-						description="This example of new layout."
+						title="Web App Template Test"
+						description="Static example page showing the capabilities of the web app template page."
+						btnText="Open example"
+						btnLink="/webAppTest"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
+
+					<ModelCard
+						title="Web App"
+						description="Dynamic web app."
 						btnText="Open example"
 						btnLink="/webApp"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"

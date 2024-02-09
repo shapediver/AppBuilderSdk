@@ -28,8 +28,8 @@ interface Props {
 	defaultGroupName?: string,
 	/**
 	 * Set this to true to avoid groups containing a single parameter or export component.
-	 * In case this is not set or false, parameters and exports of groups with a single
-	 * compnent will be displayed without using an accordion.
+	 * In case this is not set or true, parameters and exports of groups with a single
+	 * component will be displayed without using an accordion.
 	 */
 	avoidSingleComponentGroups?: boolean,
 	/**
@@ -44,7 +44,7 @@ interface Props {
 }
 
 export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, 
-	avoidSingleComponentGroups = false, mergeAccordions = false, topSection}: Props) {
+	avoidSingleComponentGroups = true, mergeAccordions = false, topSection}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
 	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);

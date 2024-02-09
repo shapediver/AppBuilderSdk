@@ -118,7 +118,6 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 	const parameterTabs = <ParametersAndExportsAccordionComponent
 		parameters={parameterProps.length > 0 ? parameterProps : []	}
 		topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-		avoidSingleComponentGroups={true}
 	/>;
 
 	return (
