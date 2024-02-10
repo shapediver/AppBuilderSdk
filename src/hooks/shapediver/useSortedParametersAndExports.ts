@@ -3,6 +3,9 @@ import { PropsExport } from "types/components/shapediver/propsExport";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 
+/**
+ * The definition of a parameter or export, and the corresponding parameter or export properties.
+ */
 interface ParamOrExportDefinition {
 	parameter?: PropsParameter,
 	export?: PropsExport,

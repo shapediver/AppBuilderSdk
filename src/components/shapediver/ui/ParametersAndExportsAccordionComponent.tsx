@@ -47,7 +47,6 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	avoidSingleComponentGroups = true, mergeAccordions = false, topSection}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
-	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
@@ -86,7 +85,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
-						disableIfDirty={!acceptRejectMode}
+						disableIfDirty={param.parameter.disableIfDirty ?? !param.parameter.acceptRejectMode}
 						acceptRejectMode={param.parameter.acceptRejectMode}
 					/>
 				</div>

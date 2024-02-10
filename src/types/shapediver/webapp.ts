@@ -16,9 +16,9 @@ export interface IWebAppParameterRef {
 	sessionId?: string
 	/** Properties of the parameter to be overridden. TODO implement this */
 	overrides?: Pick<IWebAppParameterDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
-	/** Disable the UI element of the parameter if its state is dirty. TODO implement this */
+	/** Disable the UI element of the parameter if its state is dirty. */
 	disableIfDirty?: boolean
-	/** Ask the user to accept or reject changes of this parameter before executing them. TODO implement this */
+	/** Ask the user to accept or reject changes of this parameter before executing them. */
 	acceptRejectMode?: boolean
 }
 

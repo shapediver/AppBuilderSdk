@@ -20,7 +20,7 @@ export default function WebAppAccordionWidgetComponent({ sessionId, parameters =
 		return { 
 			sessionId: p.sessionId ?? sessionId, 
 			parameterId: p.name,
-			disableIfDirty: !!p.disableIfDirty,
+			disableIfDirty: p.disableIfDirty,
 			acceptRejectMode: !!p.acceptRejectMode,
 		}; 
 	});

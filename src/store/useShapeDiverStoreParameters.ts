@@ -18,7 +18,16 @@ import {
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 
-function createParameterExecutor<T>(sessionId: string, param: IGenericParameterDefinition, immediate: boolean, getChanges: () => IParameterChanges): IShapeDiverParameterExecutor<T> {
+/**
+ * Create an IShapeDiverParameterExecutor for a single parameter, 
+ * for use with createParameterStore.
+ * 
+ * @param sessionId The session id of the parameter.
+ * @param param The parameter definition.
+ * @param getChanges Function for getting the change object of the parameter's session.
+ * @returns 
+ */
+function createParameterExecutor<T>(sessionId: string, param: IGenericParameterDefinition, getChanges: () => IParameterChanges): IShapeDiverParameterExecutor<T> {
 	const paramId = param.definition.id;
 	
 	return {
@@ -41,7 +50,7 @@ function createParameterExecutor<T>(sessionId: string, param: IGenericParameterD
 			try {
 				console.debug(`Queueing change of parameter ${paramId} to ${uiValue}`);
 				changes.values[paramId] = uiValue;
-				if (immediate || forceImmediate)
+				if (forceImmediate)
 					setTimeout(changes.accept, 0);
 				await changes.wait;
 				console.debug(`Executed change of parameter ${paramId} to ${uiValue}`);
@@ -124,7 +133,8 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>, acce
 			},
 			execute: async function (forceImmediate?: boolean): Promise<T | string> {
 				const state = get().state;
-				const result = await executor.execute(state.uiValue, state.execValue, forceImmediate);
+				const acceptRejectMode = get().acceptRejectMode;
+				const result = await executor.execute(state.uiValue, state.execValue, forceImmediate || !acceptRejectMode);
 				// TODO in case result is not the current uiValue, we could somehow visualize
 				// the fact that the uiValue gets reset here
 				set((_state) => ({
@@ -211,7 +221,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		}), false, "removeChanges");
 	},
 
-	getChanges: (sessionId: string, executor: IGenericParameterExecutor, disableControls: boolean) : IParameterChanges => {
+	getChanges: (sessionId: string, executor: IGenericParameterExecutor) : IParameterChanges => {
 		const { parameterChanges, removeChanges } = get();
 		if ( parameterChanges[sessionId] )
 			return parameterChanges[sessionId];
@@ -221,7 +231,6 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 			accept: () => undefined,
 			reject: () => undefined,
 			wait: Promise.resolve(),
-			disableControls,
 			executing: false,
 		};
 	
@@ -285,8 +294,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 						const acceptRejectMode = acceptRejectModeSelector(param);
 						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, 
 							{ definition: param, isValid: (value, throwError) => param.isValid(value, throwError) }, 
-							!acceptRejectMode, 
-							() => getChanges(sessionId, executor, !acceptRejectMode)
+							() => getChanges(sessionId, executor)
 						), acceptRejectMode);
 
 						return acc;
@@ -317,8 +325,8 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					: {	[sessionId]: (Array.isArray(definitions) ? definitions : [definitions]).reduce((acc, def) => {
 						const paramId = def.definition.id;
 						const acceptRejectMode = acceptRejectModeSelector(def.definition);
-						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, def, !acceptRejectMode, 
-							() => getChanges(sessionId, executor, !acceptRejectMode)
+						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, def, 
+							() => getChanges(sessionId, executor)
 						), acceptRejectMode);
 
 						return acc;

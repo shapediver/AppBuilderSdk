@@ -1,6 +1,6 @@
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./useOutputContent";
-import { IWebApp, IWebAppParameterRef, isAccordionWidget } from "types/shapediver/webapp";
+import { IWebApp } from "types/shapediver/webapp";
 import React from "react";
 import WebAppContainerComponent from "components/shapediver/webapp/WebAppContainerComponent";
 
@@ -31,31 +31,13 @@ export function useSessionWithWebApp(props: IUseSessionDto | undefined) {
 	// start session and register parameters and exports without acceptance mode
 	const { sessionApi } = useSession(props ? {
 		...props,
-		acceptRejectMode: false,
+		acceptRejectMode: true,
 	} : undefined);
 
 	// get data output, parse it
 	const { outputContent } = useOutputContent( props?.id ?? "", CUSTOM_DATA_OUTPUT_NAME );
 	const webapp = outputContent?.[0]?.data as IWebApp | undefined; // TODO validation
 	console.debug(CUSTOM_DATA_OUTPUT_NAME, webapp);
-
-	// TODO remove this - collect information about referenced parameters
-	const parameters: IWebAppParameterRef[] = webapp?.containers?.flatMap((container) => {
-		return (container.tabs?.flatMap((tab) => {
-			return tab.widgets?.flatMap((widget) => {
-				if (!isAccordionWidget(widget))
-					return [];
-				
-				return widget.props.parameters ?? [];
-			}) ?? [];
-		}) ?? []).concat(container.widgets?.flatMap((widget) => {
-			if (!isAccordionWidget(widget))
-				return [];
-			
-			return widget.props.parameters ?? [];
-		}) ?? []);
-	}) || [];
-	console.debug("parameters", parameters);
 
 	// TODO register custom parameters
 
