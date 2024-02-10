@@ -69,7 +69,7 @@ export function useSessionWithWebApp(props: IUseSessionDto | undefined) {
 
 	if (props && webapp?.containers) {
 		webapp.containers.forEach((container) => {
-			elements[container.hint] = WebAppContainerComponent({...container, sessionId: props.id, version: "xyz" });
+			elements[container.hint] = WebAppContainerComponent({...container, sessionId: props.id });
 		});
 	}
 

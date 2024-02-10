@@ -9,17 +9,15 @@ interface Props extends IWebAppWidgetPropsImage {
 	 * not specify a session id.
 	 */
 	sessionId: string
-	/** TODO drop this */
-	version: string
 }
 
-export default function WebAppImageWidgetComponent({href, export: exportRef, sessionId, version}: Props) {
+export default function WebAppImageWidgetComponent({href, export: exportRef, sessionId}: Props) {
 
 	if (href) {
 		return <ImageWidgetComponent src={href} />;
 	}
 	else if (exportRef) {
-		return <WebAppImageExportWidgetComponent sessionId={sessionId} exportId={exportRef.name} version={version} />;
+		return <WebAppImageExportWidgetComponent sessionId={sessionId} exportId={exportRef.name} />;
 	}
 
 	return <></>;

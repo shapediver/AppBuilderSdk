@@ -9,13 +9,11 @@ interface Props {
 	 * not specify a session id.
 	 */
 	sessionId: string,
-	/** TODO drop this */
-	version: string,
 	/** The tabs to display. */
 	tabs: IWebAppTab[] | undefined
 }
 
-export default function WebAppTabsComponent({ sessionId, version, tabs }: Props) {
+export default function WebAppTabsComponent({ sessionId, tabs }: Props) {
 
 	if (!tabs || tabs.length === 0) {
 		return <></>;
@@ -27,7 +25,7 @@ export default function WebAppTabsComponent({ sessionId, version, tabs }: Props)
 			return {
 				name: tab.name,
 				children: [
-					<WebAppWidgetsComponent key={0} sessionId={sessionId} version={version} widgets={tab.widgets} />
+					<WebAppWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} />
 				]
 			};
 		})

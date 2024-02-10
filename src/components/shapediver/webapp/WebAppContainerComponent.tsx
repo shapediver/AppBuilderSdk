@@ -9,15 +9,13 @@ interface Props extends IWebAppContainer {
 	 * not specify a session id.
 	 */
 	sessionId: string,
-	/** TODO drop this */
-	version: string
 }
 
-export default function WebAppContainerComponent({ sessionId, version, widgets, tabs }: Props) {
+export default function WebAppContainerComponent({ sessionId, widgets, tabs }: Props) {
 
 	return <>
-		<WebAppTabsComponent sessionId={sessionId} version={version} tabs={tabs} />
-		<WebAppWidgetsComponent sessionId={sessionId} version={version} widgets={widgets} />
+		<WebAppTabsComponent sessionId={sessionId} tabs={tabs} />
+		<WebAppWidgetsComponent sessionId={sessionId} widgets={widgets} />
 	</>;
 
 }

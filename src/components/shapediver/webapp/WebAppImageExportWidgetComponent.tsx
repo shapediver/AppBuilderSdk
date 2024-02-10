@@ -11,8 +11,6 @@ interface Props {
 	sessionId: string
 	/** Id or name or displayname of the export to get the image from. */
 	exportId: string
-	/** TODO drop this */
-	version: string
 }
 
 /**
@@ -20,7 +18,7 @@ interface Props {
  * @param param0 
  * @returns 
  */
-export default function WebAppImageExportWidgetComponent({sessionId, exportId, version}: Props) {
+export default function WebAppImageExportWidgetComponent({sessionId, exportId}: Props) {
 	
 	const { definition, actions } = useExport(sessionId, exportId);
 
@@ -44,7 +42,7 @@ export default function WebAppImageExportWidgetComponent({sessionId, exportId, v
 			}
 		});
 		
-	}, [version]);
+	}, [{}]);
 
 	if (href)
 		return <ImageWidgetComponent src={href} />;
