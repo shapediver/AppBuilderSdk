@@ -4,7 +4,12 @@ import WebAppWidgetsComponent from "./WebAppWidgetsComponent";
 import WebAppTabsComponent from "./WebAppTabsComponent";
 
 interface Props extends IWebAppContainer {
+	/** 
+	 * Default session id to use for parameter and export references that do 
+	 * not specify a session id.
+	 */
 	sessionId: string,
+	/** TODO drop this */
 	version: string
 }
 

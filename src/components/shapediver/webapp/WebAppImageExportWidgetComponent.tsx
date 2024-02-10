@@ -4,8 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import ImageWidgetComponent from "../ui/ImageWidgetComponent";
 
 interface Props {
+	/** 
+	 * Default session id to use for parameter and export references that do 
+	 * not specify a session id.
+	 */
 	sessionId: string
+	/** Id or name or displayname of the export to get the image from. */
 	exportId: string
+	/** TODO drop this */
 	version: string
 }
 

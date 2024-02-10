@@ -4,8 +4,14 @@ import WebAppWidgetsComponent from "./WebAppWidgetsComponent";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 
 interface Props {
+	/** 
+	 * Default session id to use for parameter and export references that do 
+	 * not specify a session id.
+	 */
 	sessionId: string,
+	/** TODO drop this */
 	version: string,
+	/** The tabs to display. */
 	tabs: IWebAppTab[] | undefined
 }
 

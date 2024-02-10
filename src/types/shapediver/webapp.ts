@@ -10,25 +10,25 @@ export type IWebAppExportDefinition = IShapeDiverExportDefinition;
 
 /** Reference to a parameter (custom or defined by the session) */
 export interface IWebAppParameterRef {
-	/** Optional id of the referenced parameter. Takes precedence over name. Id or name must be specified. */
-	id?: string
-	/** Optional name of the referenced parameter. Id takes precedence. Id or name must be specified. */
-	name?: string
-	/** Properties of the parameter to be overridden. */
+	/** Id or name or displayname of the referenced parameter (in that order). */
+	name: string
+	/** Optional id of the session the referenced parameter belongs to. */
+	sessionId?: string
+	/** Properties of the parameter to be overridden. TODO implement this */
 	overrides?: Pick<IWebAppParameterDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
-	/** Disable the UI element of the parameter if its state is dirty. */
+	/** Disable the UI element of the parameter if its state is dirty. TODO implement this */
 	disableIfDirty?: boolean
-	/** Ask the user to accept or reject changes of this parameter before executing them. */
+	/** Ask the user to accept or reject changes of this parameter before executing them. TODO implement this */
 	acceptRejectMode?: boolean
 }
 
 /** Reference to an export (defined by the session) */
 export interface IWebAppExportRef {
-	/** Optional id of the referenced export. Takes precedence over name. Id or name must be specified. */
-	id?: string
-	/** Optional name of the referenced export. Id takes precedence. Id or name must be specified. */
-	name?: string
-	/** Properties of the export to be overridden. */
+	/** Id or name or displayname of the referenced export (in that order). */
+	name: string
+	/** Optional id of the session the referenced parameter belongs to. */
+	sessionId?: string
+	/** Properties of the export to be overridden. TODO implement this */
 	overrides?: Pick<IWebAppExportDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
 }
 
@@ -64,8 +64,8 @@ export interface IWebAppWidgetPropsText {
 export interface IWebAppWidgetPropsImage {
 	/** URL to image. Can be a data URL including a base 64 encoded image. Takes precedence over export reference. */
 	href?: string
-	/** Optional reference to id or name of export which provides the image. */
-	export?: string
+	/** Optional reference to export which provides the image. */
+	export?: IWebAppExportRef
 }
 
 /** A widget. */
@@ -118,6 +118,9 @@ export interface IWebApp {
 	 */
 	parameters?: IWebAppParameterDefinition[]
 
+	/** Optional id of the session to use for defining custom parameters. */
+	sessionId?: string
+	
 	/**
 	 * Containers to be displayed.
 	 */

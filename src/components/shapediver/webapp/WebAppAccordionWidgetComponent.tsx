@@ -5,10 +5,12 @@ import { IWebAppWidgetPropsAccordion } from "types/shapediver/webapp";
 import ParametersAndExportsAccordionComponent from "../ui/ParametersAndExportsAccordionComponent";
 import AcceptRejectButtons from "../ui/AcceptRejectButtons";
 
-/**
- * TODO refactor such that sessionId can be specified per parameter and export
- */
+
 interface Props extends IWebAppWidgetPropsAccordion {
+	/** 
+	 * Default session id to use for parameter and export references that do 
+	 * not specify a session id.
+	 */
 	sessionId: string
 }
 
@@ -16,8 +18,8 @@ export default function WebAppAccordionWidgetComponent({ sessionId, parameters =
 	
 	const parameterProps: PropsParameter[] = parameters.map(p => { 
 		return { 
-			sessionId, 
-			parameterId: (p.id || p.name)!,
+			sessionId: p.sessionId ?? sessionId, 
+			parameterId: p.name,
 			disableIfDirty: !!p.disableIfDirty,
 			acceptRejectMode: !!p.acceptRejectMode,
 		}; 
@@ -25,8 +27,8 @@ export default function WebAppAccordionWidgetComponent({ sessionId, parameters =
 
 	const exportProps: PropsExport[] = exports.map(p => { 
 		return { 
-			sessionId, 
-			exportId: (p.id || p.name)!,
+			sessionId: p.sessionId ?? sessionId, 
+			exportId: p.name,
 		}; 
 	});
 
