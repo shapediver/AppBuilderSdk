@@ -1,7 +1,6 @@
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./useOutputContent";
 import { IWebApp } from "types/shapediver/webapp";
-import React from "react";
 import WebAppContainerComponent from "components/shapediver/webapp/WebAppContainerComponent";
 
 /** Prefix used to register custom parameters */
@@ -42,11 +41,11 @@ export function useSessionWithWebApp(props: IUseSessionDto | undefined) {
 	// TODO register custom parameters
 
 	// create UI elements
-	const elements: { top: JSX.Element, bottom: JSX.Element, left: JSX.Element, right: JSX.Element } = {
-		top: <></>,
-		bottom: <></>,
-		left: <></>,
-		right: <></>
+	const elements: { top?: JSX.Element, bottom?: JSX.Element, left?: JSX.Element, right?: JSX.Element } = {
+		top: undefined,
+		bottom: undefined,
+		left: undefined,
+		right: undefined,
 	};
 
 	if (props && webapp?.containers) {
