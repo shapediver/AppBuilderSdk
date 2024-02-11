@@ -24,6 +24,7 @@ export default function WebAppTabsComponent({ sessionId, tabs }: Props) {
 		tabs: tabs.map(tab => {
 			return {
 				name: tab.name,
+				icon: tab.icon,
 				children: [
 					<WebAppWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} />
 				]

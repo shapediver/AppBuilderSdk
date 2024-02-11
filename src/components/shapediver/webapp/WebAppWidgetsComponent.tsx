@@ -29,7 +29,7 @@ export default function WebAppWidgetsComponent({ sessionId, widgets }: Props) {
 			else if (isAccordionWidget(w))
 				return <WebAppAccordionWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else
-				return <></>;
+				return null;
 		})}
 	</>;
 
