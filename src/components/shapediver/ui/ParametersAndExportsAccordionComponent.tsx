@@ -106,13 +106,16 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	});
 
 	const elements: JSX.Element[] = [];
-	const addAccordion = (items: JSX.Element[]) => {
+	const addAccordion = (items: JSX.Element[], defaultValue: string | undefined = undefined) => {
 		elements.push(
-			<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={items[0].key}>
+			<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={items[0].key} defaultValue={defaultValue}>
 				{ items }
 			</Accordion>
 		);
 	};
+
+	// in case there is only one group, open it by default
+	const defaultValue = elementGroups.length === 1 && elementGroups[0].group ? elementGroups[0].group?.id : undefined;
 
 	// loop through the created elementGroups to add them
 	let accordionItems: JSX.Element[] = [];
@@ -137,20 +140,20 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 				</Accordion.Item>
 			);
 			if (!mergeAccordions) {
-				addAccordion(accordionItems);
+				addAccordion(accordionItems, defaultValue);
 				accordionItems = [];
 			}
 		}
 		else {
 			if (accordionItems.length > 0) {
-				addAccordion(accordionItems);
+				addAccordion(accordionItems, defaultValue);
 				accordionItems = [];
 			}
 			elements.push(groupElements[0]);
 		}
 	}
 	if (accordionItems.length > 0) {
-		addAccordion(accordionItems);
+		addAccordion(accordionItems, defaultValue);
 	}
 
 	return <>
