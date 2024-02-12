@@ -59,7 +59,7 @@ import { IconTypeEnum } from "types/shapediver/icons";
 
 
 export default function Icon({type} : {type: IconTypeEnum | undefined}) {
-	const iconProps = { size: 14 };
+	const iconProps = { size: 14, stroke: 1 };
 	switch (type) {
 	case IconTypeEnum.Adjustments:
 		return <IconAdjustments {...iconProps} />;
