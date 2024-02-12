@@ -30,7 +30,7 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="view" element={<ViewPage />} />
-					<Route path="webApp" element={<WebAppPage />} />
+					<Route path="webApp" element={<WebAppPage example="WebAppDiagrid" acceptRejectMode={true} showContainerButtons={true} />} />
 					<Route path="webAppTest" element={<WebAppExampleOnePage />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
 					<Route path="multipleViewport" element={<MultipleViewportPage />} />

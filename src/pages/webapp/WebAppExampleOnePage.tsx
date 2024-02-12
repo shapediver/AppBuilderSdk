@@ -1,4 +1,4 @@
-import { IMaterialStandardDataProperties, PARAMETER_TYPE, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine, PARAMETER_TYPE, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import { useSession } from "hooks/shapediver/useSession";

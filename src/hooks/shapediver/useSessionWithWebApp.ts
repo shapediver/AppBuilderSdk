@@ -2,6 +2,9 @@ import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./useOutputContent";
 import { IWebApp } from "types/shapediver/webapp";
 import WebAppContainerComponent from "components/shapediver/webapp/WebAppContainerComponent";
+import WebAppFallbackContainerComponent from "components/shapediver/webapp/WebAppFallbackContainerComponent";
+import { useSessionPropsParameter } from "./useSessionPropsParameter";
+import { useSessionPropsExport } from "./useSessionPropsExport";
 
 /** Prefix used to register custom parameters */
 //const CUSTOM_SESSION_ID_POSTFIX = "_webappui";
@@ -27,6 +30,8 @@ const CUSTOM_DATA_OUTPUT_NAME = "WebAppUi";
  */
 export function useSessionWithWebApp(props: IUseSessionDto | undefined) {
 	
+	const sessionId = props?.id ?? "";
+
 	// start session and register parameters and exports without acceptance mode
 	const { sessionApi } = useSession(props ? {
 		...props,
@@ -34,9 +39,14 @@ export function useSessionWithWebApp(props: IUseSessionDto | undefined) {
 	} : undefined);
 
 	// get data output, parse it
-	const { outputContent } = useOutputContent( props?.id ?? "", CUSTOM_DATA_OUTPUT_NAME );
+	const { outputApi, outputContent } = useOutputContent( sessionId, CUSTOM_DATA_OUTPUT_NAME );
 	const webapp = outputContent?.[0]?.data as IWebApp | undefined; // TODO validation
 	console.debug(CUSTOM_DATA_OUTPUT_NAME, webapp);
+	const hasWebAppOutput = !!outputApi;
+	
+	// get props for fallback parameters
+	const parameterProps = useSessionPropsParameter(sessionId);
+	const exportProps = useSessionPropsExport(sessionId);
 
 	// TODO register custom parameters
 
@@ -48,14 +58,21 @@ export function useSessionWithWebApp(props: IUseSessionDto | undefined) {
 		right: undefined,
 	};
 
-	if (props && webapp?.containers) {
-		webapp.containers.forEach((container) => {
-			elements[container.hint] = WebAppContainerComponent({...container, sessionId: props.id });
-		});
+	if (props) {
+		if (webapp?.containers) {
+			webapp.containers.forEach((container) => {
+				elements[container.hint] = WebAppContainerComponent({...container, sessionId: props.id });
+			});
+		}
+		else if (!hasWebAppOutput)
+		{
+			elements.right = WebAppFallbackContainerComponent({parameters: parameterProps, exports: exportProps});
+		}
 	}
-
+	
 	return {
 		sessionApi,
+		show: Object.values(elements).some(e => e !== undefined),
 		...elements
 	};
 }

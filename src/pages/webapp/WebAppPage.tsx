@@ -12,32 +12,39 @@ import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
 import { useSessionWithWebApp } from "hooks/shapediver/useSessionWithWebApp";
 
 const VIEWPORT_ID = "viewport_1";
-const MODEL_NAME = "WebAppDiagrid";
-const SESSION_ID = ShapeDiverExampleModels[MODEL_NAME].slug;
-const ACCEPT_REJECT_MODE = true;
-const SESSION_DTO = {
-	id: SESSION_ID,
-	ticket: ShapeDiverExampleModels[MODEL_NAME].ticket,
-	modelViewUrl: ShapeDiverExampleModels[MODEL_NAME].modelViewUrl,
-	acceptRejectMode: ACCEPT_REJECT_MODE
-};
+
+interface Props {
+	/** Name of example model which should be loaded by default. */
+	example?: string;
+	/** Should acceptRejectMode be used for the example model? */
+	acceptRejectMode?: boolean;
+	/** Should buttons for showing/hiding the containers be shown? */
+	showContainerButtons?: boolean;
+	/** Option to show / hide rendering statistics overlayed to the viewport. */
+	showStatistics?: boolean;
+}
 
 /**
- * Function that creates the view page.
- * The aside (right side) two tabs, one with a ParameterUiComponent and another with an ExportUiComponent
- * and a viewport and session in the main component. The session is connected via its id to the ParameterUiComponent and ExportUiComponent.
+ * Function that creates the web app page.
  *
  * @returns
  */
-export default function WebAppPage() {
+export default function WebAppPage({ example, acceptRejectMode, showContainerButtons, showStatistics }: Props) {
+
 	const sectionTopBgColor = "inherit";
 	const sectionLeftBgColor = "inherit";
 	const sectionRightBgColor = "inherit";
 	const sectionBottomBgColor = "inherit";
 
-	const { settings } = useWebAppSettings(SESSION_DTO);
+	const defaultSessionDto = example ? {
+		...ShapeDiverExampleModels[example],
+		id: ShapeDiverExampleModels[example].slug,
+		acceptRejectMode
+	} : undefined;
+
+	const { settings } = useWebAppSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
-	const { top, bottom, left, right } = useSessionWithWebApp(sessionDto);
+	const { top, bottom, left, right, show } = useSessionWithWebApp(sessionDto);
 	
 	const [isTopDisplayed, setIsTopDisplayed] = useState(false);
 	const [isLeftDisplayed, setIsLeftDisplayed] = useState(true);
@@ -47,33 +54,33 @@ export default function WebAppPage() {
 	const { branding } = useViewerBranding();
 
 	return (
-		<>
-			<Button.Group className={classes.buttonsTop}>
+		show ? <>
+			{showContainerButtons ? <Button.Group className={classes.buttonsTop}>
 				<Button variant="filled" onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
 				<Button variant="filled" onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
 				<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
 				<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
-			</Button.Group>
+			</Button.Group> : <></>}
 
 			<WebAppTemplatePage
-				top={isTopDisplayed ? <Container
+				top={top && isTopDisplayed ? <Container
 					fluid
 					className={classes.sectionTop}
 					style={{ backgroundColor: sectionTopBgColor }}
 				>{top}</Container> : undefined}
-				left={isLeftDisplayed ? <Container
+				left={left && isLeftDisplayed ? <Container
 					fluid
 					className={classes.sectionLeft}
 					style={{ backgroundColor: sectionLeftBgColor }}
 					p="xs"
 				>{left}</Container> : undefined}
-				right={isRightDisplayed ? <Container
+				right={right && isRightDisplayed ? <Container
 					fluid
 					className={classes.sectionRight}
 					style={{ backgroundColor: sectionRightBgColor }}
 					p="xs"
 				>{right}</Container> : undefined}
-				bottom={isBottomDisplayed ? <Container
+				bottom={bottom && isBottomDisplayed ? <Container
 					fluid
 					className={classes.sectionBottom}
 					style={{ backgroundColor: sectionBottomBgColor }}
@@ -83,7 +90,7 @@ export default function WebAppPage() {
 				<ViewportComponent
 					id={VIEWPORT_ID}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
-					showStatistics={true}
+					showStatistics={showStatistics}
 					branding={branding}
 				>
 					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
@@ -97,6 +104,6 @@ export default function WebAppPage() {
 					</ViewportAdditionalUIWrapper>
 				</ViewportComponent>
 			</WebAppTemplatePage>
-		</>
+		</> : null
 	);
 }
