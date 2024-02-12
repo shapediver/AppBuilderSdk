@@ -3,6 +3,9 @@ import { PropsExport } from "types/components/shapediver/propsExport";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 
+/**
+ * The definition of a parameter or export, and the corresponding parameter or export properties.
+ */
 interface ParamOrExportDefinition {
 	parameter?: PropsParameter,
 	export?: PropsExport,
@@ -22,16 +25,26 @@ export function useSortedParametersAndExports(parameters?: PropsParameter[], exp
 
 	// collect definitions of parameters and exports for sorting and grouping
 	let sortedParamsAndExports : ParamOrExportDefinition[] = [];
-	sortedParamsAndExports = sortedParamsAndExports.concat((parameters || []).map(p => {
-		const definition = parameterStores[p.sessionId][p.parameterId].getState().definition;
+	sortedParamsAndExports = sortedParamsAndExports.concat((parameters ?? []).flatMap(p => {
+		const stores = Object.values(parameterStores[p.sessionId]);
+		for (const store of stores) {
+			const definition = store.getState().definition;
+			if (definition.id === p.parameterId || definition.name === p.parameterId || definition.displayname === p.parameterId)
+				return { parameter: p, definition };
+		}
 
-		return { parameter: p, definition };
+		return [];
 	}));
 
-	sortedParamsAndExports = sortedParamsAndExports.concat((exports || []).map(e => {
-		const definition = exportStores[e.sessionId][e.exportId].getState().definition;
-
-		return { export: e, definition };
+	sortedParamsAndExports = sortedParamsAndExports.concat((exports ?? []).flatMap(e => {
+		const stores = Object.values(exportStores[e.sessionId]);
+		for (const store of stores) {
+			const definition = store.getState().definition;
+			if (definition.id === e.exportId || definition.name === e.exportId  || definition.displayname === e.exportId )
+				return { export: e, definition };
+		}
+		
+		return [];
 	}));
 
 	// sort the parameters

@@ -41,4 +41,9 @@ export const ShapeDiverExampleModels : {
 		ticket: "0be61d6f551424911dc15ca992c76cf2eab5c32aceccfbde18beb98bc98c769409c03c6e41dcac36051ee2fd066bb21e7cde6567f86287997e6cf58185fc88c8116b8058bba83e4528a2eb6cc8bb78e339a618f489696ac887ea2a762c331e7256ebbcd52a0052-e5245082baf9f79145f9b6bdc2fcf867",
 		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
 	},
+	"WebAppDiagrid": {
+		slug: "react-example-webapp-diagrid",
+		ticket: "627a93f926d196c1981c8ace73431fb02213ba833175256a31b679a68db4ae16ec2ff84e072afcb1af8313fdfb01f619e8b3590e15bc9e3012a15008b16f58d921cc7ead625442ee9d1b8ed0cb6f395892a809409669d06edd25458de3051d5db2531aab137964-6c1d050f65200b5f5f64bb5eec1ded83",
+		modelViewUrl: "https://sdr7euc1.eu-central-1.shapediver.com"
+	},
 };

@@ -16,6 +16,8 @@ export default function NavigationBar() {
 			<NavLink label="Select Page" component={Link} to="/modelSelect" />
 			<NavLink label="Multiple Viewports" component={Link} to="/multipleViewport" />
 			<NavLink label="Custom UI" component={Link} to="/customui" />
+			<NavLink label="Web App Test" component={Link} to="/webAppTest" />
+			<NavLink label="Web App" component={Link} to="/webApp" />
 
 			<Outlet />
 		</>

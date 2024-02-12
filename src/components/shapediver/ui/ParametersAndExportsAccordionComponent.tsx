@@ -28,8 +28,8 @@ interface Props {
 	defaultGroupName?: string,
 	/**
 	 * Set this to true to avoid groups containing a single parameter or export component.
-	 * In case this is not set or false, parameters and exports of groups with a single
-	 * compnent will be displayed without using an accordion.
+	 * In case this is not set or true, parameters and exports of groups with a single
+	 * component will be displayed without using an accordion.
 	 */
 	avoidSingleComponentGroups?: boolean,
 	/**
@@ -44,10 +44,9 @@ interface Props {
 }
 
 export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, 
-	avoidSingleComponentGroups = false, mergeAccordions = false, topSection}: Props) {
+	avoidSingleComponentGroups = true, mergeAccordions = false, topSection}: Props) {
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
-	const acceptRejectMode = sortedParamsAndExports.some(p => p.parameter?.acceptRejectMode);
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
@@ -86,7 +85,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
-						disableIfDirty={!acceptRejectMode}
+						disableIfDirty={param.parameter.disableIfDirty ?? !param.parameter.acceptRejectMode}
 						acceptRejectMode={param.parameter.acceptRejectMode}
 					/>
 				</div>
@@ -107,13 +106,16 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	});
 
 	const elements: JSX.Element[] = [];
-	const addAccordion = (items: JSX.Element[]) => {
+	const addAccordion = (items: JSX.Element[], defaultValue: string | undefined = undefined) => {
 		elements.push(
-			<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={items[0].key}>
+			<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={items[0].key} defaultValue={defaultValue}>
 				{ items }
 			</Accordion>
 		);
 	};
+
+	// in case there is only one group, open it by default
+	const defaultValue = elementGroups.length === 1 && elementGroups[0].group ? elementGroups[0].group?.id : undefined;
 
 	// loop through the created elementGroups to add them
 	let accordionItems: JSX.Element[] = [];
@@ -138,20 +140,20 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 				</Accordion.Item>
 			);
 			if (!mergeAccordions) {
-				addAccordion(accordionItems);
+				addAccordion(accordionItems, defaultValue);
 				accordionItems = [];
 			}
 		}
 		else {
 			if (accordionItems.length > 0) {
-				addAccordion(accordionItems);
+				addAccordion(accordionItems, defaultValue);
 				accordionItems = [];
 			}
 			elements.push(groupElements[0]);
 		}
 	}
 	if (accordionItems.length > 0) {
-		addAccordion(accordionItems);
+		addAccordion(accordionItems, defaultValue);
 	}
 
 	return <>

@@ -70,7 +70,7 @@ Parameter and export controls are shown for all selected models."
 
 					<ModelCard
 						title="Custom UI Page"
-						description="This example shows how to use Grasshopper to influence the parameter panel (show/hide parameters, add custom parameters)."
+						description="This example shows how to use Grasshopper to influence the parameter panel (show/hide parameters, add custom parameters). This motivated the development of the web app, which allows for more flexibility."
 						btnText="Open example"
 						btnLink="/customui"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
@@ -78,8 +78,17 @@ Parameter and export controls are shown for all selected models."
 					/>
 
 					<ModelCard
-						title="New Layout Test"
-						description="This example of new layout."
+						title="Web App Test"
+						description="Static example page showing the capabilities of the web app page."
+						btnText="Open example"
+						btnLink="/webAppTest"
+						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
+						imageAlt="Under Construction"
+					/>
+
+					<ModelCard
+						title="Web App"
+						description="An example web app controlled by a Grasshopper model. The parameter, text, and image widgets can be parametrically controlled."
 						btnText="Open example"
 						btnLink="/webApp"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"

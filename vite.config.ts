@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import svgrPlugin from "vite-plugin-svgr";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,5 +10,13 @@ export default defineConfig({
 	server: {
 		open: true,
 		port: 3000,
-	}
+	},
+	build: {
+		rollupOptions: {
+			input: {
+				main: resolve(__dirname, "index.html"),
+				nested: resolve(__dirname, "iframe.html"),
+			},
+		},
+	},
 });

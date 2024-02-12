@@ -32,7 +32,6 @@ export function useOutputContent(sessionId: string, outputIdOrName: string) : {
 	const [content, setContent] = useState<ShapeDiverResponseOutputContent[] | undefined>(outputApi?.content);
 
 	// register an event handler and listen for output updates
-	const [ initialContentSet, setInitialContent ] = useState(false);
 	useEffect(() => {
 		const token = SDV.addListener(SDV.EVENTTYPE_OUTPUT.OUTPUT_UPDATED, (e) => {
 			const event = (e as SDV.IOutputEvent);
@@ -42,16 +41,12 @@ export function useOutputContent(sessionId: string, outputIdOrName: string) : {
 				setContent(outputApi?.content);
 		});
 
-		if (!initialContentSet && outputApi?.content) {
-			if (content !== outputApi.content)
-				setContent(outputApi.content);
-			setInitialContent(true);
-		}
+		setContent(outputApi?.content);
 
 		return () => {
 			SDV.removeListener(token);
 		};
-	}, [outputApi, initialContentSet]);
+	}, [outputApi]);
 
 	return {
 		outputApi,
