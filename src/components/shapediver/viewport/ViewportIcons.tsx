@@ -60,6 +60,7 @@ export default function ViewportIcons({
 			setArLink(arLink);
 		} catch (e) {
 			alert("Error while creating AR session link");
+			setIsModalArOpened(false);
 		} finally {
 			setIsArLoading(false);
 		}
