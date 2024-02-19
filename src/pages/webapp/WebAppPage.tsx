@@ -5,11 +5,11 @@ import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
-import WebAppTemplatePage from "../templates/WebAppTemplatePage";
+import AppBuilderTemplatePage from "../templates/WebAppTemplatePage";
 import { Button, Container } from "@mantine/core";
 import classes from "./WebAppExampleOnePage.module.css";
-import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
-import { useSessionWithWebApp } from "hooks/shapediver/useSessionWithWebApp";
+import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
+import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithWebApp";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -29,7 +29,7 @@ interface Props {
  *
  * @returns
  */
-export default function WebAppPage({ example, acceptRejectMode, showContainerButtons, showStatistics }: Props) {
+export default function AppBuilderPage({ example, acceptRejectMode, showContainerButtons, showStatistics }: Props) {
 
 	const sectionTopBgColor = "inherit";
 	const sectionLeftBgColor = "inherit";
@@ -42,9 +42,9 @@ export default function WebAppPage({ example, acceptRejectMode, showContainerBut
 		acceptRejectMode
 	} : undefined;
 
-	const { settings } = useWebAppSettings(defaultSessionDto);
+	const { settings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
-	const { top, bottom, left, right, show } = useSessionWithWebApp(sessionDto);
+	const { top, bottom, left, right, show } = useSessionWithAppBuilder(sessionDto);
 	
 	const [isTopDisplayed, setIsTopDisplayed] = useState(false);
 	const [isLeftDisplayed, setIsLeftDisplayed] = useState(true);
@@ -62,7 +62,7 @@ export default function WebAppPage({ example, acceptRejectMode, showContainerBut
 				<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
 			</Button.Group> : <></>}
 
-			<WebAppTemplatePage
+			<AppBuilderTemplatePage
 				top={top && isTopDisplayed ? <Container
 					fluid
 					className={classes.sectionTop}
@@ -103,7 +103,7 @@ export default function WebAppPage({ example, acceptRejectMode, showContainerBut
 						/>
 					</ViewportAdditionalUIWrapper>
 				</ViewportComponent>
-			</WebAppTemplatePage>
+			</AppBuilderTemplatePage>
 		</> : null
 	);
 }

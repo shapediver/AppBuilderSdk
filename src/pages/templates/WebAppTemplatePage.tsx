@@ -11,7 +11,7 @@ interface Props {
 	bottom?: React.ReactNode;
 }
 
-export default function WebAppTemplatePage({
+export default function AppBuilderTemplatePage({
 	top = undefined,
 	left = undefined,
 	children = undefined,
@@ -106,13 +106,13 @@ export default function WebAppTemplatePage({
 
 	return (
 		<>
-			<section ref={rootRef} className={classes.webAppTemplatePage} style={rootStyle}>
-				{ top && <section className={classes.webAppTemplatePageTop}>{ top }</section> }
-				{ left && <section className={classes.webAppTemplatePageLeft}>{ left }</section> }
-				{ right && <section className={classes.webAppTemplatePageRight}>{ right }</section> }
-				{ bottom && <section className={classes.webAppTemplatePageBottom}>{ bottom }</section> }
+			<section ref={rootRef} className={classes.appBuilderTemplatePage} style={rootStyle}>
+				{ top && <section className={classes.appBuilderTemplatePageTop}>{ top }</section> }
+				{ left && <section className={classes.appBuilderTemplatePageLeft}>{ left }</section> }
+				{ right && <section className={classes.appBuilderTemplatePageRight}>{ right }</section> }
+				{ bottom && <section className={classes.appBuilderTemplatePageBottom}>{ bottom }</section> }
 				<section
-					className={classes.webAppTemplatePageMain}
+					className={classes.appBuilderTemplatePageMain}
 					style={{ backgroundColor: scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}}
 				>
 					{ children || <></> }

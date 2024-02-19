@@ -9,7 +9,7 @@ import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
+import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 
@@ -37,7 +37,7 @@ export default function ViewPage() {
 
 	const { branding } = useViewerBranding();
 
-	const { settings } = useWebAppSettings(SESSION_DTO);
+	const { settings } = useAppBuilderSettings(SESSION_DTO);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { parameterProps, exportProps } = useSessionWithCustomUi(sessionDto);
 

@@ -79,18 +79,18 @@ Parameter and export controls are shown for all selected models."
 
 					<ModelCard
 						title="Web App Test"
-						description="Static example page showing the capabilities of the web app page."
+						description="Static example page showing the capabilities of the app builder page."
 						btnText="Open example"
-						btnLink="/webAppTest"
+						btnLink="/appBuilderTest"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
 					/>
 
 					<ModelCard
 						title="Web App"
-						description="An example web app controlled by a Grasshopper model. The parameter, text, and image widgets can be parametrically controlled."
+						description="An example app controlled by a Grasshopper model. The parameter, text, and image widgets can be parametrically controlled."
 						btnText="Open example"
-						btnLink="/webApp"
+						btnLink="/appBuilder"
 						imageSrc="https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png"
 						imageAlt="Under Construction"
 					/>

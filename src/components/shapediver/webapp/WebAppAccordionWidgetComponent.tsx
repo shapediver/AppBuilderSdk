@@ -1,12 +1,12 @@
 import React from "react";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { IWebAppWidgetPropsAccordion } from "types/shapediver/webapp";
+import { IAppBuilderWidgetPropsAccordion } from "types/shapediver/webapp";
 import ParametersAndExportsAccordionComponent from "../ui/ParametersAndExportsAccordionComponent";
 import AcceptRejectButtons from "../ui/AcceptRejectButtons";
 
 
-interface Props extends IWebAppWidgetPropsAccordion {
+interface Props extends IAppBuilderWidgetPropsAccordion {
 	/** 
 	 * Default session id to use for parameter and export references that do 
 	 * not specify a session id.
@@ -14,7 +14,7 @@ interface Props extends IWebAppWidgetPropsAccordion {
 	sessionId: string
 }
 
-export default function WebAppAccordionWidgetComponent({ sessionId, parameters = [], exports = [], defaultGroupName }: Props) {
+export default function AppBuilderAccordionWidgetComponent({ sessionId, parameters = [], exports = [], defaultGroupName }: Props) {
 	
 	const parameterProps: PropsParameter[] = parameters.map(p => { 
 		return { 

@@ -18,7 +18,7 @@ interface Props {
  * @param param0 
  * @returns 
  */
-export default function WebAppImageExportWidgetComponent({sessionId, exportId}: Props) {
+export default function AppBuilderImageExportWidgetComponent({sessionId, exportId}: Props) {
 	
 	const { definition, actions } = useExport(sessionId, exportId);
 

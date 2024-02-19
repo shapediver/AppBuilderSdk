@@ -3,19 +3,19 @@ import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { IconType } from "./icons";
 
 /** Type used for parameter definitions */
-export type IWebAppParameterDefinition = IShapeDiverParameterDefinition;
+export type IAppBuilderParameterDefinition = IShapeDiverParameterDefinition;
 
 /** Type used for export definitions */
-export type IWebAppExportDefinition = IShapeDiverExportDefinition;
+export type IAppBuilderExportDefinition = IShapeDiverExportDefinition;
 
 /** Reference to a parameter (custom or defined by the session) */
-export interface IWebAppParameterRef {
+export interface IAppBuilderParameterRef {
 	/** Id or name or displayname of the referenced parameter (in that order). */
 	name: string
 	/** Optional id of the session the referenced parameter belongs to. */
 	sessionId?: string
 	/** Properties of the parameter to be overridden. TODO implement this */
-	overrides?: Pick<IWebAppParameterDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
+	overrides?: Pick<IAppBuilderParameterDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
 	/** Disable the UI element of the parameter if its state is dirty. */
 	disableIfDirty?: boolean
 	/** Ask the user to accept or reject changes of this parameter before executing them. */
@@ -23,28 +23,28 @@ export interface IWebAppParameterRef {
 }
 
 /** Reference to an export (defined by the session) */
-export interface IWebAppExportRef {
+export interface IAppBuilderExportRef {
 	/** Id or name or displayname of the referenced export (in that order). */
 	name: string
 	/** Optional id of the session the referenced parameter belongs to. */
 	sessionId?: string
 	/** Properties of the export to be overridden. TODO implement this */
-	overrides?: Pick<IWebAppExportDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
+	overrides?: Pick<IAppBuilderExportDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
 }
 
 /** Types of widgets */
-export type WebAppWidgetType = "accordion" | "text" | "image";
+export type AppBuilderWidgetType = "accordion" | "text" | "image";
 
 /** 
  * Properties of a parameter and export accordion widget.
  * UI elements of the referenced parameters and exports are grouped 
  * and ordered according to their properties (which might be overridden).
  */
-export interface IWebAppWidgetPropsAccordion {
+export interface IAppBuilderWidgetPropsAccordion {
 	/** References to parameters which shall be displayed by the accordion. */
-	parameters?: IWebAppParameterRef[]
+	parameters?: IAppBuilderParameterRef[]
 	/** References to exports which shall be displayed by the accordion. */
-	exports?: IWebAppExportRef[]
+	exports?: IAppBuilderExportRef[]
 	/** 
 	 * Optional name of group that should be used for all parameters/exports without a group.
 	 * In case this is not specified, parameters/exports without a group will be displayed without an accordion.
@@ -53,7 +53,7 @@ export interface IWebAppWidgetPropsAccordion {
 }
 
 /** Properties of a text widget. */
-export interface IWebAppWidgetPropsText {
+export interface IAppBuilderWidgetPropsText {
 	/** Plain text. Takes precedence. */
 	text?: string
 	/** Optional markdown. */
@@ -61,53 +61,53 @@ export interface IWebAppWidgetPropsText {
 }
 
 /** Properties of an image widget. */
-export interface IWebAppWidgetPropsImage {
+export interface IAppBuilderWidgetPropsImage {
 	/** URL to image. Can be a data URL including a base 64 encoded image. Takes precedence over export reference. */
 	href?: string
 	/** Optional reference to export which provides the image. */
-	export?: IWebAppExportRef
+	export?: IAppBuilderExportRef
 }
 
 /** A widget. */
-export interface IWebAppWidget {
+export interface IAppBuilderWidget {
 	/** Type of the widget. */
-	type: WebAppWidgetType
+	type: AppBuilderWidgetType
 	/** Properties of the widget. */
-	props: IWebAppWidgetPropsAccordion | IWebAppWidgetPropsText | IWebAppWidgetPropsImage
+	props: IAppBuilderWidgetPropsAccordion | IAppBuilderWidgetPropsText | IAppBuilderWidgetPropsImage
 }
 
 /** 
  * A tab displayed in a container.
  */
-export interface IWebAppTab {
+export interface IAppBuilderTab {
 	/** Name of the tab. */
 	name: string
 	/** Optional icon of the tab. */
 	icon?: IconType
 	/** Widgets displayed in the tab. */
-	widgets: IWebAppWidget[]
+	widgets: IAppBuilderWidget[]
 }
 
 /** Types of hints for containers */
-export type WebAppContainerHintType = "left" | "right" | "top" | "bottom";
+export type AppBuilderContainerNameType = "left" | "right" | "top" | "bottom";
 
 /**
  * A container for UI elements
  */
-export interface IWebAppContainer {
-	/** Hint on positioning of the container. */
-	hint: WebAppContainerHintType
+export interface IAppBuilderContainer {
+	/** Name of the container. */
+	name: AppBuilderContainerNameType
 	/** Tabs displayed in the container. */
-	tabs?: IWebAppTab[]
+	tabs?: IAppBuilderTab[]
 	/** Further widgets displayed in the container. */
-	widgets?: IWebAppWidget[]
+	widgets?: IAppBuilderWidget[]
 }
 
 /**
  * Web app definition. 
  * This is the root of the custom UI definition.
  */
-export interface IWebApp {
+export interface IAppBuilder {
 
 	/** Version of the schema. */
 	version: "1.0"
@@ -116,7 +116,7 @@ export interface IWebApp {
 	 * Optional list of custom parameters that can be referenced 
 	 * in addition to parameters of the model.
 	 */
-	parameters?: IWebAppParameterDefinition[]
+	parameters?: IAppBuilderParameterDefinition[]
 
 	/** Optional id of the session to use for defining custom parameters. */
 	sessionId?: string
@@ -124,20 +124,20 @@ export interface IWebApp {
 	/**
 	 * Containers to be displayed.
 	 */
-	containers: IWebAppContainer[]
+	containers: IAppBuilderContainer[]
 }
 
 /** assert widget type "accordion" */
-export function isAccordionWidget(widget: IWebAppWidget): widget is { type: "accordion", props: IWebAppWidgetPropsAccordion } {
+export function isAccordionWidget(widget: IAppBuilderWidget): widget is { type: "accordion", props: IAppBuilderWidgetPropsAccordion } {
 	return widget.type === "accordion";
 }
 
 /** assert widget type "text" */
-export function isTextWidget(widget: IWebAppWidget): widget is { type: "text", props: IWebAppWidgetPropsText } {
+export function isTextWidget(widget: IAppBuilderWidget): widget is { type: "text", props: IAppBuilderWidgetPropsText } {
 	return widget.type === "text";
 }
 
 /** assert widget type "image" */
-export function isImageWidget(widget: IWebAppWidget): widget is { type: "image", props: IWebAppWidgetPropsImage } {
+export function isImageWidget(widget: IAppBuilderWidget): widget is { type: "image", props: IAppBuilderWidgetPropsImage } {
 	return widget.type === "image";
 }

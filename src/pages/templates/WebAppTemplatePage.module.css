@@ -1,30 +1,30 @@
-.webAppTemplatePage {
+.appBuilderTemplatePage {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(4, 1fr);
     height: 100vh;
 }
 
-.webAppTemplatePageTop, .webAppTemplatePageBottom, .webAppTemplatePageLeft, .webAppTemplatePageRight, .webAppTemplatePageBottom {
+.appBuilderTemplatePageTop, .appBuilderTemplatePageBottom, .appBuilderTemplatePageLeft, .appBuilderTemplatePageRight, .appBuilderTemplatePageBottom {
     overflow: auto;
 }
 
-.webAppTemplatePageMain {
+.appBuilderTemplatePageMain {
     grid-area: main;
 }
 
-.webAppTemplatePageTop {
+.appBuilderTemplatePageTop {
     grid-area: top;
 }
 
-.webAppTemplatePageLeft {
+.appBuilderTemplatePageLeft {
     grid-area: left;
 }
 
-.webAppTemplatePageRight {
+.appBuilderTemplatePageRight {
     grid-area: right;
 }
 
-.webAppTemplatePageBottom {
+.appBuilderTemplatePageBottom {
     grid-area: bottom;
 }

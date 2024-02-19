@@ -9,7 +9,7 @@ import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
 import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
-import WebAppTemplatePage from "../templates/WebAppTemplatePage";
+import AppBuilderTemplatePage from "../templates/WebAppTemplatePage";
 import { Button, Container } from "@mantine/core";
 import classes from "./WebAppExampleOnePage.module.css";
 import TextWidgetComponent from "../../components/shapediver/ui/TextWidgetComponent";
@@ -17,7 +17,7 @@ import ImageWidgetComponent from "../../components/shapediver/ui/ImageWidgetComp
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
+import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "Sideboard";
@@ -37,13 +37,13 @@ const ACCEPT_REJECT_MODE = true;
  *
  * @returns
  */
-export default function WebAppExampleOnePage() {
+export default function AppBuilderStaticExamplePage() {
 	const sectionTopBgColor = "inherit";
 	const sectionLeftBgColor = "inherit";
 	const sectionRightBgColor = "inherit";
 	const sectionBottomBgColor = "inherit";
 
-	const { settings } = useWebAppSettings(SESSION_DTO);
+	const { settings } = useAppBuilderSettings(SESSION_DTO);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionDto?.id ?? "";
 
@@ -227,7 +227,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 				<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
 			</Button.Group>
 
-			<WebAppTemplatePage
+			<AppBuilderTemplatePage
 				top={isTopDisplayed ? <Container
 					fluid
 					className={classes.sectionTop}
@@ -275,7 +275,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 						/>
 					</ViewportAdditionalUIWrapper>
 				</ViewportComponent>
-			</WebAppTemplatePage>
+			</AppBuilderTemplatePage>
 		</>
 	);
 }

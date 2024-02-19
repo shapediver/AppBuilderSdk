@@ -1,8 +1,8 @@
 import React from "react";
-import { IWebAppWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/webapp";
-import WebAppTextWidgetComponent from "./WebAppTextWidgetComponent";
-import WebAppImageWidgetComponent from "./WebAppImageWidgetComponent";
-import WebAppAccordionWidgetComponent from "./WebAppAccordionWidgetComponent";
+import { IAppBuilderWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/webapp";
+import AppBuilderTextWidgetComponent from "./WebAppTextWidgetComponent";
+import AppBuilderImageWidgetComponent from "./WebAppImageWidgetComponent";
+import AppBuilderAccordionWidgetComponent from "./WebAppAccordionWidgetComponent";
 
 interface Props {
 	/** 
@@ -11,10 +11,10 @@ interface Props {
 	 */
 	sessionId: string,
 	/** The widgets to display. */
-	widgets: IWebAppWidget[] | undefined
+	widgets: IAppBuilderWidget[] | undefined
 }
 
-export default function WebAppWidgetsComponent({ sessionId, widgets }: Props) {
+export default function AppBuilderWidgetsComponent({ sessionId, widgets }: Props) {
 
 	if (!widgets) {
 		return <></>;
@@ -23,11 +23,11 @@ export default function WebAppWidgetsComponent({ sessionId, widgets }: Props) {
 	return <>
 		{ widgets.map((w, i) => {
 			if (isTextWidget(w))
-				return <WebAppTextWidgetComponent key={i} {...w.props} />;
+				return <AppBuilderTextWidgetComponent key={i} {...w.props} />;
 			else if (isImageWidget(w))
-				return <WebAppImageWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
+				return <AppBuilderImageWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else if (isAccordionWidget(w))
-				return <WebAppAccordionWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
+				return <AppBuilderAccordionWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else
 				return null;
 		})}

@@ -1,6 +1,6 @@
 import React from "react";
-import { IWebAppTab } from "types/shapediver/webapp";
-import WebAppWidgetsComponent from "./WebAppWidgetsComponent";
+import { IAppBuilderTab } from "types/shapediver/webapp";
+import AppBuilderWidgetsComponent from "./WebAppWidgetsComponent";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 
 interface Props {
@@ -10,10 +10,10 @@ interface Props {
 	 */
 	sessionId: string,
 	/** The tabs to display. */
-	tabs: IWebAppTab[] | undefined
+	tabs: IAppBuilderTab[] | undefined
 }
 
-export default function WebAppTabsComponent({ sessionId, tabs }: Props) {
+export default function AppBuilderTabsComponent({ sessionId, tabs }: Props) {
 
 	if (!tabs || tabs.length === 0) {
 		return <></>;
@@ -26,7 +26,7 @@ export default function WebAppTabsComponent({ sessionId, tabs }: Props) {
 				name: tab.name,
 				icon: tab.icon,
 				children: [
-					<WebAppWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} />
+					<AppBuilderWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} />
 				]
 			};
 		})
