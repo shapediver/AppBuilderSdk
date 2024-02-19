@@ -17,7 +17,7 @@ import ImageWidgetComponent from "../../components/shapediver/ui/ImageWidgetComp
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "Sideboard";
@@ -43,7 +43,7 @@ export default function AppBuilderStaticExamplePage() {
 	const sectionRightBgColor = "inherit";
 	const sectionBottomBgColor = "inherit";
 
-	const { settings } = useAppBuilderSettings(SESSION_DTO);
+	const { settings } = useUrlSearchParamSettings(SESSION_DTO);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionDto?.id ?? "";
 

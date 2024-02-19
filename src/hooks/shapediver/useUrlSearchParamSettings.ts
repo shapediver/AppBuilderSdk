@@ -7,7 +7,7 @@ const DEFAULT_PLATFORM_URL = "https://app.shapediver.com";
 /**
  * Settings for a session used by the web app.
  */
-export interface IAppBuilderSettingsSession extends SessionCreateDto {
+export interface IUrlSearchParamSettingsSession extends SessionCreateDto {
 	/**
 	 * Either slug and platformUrl, or ticket and modelViewUrl must be set.
 	 */
@@ -25,10 +25,10 @@ export interface IAppBuilderSettingsSession extends SessionCreateDto {
 /**
  * Settings for the web app.
  */
-export interface IAppBuilderSettings {
+export interface IUrlSearchParamSettings {
     "version": "1.0",
 	/** Session to load. */
-    "sessions": IAppBuilderSettingsSession[]
+    "sessions": IUrlSearchParamSettingsSession[]
 }
 
 /**
@@ -39,7 +39,7 @@ export interface IAppBuilderSettings {
  * @param queryParamName Name of the query parameter to use for loading settings json.
  * @returns 
  */
-export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettingsSession, queryParamName = "g") {
+export default function useUrlSearchParamSettings(defaultSession?: IUrlSearchParamSettingsSession, queryParamName = "g") {
 
 	const parameters = useMemo<URLSearchParams>(() => new URLSearchParams(window.location.search), []);
 
@@ -49,7 +49,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 		if (!url) throw new Error();
 		const response = await fetch(url, { mode: "cors" });
 		
-		return await response.json() as IAppBuilderSettings; // TODO validation
+		return await response.json() as IUrlSearchParamSettings; // TODO validation
 	});
 
 	// check for ticket, modelViewUrl, slug and platformUrl
@@ -60,12 +60,12 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 
 	// in case slug and optionally platformUrl are defined, use them
 	// otherwise, if ticket and modelViewUrl are defined, use them
-	const queryParamSession : IAppBuilderSettingsSession|undefined = slug ? 
-		{ id: "default", slug, platformUrl: platformUrl ?? DEFAULT_PLATFORM_URL } as IAppBuilderSettingsSession : 
+	const queryParamSession : IUrlSearchParamSettingsSession|undefined = slug ? 
+		{ id: "default", slug, platformUrl: platformUrl ?? DEFAULT_PLATFORM_URL } as IUrlSearchParamSettingsSession : 
 		(ticket && modelViewUrl ? { id: "default", ticket, modelViewUrl} : undefined);
 
 	// use settings loaded from json, or settings defined by query parameters, or default settings
-	const settings : IAppBuilderSettings|undefined = error && (defaultSession || queryParamSession) ? 
+	const settings : IUrlSearchParamSettings|undefined = error && (defaultSession || queryParamSession) ? 
 		{ version: "1.0", sessions: [(queryParamSession ?? defaultSession)!] } : value;
 
 	return {

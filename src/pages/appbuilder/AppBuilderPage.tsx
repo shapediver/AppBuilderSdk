@@ -8,7 +8,7 @@ import { ShapeDiverExampleModels } from "tickets";
 import AppBuilderTemplatePage from "../templates/AppBuilderTemplatePage";
 import { Button, Container } from "@mantine/core";
 import classes from "./AppBuilderPage.module.css";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
 
 const VIEWPORT_ID = "viewport_1";
@@ -42,7 +42,7 @@ export default function AppBuilderPage({ example, acceptRejectMode, showContaine
 		acceptRejectMode
 	} : undefined;
 
-	const { settings } = useAppBuilderSettings(defaultSessionDto);
+	const { settings } = useUrlSearchParamSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { top, bottom, left, right, show } = useSessionWithAppBuilder(sessionDto);
 	
