@@ -1,8 +1,8 @@
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./useOutputContent";
-import { IAppBuilder } from "types/shapediver/webapp";
-import AppBuilderContainerComponent from "components/shapediver/webapp/WebAppContainerComponent";
-import AppBuilderFallbackContainerComponent from "components/shapediver/webapp/WebAppFallbackContainerComponent";
+import { IAppBuilder } from "types/shapediver/appbuilder";
+import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";
+import AppBuilderFallbackContainerComponent from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
 import { useSessionPropsParameter } from "./useSessionPropsParameter";
 import { useSessionPropsExport } from "./useSessionPropsExport";
 

@@ -2,7 +2,7 @@ import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import React, { useEffect } from "react";
 import * as ShapeDiverViewer from "@shapediver/viewer";
-import AppBuilderPage from "pages/webapp/WebAppPage";
+import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
 
 declare global {
 	interface Window {

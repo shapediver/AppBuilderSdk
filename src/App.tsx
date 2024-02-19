@@ -9,8 +9,8 @@ import ViewPage from "pages/examples/ViewPage";
 import MultipleViewportPage from "pages/examples/MultipleViewportPage";
 import * as ShapeDiverViewer from "@shapediver/viewer";
 import CustomUiPage from "pages/examples/CustomUiPage";
-import AppBuilderStaticExamplePage from "./pages/webapp/WebAppExampleOnePage";
-import AppBuilderPage from "pages/webapp/WebAppPage";
+import AppBuilderStaticExamplePage from "./pages/appbuilder/AppBuilderStaticExamplePage";
+import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
 
 declare global {
 	interface Window {

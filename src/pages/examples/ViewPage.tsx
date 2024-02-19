@@ -14,7 +14,7 @@ import { IGenericParameterDefinition } from "types/store/shapediverStoreParamete
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
 import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 

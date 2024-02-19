@@ -1,8 +1,8 @@
 import React from "react";
-import { IAppBuilderWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/webapp";
-import AppBuilderTextWidgetComponent from "./WebAppTextWidgetComponent";
-import AppBuilderImageWidgetComponent from "./WebAppImageWidgetComponent";
-import AppBuilderAccordionWidgetComponent from "./WebAppAccordionWidgetComponent";
+import { IAppBuilderWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/appbuilder";
+import AppBuilderTextWidgetComponent from "./AppBuilderTextWidgetComponent";
+import AppBuilderImageWidgetComponent from "./AppBuilderImageWidgetComponent";
+import AppBuilderAccordionWidgetComponent from "./AppBuilderAccordionWidgetComponent";
 
 interface Props {
 	/** 

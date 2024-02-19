@@ -1,7 +1,7 @@
 import React from "react";
 import Markdown from "react-markdown";
 import { Paper } from "@mantine/core";
-import { IAppBuilderWidgetPropsText } from "types/shapediver/webapp";
+import { IAppBuilderWidgetPropsText } from "types/shapediver/appbuilder";
 
 
 export default function AppBuilderTextWidgetComponent({ text, markdown }: IAppBuilderWidgetPropsText) {

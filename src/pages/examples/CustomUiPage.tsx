@@ -9,7 +9,7 @@ import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 

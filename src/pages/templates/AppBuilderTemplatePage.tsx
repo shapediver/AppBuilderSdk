@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMantineTheme } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
-import classes from "./WebAppTemplatePage.module.css";
+import classes from "./AppBuilderTemplatePage.module.css";
 
 interface Props {
 	top?: React.ReactNode;

@@ -1,7 +1,7 @@
 import React from "react";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { IAppBuilderWidgetPropsAccordion } from "types/shapediver/webapp";
+import { IAppBuilderWidgetPropsAccordion } from "types/shapediver/appbuilder";
 import ParametersAndExportsAccordionComponent from "../ui/ParametersAndExportsAccordionComponent";
 import AcceptRejectButtons from "../ui/AcceptRejectButtons";
 

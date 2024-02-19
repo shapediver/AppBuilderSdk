@@ -1,6 +1,6 @@
 import React from "react";
-import { IAppBuilderTab } from "types/shapediver/webapp";
-import AppBuilderWidgetsComponent from "./WebAppWidgetsComponent";
+import { IAppBuilderTab } from "types/shapediver/appbuilder";
+import AppBuilderWidgetsComponent from "./AppBuilderWidgetsComponent";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 
 interface Props {

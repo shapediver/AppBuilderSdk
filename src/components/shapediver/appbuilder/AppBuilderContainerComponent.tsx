@@ -1,7 +1,7 @@
 import React from "react";
-import { IAppBuilderContainer } from "types/shapediver/webapp";
-import AppBuilderWidgetsComponent from "./WebAppWidgetsComponent";
-import AppBuilderTabsComponent from "./WebAppTabsComponent";
+import { IAppBuilderContainer } from "types/shapediver/appbuilder";
+import AppBuilderWidgetsComponent from "./AppBuilderWidgetsComponent";
+import AppBuilderTabsComponent from "./AppBuilderTabsComponent";
 
 interface Props extends IAppBuilderContainer {
 	/** 

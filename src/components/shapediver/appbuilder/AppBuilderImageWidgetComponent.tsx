@@ -1,7 +1,7 @@
 import React from "react";
-import { IAppBuilderWidgetPropsImage } from "types/shapediver/webapp";
+import { IAppBuilderWidgetPropsImage } from "types/shapediver/appbuilder";
 import ImageWidgetComponent from "components/shapediver/ui/ImageWidgetComponent";
-import AppBuilderImageExportWidgetComponent from "./WebAppImageExportWidgetComponent";
+import AppBuilderImageExportWidgetComponent from "./AppBuilderImageExportWidgetComponent";
 
 interface Props extends IAppBuilderWidgetPropsImage {
 	/** 

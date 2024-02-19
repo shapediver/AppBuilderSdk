@@ -5,11 +5,11 @@ import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
-import AppBuilderTemplatePage from "../templates/WebAppTemplatePage";
+import AppBuilderTemplatePage from "../templates/AppBuilderTemplatePage";
 import { Button, Container } from "@mantine/core";
-import classes from "./WebAppExampleOnePage.module.css";
-import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
-import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithWebApp";
+import classes from "./AppBuilderPage.module.css";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
 
 const VIEWPORT_ID = "viewport_1";
 

@@ -9,15 +9,15 @@ import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
 import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
-import AppBuilderTemplatePage from "../templates/WebAppTemplatePage";
+import AppBuilderTemplatePage from "../templates/AppBuilderTemplatePage";
 import { Button, Container } from "@mantine/core";
-import classes from "./WebAppExampleOnePage.module.css";
+import classes from "./AppBuilderPage.module.css";
 import TextWidgetComponent from "../../components/shapediver/ui/TextWidgetComponent";
 import ImageWidgetComponent from "../../components/shapediver/ui/ImageWidgetComponent";
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useWebAppSettings";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 
 const VIEWPORT_ID = "viewport_1";
 const MODEL_NAME = "Sideboard";
