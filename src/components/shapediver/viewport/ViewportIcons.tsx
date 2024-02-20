@@ -1,6 +1,6 @@
 import React, { CSSProperties, useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
-import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip } from "@mantine/core";
+import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip, Text } from "@mantine/core";
 import { useClickEventHandler } from "hooks/misc/useClickEventHandler";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
@@ -49,8 +49,12 @@ export default function ViewportIcons({
 	const [ arLink, setArLink ] = useState("");
 	const [ isArLoading, setIsArLoading ] = useState(false);
 	const [ isModalArOpened, setIsModalArOpened ] = useState(false);
+	const [ isModalArError, setIsModalArError ] = useState("");
 
 	const onViewInARDesktopLinkRequest = async () => {
+		setIsModalArError("");
+		setArLink("");
+
 		if (!viewport) return;
 
 		try {
@@ -58,8 +62,9 @@ export default function ViewportIcons({
 			setIsArLoading(true);
 			const arLink = await viewport.createArSessionLink();
 			setArLink(arLink);
-		} catch (e) {
-			alert("Error while creating AR session link");
+		} catch (e: any) {
+			setIsModalArError("Error while creating QR code");
+			console.error(e);
 		} finally {
 			setIsArLoading(false);
 		}
@@ -125,14 +130,18 @@ export default function ViewportIcons({
 		</Tooltip> }
 
 		{ enableArBtn && <Modal opened={isModalArOpened} onClose={() => setIsModalArOpened(false)} title="Scan the code" centered>
-			<p>Scan the QR code below using your mobile device to see the model in AR. The code is compatible with Android and iOS devices.</p>
-			<section className={classes.containerAr}>
-				{isArLoading ? <section className={classes.loaderAr}><Loader color="blue" /></section> : <img
-					src={arLink}
-					height="180px"
-					alt="ar_link"
-				/> }
-			</section>
+			{ isModalArError
+				? <Text c="red">{isModalArError}</Text>
+				: <><Text>Scan the QR code below using your mobile device to see the model in AR. The code is compatible with Android and iOS devices.</Text>
+					<section className={classes.containerAr}>
+						{isArLoading ? <section className={classes.loaderAr}><Loader color="blue" /></section> : <img
+							src={arLink}
+							height="180px"
+							alt="ar_link"
+						/> }
+					</section>
+				</>
+			}
 		</Modal>}
 
 		{ enableZoomBtn && <Tooltip label="Zoom extents">
