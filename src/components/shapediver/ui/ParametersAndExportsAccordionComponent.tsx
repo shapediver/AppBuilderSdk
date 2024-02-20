@@ -1,10 +1,9 @@
 import React, { JSX } from "react";
-import { Accordion, Loader, Paper, ScrollArea } from "@mantine/core";
+import { Accordion, Group, Loader, Paper, Stack, useProps } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { useSortedParametersAndExports } from "hooks/shapediver/useSortedParametersAndExports";
-import classes from "./ParametersAndExportsAccordionComponent.module.css";
 
 /**
  * Functional component that creates an accordion of parameter and export components.
@@ -41,12 +40,27 @@ interface Props {
 	 * accept / reject buttons.
 	 */
 	topSection?: React.ReactNode,
+	/**
+	 * Bottom padding of Paper component wrapping slider components.
+	 */
+	pbSlider?: string,
 }
 
-export default function ParametersAndExportsAccordionComponent({ parameters, exports, defaultGroupName, 
-	avoidSingleComponentGroups = true, mergeAccordions = false, topSection}: Props) {
+const defaultProps: Partial<Props> = {
+	avoidSingleComponentGroups: true,
+	mergeAccordions: false,
+	pbSlider: "md",
+};
+
+export default function ParametersAndExportsAccordionComponent(props: Props) {
+
+	const { parameters, exports, defaultGroupName, topSection} = props;
+
 	// get sorted list of parameter and export definitions
 	const sortedParamsAndExports = useSortedParametersAndExports(parameters, exports);
+
+	// style properties
+	const { pbSlider, avoidSingleComponentGroups, mergeAccordions } = useProps("ParametersAndExportsAccordionComponent", defaultProps, props);
 
 	// create a data structure to store the elements within groups
 	const elementGroups: {
@@ -57,7 +71,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 	// as long as there are no parameters, show a loader
 	if (sortedParamsAndExports.length === 0) {
-		return(<section className={classes.loader}><Loader size="xl" variant="dots" /></section>);
+		return(<Group justify="center" pt="50"><Loader size="xl" variant="dots" /></Group>);
 	}
 
 	// loop through the parameters and store the created elements in the elementGroups
@@ -78,17 +92,17 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 		if (param.parameter) {
 			// Get the element for the parameter and add it to the group
-			const ParameterComponent = getParameterComponent(param.definition);
+			const { component: ParameterComponent, extraBottomPadding } = getParameterComponent(param.definition);
 
 			elementGroups[groupId].elements.push(
-				<div key={param.definition.id}>
+				<Paper key={param.definition.id} pb={extraBottomPadding ? pbSlider : undefined}>
 					<ParameterComponent
 						sessionId={param.parameter.sessionId}
 						parameterId={param.parameter.parameterId}
 						disableIfDirty={param.parameter.disableIfDirty ?? !param.parameter.acceptRejectMode}
 						acceptRejectMode={param.parameter.acceptRejectMode}
 					/>
-				</div>
+				</Paper>
 			);
 		}
 		else if (param.export) {
@@ -96,11 +110,11 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 			const ExportComponent = getExportComponent(param.definition);
 
 			elementGroups[groupId].elements.push(
-				<div key={param.definition.id}>
+				<Paper key={param.definition.id}>
 					<ExportComponent
 						sessionId={param.export.sessionId}
 						exportId={param.export.exportId} />
-				</div>
+				</Paper>
 			);
 		}
 	});
@@ -108,9 +122,10 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	const elements: JSX.Element[] = [];
 	const addAccordion = (items: JSX.Element[], defaultValue: string | undefined = undefined) => {
 		elements.push(
-			<Accordion variant="contained" radius="md" mb="xs" className={classes.container} key={items[0].key} defaultValue={defaultValue}>
+			// wrap accordion in paper to show optional shadows
+			<Paper px={0} py={0} withBorder={false}><Accordion key={items[0].key} defaultValue={defaultValue}>
 				{ items }
-			</Accordion>
+			</Accordion></Paper>
 		);
 	};
 
@@ -121,21 +136,14 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 	let accordionItems: JSX.Element[] = [];
 	for (const g of elementGroups) {
 
-		const groupElements: JSX.Element[] = [];
-		g.elements.forEach((element) => {
-			groupElements.push(
-				<Paper withBorder radius="md" shadow="m" mb="xs" py="md" px="xs" key={element.key}>
-					{ element }
-				</Paper>
-			);
-		});
-
 		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {
 			accordionItems.push(
 				<Accordion.Item key={g.group.id} value={g.group.id}>
 					<Accordion.Control>{g.group.name}</Accordion.Control>
 					<Accordion.Panel key={g.group.id}>
-						{groupElements}
+						<Stack>
+							{g.elements}
+						</Stack>
 					</Accordion.Panel>
 				</Accordion.Item>
 			);
@@ -149,7 +157,7 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 				addAccordion(accordionItems, defaultValue);
 				accordionItems = [];
 			}
-			elements.push(groupElements[0]);
+			elements.push(g.elements[0]);
 		}
 	}
 	if (accordionItems.length > 0) {
@@ -158,8 +166,8 @@ export default function ParametersAndExportsAccordionComponent({ parameters, exp
 
 	return <>
 		{ topSection }
-		<ScrollArea.Autosize className={classes.scrollArea}>
-			<>{ elements }</>
-		</ScrollArea.Autosize>
+		<Stack>
+			{ elements }
+		</Stack>
 	</>;
 }

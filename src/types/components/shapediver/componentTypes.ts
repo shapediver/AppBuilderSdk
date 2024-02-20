@@ -9,24 +9,34 @@ import ParameterLabelComponent from "components/shapediver/parameter/ParameterLa
 import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
+import { PropsParameter } from "./propsParameter";
 
+type ComponentsMapType = { [key: string]: {
+	/** Parameter component */
+	c: (props: PropsParameter) => JSX.Element,
+	/** Defines whether extra bottom padding is required */
+	extraBottomPadding: boolean,
+}};
 
-const parameterComponentsMap = {
-	[PARAMETER_TYPE.INT]: ParameterSliderComponent,
-	[PARAMETER_TYPE.FLOAT]: ParameterSliderComponent,
-	[PARAMETER_TYPE.EVEN]: ParameterSliderComponent,
-	[PARAMETER_TYPE.ODD]: ParameterSliderComponent,
-	[PARAMETER_TYPE.BOOL]: ParameterBooleanComponent,
-	[PARAMETER_TYPE.STRING]: ParameterStringComponent,
-	[PARAMETER_TYPE.STRINGLIST]: ParameterSelectComponent,
-	[PARAMETER_TYPE.COLOR]: ParameterColorComponent,
-	[PARAMETER_TYPE.FILE]: ParameterFileInputComponent,
+const parameterComponentsMap: ComponentsMapType = {
+	[PARAMETER_TYPE.INT]: {c: ParameterSliderComponent, extraBottomPadding: true},
+	[PARAMETER_TYPE.FLOAT]: {c: ParameterSliderComponent, extraBottomPadding: true},
+	[PARAMETER_TYPE.EVEN]: {c: ParameterSliderComponent, extraBottomPadding: true},
+	[PARAMETER_TYPE.ODD]: {c: ParameterSliderComponent, extraBottomPadding: true},
+	[PARAMETER_TYPE.BOOL]: {c: ParameterBooleanComponent, extraBottomPadding: false},
+	[PARAMETER_TYPE.STRING]: {c: ParameterStringComponent, extraBottomPadding: false},
+	[PARAMETER_TYPE.STRINGLIST]: {c: ParameterSelectComponent, extraBottomPadding: false},
+	[PARAMETER_TYPE.COLOR]: {c: ParameterColorComponent, extraBottomPadding: false},
+	[PARAMETER_TYPE.FILE]: {c: ParameterFileInputComponent, extraBottomPadding: false},
 };
 
 export const getParameterComponent = (definition: IShapeDiverParamOrExportDefinition) => {
 	const type = definition.type as keyof typeof parameterComponentsMap;
 
-	return parameterComponentsMap[type] || ParameterLabelComponent;
+	return {
+		component: parameterComponentsMap[type]?.c || ParameterLabelComponent,
+		extraBottomPadding: parameterComponentsMap[type]?.extraBottomPadding,
+	};
 };
 
 const exportComponentsMap = {

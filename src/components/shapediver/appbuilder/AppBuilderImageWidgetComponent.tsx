@@ -1,6 +1,6 @@
 import React from "react";
 import { IAppBuilderWidgetPropsImage } from "types/shapediver/appbuilder";
-import ImageWidgetComponent from "components/shapediver/ui/ImageWidgetComponent";
+import AppBuilderImage from "components/shapediver/appbuilder/AppBuilderImage";
 import AppBuilderImageExportWidgetComponent from "./AppBuilderImageExportWidgetComponent";
 
 interface Props extends IAppBuilderWidgetPropsImage {
@@ -11,10 +11,10 @@ interface Props extends IAppBuilderWidgetPropsImage {
 	sessionId: string
 }
 
-export default function AppBuilderImageWidgetComponent({href, export: exportRef, sessionId}: Props) {
+export default function AppBuilderImageWidgetComponent({href, export: exportRef, sessionId, containerType}: Props) {
 
 	if (href) {
-		return <ImageWidgetComponent src={href} />;
+		return <AppBuilderImage src={href} containerType={containerType} />;
 	}
 	else if (exportRef) {
 		return <AppBuilderImageExportWidgetComponent sessionId={sessionId} exportId={exportRef.name} />;

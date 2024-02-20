@@ -14,73 +14,85 @@ interface Props {
  */
 
 
-export default function TextWidgetComponent({ children = "" }: Props) {
+export default function MarkdownWidgetComponent({ children = "" }: Props) {
 	const config: Options = {
 		components: {
 			b(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Text fw={700} {...rest} />;
 			},
 			blockquote(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Blockquote {...rest} />;
 			},
 			code(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Code {...rest} />;
 			},
 			img(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Image {...rest} />;
 			},
 			h1(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Title order={1} {...rest} />;
 			},
 			h2(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Title order={2} {...rest} />;
 			},
 			h3(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Title order={3} {...rest} />;
 			},
 			h4(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Title order={4} {...rest} />;
 			},
 			h5(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Title order={5} {...rest} />;
 			},
 			h6(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Title order={6} {...rest} />;
 			},
 			hr(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Divider {...rest} />;
 			},
 			p(props) {
-				const {node, ...rest} = props;
-				// @ts-ignore
+				const {...rest} = props;
+
+				// @ts-expect-error ignore
 				return <Text {...rest} />;
 			},
 		},
 	};
 
-	return <Paper withBorder radius="md" shadow="m" mb="xs" py="xs" px="xs">
+	return <Paper>
 		<Markdown {...config } >{ children }</Markdown>
 	</Paper>;
 }

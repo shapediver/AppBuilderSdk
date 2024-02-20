@@ -56,10 +56,26 @@ import {
 	IconZoomScan
 } from "@tabler/icons-react";
 import { IconTypeEnum } from "types/shapediver/icons";
+import { useProps } from "@mantine/core";
 
+interface Props {
+	type: IconTypeEnum | undefined
+}
 
-export default function Icon({type} : {type: IconTypeEnum | undefined}) {
-	const iconProps = { size: 14, stroke: 1 };
+interface StyleProps {
+	size: number,
+	stroke: number,
+}
+
+const defaultStyleProps: Partial<StyleProps> = {
+	size: 14,
+	stroke: 1,
+};
+
+export default function Icon({type, ...rest} : Props) {
+	
+	const iconProps = useProps("Icon", defaultStyleProps, rest);
+	
 	switch (type) {
 	case IconTypeEnum.Adjustments:
 		return <IconAdjustments {...iconProps} />;

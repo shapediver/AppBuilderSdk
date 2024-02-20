@@ -22,10 +22,6 @@ export default function ParameterBooleanComponent(props: PropsParameter) {
 	return <>
 		<ParameterLabelComponent { ...props} cancel={onCancel} />
 		{definition && <Switch
-			styles={() => ({
-				track: { cursor: "pointer" },
-			})}
-			size="md"
 			checked={value === true || value.toString().toLowerCase() === "true"}
 			onChange={(e) => handleChange(e.currentTarget.checked)}
 			disabled={disabled}

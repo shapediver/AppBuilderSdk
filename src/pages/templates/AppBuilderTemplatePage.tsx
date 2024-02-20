@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useMantineTheme } from "@mantine/core";
-import { useColorScheme } from "@mantine/hooks";
 import classes from "./AppBuilderTemplatePage.module.css";
+import { Button, Group, Stack, useProps } from "@mantine/core";
 
 interface Props {
 	top?: React.ReactNode;
@@ -11,16 +10,48 @@ interface Props {
 	bottom?: React.ReactNode;
 }
 
-export default function AppBuilderTemplatePage({
-	top = undefined,
-	left = undefined,
-	children = undefined,
-	right = undefined,
-	bottom = undefined,
-}: Props) {
-	const scheme = useColorScheme();
-	const theme = useMantineTheme();
-	const rootRef  = useRef<HTMLDivElement>(null);
+interface StyleProps {
+	bgTop: string,
+	bgLeft: string,
+	bgRight: string,
+	bgBottom: string,
+	/** Should buttons for showing/hiding the containers be shown? */
+	showContainerButtons: boolean;
+}
+
+const defaultStyleProps: Partial<StyleProps> = {
+	bgTop: "inherit",
+	bgLeft: "inherit",
+	bgRight: "inherit",
+	bgBottom: "inherit",
+	showContainerButtons: false,
+};
+
+export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps>) {
+
+	const {
+		top = undefined,
+		left = undefined,
+		children = undefined,
+		right = undefined,
+		bottom = undefined,
+	} = props;
+
+	// style properties
+	const { 
+		bgTop, 
+		bgLeft, 
+		bgRight, 
+		bgBottom,
+		showContainerButtons,
+	} = useProps("AppBuilderTemplatePage", defaultStyleProps, props);
+
+	const [isTopDisplayed, setIsTopDisplayed] = useState(!!top);
+	const [isLeftDisplayed, setIsLeftDisplayed] = useState(!!left);
+	const [isRightDisplayed, setIsRightDisplayed] = useState(!!right);
+	const [isBottomDisplayed, setIsBottomDisplayed] = useState(!!bottom);
+
+	const rootRef = useRef<HTMLDivElement>(null);
 	const [rootStyle, setRootStyle] = useState({
 		gridTemplateAreas: "'main main main main'",
 	});
@@ -101,19 +132,51 @@ export default function AppBuilderTemplatePage({
 	};
 
 	useEffect(() => {
-		setRootStyle(generateLayoutStyles(!!top, !!left, !!right, !!bottom));
-	}, [left, right, bottom, top]);
+		setRootStyle(generateLayoutStyles(
+			showContainerButtons ? isTopDisplayed : !!top, 
+			showContainerButtons ? isLeftDisplayed : !!left,
+			showContainerButtons ? isRightDisplayed : !!right,
+			showContainerButtons ? isBottomDisplayed : !!bottom
+		));
+	}, [left, right, bottom, top, isTopDisplayed, isLeftDisplayed, isRightDisplayed, isBottomDisplayed, showContainerButtons]);
 
 	return (
 		<>
-			<section ref={rootRef} className={classes.appBuilderTemplatePage} style={rootStyle}>
-				{ top && <section className={classes.appBuilderTemplatePageTop}>{ top }</section> }
-				{ left && <section className={classes.appBuilderTemplatePageLeft}>{ left }</section> }
-				{ right && <section className={classes.appBuilderTemplatePageRight}>{ right }</section> }
-				{ bottom && <section className={classes.appBuilderTemplatePageBottom}>{ bottom }</section> }
+			{showContainerButtons ? <Button.Group className={classes.buttonsTop}>
+				<Button variant="filled" onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
+				<Button variant="filled" onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
+				<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
+				<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
+			</Button.Group> : <></>}
+
+			<section ref={rootRef} className={`${classes.appBuilderTemplatePage} viewer-fullscreen-area`} style={rootStyle}>
+
+				{ top && isTopDisplayed ? <section className={classes.appBuilderTemplatePageTop} style={{background: bgTop}}><Group
+					w="100%"
+					h="100%"
+					justify="center"
+					wrap="nowrap"
+					p="xs"
+				>{top}</Group></section> : undefined }
+
+				{ left && isLeftDisplayed ? <section className={classes.appBuilderTemplatePageLeft} style={{background: bgLeft}}><Stack
+					p="xs"
+				>{left}</Stack></section> : undefined }
+
+				{ right && isRightDisplayed ? <section className={classes.appBuilderTemplatePageRight} style={{background: bgRight}}><Stack
+					p="xs"
+				>{right}</Stack></section> : undefined }
+
+				{ bottom && isBottomDisplayed ? <section className={classes.appBuilderTemplatePageBottom} style={{background: bgBottom}}><Group
+					w="100%"
+					h="100%"
+					justify="center"
+					wrap="nowrap"
+					p="xs"
+				>{bottom}</Group></section> : undefined }
+
 				<section
 					className={classes.appBuilderTemplatePageMain}
-					style={{ backgroundColor: scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}}
 				>
 					{ children || <></> }
 				</section>

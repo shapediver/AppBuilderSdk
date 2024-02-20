@@ -1,11 +1,10 @@
-import { NumberInput, Slider, Tooltip } from "@mantine/core";
-import { PARAMETER_TYPE } from "@shapediver/viewer";
+import { Group, NumberInput, Slider, Tooltip, useProps } from "@mantine/core";
 import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameterComponentCommons } from "hooks/shapediver/useParameterComponentCommons";
-import classes from "./ParameterSliderComponent.module.css";
+import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 
 /**
  * Round the number depending on the parameter type.
@@ -15,11 +14,21 @@ import classes from "./ParameterSliderComponent.module.css";
  * @returns
  */
 const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
-	if (parameter.type === PARAMETER_TYPE.INT || parameter.type === PARAMETER_TYPE.EVEN || parameter.type === PARAMETER_TYPE.ODD)
+	if (parameter.type === ShapeDiverResponseParameterType.INT || parameter.type === ShapeDiverResponseParameterType.EVEN || parameter.type === ShapeDiverResponseParameterType.ODD)
 		n = +n.toFixed(0);
 	n = +n.toFixed(parameter.decimalplaces);
 
 	return n;
+};
+
+interface StyleProps {
+	sliderWidth: string | number | undefined;
+	numberWidth: string | number | undefined;
+}
+
+const defaultStyleProps: Partial<StyleProps> = {
+	sliderWidth: "60%",
+	numberWidth: "35%",
 };
 
 /**
@@ -28,7 +37,7 @@ const round = (parameter: IShapeDiverParameterDefinition, n: number) => {
  *
  * @returns
  */
-export default function ParameterSliderComponent(props: PropsParameter) {
+export default function ParameterSliderComponent(props: PropsParameter & Partial<StyleProps>) {
 
 	const {
 		definition,
@@ -39,11 +48,14 @@ export default function ParameterSliderComponent(props: PropsParameter) {
 		disabled
 	} = useParameterComponentCommons<number>(props);
 
+	// style properties
+	const { sliderWidth, numberWidth } = useProps("ParameterSliderComponent", defaultStyleProps, props);
+
 	// calculate the step size which depends on the parameter type
 	let step = 1;
-	if (definition.type === PARAMETER_TYPE.INT) {
+	if (definition.type === ShapeDiverResponseParameterType.INT) {
 		step = 1;
-	} else if (definition.type === PARAMETER_TYPE.EVEN || definition.type === PARAMETER_TYPE.ODD) {
+	} else if (definition.type === ShapeDiverResponseParameterType.EVEN || definition.type === ShapeDiverResponseParameterType.ODD) {
 		step = 2;
 	} else {
 		step = 1 / Math.pow(10, definition.decimalplaces!);
@@ -57,9 +69,9 @@ export default function ParameterSliderComponent(props: PropsParameter) {
 
 	return <>
 		<ParameterLabelComponent { ...props } cancel={onCancel}/>
-		{definition && <div className={classes.container}>
+		{definition && <Group justify="space-between" w="100%" wrap="nowrap">
 			{ definition && <Slider
-				style={{ width: "55%" }}
+				w={sliderWidth}
 				label={round(definition, +value)}
 				value={+value}
 				min={+definition.min!}
@@ -71,7 +83,7 @@ export default function ParameterSliderComponent(props: PropsParameter) {
 				disabled={disabled}
 			/> }
 			{ definition && <Tooltip label={tooltip} position="bottom"><NumberInput
-				style={{ width: "40%" }}
+				w={numberWidth}
 				value={value}
 				min={+definition.min!}
 				max={+definition.max!}
@@ -82,6 +94,6 @@ export default function ParameterSliderComponent(props: PropsParameter) {
 				onChange={v => handleChange(round(definition, +v))}
 				disabled={disabled}
 			/></Tooltip> }
-		</div>}
+		</Group>}
 	</>;
 }

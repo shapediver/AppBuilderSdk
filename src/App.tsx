@@ -11,6 +11,7 @@ import * as ShapeDiverViewer from "@shapediver/viewer";
 import CustomUiPage from "pages/examples/CustomUiPage";
 import AppBuilderStaticExamplePage from "./pages/appbuilder/AppBuilderStaticExamplePage";
 import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
+import { useCustomTheme } from "hooks/ui/useCustomTheme";
 
 declare global {
 	interface Window {
@@ -24,13 +25,15 @@ export default function App() {
 		window.SDV = ShapeDiverViewer;
 	}, []);
 
+	const { theme } = useCustomTheme();
+
 	return (
-		<MantineProvider defaultColorScheme="auto">
+		<MantineProvider defaultColorScheme="auto" theme={theme}>
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="view" element={<ViewPage />} />
-					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" acceptRejectMode={true} showContainerButtons={true} />} />
+					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" acceptRejectMode={true} />} />
 					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
 					<Route path="multipleViewport" element={<MultipleViewportPage />} />

@@ -35,12 +35,18 @@ export interface IAppBuilderExportRef {
 /** Types of widgets */
 export type AppBuilderWidgetType = "accordion" | "text" | "image";
 
+/** Common properties of widgets. */
+export interface IAppBuilderWidgetPropsCommon {
+	/** Type of the container that contains the widget. */
+	containerType?: AppBuilderContainerTypeEnum
+}
+
 /** 
  * Properties of a parameter and export accordion widget.
  * UI elements of the referenced parameters and exports are grouped 
  * and ordered according to their properties (which might be overridden).
  */
-export interface IAppBuilderWidgetPropsAccordion {
+export interface IAppBuilderWidgetPropsAccordion extends IAppBuilderWidgetPropsCommon {
 	/** References to parameters which shall be displayed by the accordion. */
 	parameters?: IAppBuilderParameterRef[]
 	/** References to exports which shall be displayed by the accordion. */
@@ -53,7 +59,7 @@ export interface IAppBuilderWidgetPropsAccordion {
 }
 
 /** Properties of a text widget. */
-export interface IAppBuilderWidgetPropsText {
+export interface IAppBuilderWidgetPropsText extends IAppBuilderWidgetPropsCommon {
 	/** Plain text. Takes precedence. */
 	text?: string
 	/** Optional markdown. */
@@ -61,7 +67,7 @@ export interface IAppBuilderWidgetPropsText {
 }
 
 /** Properties of an image widget. */
-export interface IAppBuilderWidgetPropsImage {
+export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommon {
 	/** URL to image. Can be a data URL including a base 64 encoded image. Takes precedence over export reference. */
 	href?: string
 	/** Optional reference to export which provides the image. */
@@ -79,7 +85,7 @@ export interface IAppBuilderWidget {
 /** 
  * A tab displayed in a container.
  */
-export interface IAppBuilderTab {
+export interface IAppBuilderTab extends IAppBuilderWidgetPropsCommon {
 	/** Name of the tab. */
 	name: string
 	/** Optional icon of the tab. */
@@ -94,13 +100,19 @@ export type AppBuilderContainerNameType = "left" | "right" | "top" | "bottom";
 /**
  * A container for UI elements
  */
-export interface IAppBuilderContainer {
+export interface IAppBuilderContainer extends IAppBuilderWidgetPropsCommon {
 	/** Name of the container. */
 	name: AppBuilderContainerNameType
 	/** Tabs displayed in the container. */
 	tabs?: IAppBuilderTab[]
 	/** Further widgets displayed in the container. */
 	widgets?: IAppBuilderWidget[]
+}
+
+/** Types of container direction */
+export enum AppBuilderContainerTypeEnum {
+	Row = "row",
+	Column = "column"
 }
 
 /**

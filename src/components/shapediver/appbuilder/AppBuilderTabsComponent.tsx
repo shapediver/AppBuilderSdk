@@ -1,5 +1,5 @@
 import React from "react";
-import { IAppBuilderTab } from "types/shapediver/appbuilder";
+import { AppBuilderContainerTypeEnum, IAppBuilderTab } from "types/shapediver/appbuilder";
 import AppBuilderWidgetsComponent from "./AppBuilderWidgetsComponent";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 
@@ -10,10 +10,12 @@ interface Props {
 	 */
 	sessionId: string,
 	/** The tabs to display. */
-	tabs: IAppBuilderTab[] | undefined
+	tabs: IAppBuilderTab[] | undefined,
+	/** Type of container. */
+	containerType: AppBuilderContainerTypeEnum,
 }
 
-export default function AppBuilderTabsComponent({ sessionId, tabs }: Props) {
+export default function AppBuilderTabsComponent({ sessionId, tabs, containerType }: Props) {
 
 	if (!tabs || tabs.length === 0) {
 		return <></>;
@@ -26,7 +28,7 @@ export default function AppBuilderTabsComponent({ sessionId, tabs }: Props) {
 				name: tab.name,
 				icon: tab.icon,
 				children: [
-					<AppBuilderWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} />
+					<AppBuilderWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} containerType={containerType} />
 				]
 			};
 		})

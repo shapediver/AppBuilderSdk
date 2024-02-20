@@ -1,11 +1,10 @@
-import { IMaterialStandardDataProperties, MaterialEngine, PARAMETER_TYPE, SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
-import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
-import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
@@ -17,6 +16,7 @@ import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButt
 import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
+import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 
 /**
  * Function that creates the view page.
@@ -74,7 +74,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.COLOR,
 				name: "Custom color",
 				defval: "0x0d44f0ff",
-				type: "Color",
+				type: ShapeDiverResponseParameterType.COLOR,
 				hidden: false
 			}
 		},
@@ -83,7 +83,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.MAP,
 				name: "Custom map",
 				defval: "",
-				type: "String",
+				type: ShapeDiverResponseParameterType.STRING,
 				hidden: false
 			}
 		},
@@ -92,7 +92,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.ROUGHNESS,
 				name: "Custom roughness",
 				defval: "0",
-				type: PARAMETER_TYPE.FLOAT,
+				type: ShapeDiverResponseParameterType.FLOAT,
 				min: 0,
 				max: 1,
 				decimalplaces: 4,
@@ -104,7 +104,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.APPLY_TO_SHELF,
 				name: "Apply to shelf",
 				defval: "false",
-				type: PARAMETER_TYPE.BOOL,
+				type: ShapeDiverResponseParameterType.BOOLEAN,
 				hidden: false
 			}
 		},
@@ -113,7 +113,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.APPLY_TO_PLANE,
 				name: "Apply to plane",
 				defval: "false",
-				type: PARAMETER_TYPE.BOOL,
+				type: ShapeDiverResponseParameterType.BOOLEAN,
 				hidden: false
 			}
 		}
@@ -183,9 +183,6 @@ export default function ViewPage() {
 	// END - Example on how to apply a custom material to an output
 	/////
 
-	const fullscreenId = "viewer-fullscreen-area";
-	const { branding } = useViewerBranding();
-
 	const tabProps: ITabsComponentProps = {
 		defaultValue: "Parameters",
 		tabs: [
@@ -219,22 +216,15 @@ export default function ViewPage() {
 
 	return (
 		<>
-			<ExamplePage className={fullscreenId} aside={parameterTabs}>
+			<ExamplePage aside={parameterTabs}>
 				<ViewportComponent
 					id={viewportId}
-					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
-					showStatistics={true}
-					branding={branding}
 				>
-					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
+					<ViewportOverlayWrapper>
 						<ViewportIcons
 							viewportId={viewportId}
-							enableArBtn
-							enableFullscreenBtn
-							enableZoomBtn
-							enableCamerasBtn
 						/>
-					</ViewportAdditionalUIWrapper>
+					</ViewportOverlayWrapper>
 				</ViewportComponent>
 			</ExamplePage>
 		</>
