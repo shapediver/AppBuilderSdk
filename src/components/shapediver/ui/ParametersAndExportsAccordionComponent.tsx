@@ -123,7 +123,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props) {
 	const addAccordion = (items: JSX.Element[], defaultValue: string | undefined = undefined) => {
 		elements.push(
 			// wrap accordion in paper to show optional shadows
-			<Paper px={0} py={0} withBorder={false}><Accordion key={items[0].key} defaultValue={defaultValue}>
+			<Paper key={items[0].key} px={0} py={0} withBorder={false}><Accordion defaultValue={defaultValue}>
 				{ items }
 			</Accordion></Paper>
 		);

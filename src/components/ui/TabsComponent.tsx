@@ -1,5 +1,4 @@
 import React from "react";
-import classes from "./TabsComponent.module.css";
 import { Stack, Tabs } from "@mantine/core";
 import Icon from "./Icon";
 import { IconType } from "types/shapediver/icons";

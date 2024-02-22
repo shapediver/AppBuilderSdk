@@ -11,20 +11,42 @@ interface Props {
 }
 
 interface StyleProps {
-	bgTop: string,
-	bgLeft: string,
-	bgRight: string,
-	bgBottom: string,
+	/** top background color */
+	bgTop: string;
+	/** left background color */
+	bgLeft: string;
+	/** right background color */
+	bgRight: string;
+	/** bottom background color */
+	bgBottom: string;
 	/** Should buttons for showing/hiding the containers be shown? */
 	showContainerButtons: boolean;
+	/** Number of grid columns */
+	columns: number;
+	/** Number of grid rows */
+	rows: number;
+	/** Number of columns for left container */
+	leftColumns: number;
+	/** Number of columns for right container */
+	rightColumns: number;
+	/** Number of rows for top container */
+	topRows: number;
+	/** Number of rows for bottom container */
+	bottomRows: number;
 }
 
-const defaultStyleProps: Partial<StyleProps> = {
+const defaultStyleProps: StyleProps = {
 	bgTop: "inherit",
 	bgLeft: "inherit",
 	bgRight: "inherit",
 	bgBottom: "inherit",
 	showContainerButtons: false,
+	columns: 4,
+	rows: 4,
+	leftColumns: 1,
+	rightColumns: 1,
+	topRows: 1,
+	bottomRows: 1,
 };
 
 export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps>) {
@@ -44,17 +66,18 @@ export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps
 		bgRight, 
 		bgBottom,
 		showContainerButtons,
+		columns,
+		rows,
+		leftColumns,
+		rightColumns,
+		topRows,
+		bottomRows,
 	} = useProps("AppBuilderTemplatePage", defaultStyleProps, props);
 
 	const [isTopDisplayed, setIsTopDisplayed] = useState(!!top);
 	const [isLeftDisplayed, setIsLeftDisplayed] = useState(!!left);
 	const [isRightDisplayed, setIsRightDisplayed] = useState(!!right);
 	const [isBottomDisplayed, setIsBottomDisplayed] = useState(!!bottom);
-
-	const rootRef = useRef<HTMLDivElement>(null);
-	const [rootStyle, setRootStyle] = useState({
-		gridTemplateAreas: "'main main main main'",
-	});
 
 	const generateLayoutStyles = (isTop: boolean, isLeft: boolean, isRight: boolean, isBottom: boolean) => {
 		const m = "main";
@@ -63,52 +86,43 @@ export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps
 		const r = "right";
 		const b = "bottom";
 
-		const area = [
-			[m, m, m, m, m, m],
-			[m, m, m, m, m, m],
-			[m, m, m, m, m, m],
-			[m, m, m, m, m, m],
-		];
+		const area: string[][] = [];
+		
+		for (let i = 0; i < rows; i++) {
+			const row: string[] = [];
+			for (let j = 0; j < columns; j++) {
+				row.push(m);
+			}
+			area.push(row);
+		}
 
 		if (isTop) {
-			area[0] = [t, t, t, t, t, t];
-		}
-
-		if (isLeft) {
-			area[0][0] = isTop ? t : l;
-			area[1][0] = l;
-			area[2][0] = l;
-			area[3][0] = l;
-
-			if (!isRight) {
-				area[0][1] = isTop ? t : l;
-				area[1][1] = l;
-				area[2][1] = l;
-				area[3][1] = l;
-			}
-		}
-
-		if (isRight) {
-			area[0][5] = isTop ? t : r;
-			area[1][5] = r;
-			area[2][5] = r;
-			area[3][5] = r;
-
-			if (!isLeft) {
-				area[0][4] = isTop ? t : r;
-				area[1][4] = r;
-				area[2][4] = r;
-				area[3][4] = r;
+			for (let j = 0; j < columns; j++) {
+				for (let i = 0; i < topRows; i++) {
+					area[i][j] = t;
+				}
 			}
 		}
 
 		if (isBottom) {
-			area[3][0] = isLeft ? l : b;
-			area[3][1] = (isLeft && !isRight) ? l : b;
-			area[3][2] = b;
-			area[3][3] = b;
-			area[3][4] = (isRight && !isLeft) ? r : b;
-			area[3][5] = isRight ? r : b;
+			for (let j = 0; j < columns; j++) {
+				for (let i = rows - bottomRows; i < rows; i++)
+					area[i][j] = b;
+			}
+		}
+
+		if (isLeft) {
+			for (let i = 0; i < rows; i++) {
+				for (let j = 0; j < leftColumns; j++)
+					area[i][j] = l;
+			}
+		}
+
+		if (isRight) {
+			for (let i = 0; i < rows; i++) {
+				for (let j = columns - rightColumns; j < columns; j++)
+					area[i][j] = r;
+			}
 		}
 
 		let gridTemplateAreas = "";
@@ -124,21 +138,40 @@ export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps
 
 		gridTemplateAreas = gridTemplateAreas.trim();
 
-		//console.debug("gridTemplateAreas", gridTemplateAreas);
+		console.debug("gridTemplateAreas", gridTemplateAreas);
 
 		return {
 			gridTemplateAreas,
+			gridTemplateColumns: `repeat(${columns}, 1fr)`,
+			gridTemplateRows: `repeat(${rows}, 1fr)`,
 		};
 	};
 
-	useEffect(() => {
-		setRootStyle(generateLayoutStyles(
+	const rootRef = useRef<HTMLDivElement>(null);
+	const [rootStyle, setRootStyle] = useState<React.CSSProperties>({
+		...(generateLayoutStyles(
 			showContainerButtons ? isTopDisplayed : !!top, 
 			showContainerButtons ? isLeftDisplayed : !!left,
 			showContainerButtons ? isRightDisplayed : !!right,
 			showContainerButtons ? isBottomDisplayed : !!bottom
-		));
-	}, [left, right, bottom, top, isTopDisplayed, isLeftDisplayed, isRightDisplayed, isBottomDisplayed, showContainerButtons]);
+		)),
+	});
+
+	useEffect(() => {
+		setRootStyle({
+			...rootStyle,
+			...(generateLayoutStyles(
+				showContainerButtons ? isTopDisplayed : !!top, 
+				showContainerButtons ? isLeftDisplayed : !!left,
+				showContainerButtons ? isRightDisplayed : !!right,
+				showContainerButtons ? isBottomDisplayed : !!bottom
+			))
+		});
+	}, [left, right, bottom, top, 
+		isTopDisplayed, isLeftDisplayed, isRightDisplayed, isBottomDisplayed, 
+		showContainerButtons,
+		columns, rows, leftColumns, rightColumns, topRows, bottomRows
+	]);
 
 	return (
 		<>

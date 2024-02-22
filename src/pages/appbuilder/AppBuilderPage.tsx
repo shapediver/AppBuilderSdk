@@ -14,8 +14,6 @@ interface Props {
 	example?: string;
 	/** Should acceptRejectMode be used for the example model? */
 	acceptRejectMode?: boolean;
-	/** Option to show / hide rendering statistics overlayed to the viewport. */
-	showStatistics?: boolean;
 }
 
 /**
@@ -23,7 +21,7 @@ interface Props {
  *
  * @returns
  */
-export default function AppBuilderPage({ example, acceptRejectMode, showStatistics }: Props) {
+export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
 
 	const defaultSessionDto = example ? {
 		...ShapeDiverExampleModels[example],
