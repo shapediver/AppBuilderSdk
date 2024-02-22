@@ -2,7 +2,8 @@ import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import React, { useEffect } from "react";
 import * as ShapeDiverViewer from "@shapediver/viewer";
-import WebAppPage from "pages/webapp/WebAppPage";
+import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
+import { useCustomTheme } from "hooks/ui/useCustomTheme";
 
 declare global {
 	interface Window {
@@ -10,15 +11,17 @@ declare global {
 	}
 }
 
-export default function AppIframe() {
+export default function AppBuilderBase() {
 
 	useEffect(() => {
 		window.SDV = ShapeDiverViewer;
 	}, []);
 
+	const { theme } = useCustomTheme();
+
 	return (
-		<MantineProvider defaultColorScheme="auto">
-			<WebAppPage />
+		<MantineProvider defaultColorScheme="auto" theme={theme}>
+			<AppBuilderPage />
 		</MantineProvider>
 	);
 }

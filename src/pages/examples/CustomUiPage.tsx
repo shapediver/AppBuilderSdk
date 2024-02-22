@@ -1,15 +1,13 @@
-import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
-import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
-import ViewportAdditionalUIWrapper, { Positions } from "../../components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useWebAppSettings from "hooks/shapediver/useWebAppSettings";
+import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 
@@ -24,8 +22,6 @@ const SESSION_DTO = {
 	acceptRejectMode: true
 };
 
-const VIEWER_FULLSCREEN_ID = "viewer-fullscreen-area";
-
 /**
  * Function that creates the view page.
  * The aside (right side) two tabs, one with a ParameterUiComponent and another with an ExportUiComponent
@@ -35,9 +31,7 @@ const VIEWER_FULLSCREEN_ID = "viewer-fullscreen-area";
  */
 export default function ViewPage() {
 
-	const { branding } = useViewerBranding();
-
-	const { settings } = useWebAppSettings(SESSION_DTO);
+	const { settings } = useUrlSearchParamSettings(SESSION_DTO);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { parameterProps, exportProps } = useSessionWithCustomUi(sessionDto);
 
@@ -72,22 +66,15 @@ export default function ViewPage() {
 
 	return (
 		<>
-			<ExamplePage className={VIEWER_FULLSCREEN_ID} aside={parameterTabs}>
+			<ExamplePage aside={parameterTabs}>
 				<ViewportComponent
 					id={VIEWPORT_ID}
-					sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
-					showStatistics={true}
-					branding={branding}
 				>
-					<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
+					<ViewportOverlayWrapper>
 						<ViewportIcons
 							viewportId={VIEWPORT_ID}
-							enableArBtn
-							enableFullscreenBtn
-							enableZoomBtn
-							enableCamerasBtn
 						/>
-					</ViewportAdditionalUIWrapper>
+					</ViewportOverlayWrapper>
 				</ViewportComponent>
 			</ExamplePage>
 		</>

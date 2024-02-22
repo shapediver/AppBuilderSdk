@@ -3,7 +3,6 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React from "react";
 import { IUseSessionDto, useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
-import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
 import { Grid } from "@mantine/core";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
@@ -39,8 +38,6 @@ export default function ViewPage() {
 		},
 	};
 
-	const { branding } = useViewerBranding();
-
 	useSession({
 		...sessionsCreateDto[sessionSideboardKey],
 	});
@@ -60,8 +57,6 @@ export default function ViewPage() {
 					id={`viewport_multiple_${i}`}
 					sessionSettingsId={sessionCreateDto.id}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
-					showStatistics={true}
-					branding={branding}
 				/>
 			</Grid.Col>;
 		}),
@@ -73,8 +68,6 @@ export default function ViewPage() {
 					id={`viewport_multiple_${i + 2}`}
 					sessionSettingsId={sessionCreateDto.id}
 					sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
-					showStatistics={true}
-					branding={branding}
 				/>
 			</Grid.Col>;
 		})

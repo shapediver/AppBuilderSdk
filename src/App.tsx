@@ -9,8 +9,9 @@ import ViewPage from "pages/examples/ViewPage";
 import MultipleViewportPage from "pages/examples/MultipleViewportPage";
 import * as ShapeDiverViewer from "@shapediver/viewer";
 import CustomUiPage from "pages/examples/CustomUiPage";
-import WebAppExampleOnePage from "./pages/webapp/WebAppExampleOnePage";
-import WebAppPage from "pages/webapp/WebAppPage";
+import AppBuilderStaticExamplePage from "./pages/appbuilder/AppBuilderStaticExamplePage";
+import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
+import { useCustomTheme } from "hooks/ui/useCustomTheme";
 
 declare global {
 	interface Window {
@@ -24,14 +25,16 @@ export default function App() {
 		window.SDV = ShapeDiverViewer;
 	}, []);
 
+	const { theme } = useCustomTheme();
+
 	return (
-		<MantineProvider defaultColorScheme="auto">
+		<MantineProvider defaultColorScheme="auto" theme={theme}>
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="view" element={<ViewPage />} />
-					<Route path="webApp" element={<WebAppPage example="WebAppDiagrid" acceptRejectMode={true} showContainerButtons={true} />} />
-					<Route path="webAppTest" element={<WebAppExampleOnePage />} />
+					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" acceptRejectMode={true} />} />
+					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
 					<Route path="multipleViewport" element={<MultipleViewportPage />} />
 					<Route path="customui" element={<CustomUiPage />} />

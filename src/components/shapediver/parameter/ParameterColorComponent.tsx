@@ -32,10 +32,6 @@ export default function ParameterColorComponent(props: PropsParameter) {
 	return <>
 		<ParameterLabelComponent { ...props } cancel={onCancel} />
 		{ definition && <ColorInput
-			styles={() => ({
-				input: { cursor: "pointer" }
-				// track: { cursor: "pointer" },
-			})}
 			placeholder="Pick color"
 			value={value}
 			onChange={setValue}

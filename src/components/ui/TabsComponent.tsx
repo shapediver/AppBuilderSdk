@@ -1,27 +1,28 @@
 import React from "react";
-import { useIsMobile } from "hooks/ui/useIsMobile";
-import classes from "./TabsComponent.module.css";
-import { Tabs } from "@mantine/core";
+import { Stack, Tabs } from "@mantine/core";
 import Icon from "./Icon";
 import { IconType } from "types/shapediver/icons";
 
 interface PropsTab {
+	/** Name (value) of tab. */
 	name: string,
+	/** Optional icon of tab. */
 	icon?: IconType,
+	/** Children of tab. */
 	children: JSX.Element[],
 }
 
 export interface ITabsComponentProps {
+	/** Value of default tab. */
 	defaultValue: string,
+	/** The tabs. */
 	tabs: PropsTab[],
 }
 
 
 export default function TabsComponent({defaultValue, tabs}: ITabsComponentProps) {
 
-	const isMobile = useIsMobile();
-
-	return tabs.length === 0 ? <></> : <Tabs defaultValue={defaultValue} className={classes.tabs}>
+	return tabs.length === 0 ? <></> : <Tabs defaultValue={defaultValue}>
 		<Tabs.List>
 			{
 				tabs.map((tab, index) => <Tabs.Tab 
@@ -35,8 +36,10 @@ export default function TabsComponent({defaultValue, tabs}: ITabsComponentProps)
 		</Tabs.List>
 		{
 			tabs.map((tab, index) =>
-				<Tabs.Panel key={index} value={tab.name} pt={isMobile ? "" : "xs"}>
-					{tab.children}
+				<Tabs.Panel key={index} value={tab.name}>
+					<Stack>
+						{tab.children}
+					</Stack>
 				</Tabs.Panel>
 			)
 		}

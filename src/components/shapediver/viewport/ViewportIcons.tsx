@@ -1,6 +1,6 @@
-import React, { CSSProperties, useState } from "react";
+import React, { useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
-import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip, Text } from "@mantine/core";
+import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip, Text, useProps, MantineStyleProp, Box } from "@mantine/core";
 import { useClickEventHandler } from "hooks/misc/useClickEventHandler";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
@@ -10,37 +10,56 @@ import { FLAG_TYPE } from "@shapediver/viewer";
 import classes from "./ViewportIcons.module.css";
 
 interface Props {
-	color?: string
-	colorDisabled?: string
-	size?: number,
-	style?: CSSProperties | undefined,
-	variant?: ActionIconVariant,
-	variantDisabled?: ActionIconVariant,
-	fullscreenId?: string,
 	viewportId: string,
-	enableArBtn?: boolean,
-	enableZoomBtn?: boolean,
-	enableFullscreenBtn?: boolean,
-	enableCamerasBtn?: boolean,
 }
 
-export default function ViewportIcons({
-	color = "black",
-	colorDisabled = "grey",
-	variant = "subtle",
-	variantDisabled = "transparent",
-	size = 32,
-	fullscreenId = "viewer-fullscreen-area",
-	viewportId,
-	enableArBtn = false,
-	enableZoomBtn = false,
-	enableFullscreenBtn = false,
-	enableCamerasBtn = false,
-	style = { display: "flex"},
-}: Props) {
-	const iconStyle = {
-		margin: "3px",
-	};
+interface OptionalProps {
+	color: string
+	colorDisabled: string
+	enableArBtn: boolean,
+	enableCamerasBtn: boolean,
+	enableFullscreenBtn: boolean,
+	enableZoomBtn: boolean,
+	fullscreenId: string,
+	iconStyle: MantineStyleProp,
+	size: number,
+	style: MantineStyleProp,
+	variant: ActionIconVariant,
+	variantDisabled: ActionIconVariant,
+}
+
+const defaultProps: OptionalProps = {
+	color: "black",
+	colorDisabled: "grey",
+	enableArBtn: false,
+	enableCamerasBtn: false,
+	enableFullscreenBtn: false,
+	enableZoomBtn: false,
+	fullscreenId: "viewer-fullscreen-area",
+	iconStyle: { m: "3px" },
+	size: 32,
+	style: { display: "flex"},
+	variant: "subtle",
+	variantDisabled: "transparent",
+};
+
+export default function ViewportIcons(props: Props & Partial<OptionalProps>) {
+
+	const { viewportId, ...rest }	= props;
+	const {
+		color,
+		colorDisabled,
+		enableArBtn,
+		enableCamerasBtn,
+		enableFullscreenBtn,
+		enableZoomBtn,
+		fullscreenId,
+		iconStyle,
+		size,
+		style,
+		variant,
+		variantDisabled,
+	} = useProps("ViewportIcons", defaultProps, rest);
 
 	const viewport = useShapeDiverStoreViewer(state => state.viewports[viewportId]);
 
@@ -119,7 +138,7 @@ export default function ViewportIcons({
 		return <Menu.Item onClick={() => onCameraSelect(camera.id)} key={i}>{ firstLetterUppercase(camera.name || camera.id )}</Menu.Item>;
 	});
 
-	return <section style={style}>
+	return <Box style={style}>
 
 		{ enableArBtn && isArEnabled && <Tooltip label="View in AR">
 			<div>
@@ -176,5 +195,5 @@ export default function ViewportIcons({
 				</Menu.Dropdown>
 			</Menu>
 		}
-	</section>;
+	</Box>;
 }

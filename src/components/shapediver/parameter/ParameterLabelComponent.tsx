@@ -16,14 +16,10 @@ interface Props extends PropsParameter {
 export default function ParameterLabelComponent({ sessionId, parameterId, cancel}: Props) {
 	const { definition } = useParameter<any>(sessionId, parameterId);
 
-	return <Group justify="space-between" w="100%">
-		<Text
-			style={{ paddingBottom: "0.25rem" }}
-			size="sm"
-			fw={500}
-		>
+	return <Group justify="space-between" w="100%" wrap="nowrap">
+		<Text pb={4} size="sm" fw={500}>
 			{definition.displayname || definition.name}
 		</Text>
-		{cancel && <IconX size="15" color="red" onClick={cancel} />}
+		{cancel && <IconX size="16" color="red" onClick={cancel} />}
 	</Group>;
 }

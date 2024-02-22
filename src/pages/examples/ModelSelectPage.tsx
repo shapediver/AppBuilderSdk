@@ -1,10 +1,8 @@
-import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import ModelSelect from "components/ui/ModelSelect";
 import React from "react";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
-import { useViewerBranding } from "hooks/shapediver/useViewerBranding";
-import ViewportAdditionalUIWrapper, { Positions } from "components/shapediver/viewport/ViewportAdditionalUIWrapper";
+import ViewportOverlayWrapper from "components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "components/shapediver/viewport/ViewportIcons";
 
 /**
@@ -15,28 +13,19 @@ import ViewportIcons from "components/shapediver/viewport/ViewportIcons";
  * @returns
  */
 export default function ModelSelectPage() {
-	const { branding } = useViewerBranding();
 
 	const viewportId = "viewport_2";
-	const fullscreenId = "viewer-fullscreen-area";
-
+	
 	return (
-		<ExamplePage className={fullscreenId} aside={<ModelSelect />}>
+		<ExamplePage aside={<ModelSelect />}>
 			<ViewportComponent
 				id={viewportId}
-				sessionSettingsMode={SESSION_SETTINGS_MODE.FIRST}
-				showStatistics={true}
-				branding={branding}
 			>
-				<ViewportAdditionalUIWrapper position={Positions.TOP_RIGHT}>
+				<ViewportOverlayWrapper>
 					<ViewportIcons
 						viewportId={viewportId}
-						enableArBtn
-						enableFullscreenBtn
-						enableZoomBtn
-						enableCamerasBtn
 					/>
-				</ViewportAdditionalUIWrapper>
+				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</ExamplePage>
 	);

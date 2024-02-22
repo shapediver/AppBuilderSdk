@@ -11,7 +11,7 @@ interface Props {
 	exports: PropsExport[],
 }
 
-export default function WebAppFallbackContainerComponent({ parameters, exports }: Props) {
+export default function AppBuilderFallbackContainerComponent({ parameters, exports }: Props) {
 
 	const tabProps: ITabsComponentProps = {
 		defaultValue: "Parameters",

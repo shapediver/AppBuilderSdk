@@ -22,7 +22,7 @@ interface Props {
 	className?: string;
 }
 
-export default function ExamplePage({ children = <></>, aside = <></>, className = "" }: Props) {
+export default function ExamplePage({ children = <></>, aside = <></>, className = "viewer-fullscreen-area" }: Props) {
 	const scheme = useColorScheme();
 	const theme = useMantineTheme();
 	const [opened, { toggle }] = useDisclosure();

@@ -1,0 +1,35 @@
+.appBuilderTemplatePage {
+    display: grid;
+    height: 100vh;
+}
+
+.appBuilderTemplatePageTop, .appBuilderTemplatePageBottom, .appBuilderTemplatePageLeft, .appBuilderTemplatePageRight, .appBuilderTemplatePageBottom {
+    overflow: auto;
+}
+
+.appBuilderTemplatePageMain {
+    grid-area: main;
+}
+
+.appBuilderTemplatePageTop {
+    grid-area: top;
+}
+
+.appBuilderTemplatePageLeft {
+    grid-area: left;
+}
+
+.appBuilderTemplatePageRight {
+    grid-area: right;
+}
+
+.appBuilderTemplatePageBottom {
+    grid-area: bottom;
+}
+
+.buttonsTop {
+    position: absolute;
+    top:0;
+    left: calc(50% - 140px);
+    z-index: 100;
+}

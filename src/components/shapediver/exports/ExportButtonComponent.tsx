@@ -6,7 +6,6 @@ import ExportLabelComponent from "components/shapediver/exports/ExportLabelCompo
 import { fetchFileWithToken } from "utils/file";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { useExport } from "hooks/shapediver/useExport";
-import classes from "./ExportButtonComponent.module.css";
 
 /**
  * Functional component that creates a button that triggers an export.
@@ -50,18 +49,16 @@ export default function ExportButtonComponent(props: PropsExport) {
 	return (
 		<>
 			<ExportLabelComponent { ...props } />
-			{ definition && <div className={classes.container}>
+			{ definition && <>
 				<Button
-					className={classes.button}
 					fullWidth={true}
 					leftSection={definition.type === EXPORT_TYPE.DOWNLOAD ? <IconDownload /> : <IconMailForward />}
-					variant="default"
 					onClick={onClick}
 				>
 					{definition.type === EXPORT_TYPE.DOWNLOAD ? "Download File" : "Send Email"}
 				</Button>
 				{requestingExport && <Loader />}
-			</div> }
+			</> }
 		</>
 	);
 }
