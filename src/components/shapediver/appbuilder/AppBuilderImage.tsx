@@ -22,7 +22,10 @@ export default function AppBuilderImage(props: SomeImageProps & Props ) {
 		h={containerType === AppBuilderContainerTypeEnum.Row ? "100%" : undefined}
 		w={containerType === AppBuilderContainerTypeEnum.Column ? "100%" : undefined}
 		radius={radius}
-		p={0}
+		pt={0}
+		pr={0}
+		pb={0}
+		pl={0}
 	>
 		<Image 
 			{...rest} 
