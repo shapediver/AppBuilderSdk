@@ -3,7 +3,7 @@ import React from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
-import AppBuilderTemplatePage from "../templates/AppBuilderTemplatePage";
+import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
 
@@ -35,7 +35,7 @@ export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
 
 	return (
 		show && 
-		<AppBuilderTemplatePage
+		<AppBuilderGridTemplatePage
 			top={top}
 			left={left}
 			right={right}
@@ -50,6 +50,6 @@ export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
 					/>
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
-		</AppBuilderTemplatePage>
+		</AppBuilderGridTemplatePage>
 	);
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "index.css";
-import AppIframe from "AppIframe";
+import AppBuilderBase from "AppBuilderBase";
 import reportWebVitals from "reportWebVitals";
 
 const root = ReactDOM.createRoot(
@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 const useStrictMode = false;
 
 root.render(
-	useStrictMode ? <React.StrictMode><AppIframe/></React.StrictMode> : <AppIframe/>
+	useStrictMode ? <React.StrictMode><AppBuilderBase/></React.StrictMode> : <AppBuilderBase/>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -8,7 +8,7 @@ import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
 import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
-import AppBuilderTemplatePage from "../templates/AppBuilderTemplatePage";
+import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import MarkdownWidgetComponent from "../../components/shapediver/ui/MarkdownWidgetComponent";
 import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderImage";
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
@@ -207,7 +207,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 	/>;
 
 	return (
-		<AppBuilderTemplatePage
+		<AppBuilderGridTemplatePage
 
 			top={<>
 				<MarkdownWidgetComponent>Top secret</MarkdownWidgetComponent>
@@ -246,6 +246,6 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					/>
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
-		</AppBuilderTemplatePage>
+		</AppBuilderGridTemplatePage>
 	);
 }

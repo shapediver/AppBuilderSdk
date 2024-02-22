@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import classes from "./AppBuilderTemplatePage.module.css";
+import classes from "./AppBuilderGridTemplatePage.module.css";
 import { Button, Group, Stack, useProps } from "@mantine/core";
 
 interface Props {
@@ -49,7 +49,7 @@ const defaultStyleProps: StyleProps = {
 	bottomRows: 1,
 };
 
-export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps>) {
+export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleProps>) {
 
 	const {
 		top = undefined,
@@ -72,7 +72,7 @@ export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps
 		rightColumns,
 		topRows,
 		bottomRows,
-	} = useProps("AppBuilderTemplatePage", defaultStyleProps, props);
+	} = useProps("AppBuilderGridTemplatePage", defaultStyleProps, props);
 
 	const [isTopDisplayed, setIsTopDisplayed] = useState(!!top);
 	const [isLeftDisplayed, setIsLeftDisplayed] = useState(!!left);
@@ -138,7 +138,7 @@ export default function AppBuilderTemplatePage(props: Props & Partial<StyleProps
 
 		gridTemplateAreas = gridTemplateAreas.trim();
 
-		console.debug("gridTemplateAreas", gridTemplateAreas);
+		// console.debug("gridTemplateAreas", gridTemplateAreas);
 
 		return {
 			gridTemplateAreas,

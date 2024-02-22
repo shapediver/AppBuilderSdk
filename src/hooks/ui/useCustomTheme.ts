@@ -80,7 +80,7 @@ export const useCustomTheme = () => {
 					// fit: "contain",
 				}
 			},
-			AppBuilderTemplatePage: {
+			AppBuilderGridTemplatePage: {
 				defaultProps: {
 					bgTop: "white", 
 					bgLeft: "white", 

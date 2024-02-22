@@ -11,7 +11,7 @@ declare global {
 	}
 }
 
-export default function AppIframe() {
+export default function AppBuilderBase() {
 
 	useEffect(() => {
 		window.SDV = ShapeDiverViewer;
