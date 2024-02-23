@@ -1,4 +1,4 @@
-import { IMaterialStandardDataProperties, MaterialEngine } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine, MATERIAL_TYPE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
@@ -11,7 +11,7 @@ import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
 import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
-import { MaterialType, useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
+import { useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
@@ -104,7 +104,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.APPLY_TO_SHELF,
 				name: "Apply to shelf",
 				defval: "false",
-				type: ShapeDiverResponseParameterType.BOOLEAN,
+				type: ShapeDiverResponseParameterType.BOOL,
 				hidden: false
 			}
 		},
@@ -113,7 +113,7 @@ export default function ViewPage() {
 				id: PARAMETER_NAMES.APPLY_TO_PLANE,
 				name: "Apply to plane",
 				defval: "false",
-				type: ShapeDiverResponseParameterType.BOOLEAN,
+				type: ShapeDiverResponseParameterType.BOOL,
 				hidden: false
 			}
 		}
@@ -122,6 +122,7 @@ export default function ViewPage() {
 
 	// state for the custom material properties
 	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({
+		type: MATERIAL_TYPE.STANDARD,
 		color: materialParameters.find(d => d.definition.id === PARAMETER_NAMES.COLOR)!.definition.defval,
 		map: undefined,
 		roughness: +materialParameters.find(d => d.definition.id === PARAMETER_NAMES.ROUGHNESS)!.definition.defval
@@ -176,8 +177,8 @@ export default function ViewPage() {
 	const myParameterProps = useSessionPropsParameter(customSessionId);
 
 	// apply the custom material
-	useOutputMaterial(sessionId, outputNameShelf, materialProperties, MaterialType.Standard);
-	useOutputMaterial(sessionId, outputNamePlane, materialProperties, MaterialType.Standard);
+	useOutputMaterial(sessionId, outputNameShelf, materialProperties);
+	useOutputMaterial(sessionId, outputNamePlane, materialProperties);
 
 	/////
 	// END - Example on how to apply a custom material to an output
