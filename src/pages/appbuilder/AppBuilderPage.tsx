@@ -6,6 +6,10 @@ import { ShapeDiverExampleModels } from "tickets";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
+import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
+import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
+import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";
+import AppBuilderFallbackContainerComponent from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -31,15 +35,38 @@ export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
 
 	const { settings } = useUrlSearchParamSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
-	const { top, bottom, left, right, show } = useSessionWithAppBuilder(sessionDto);
+	const { sessionId, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto);
 
+	// get props for fallback parameters
+	const parameterProps = useSessionPropsParameter(sessionId);
+	const exportProps = useSessionPropsExport(sessionId);
+
+	// create UI elements for containers
+	const containers: { top?: JSX.Element, bottom?: JSX.Element, left?: JSX.Element, right?: JSX.Element } = {
+		top: undefined,
+		bottom: undefined,
+		left: undefined,
+		right: undefined,
+	};
+
+	if (appBuilderData?.containers) {
+		appBuilderData.containers.forEach((container) => {
+			containers[container.name] = AppBuilderContainerComponent({...container, sessionId });
+		});
+	}
+	else if ( !hasAppBuilderOutput && (parameterProps.length > 0 || exportProps.length > 0) )
+	{
+		containers.right = AppBuilderFallbackContainerComponent({parameters: parameterProps, exports: exportProps});
+	}
+
+	const show = Object.values(containers).some((c) => c !== undefined);
+	
 	return (
-		show && 
-		<AppBuilderGridTemplatePage
-			top={top}
-			left={left}
-			right={right}
-			bottom={bottom}
+		show &&	<AppBuilderGridTemplatePage
+			top={containers.top}
+			left={containers.left}
+			right={containers.right}
+			bottom={containers.bottom}
 		>
 			<ViewportComponent
 				id={VIEWPORT_ID}

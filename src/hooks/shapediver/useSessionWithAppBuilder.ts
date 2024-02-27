@@ -1,10 +1,6 @@
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
-import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";
-import AppBuilderFallbackContainerComponent from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
-import { useSessionPropsParameter } from "./useSessionPropsParameter";
-import { useSessionPropsExport } from "./useSessionPropsExport";
 
 /** Prefix used to register custom parameters */
 //const CUSTOM_SESSION_ID_POSTFIX = "_appbuilder";
@@ -40,39 +36,16 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 
 	// get data output, parse it
 	const { outputApi, outputContent } = useOutputContent( sessionId, CUSTOM_DATA_OUTPUT_NAME );
-	const appbuilder = outputContent?.[0]?.data as IAppBuilder | undefined; // TODO validation
-	console.debug(CUSTOM_DATA_OUTPUT_NAME, appbuilder);
+	const appBuilderData = outputContent?.[0]?.data as IAppBuilder | undefined; // TODO validation
+	console.debug(CUSTOM_DATA_OUTPUT_NAME, appBuilderData);
 	const hasAppBuilderOutput = !!outputApi;
-	
-	// get props for fallback parameters
-	const parameterProps = useSessionPropsParameter(sessionId);
-	const exportProps = useSessionPropsExport(sessionId);
 
 	// TODO register custom parameters
 
-	// create UI elements
-	const elements: { top?: JSX.Element, bottom?: JSX.Element, left?: JSX.Element, right?: JSX.Element } = {
-		top: undefined,
-		bottom: undefined,
-		left: undefined,
-		right: undefined,
-	};
-
-	if (props) {
-		if (appbuilder?.containers) {
-			appbuilder.containers.forEach((container) => {
-				elements[container.name] = AppBuilderContainerComponent({...container, sessionId: props.id });
-			});
-		}
-		else if (!hasAppBuilderOutput)
-		{
-			elements.right = AppBuilderFallbackContainerComponent({parameters: parameterProps, exports: exportProps});
-		}
-	}
-	
 	return {
 		sessionApi,
-		show: Object.values(elements).some(e => e !== undefined),
-		...elements
+		sessionId,
+		appBuilderData,
+		hasAppBuilderOutput
 	};
 }
