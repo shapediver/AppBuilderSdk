@@ -1,4 +1,4 @@
-import { Image, Container, Card, Group, Text, Blockquote } from "@mantine/core";
+import { Image, Container, Card, Group, Text, Blockquote, Center, Stack } from "@mantine/core";
 import React from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import classes from "pages/HomePage.module.css";
@@ -31,9 +31,11 @@ export default function HomePage() {
 On this example page we present several use cases that utilize custom React components and hooks for the creation of viewports, sessions,
 controls for parameters and exports, and much more. All these components and hooks are provided in the repository and can be customized easily.
 						</Text>
-						<Blockquote color="blue" icon={<IconInfoCircle />} mt="xl">
-Check out the source code for this example <a href="https://github.com/shapediver/ShapeDiverReactExample">here</a>.
-						</Blockquote>
+						<Center w="100%">
+							<Blockquote color="blue" icon={<IconInfoCircle />} mt="xl">
+	Check out the source code for this example <a href="https://github.com/shapediver/ShapeDiverReactExample">here</a>.
+							</Blockquote>
+						</Center>
 					</Group>
 				</Card>
 
