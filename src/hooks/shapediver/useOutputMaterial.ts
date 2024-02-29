@@ -1,27 +1,14 @@
 import { 
 	GeometryData, 
 	IGeometryData, 
-	IMaterialAbstractData, 
-	IMaterialGemDataProperties, 
-	IMaterialSpecularGlossinessDataProperties, 
-	IMaterialStandardDataProperties, 
-	IMaterialUnlitDataProperties, 
+	IMaterialAbstractData,
+	IMaterialAbstractDataProperties, 
+	MaterialEngine,
 	IOutputApi, 
-	ITreeNode,
-	MaterialGemData, 
-	MaterialSpecularGlossinessData, 
-	MaterialStandardData, 
-	MaterialUnlitData 
+	ITreeNode
 } from "@shapediver/viewer";
 import { useCallback, useEffect, useRef } from "react";
 import { useOutputNode } from "./useOutputNode";
-
-export enum MaterialType {
-	Standard = "Standard",
-	SpecularGlossiness = "SpecularGlossiness",
-	Unlit = "Unlit",
-	Gem = "Gem"
-}
 
 /**
  * We traverse the node and all its children, and collect all geometry data.
@@ -51,25 +38,6 @@ const getGeometryData = (
 const originalMaterials: { [key: string]: { [key: string]: IMaterialAbstractData | null } } = {};
 
 /**
- * TODO remove this once IMaterialAbstractDataProperties is exported from the viewer in a future release.
- * see https://shapediver.atlassian.net/browse/SS-7366
- */
-type IMaterialAbstractDataProperties = IMaterialStandardDataProperties | IMaterialSpecularGlossinessDataProperties | IMaterialUnlitDataProperties | IMaterialGemDataProperties;
-
-const createMaterial = (materialProperties: IMaterialAbstractDataProperties, materialType: MaterialType) : IMaterialAbstractData => {
-	switch (materialType) {
-	case MaterialType.SpecularGlossiness:
-		return new MaterialSpecularGlossinessData(materialProperties);
-	case MaterialType.Unlit:
-		return new MaterialUnlitData(materialProperties);
-	case MaterialType.Gem:
-		return new MaterialGemData(materialProperties);
-	default:
-		return new MaterialStandardData(materialProperties);
-	}
-};
-
-/**
  * Hook allowing to update the material of an output.
  * 
  * Makes use of {@link useOutputNode}.
@@ -78,7 +46,7 @@ const createMaterial = (materialProperties: IMaterialAbstractDataProperties, mat
  * @param outputIdOrName 
  * @param materialProperties 
  */
-export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialAbstractDataProperties, materialType: MaterialType = MaterialType.Standard ) : {
+export function useOutputMaterial(sessionId: string, outputIdOrName: string, materialProperties: IMaterialAbstractDataProperties) : {
 	/**
 	 * API of the output
 	 * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
@@ -141,15 +109,15 @@ export function useOutputMaterial(sessionId: string, outputIdOrName: string, mat
 	// use an effect to apply changes to the material, and to apply the callback once the node is available
 	useEffect(() => {
 	
-		if (materialProperties && materialType) {
-			materialRef.current = createMaterial(materialProperties, materialType);
+		if (materialProperties) {
+			materialRef.current = MaterialEngine.instance.createMaterialData(materialProperties);
 		}
 		else {
 			materialRef.current = null;
 		}
 		callback(outputNode);
 		
-	}, [materialProperties, materialType]);
+	}, [materialProperties]);
 
 	return {
 		outputApi,
