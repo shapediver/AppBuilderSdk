@@ -1,4 +1,4 @@
-import { Image, ActionIcon, useMantineColorScheme, Group } from "@mantine/core";
+import { Image, ActionIcon, useMantineColorScheme, Group, useComputedColorScheme } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
 import { useLinkClickHandler } from "react-router-dom";
 import React from "react";
@@ -12,7 +12,17 @@ import classes from "./HeaderBar.module.css";
  * @returns
  */
 export default function HeaderBar() {
-	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+	// -> colorScheme is 'auto' | 'light' | 'dark'
+	const { colorScheme, setColorScheme } = useMantineColorScheme();
+
+	// -> computedColorScheme is 'light' | 'dark', argument is the default value
+	const computedColorScheme = useComputedColorScheme("light");
+
+	// Correct color scheme toggle implementation
+	// computedColorScheme is always either 'light' or 'dark'
+	const toggleColorScheme = () => {
+		setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
+	};
 
 	const goToHome = useLinkClickHandler<HTMLImageElement>("/");
 

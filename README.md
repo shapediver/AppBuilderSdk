@@ -3,7 +3,7 @@
 This project introduces some useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer). 
 
 > [!NOTE] 
-> You can see a deployed version of this example [here](https://react-example.shapediver.com/prod/).
+> You can see a deployed version of this example [here](https://react-example.shapediver.com/prod/example.html).
 
 > [!WARNING]
 > Work in progress, please expect frequent changes and refactoring!
@@ -42,14 +42,14 @@ Implementation: [useShapeDiverStoreViewer](src/store/useShapeDiverStoreViewer.ts
 
 Related hooks: 
 
-  * [useViewport](src/hooks/useViewport.ts)
-  * [useSession](src/hooks/useSession.ts)
-  * [useSessions](src/hooks/useSessions.ts)
+  * [useViewport](src/hooks/shapediver/useViewport.ts)
+  * [useSession](src/hooks/shapediver/useSession.ts)
+  * [useSessions](src/hooks/shapediver/useSessions.ts)
 
 Related components: 
 
   * [ViewportComponent](src/components/shapediver/viewport/ViewportComponent.tsx) makes use of `useViewport`
-  * [ViewPage](src/pages/ViewPage.tsx) creates a single session using `useSession` and uses a `ViewportComponent`
+  * [ViewPage](src/pages/examples/ViewPage.tsx) creates a single session using `useSession` and uses a `ViewportComponent`
 
 #### Parameter and export store
 
@@ -60,15 +60,15 @@ Implementation: [useShapeDiverStoreParameters](src/store/useShapeDiverStoreParam
 
 Related hooks: 
 
-  * [useSession](src/hooks/useSession.ts)
-  * [useSessions](src/hooks/useSessions.ts)
-  * [useDefineGenericParameters](src/hooks/useDefineGenericParameters.ts)
-  * [useSessionPropsParameter](src/hooks/useSessionPropsParameter.ts)
-  * [useSessionPropsExport](src/hooks/useSessionPropsExport.ts)
-  * [useParameter](src/hooks/useParameter.ts)
+  * [useSession](src/hooks/shapediver/useSession.ts)
+  * [useSessions](src/hooks/shapediver/useSessions.ts)
+  * [useDefineGenericParameters](src/hooks/shapediver/useDefineGenericParameters.ts)
+  * [useSessionPropsParameter](src/hooks/shapediver/useSessionPropsParameter.ts)
+  * [useSessionPropsExport](src/hooks/shapediver/useSessionPropsExport.ts)
+  * [useParameter](src/hooks/shapediver/useParameter.ts)
   * [useExport](src/hooks/useExport.ts)
-  * [useParameterComponentCommons](src/hooks/useParameterComponentCommons.ts)
-  * [useSortedParametersAndExports](src/hooks/useSortedParametersAndExports.ts)
+  * [useParameterComponentCommons](src/hooks/shapediver/useParameterComponentCommons.ts)
+  * [useSortedParametersAndExports](src/hooks/shapediver/useSortedParametersAndExports.ts)
 
 Related components: 
  

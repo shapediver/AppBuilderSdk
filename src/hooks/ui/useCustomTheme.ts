@@ -1,11 +1,9 @@
 import { Accordion, Button, ColorInput, DEFAULT_THEME, Group, Paper, Stack, Switch, Tabs, createTheme } from "@mantine/core";
 import { useIsMobile } from "./useIsMobile";
-import { useColorScheme } from "@mantine/hooks";
 
 export const useCustomTheme = () => {
 
 	const isMobile = useIsMobile();
-	const scheme = useColorScheme();
 
 	const theme = createTheme({
 		defaultRadius: "md",
@@ -82,10 +80,10 @@ export const useCustomTheme = () => {
 			},
 			AppBuilderGridTemplatePage: {
 				defaultProps: {
-					bgTop: "white", 
-					bgLeft: "white", 
-					bgRight: "white", 
-					bgBottom: "white", 
+					bgTop: "inherit", 
+					bgLeft: "inherit", 
+					bgRight: "inherit", 
+					bgBottom: "inherit", 
 					// showContainerButtons: true,
 					// columns: 5,
 					// rows: 4,
@@ -114,14 +112,23 @@ export const useCustomTheme = () => {
 					//numberWidth: "35%",
 				}
 			},
+			/** Define viewport branding for dark and light color scheme */
+			ViewportBranding: {
+				defaultProps: {
+					light: {
+						backgroundColor: DEFAULT_THEME.colors.gray[0],
+						logo: "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
+					},
+					dark: {
+						backgroundColor: DEFAULT_THEME.colors.dark[8],
+						logo: undefined
+					}
+				}
+			},
 			ViewportComponent: {
 				defaultProps: {
 					// sessionSettingsMode: SESSION_SETTINGS_MODE.FIRST,
 					// showStatistics: true,
-					branding: {
-						backgroundColor: scheme === "dark" ? DEFAULT_THEME.colors.dark[8] : DEFAULT_THEME.colors.gray[0],
-						logo: scheme === "dark" ? undefined : "https://viewer.shapediver.com/v3/graphics/logo_animated_breath_inverted.svg"
-					}
 				}
 			},
 			ViewportIcons: {

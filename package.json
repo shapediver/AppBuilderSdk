@@ -1,6 +1,6 @@
 {
   "name": "shapediver-create-react-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "homepage": "./",
@@ -24,12 +24,14 @@
     "optimize": "tsc && vite optimize --force",
     "preview": "vite preview",
     "eslint": "eslint .",
-    "build-dev": "vite build --base=/dev/",
-    "build-staging": "vite build --base=/staging/",
-    "build-prod": "vite build --base=/prod/",
-    "publish-build-dev": "aws s3 sync ./dist s3://${BUCKET}/react-example/dev/ --region us-east-1",
-    "publish-build-staging": "aws s3 sync ./dist s3://${BUCKET}/react-example/staging/ --region us-east-1",
-    "publish-build-prod": "aws s3 sync ./dist s3://${BUCKET}/react-example/prod/ --region us-east-1"
+    "build-example-dev": "vite build --base=/dev/",
+    "build-example-staging": "vite build --base=/staging/",
+    "build-example-prod": "vite build --base=/prod/",
+    "publish-example-dev": "aws s3 sync ./dist s3://${BUCKET}/react-example/dev/ --region us-east-1",
+    "publish-example-staging": "aws s3 sync ./dist s3://${BUCKET}/react-example/staging/ --region us-east-1",
+    "publish-example-prod": "aws s3 sync ./dist s3://${BUCKET}/react-example/prod/ --region us-east-1",
+    "build-appbuilder": "vite build --base=/main/$npm_package_version/",
+    "publish-appbuilder": "aws s3 sync ./dist s3://${BUCKET}/appbuilder/main/$npm_package_version/ --region us-east-1"
   },
   "eslintConfig": {
     "extends": [
