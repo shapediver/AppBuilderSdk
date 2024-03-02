@@ -14,7 +14,7 @@ import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderIm
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 import { AppBuilderContainerTypeEnum } from "types/shapediver/appbuilder";
 
@@ -38,7 +38,7 @@ const ACCEPT_REJECT_MODE = true;
  */
 export default function AppBuilderStaticExamplePage() {
 
-	const { settings } = useUrlSearchParamSettings(SESSION_DTO);
+	const { settings } = useAppBuilderSettings(SESSION_DTO);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionDto?.id ?? "";
 

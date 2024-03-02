@@ -13,7 +13,7 @@ import { IGenericParameterDefinition } from "types/store/shapediverStoreParamete
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
@@ -31,7 +31,7 @@ export default function ViewPage() {
 
 	const modelName = "Sideboard";
 	
-	const { settings } = useUrlSearchParamSettings({
+	const { settings } = useAppBuilderSettings({
 		id: ShapeDiverExampleModels[modelName].slug,
 		ticket: ShapeDiverExampleModels[modelName].ticket,
 		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,

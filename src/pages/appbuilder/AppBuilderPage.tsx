@@ -4,7 +4,7 @@ import ViewportOverlayWrapper from "../../components/shapediver/viewport/Viewpor
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
-import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
+import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
@@ -33,7 +33,7 @@ export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
 		acceptRejectMode
 	} : undefined;
 
-	const { settings } = useUrlSearchParamSettings(defaultSessionDto);
+	const { settings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { sessionId, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto);
 

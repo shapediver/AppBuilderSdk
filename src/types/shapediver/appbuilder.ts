@@ -1,6 +1,7 @@
 import { IShapeDiverExportDefinition } from "types/shapediver/export";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { IconType } from "./icons";
+import { SessionCreateDto } from "types/store/shapediverStoreViewer";
 
 /** Type used for parameter definitions */
 export type IAppBuilderParameterDefinition = IShapeDiverParameterDefinition;
@@ -152,4 +153,31 @@ export function isTextWidget(widget: IAppBuilderWidget): widget is { type: "text
 /** assert widget type "image" */
 export function isImageWidget(widget: IAppBuilderWidget): widget is { type: "image", props: IAppBuilderWidgetPropsImage } {
 	return widget.type === "image";
+}
+
+/**
+ * Settings for a session used by the AppBuilder.
+ */
+export interface IIAppBuilderSettingsSession extends SessionCreateDto {
+	/**
+	 * Either slug and platformUrl, or ticket and modelViewUrl must be set.
+	 */
+	slug?: string,
+	/**
+	 * Either slug and platformUrl, or ticket and modelViewUrl must be set.
+	 */
+	platformUrl?: string,
+	/**
+	 * Set to true to require confirmation of the user to accept or reject changed parameter values.
+	 */
+	acceptRejectMode?: boolean
+}
+
+/**
+ * Settings for initializing an AppBuilder application. This defines the sessions to create.
+ */
+export interface IAppBuilderSettings {
+    "version": "1.0",
+	/** Session to load. */
+    "sessions": IIAppBuilderSettingsSession[]
 }
