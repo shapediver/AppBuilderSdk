@@ -36,15 +36,17 @@ export default function useAppBuilderSettings(defaultSession?: IIAppBuilderSetti
 	// define fallback session settings to be used in case loading from json failed
 	// in case slug and optionally platformUrl are defined, use them
 	// otherwise, if ticket and modelViewUrl are defined, use them
-	const queryParamSession : IIAppBuilderSettingsSession|undefined = slug ? 
+	const queryParamSession = useMemo<IIAppBuilderSettingsSession|undefined>(() => slug ? 
 		{ id: "default", slug, platformUrl: platformUrl ?? DEFAULT_PLATFORM_URL } as IIAppBuilderSettingsSession : 
-		(ticket && modelViewUrl ? { id: "default", ticket, modelViewUrl} : undefined);
+		(ticket && modelViewUrl ? { id: "default", ticket, modelViewUrl} : undefined), [slug, platformUrl, ticket, modelViewUrl]);
 
 	// use settings loaded from json, or settings defined by query parameters, or default settings
-	const settings : IAppBuilderSettings|undefined = error && (defaultSession || queryParamSession) ? 
-		{ version: "1.0", sessions: [(queryParamSession ?? defaultSession)!] } : value;
+	const settings = useMemo<IAppBuilderSettings|undefined>(() => error && (defaultSession || queryParamSession) ? 
+		{ version: "1.0", sessions: [(queryParamSession ?? defaultSession)!] } : value, [value, error, defaultSession, queryParamSession]);
 
 	return {
-		settings, error, loading
+		settings, 
+		error, 
+		loading
 	};
 }
