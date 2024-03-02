@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
 import { fetchFileWithToken } from "utils/file";
 import { PropsExport } from "types/components/shapediver/propsExport";
-import { useExport } from "hooks/shapediver/useExport";
+import { useExport } from "hooks/shapediver/parameters/useExport";
 
 /**
  * Functional component that creates a button that triggers an export.

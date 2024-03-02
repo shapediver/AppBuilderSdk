@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { IUseSessionDto, useSession } from "./useSession";
-import { useSessionPropsParameter } from "./useSessionPropsParameter";
+import { useSessionPropsParameter } from "./parameters/useSessionPropsParameter";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { useSessionPropsExport } from "./useSessionPropsExport";
-import { useDefineGenericParameters } from "./useDefineGenericParameters";
+import { useSessionPropsExport } from "./parameters/useSessionPropsExport";
+import { useDefineGenericParameters } from "./parameters/useDefineGenericParameters";
 import { ShapeDiverResponseParameter } from "@shapediver/api.geometry-api-dto-v2";
-import { useParameterStateless } from "./useParameterStateless";
-import { useOutputContent } from "./useOutputContent";
+import { useParameterStateless } from "./parameters/useParameterStateless";
+import { useOutputContent } from "./viewer/useOutputContent";
 
 /** Prefix used to register custom parameters */
 const CUSTOM_SESSION_ID_POSTFIX = "_customui";

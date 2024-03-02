@@ -6,8 +6,8 @@ import { ShapeDiverExampleModels } from "tickets";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
-import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
-import { useSessionPropsExport } from "hooks/shapediver/useSessionPropsExport";
+import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
+import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
 import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";
 import AppBuilderFallbackContainerComponent from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
 

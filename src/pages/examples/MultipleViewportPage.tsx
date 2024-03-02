@@ -5,7 +5,7 @@ import { IUseSessionDto, useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
 import { Grid } from "@mantine/core";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "hooks/shapediver/useSessionPropsParameter";
+import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { ShapeDiverExampleModels } from "tickets";
 import classes from "./MultipleViewportPage.module.css";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";

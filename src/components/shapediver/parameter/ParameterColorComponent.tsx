@@ -3,7 +3,7 @@ import { IconRefresh } from "@tabler/icons-react";
 import React, { useEffect } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameterComponentCommons } from "hooks/shapediver/useParameterComponentCommons";
+import { useParameterComponentCommons } from "hooks/shapediver/parameters/useParameterComponentCommons";
 
 function convertFromSdColor(val: string) {
 	return val.replace("0x", "#").substring(0, 7);

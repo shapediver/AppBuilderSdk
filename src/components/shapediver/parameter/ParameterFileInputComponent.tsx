@@ -4,7 +4,7 @@ import React from "react";
 import { extendMimeTypes, mapMimeTypeToFileEndings } from "@shapediver/viewer.utils.mime-type";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameterComponentCommons } from "hooks/shapediver/useParameterComponentCommons";
+import { useParameterComponentCommons } from "hooks/shapediver/parameters/useParameterComponentCommons";
 
 /**
  * Functional component that creates a file input for a file parameter.

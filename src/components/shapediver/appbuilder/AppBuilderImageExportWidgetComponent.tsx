@@ -1,5 +1,5 @@
 import { EXPORT_TYPE } from "@shapediver/viewer";
-import { useExport } from "hooks/shapediver/useExport";
+import { useExport } from "hooks/shapediver/parameters/useExport";
 import React, { useEffect, useRef, useState } from "react";
 import AppBuilderImage from "./AppBuilderImage";
 import { AppBuilderContainerTypeEnum } from "types/shapediver/appbuilder";

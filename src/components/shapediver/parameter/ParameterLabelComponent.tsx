@@ -1,6 +1,6 @@
 import { Group, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import { useParameter } from "hooks/shapediver/useParameter";
+import { useParameter } from "hooks/shapediver/parameters/useParameter";
 import React from "react";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 

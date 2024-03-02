@@ -6,13 +6,13 @@ import ViewportOverlayWrapper from "../../components/shapediver/viewport/Viewpor
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "hooks/shapediver/useDefineGenericParameters";
-import { useOutputMaterial } from "hooks/shapediver/useOutputMaterial";
+import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
+import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import MarkdownWidgetComponent from "../../components/shapediver/ui/MarkdownWidgetComponent";
 import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderImage";
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "../../hooks/shapediver/useSessionPropsParameter";
+import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useUrlSearchParamSettings from "hooks/shapediver/useUrlSearchParamSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";

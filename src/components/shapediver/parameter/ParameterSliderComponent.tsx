@@ -3,7 +3,7 @@ import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
-import { useParameterComponentCommons } from "hooks/shapediver/useParameterComponentCommons";
+import { useParameterComponentCommons } from "hooks/shapediver/parameters/useParameterComponentCommons";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 
 /**

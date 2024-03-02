@@ -42,7 +42,7 @@ Implementation: [useShapeDiverStoreViewer](src/store/useShapeDiverStoreViewer.ts
 
 Related hooks: 
 
-  * [useViewport](src/hooks/shapediver/useViewport.ts)
+  * [useViewport](src/hooks/shapediver/viewer/useViewport.ts)
   * [useSession](src/hooks/shapediver/useSession.ts)
   * [useSessions](src/hooks/shapediver/useSessions.ts)
 
@@ -62,13 +62,13 @@ Related hooks:
 
   * [useSession](src/hooks/shapediver/useSession.ts)
   * [useSessions](src/hooks/shapediver/useSessions.ts)
-  * [useDefineGenericParameters](src/hooks/shapediver/useDefineGenericParameters.ts)
-  * [useSessionPropsParameter](src/hooks/shapediver/useSessionPropsParameter.ts)
-  * [useSessionPropsExport](src/hooks/shapediver/useSessionPropsExport.ts)
-  * [useParameter](src/hooks/shapediver/useParameter.ts)
-  * [useExport](src/hooks/useExport.ts)
-  * [useParameterComponentCommons](src/hooks/shapediver/useParameterComponentCommons.ts)
-  * [useSortedParametersAndExports](src/hooks/shapediver/useSortedParametersAndExports.ts)
+  * [useDefineGenericParameters](src/hooks/shapediver/parameters/useDefineGenericParameters.ts)
+  * [useSessionPropsParameter](src/hooks/shapediver/parameters/useSessionPropsParameter.ts)
+  * [useSessionPropsExport](src/hooks/shapediver/parameters/useSessionPropsExport.ts)
+  * [useParameter](src/hooks/shapediver/parameters/useParameter.ts)
+  * [useExport](src/hooks/parameters/useExport.ts)
+  * [useParameterComponentCommons](src/hooks/shapediver/parameters/useParameterComponentCommons.ts)
+  * [useSortedParametersAndExports](src/hooks/shapediver/parameters/useSortedParametersAndExports.ts)
 
 Related components: 
  

@@ -1,5 +1,5 @@
 import { IUseSessionDto, useSession } from "./useSession";
-import { useOutputContent } from "./useOutputContent";
+import { useOutputContent } from "./viewer/useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
 
 /** Prefix used to register custom parameters */

@@ -1,5 +1,5 @@
 import { PropsParameter } from "../../../types/components/shapediver/propsParameter";
-import { useParameterChanges } from "../../../hooks/shapediver/useParameterChanges";
+import { useParameterChanges } from "../../../hooks/shapediver/parameters/useParameterChanges";
 import { Button, Group } from "@mantine/core";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import React from "react";
