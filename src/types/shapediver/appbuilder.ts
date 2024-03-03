@@ -158,7 +158,7 @@ export function isImageWidget(widget: IAppBuilderWidget): widget is { type: "ima
 /**
  * Settings for a session used by the AppBuilder.
  */
-export interface IIAppBuilderSettingsSession extends SessionCreateDto {
+export interface IAppBuilderSettingsSession extends SessionCreateDto {
 	/**
 	 * Either slug and platformUrl, or ticket and modelViewUrl must be set.
 	 */
@@ -179,5 +179,5 @@ export interface IIAppBuilderSettingsSession extends SessionCreateDto {
 export interface IAppBuilderSettings {
     "version": "1.0",
 	/** Session to load. */
-    "sessions": IIAppBuilderSettingsSession[]
+    "sessions": IAppBuilderSettingsSession[]
 }

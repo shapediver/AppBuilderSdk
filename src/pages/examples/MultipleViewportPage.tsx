@@ -18,7 +18,7 @@ import { IconTypeEnum } from "types/shapediver/icons";
  *
  * @returns
  */
-export default function ViewPage() {
+export default function MultipleViewportPage() {
 	const sessionSideboardKey = "Sideboard";
 	const sessionBookshelfKey = "Bookshelf";
 

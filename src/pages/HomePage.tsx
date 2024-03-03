@@ -1,4 +1,4 @@
-import { Image, Container, Card, Group, Text, Blockquote, Center, Stack } from "@mantine/core";
+import { Image, Container, Card, Group, Text, Blockquote, Center } from "@mantine/core";
 import React from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import classes from "pages/HomePage.module.css";

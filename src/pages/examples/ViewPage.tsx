@@ -8,7 +8,6 @@ import ViewportOverlayWrapper from "../../components/shapediver/viewport/Viewpor
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
-import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
@@ -17,6 +16,15 @@ import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
+import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
+import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
+
+const VIEWPORT_ID = "viewport_1";
+
+interface Props extends IAppBuilderSettingsSession {
+	/** Name of example model */
+	example?: string;
+}
 
 /**
  * Function that creates the view page.
@@ -25,19 +33,10 @@ import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dt
  *
  * @returns
  */
-export default function ViewPage() {
+export default function ViewPage(props: Partial<Props>) {
 
-	const viewportId = "viewport_1";
-
-	const modelName = "Sideboard";
-	
-	const { settings } = useAppBuilderSettings({
-		id: ShapeDiverExampleModels[modelName].slug,
-		ticket: ShapeDiverExampleModels[modelName].ticket,
-		modelViewUrl: ShapeDiverExampleModels[modelName].modelViewUrl,
-		acceptRejectMode: true
-	});
-
+	const { defaultSessionDto } = useDefaultSessionDto(props);
+	const { settings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionCreateDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionCreateDto?.id ?? "";
 
@@ -219,11 +218,11 @@ export default function ViewPage() {
 		<>
 			<ExamplePage aside={parameterTabs}>
 				<ViewportComponent
-					id={viewportId}
+					id={VIEWPORT_ID}
 				>
 					<ViewportOverlayWrapper>
 						<ViewportIcons
-							viewportId={viewportId}
+							viewportId={VIEWPORT_ID}
 						/>
 					</ViewportOverlayWrapper>
 				</ViewportComponent>

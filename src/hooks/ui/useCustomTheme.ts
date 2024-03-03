@@ -93,6 +93,19 @@ export const useCustomTheme = () => {
 					// bottomRows: 1,
 				}
 			},
+			DefaultSession: {
+				defaultProps: {
+					// see Props of useDefaultSessionDto
+					// example: "AR Cube",
+					// slug: "",
+					// platformUrl: "",
+					// id: "",
+					// ticket: "",
+					// modelViewUrl: "",
+					// initialParameterValues: {},
+					acceptRejectMode: true
+				}
+			},
 			Icon: {
 				defaultProps: {
 					// size: 14,

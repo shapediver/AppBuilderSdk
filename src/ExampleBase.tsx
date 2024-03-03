@@ -32,12 +32,12 @@ export default function App() {
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
-					<Route path="view" element={<ViewPage />} />
-					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" acceptRejectMode={true} />} />
-					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage />} />
+					<Route path="view" element={<ViewPage example="Sideboard" />} />
+					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" />} />
+					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage example="AR Cube" />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
 					<Route path="multipleViewport" element={<MultipleViewportPage />} />
-					<Route path="customui" element={<CustomUiPage />} />
+					<Route path="customui" element={<CustomUiPage example="CustomUiBookshelf" />} />
 					<Route path="*" element={<NoMatchPage />} />
 				</Routes>
 			</HashRouter>

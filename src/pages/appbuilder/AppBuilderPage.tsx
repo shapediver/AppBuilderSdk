@@ -2,7 +2,6 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import { ShapeDiverExampleModels } from "tickets";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
@@ -10,14 +9,15 @@ import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSession
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
 import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";
 import AppBuilderFallbackContainerComponent from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
+import AlertPage from "pages/misc/AlertPage";
+import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
+import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 
 const VIEWPORT_ID = "viewport_1";
 
-interface Props {
-	/** Name of example model which should be loaded by default. */
+interface Props extends IAppBuilderSettingsSession {
+	/** Name of example model */
 	example?: string;
-	/** Should acceptRejectMode be used for the example model? */
-	acceptRejectMode?: boolean;
 }
 
 /**
@@ -25,15 +25,10 @@ interface Props {
  *
  * @returns
  */
-export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
+export default function AppBuilderPage(props: Partial<Props>) {
 
-	const defaultSessionDto = example ? {
-		...ShapeDiverExampleModels[example],
-		id: ShapeDiverExampleModels[example].slug,
-		acceptRejectMode
-	} : undefined;
-
-	const { settings } = useAppBuilderSettings(defaultSessionDto);
+	const { defaultSessionDto } = useDefaultSessionDto(props);
+	const { settings, error } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { sessionId, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto);
 
@@ -62,21 +57,22 @@ export default function AppBuilderPage({ example, acceptRejectMode }: Props) {
 	const show = Object.values(containers).some((c) => c !== undefined);
 	
 	return (
-		show &&	<AppBuilderGridTemplatePage
-			top={containers.top}
-			left={containers.left}
-			right={containers.right}
-			bottom={containers.bottom}
-		>
-			<ViewportComponent
-				id={VIEWPORT_ID}
+		error ? <AlertPage title="Error">{error.message}</AlertPage> :
+			show &&	<AppBuilderGridTemplatePage
+				top={containers.top}
+				left={containers.left}
+				right={containers.right}
+				bottom={containers.bottom}
 			>
-				<ViewportOverlayWrapper>
-					<ViewportIcons
-						viewportId={VIEWPORT_ID}
-					/>
-				</ViewportOverlayWrapper>
-			</ViewportComponent>
-		</AppBuilderGridTemplatePage>
+				<ViewportComponent
+					id={VIEWPORT_ID}
+				>
+					<ViewportOverlayWrapper>
+						<ViewportIcons
+							viewportId={VIEWPORT_ID}
+						/>
+					</ViewportOverlayWrapper>
+				</ViewportComponent>
+			</AppBuilderGridTemplatePage>
 	);
 }

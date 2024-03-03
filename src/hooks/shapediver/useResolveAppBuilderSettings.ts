@@ -4,6 +4,10 @@ import { create } from "@shapediver/sdk.platform-api-sdk-v1";
 
 const DEFAULT_PLATFORM_CLIENT_ID = "920794fa-245a-487d-8abe-af569a97da42";
 
+/**
+ * In case the session settings contain a slug and a platformUrl, 
+ * resolve the ticket, modelViewUrl and token from the platform.
+ */
 export default function useResolveAppBuilderSettings(settings : IAppBuilderSettings|undefined) {
 
 	const { value, error, loading } = useAsync(async () => {

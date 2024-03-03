@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "hooks/shapediver/useSession";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import { ShapeDiverExampleModels } from "tickets";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
@@ -16,18 +15,15 @@ import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useS
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
-import { AppBuilderContainerTypeEnum } from "types/shapediver/appbuilder";
+import { AppBuilderContainerTypeEnum, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
+import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 
 const VIEWPORT_ID = "viewport_1";
-const MODEL_NAME = "Sideboard";
-const SESSION_ID = ShapeDiverExampleModels[MODEL_NAME].slug;
-const SESSION_DTO = {
-	id: SESSION_ID,
-	ticket: ShapeDiverExampleModels[MODEL_NAME].ticket,
-	modelViewUrl: ShapeDiverExampleModels[MODEL_NAME].modelViewUrl,
-	excludeViewports: ["viewport_2"],
-};
-const ACCEPT_REJECT_MODE = true;
+
+interface Props extends IAppBuilderSettingsSession {
+	/** Name of example model */
+	example?: string;
+}
 
 /**
  * Function that creates the view page.
@@ -36,17 +32,15 @@ const ACCEPT_REJECT_MODE = true;
  *
  * @returns
  */
-export default function AppBuilderStaticExamplePage() {
+export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 
-	const { settings } = useAppBuilderSettings(SESSION_DTO);
+	const { defaultSessionDto } = useDefaultSessionDto(props);
+	const { settings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionDto?.id ?? "";
 
 	// use a session with a ShapeDiver model and register its parameters
-	const { sessionApi } = useSession(sessionDto ? {
-		...sessionDto,
-		acceptRejectMode: ACCEPT_REJECT_MODE,
-	} : undefined);
+	const { sessionApi } = useSession(sessionDto);
 
 	useEffect(() => {
 		if (sessionApi)

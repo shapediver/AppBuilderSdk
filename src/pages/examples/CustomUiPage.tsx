@@ -4,23 +4,20 @@ import ParametersAndExportsAccordionComponent from "components/shapediver/ui/Par
 import ExamplePage from "pages/templates/ExampleTemplatePage";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import { ShapeDiverExampleModels } from "tickets";
 import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
+import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
+import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 
 const VIEWPORT_ID = "viewport_1";
-const MODEL_NAME = "CustomUiBookshelf";
-const SESSION_ID = ShapeDiverExampleModels[MODEL_NAME].slug;
-const SESSION_DTO = {
-	id: SESSION_ID,
-	ticket: ShapeDiverExampleModels[MODEL_NAME].ticket,
-	modelViewUrl: ShapeDiverExampleModels[MODEL_NAME].modelViewUrl,
-	excludeViewports: ["viewport_2"],
-	acceptRejectMode: true
-};
+
+interface Props extends IAppBuilderSettingsSession {
+	/** Name of example model */
+	example?: string;
+}
 
 /**
  * Function that creates the view page.
@@ -29,9 +26,10 @@ const SESSION_DTO = {
  *
  * @returns
  */
-export default function ViewPage() {
+export default function CustomUiPage(props: Partial<Props>) {
 
-	const { settings } = useAppBuilderSettings(SESSION_DTO);
+	const { defaultSessionDto } = useDefaultSessionDto(props);
+	const { settings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { parameterProps, exportProps } = useSessionWithCustomUi(sessionDto);
 
