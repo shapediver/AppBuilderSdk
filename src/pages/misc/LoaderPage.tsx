@@ -1,4 +1,4 @@
-import { Alert, AlertProps, Center } from "@mantine/core";
+import { Center, Loader, LoaderProps } from "@mantine/core";
 import React from "react";
 
 
@@ -12,15 +12,15 @@ interface Props {
  *
  * @returns
  */
-export default function AlertPage(props: Props & AlertProps) {
+export default function LoaderPage(props: Props & LoaderProps) {
 
 	const { children, ...rest } = props;
 
 	return (
 		<Center w="100vw" h="100vh">
-			<Alert maw="480" {...rest}>
+			<Loader {...rest}>
 				{children}
-			</Alert>
+			</Loader>
 		</Center>
 	);
 }

@@ -12,6 +12,8 @@ import AppBuilderFallbackContainerComponent from "components/shapediver/appbuild
 import AlertPage from "pages/misc/AlertPage";
 import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
+import LoaderPage from "pages/misc/LoaderPage";
+import Markdown from "react-markdown";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -28,7 +30,7 @@ interface Props extends IAppBuilderSettingsSession {
 export default function AppBuilderPage(props: Partial<Props>) {
 
 	const { defaultSessionDto } = useDefaultSessionDto(props);
-	const { settings, error } = useAppBuilderSettings(defaultSessionDto);
+	const { settings, error, loading } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { sessionId, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto);
 
@@ -55,24 +57,64 @@ export default function AppBuilderPage(props: Partial<Props>) {
 	}
 
 	const show = Object.values(containers).some((c) => c !== undefined);
+
+	const NoSettingsMarkdown = `
+## Welcome to the ShapeDiver AppBuilder
+
+This page can be opened directly or embedded in an iframe. 
+Use this page in one of the following ways to display your model:
+
+### Provide the slug of your model
+
+Example: 
+
+[${window.location}?slug=react-ar-cube](${window.location}?slug=react-ar-cube)
+
+You need to allow [iframe embedding](https://help.shapediver.com/doc/iframe-settings) for this to work.
+
+This method supports protection of your model by a short lived token. You can use the *Require strong authorization* setting for your model. 
+This protection can be enabled in the [Embedding settings](https://help.shapediver.com/doc/setup-domains-for-embedding) for all of your models, 
+or individually for each model in the [Developer settings](https://help.shapediver.com/doc/developers-settings).  
+
+### Provide ticket and modelViewUrl
+
+Example:
+
+[${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
+
+You need to allow [direct embedding](https://help.shapediver.com/doc/developers-settings) for this to work. 
+Copy the *Embedding ticket* and the *Model view URL* from the [Developer settings](https://help.shapediver.com/doc/developers-settings) of your model,
+and replace YOUR_TICKET and MODEL_VIEW_URL in the URL shown above.
+
+**Note:**
+This method does **not** support protection of your model by a short lived token. 
+You need to disable the *Require strong authorization* setting for your model. 
+
+`;
 	
 	return (
-		error ? <AlertPage title="Error">{error.message}</AlertPage> :
-			show &&	<AppBuilderGridTemplatePage
-				top={containers.top}
-				left={containers.left}
-				right={containers.right}
-				bottom={containers.bottom}
-			>
-				<ViewportComponent
-					id={VIEWPORT_ID}
-				>
-					<ViewportOverlayWrapper>
-						<ViewportIcons
-							viewportId={VIEWPORT_ID}
-						/>
-					</ViewportOverlayWrapper>
-				</ViewportComponent>
-			</AppBuilderGridTemplatePage>
+		!settings && !loading && !error ? <AlertPage>
+			<Markdown>
+				{NoSettingsMarkdown}
+			</Markdown>
+		</AlertPage> :
+			error ? <AlertPage title="Error">{error.message}</AlertPage> :
+				loading ? <LoaderPage /> :
+					show && <AppBuilderGridTemplatePage
+						top={containers.top}
+						left={containers.left}
+						right={containers.right}
+						bottom={containers.bottom}
+					>
+						<ViewportComponent
+							id={VIEWPORT_ID}
+						>
+							<ViewportOverlayWrapper>
+								<ViewportIcons
+									viewportId={VIEWPORT_ID}
+								/>
+							</ViewportOverlayWrapper>
+						</ViewportComponent>
+					</AppBuilderGridTemplatePage>
 	);
 }
