@@ -13,7 +13,7 @@ import AlertPage from "pages/misc/AlertPage";
 import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import LoaderPage from "pages/misc/LoaderPage";
-import Markdown from "react-markdown";
+import MarkdownWidgetComponent from "components/shapediver/ui/MarkdownWidgetComponent";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -80,7 +80,7 @@ or individually for each model in the [Developer settings](https://help.shapediv
 
 Example:
 
-[${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
+[${window.location}? ticket=TICKET& modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
 
 You need to allow [direct embedding](https://help.shapediver.com/doc/developers-settings) for this to work. 
 Copy the *Embedding ticket* and the *Model view URL* from the [Developer settings](https://help.shapediver.com/doc/developers-settings) of your model,
@@ -94,9 +94,9 @@ You need to disable the *Require strong authorization* setting for your model.
 	
 	return (
 		!settings && !loading && !error ? <AlertPage>
-			<Markdown>
+			<MarkdownWidgetComponent>
 				{NoSettingsMarkdown}
-			</Markdown>
+			</MarkdownWidgetComponent>
 		</AlertPage> :
 			error ? <AlertPage title="Error">{error.message}</AlertPage> :
 				loading ? <LoaderPage /> :

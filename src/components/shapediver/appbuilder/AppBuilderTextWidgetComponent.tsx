@@ -12,9 +12,11 @@ export default function AppBuilderTextWidgetComponent({ text, markdown }: IAppBu
 		</Paper>;
 	}
 	else if (markdown) {
-		return <MarkdownWidgetComponent>
-			{ markdown }
-		</MarkdownWidgetComponent>;
+		return <Paper>
+			<MarkdownWidgetComponent>
+				{ markdown }
+			</MarkdownWidgetComponent>
+		</Paper>;
 	}
 
 	return <></>;

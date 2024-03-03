@@ -8,7 +8,6 @@ import { IGenericParameterDefinition } from "types/store/shapediverStoreParamete
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
-import MarkdownWidgetComponent from "../../components/shapediver/ui/MarkdownWidgetComponent";
 import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderImage";
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useSessionPropsParameter";
@@ -17,6 +16,7 @@ import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 import { AppBuilderContainerTypeEnum, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
+import AppBuilderTextWidgetComponent from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -189,6 +189,7 @@ Italicized text is the *cat's meow*.
 My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
 
 * Bullet in an unordered list.
+* Bullet in an unordered list.
 `;
 
 	// get parameters that don't have a group or whose group name includes "export"
@@ -205,17 +206,17 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 		<AppBuilderGridTemplatePage
 
 			top={<>
-				<MarkdownWidgetComponent>Top secret</MarkdownWidgetComponent>
+				<AppBuilderTextWidgetComponent text="Top secret" />
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 					containerType={AppBuilderContainerTypeEnum.Row}
 				/>
-				<MarkdownWidgetComponent>Top secret</MarkdownWidgetComponent>
+				<AppBuilderTextWidgetComponent text="Top secret" />
 			</>
 			}
 
 			left={<>
-				<MarkdownWidgetComponent>{markdown}</MarkdownWidgetComponent>
+				<AppBuilderTextWidgetComponent markdown={markdown} />
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 					containerType={AppBuilderContainerTypeEnum.Column}
