@@ -70,7 +70,7 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Text fw={700} {...rest}/>;
+				return <Text fw={700} {...rest} />;
 			},
 			blockquote(props) {
 				const {...rest} = props;
@@ -85,9 +85,9 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				return <Code {...rest} />;
 			},
 			em(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
-				return <em {...rest}/>;
+				return <em {...rest} />;
 			},
 			img(props) {
 				const {...rest} = props;
@@ -96,40 +96,40 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				return <Image {...rest} />;
 			},
 			h1(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Title order={1} {...rest} {...styleProps}/>;
+				return <Title order={1} {...rest} {...styleProps} />;
 			},
 			h2(props) {
 				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Title order={2} {...rest} {...styleProps}/>;
+				return <Title order={2} {...rest} {...styleProps} />;
 			},
 			h3(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Title order={3} {...rest} {...styleProps}/>;
+				return <Title order={3} {...rest} {...styleProps} />;
 			},
 			h4(props) {
 				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Title order={4} {...rest} {...styleProps}/>;
+				return <Title order={4} {...rest} {...styleProps} />;
 			},
 			h5(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Title order={5} {...rest} {...styleProps}/>;
+				return <Title order={5} {...rest} {...styleProps} />;
 			},
 			h6(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Title order={6} {...rest} {...styleProps}/>;
+				return <Title order={6} {...rest} {...styleProps} />;
 			},
 			hr(props) {
 				const {...rest} = props;
@@ -138,15 +138,15 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				return <Divider {...rest} {...styleProps} />;
 			},
 			p(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <Text {...rest} {...styleProps}/>;
+				return <Text {...rest} {...styleProps} />;
 			},
 			strong(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
-				return <strong {...rest}/>;
+				return <strong {...rest} />;
 			},
 			a(props) {
 				const {...rest} = props;
@@ -161,10 +161,10 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				return <List {...rest} {...styleProps} />;
 			},
 			li(props) {
-				const { ...rest} = props;
+				const {...rest} = props;
 
 				// @ts-expect-error ignore
-				return <List.Item {...rest}/>;
+				return <List.Item {...rest} />;
 			},
 		},
 	};
