@@ -179,23 +179,19 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 
 	const markdown = `
 # Heading level 1
-## color=lightgreen Heading level 2
+## :span[Heading level 2]{color="lightgreen"}
 ### Heading level 3
 
-color=blue This shows **color=#ff00ff bold text** mixed with *color=gray italic* and normal text.
+:span[This shows]{color="blue"} **:span[bold text]{color="#ff00ff"}** mixed with *:span[italic]{color="gray"}* and normal text.
 
 Italicized text is the *cat's meow*.
 
-*color=green This is italic text.*
+*:span[This is italic text.]{color="green"}*
 
 My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
 
-* color=blue Bullet in an unordered list.
+* :span[Bullet in an unordered list]{color="blue"}.
 * Bullet in an unordered list.
-
-::span[leafDirective red]{color="red"}
-
-This shows :span[textDirective red]{color="red"} words and :span[textDirective blue]{color=blue} words.
 `;
 
 	// get parameters that don't have a group or whose group name includes "export"
