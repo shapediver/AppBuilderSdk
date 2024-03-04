@@ -179,16 +179,18 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 
 	const markdown = `
 # Heading level 1
-## Heading level 2
+## color=lightgreen Heading level 2
 ### Heading level 3
 
-**bold text**.
+color=blue This shows **color=#ff00ff bold text** mixed with *color=gray italic* and normal text.
 
 Italicized text is the *cat's meow*.
 
+*color=green This is italic text.*
+
 My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
 
-* Bullet in an unordered list.
+* color=blue Bullet in an unordered list.
 * Bullet in an unordered list.
 `;
 
