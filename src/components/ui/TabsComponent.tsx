@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Stack, Tabs } from "@mantine/core";
 import Icon from "./Icon";
 import { IconType } from "types/shapediver/icons";
@@ -22,7 +22,21 @@ export interface ITabsComponentProps {
 
 export default function TabsComponent({defaultValue, tabs}: ITabsComponentProps) {
 
-	return tabs.length === 0 ? <></> : <Tabs defaultValue={defaultValue}>
+	const [activeTab, setActiveTab] = useState<string | null>(defaultValue);
+	const tabNames = tabs.map(tab => tab.name);
+	
+	useEffect(() => {
+		if (!activeTab || !tabNames.includes(activeTab)) {
+			if (tabNames.includes(defaultValue)) {
+				setActiveTab(defaultValue);
+			}
+			else {
+				setActiveTab(tabNames[0]);
+			}
+		}
+	}, [tabNames.join(""), defaultValue]);
+
+	return tabs.length === 0 ? <></> : <Tabs value={activeTab} onChange={setActiveTab}>
 		<Tabs.List>
 			{
 				tabs.map((tab, index) => <Tabs.Tab 
