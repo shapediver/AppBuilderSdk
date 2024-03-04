@@ -192,6 +192,10 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 
 * color=blue Bullet in an unordered list.
 * Bullet in an unordered list.
+
+::span[leafDirective red]{color="red"}
+
+This shows :span[textDirective red]{color="red"} words and :span[textDirective blue]{color=blue} words.
 `;
 
 	// get parameters that don't have a group or whose group name includes "export"
