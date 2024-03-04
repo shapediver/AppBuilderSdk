@@ -21,8 +21,6 @@ const spanDirective = function() {
 	 */
 	return (tree: any, file: any) => {
 		visit(tree, function(node) {
-			console.log("node.type", node.type);
-			console.log("node.name", node.name);
 			if (
 				node.type === "containerDirective" ||
 				node.type === "leafDirective" ||
