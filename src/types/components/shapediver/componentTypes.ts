@@ -1,4 +1,4 @@
-import { PARAMETER_TYPE, EXPORT_TYPE } from "@shapediver/viewer";
+import { EXPORT_TYPE, PARAMETER_TYPE } from "@shapediver/viewer";
 import ParameterSliderComponent from "components/shapediver/parameter/ParameterSliderComponent";
 import ParameterBooleanComponent from "components/shapediver/parameter/ParameterBooleanComponent";
 import ParameterStringComponent from "components/shapediver/parameter/ParameterStringComponent";
@@ -10,10 +10,11 @@ import { IShapeDiverParamOrExportDefinition } from "types/shapediver/common";
 import ExportButtonComponent from "components/shapediver/exports/ExportButtonComponent";
 import ExportLabelComponent from "components/shapediver/exports/ExportLabelComponent";
 import { PropsParameter } from "./propsParameter";
+import { ReactElement } from "react";
 
 type ComponentsMapType = { [key: string]: {
 	/** Parameter component */
-	c: (props: PropsParameter) => JSX.Element,
+	c: (props: PropsParameter) => ReactElement,
 	/** Defines whether extra bottom padding is required */
 	extraBottomPadding: boolean,
 }};
