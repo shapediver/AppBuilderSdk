@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import React, { ReactElement } from "react";
 import { Accordion, Group, Loader, Paper, Stack, useProps } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
@@ -36,7 +36,7 @@ interface Props {
 	 */
 	mergeAccordions?: boolean,
 	/**
-	 * Component to be displayed at the top of the accordion. Typically used for 
+	 * Component to be displayed at the top of the accordion. Typically used for
 	 * accept / reject buttons.
 	 */
 	topSection?: React.ReactNode,
@@ -65,7 +65,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props) {
 	// create a data structure to store the elements within groups
 	const elementGroups: {
 			group?: { id: string, name: string }
-			elements: JSX.Element[],
+			elements: ReactElement[],
 	}[] = [];
 	const groupIds: { [key: string]: number } = {};
 
@@ -119,8 +119,8 @@ export default function ParametersAndExportsAccordionComponent(props: Props) {
 		}
 	});
 
-	const elements: JSX.Element[] = [];
-	const addAccordion = (items: JSX.Element[], defaultValue: string | undefined = undefined) => {
+	const elements: ReactElement[] = [];
+	const addAccordion = (items: ReactElement[], defaultValue: string | undefined = undefined) => {
 		elements.push(
 			// wrap accordion in paper to show optional shadows
 			<Paper key={items[0].key} px={0} py={0} withBorder={false}><Accordion defaultValue={defaultValue}>
@@ -133,7 +133,7 @@ export default function ParametersAndExportsAccordionComponent(props: Props) {
 	const defaultValue = elementGroups.length === 1 && elementGroups[0].group ? elementGroups[0].group?.id : undefined;
 
 	// loop through the created elementGroups to add them
-	let accordionItems: JSX.Element[] = [];
+	let accordionItems: ReactElement[] = [];
 	for (const g of elementGroups) {
 
 		if (g.group && (!avoidSingleComponentGroups || g.elements.length > 1)) {

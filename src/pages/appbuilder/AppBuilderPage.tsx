@@ -1,5 +1,5 @@
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React from "react";
+import React, { ReactElement } from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
@@ -8,7 +8,8 @@ import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuil
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
 import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";
-import AppBuilderFallbackContainerComponent from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
+import AppBuilderFallbackContainerComponent
+	from "components/shapediver/appbuilder/AppBuilderFallbackContainerComponent";
 import AlertPage from "pages/misc/AlertPage";
 import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
@@ -39,7 +40,7 @@ export default function AppBuilderPage(props: Partial<Props>) {
 	const exportProps = useSessionPropsExport(sessionId);
 
 	// create UI elements for containers
-	const containers: { top?: JSX.Element, bottom?: JSX.Element, left?: JSX.Element, right?: JSX.Element } = {
+	const containers: { top?: ReactElement, bottom?: ReactElement, left?: ReactElement, right?: ReactElement } = {
 		top: undefined,
 		bottom: undefined,
 		left: undefined,
@@ -91,7 +92,7 @@ This method does **not** support protection of your model by a short lived token
 You need to disable the *Require strong authorization* setting for your model. 
 
 `;
-	
+
 	return (
 		!settings && !loading && !error ? <AlertPage>
 			<MarkdownWidgetComponent>
@@ -100,7 +101,7 @@ You need to disable the *Require strong authorization* setting for your model.
 		</AlertPage> :
 			error ? <AlertPage title="Error">{error.message}</AlertPage> :
 				loading ? <LoaderPage /> :
-					show && <AppBuilderGridTemplatePage
+					show ? <AppBuilderGridTemplatePage
 						top={containers.top}
 						left={containers.left}
 						right={containers.right}
@@ -116,5 +117,6 @@ You need to disable the *Require strong authorization* setting for your model.
 							</ViewportOverlayWrapper>
 						</ViewportComponent>
 					</AppBuilderGridTemplatePage>
+						: <></>
 	);
 }
