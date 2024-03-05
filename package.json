@@ -26,14 +26,9 @@
     "optimize": "tsc && vite optimize --force",
     "preview": "vite preview",
     "eslint": "eslint .",
-    "build-example-dev": "vite build --base=/dev/",
-    "build-example-staging": "vite build --base=/staging/",
-    "build-example-prod": "vite build --base=/prod/",
-    "publish-example-dev": "aws s3 sync ./dist s3://${BUCKET}/react-example/dev/ --region us-east-1",
-    "publish-example-staging": "aws s3 sync ./dist s3://${BUCKET}/react-example/staging/ --region us-east-1",
-    "publish-example-prod": "aws s3 sync ./dist s3://${BUCKET}/react-example/prod/ --region us-east-1",
-    "build-appbuilder": "vite build --base=/main/$npm_package_version/",
-    "publish-appbuilder": "aws s3 sync ./dist s3://${BUCKET}/appbuilder/main/$npm_package_version/ --region us-east-1"
+    "build-appbuilder": "scripts/build-appbuilder.sh $npm_package_version",
+    "publish-appbuilder": "scripts/build-appbuilder.sh $npm_package_version 1",
+    "publish-appbuilder-latest": "scripts/build-appbuilder.sh latest 1"
   },
   "eslintConfig": {
     "extends": [
@@ -60,7 +55,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.19",
-    "@types/react": "^18.2.57",
+    "@types/react": "^18.2.63",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
