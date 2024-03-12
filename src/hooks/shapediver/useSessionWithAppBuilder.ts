@@ -36,7 +36,20 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 
 	// get data output, parse it
 	const { outputApi, outputContent } = useOutputContent( sessionId, CUSTOM_DATA_OUTPUT_NAME );
-	const appBuilderData = outputContent?.[0]?.data as IAppBuilder | undefined; // TODO validation
+	const appBuilderData = ((data : IAppBuilder | string | undefined) => { 
+		if (!data) return undefined;
+		if (typeof data === "string") {
+			try {
+				return JSON.parse(data);
+			} catch (e) {
+				console.error("Error parsing AppBuilder data", e);
+				
+				return undefined;
+			}
+		}
+		
+		return data;
+	})(outputContent?.[0]?.data as IAppBuilder | string | undefined);
 	console.debug(CUSTOM_DATA_OUTPUT_NAME, appBuilderData);
 	const hasAppBuilderOutput = !!outputApi;
 
