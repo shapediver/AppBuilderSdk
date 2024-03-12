@@ -6,7 +6,7 @@ if [ -z "$version" ]; then
     exit 1
 fi
 
-prefix=v1
+prefix=v1/main
 
 vite build --base=/$prefix/$version/
 if [ $? -ne 0 ]; then
