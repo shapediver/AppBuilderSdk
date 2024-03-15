@@ -12,6 +12,12 @@ const defaultProps: Partial<Props> = {
 	
 };
 
+/**
+ * Use default session settings. In case no session settings are provided, 
+ * the hook will use settings defined in section "DefaultSession" of the theme.
+ * @param props 
+ * @returns 
+ */
 export default function useDefaultSessionDto(props: Partial<Props>) {
 
 	const { example, id = "default", ticket, modelViewUrl, slug, ...rest } = useProps("DefaultSession", defaultProps, props);

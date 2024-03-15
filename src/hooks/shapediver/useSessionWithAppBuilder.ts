@@ -1,3 +1,4 @@
+import { validateAppBuilder } from "types/shapediver/appbuildertypecheck";
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./viewer/useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
@@ -36,21 +37,36 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 
 	// get data output, parse it
 	const { outputApi, outputContent } = useOutputContent( sessionId, CUSTOM_DATA_OUTPUT_NAME );
-	const appBuilderData = ((data : IAppBuilder | string | undefined) => { 
+
+	const validate = (data: any) : IAppBuilder | undefined | Error => {
+		const result = validateAppBuilder(data);
+		if (result.success) {
+			return result.data;
+		}
+		else {
+			return new Error(`Parsing AppBuilder data failed: ${result.error.message}`);
+		}
+	};
+
+	const parsedData = ((data : IAppBuilder | string | undefined) => { 
 		if (!data) return undefined;
 		if (typeof data === "string") {
+			let parsedJson : string;
 			try {
-				return JSON.parse(data);
-			} catch (e) {
-				console.error("Error parsing AppBuilder data", e);
-				
-				return undefined;
+				parsedJson = JSON.parse(data);
+			} catch (e : any) {
+				return new Error(`Parsing AppBuilder JSON data failed: ${e?.message ?? "unknown error"}`);
 			}
+
+			return validate(parsedJson);
 		}
 		
-		return data;
+		return validate(data);
 	})(outputContent?.[0]?.data as IAppBuilder | string | undefined);
-	console.debug(CUSTOM_DATA_OUTPUT_NAME, appBuilderData);
+	console.debug(CUSTOM_DATA_OUTPUT_NAME, parsedData);
+
+	const error = parsedData instanceof Error ? parsedData : undefined;
+	const appBuilderData = parsedData instanceof Error ? undefined : parsedData;
 	const hasAppBuilderOutput = !!outputApi;
 
 	// TODO register custom parameters
@@ -58,6 +74,7 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 	return {
 		sessionApi,
 		sessionId,
+		error,
 		appBuilderData,
 		hasAppBuilderOutput
 	};

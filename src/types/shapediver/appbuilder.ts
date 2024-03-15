@@ -16,7 +16,7 @@ export interface IAppBuilderParameterRef {
 	/** Optional id of the session the referenced parameter belongs to. */
 	sessionId?: string
 	/** Properties of the parameter to be overridden. TODO implement this */
-	overrides?: Pick<IAppBuilderParameterDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
+	//overrides?: Pick<IAppBuilderParameterDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
 	/** Disable the UI element of the parameter if its state is dirty. */
 	disableIfDirty?: boolean
 	/** Ask the user to accept or reject changes of this parameter before executing them. */
@@ -30,7 +30,7 @@ export interface IAppBuilderExportRef {
 	/** Optional id of the session the referenced parameter belongs to. */
 	sessionId?: string
 	/** Properties of the export to be overridden. TODO implement this */
-	overrides?: Pick<IAppBuilderExportDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
+	//overrides?: Pick<IAppBuilderExportDefinition, "displayname" | "group" | "order" | "tooltip" | "hidden">
 }
 
 /** Types of widgets */
@@ -177,7 +177,7 @@ export interface IAppBuilderSettingsSession extends SessionCreateDto {
  * Settings for initializing an AppBuilder application. This defines the sessions to create.
  */
 export interface IAppBuilderSettings {
-    "version": "1.0",
+    version: "1.0",
 	/** Session to load. */
-    "sessions": IAppBuilderSettingsSession[]
+    sessions: IAppBuilderSettingsSession[]
 }
