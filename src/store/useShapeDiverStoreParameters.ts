@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { IShapeDiverParameter, IShapeDiverParameterExecutor, IShapeDiverParameterState } from "types/shapediver/parameter";
-import { ISessionApi } from "@shapediver/viewer";
+import { IFileParameterApi, IParameterApi, ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
 	IAcceptRejectModeSelector,
+	IDefaultExportsPerSession,
+	IExportResponse,
 	IExportStore,
 	IExportStores, IExportStoresPerSession,
 	IGenericParameterDefinition,
@@ -17,6 +19,7 @@ import {
 	IShapeDiverStoreParameters
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
+import { ShapeDiverRequestCustomization, ShapeDiverRequestExport } from "@shapediver/api.geometry-api-dto-v2";
 
 /**
  * Create an IShapeDiverParameterExecutor for a single parameter, 
@@ -69,9 +72,16 @@ function createParameterExecutor<T>(sessionId: string, param: IGenericParameterD
 	};
 }
 
-function createGenericParameterExecutorForSession(session: ISessionApi) : IGenericParameterExecutor { 
+type ExportResponseSetter = (response: IExportResponse) => void;
+
+function isFileParameter(param: IParameterApi<unknown>): param is IFileParameterApi {
+	return ("upload" in param);
+}
+
+function createGenericParameterExecutorForSession(session: ISessionApi, 
+	defaultExports: IDefaultExportsPerSession, exportResponseSetter: ExportResponseSetter) : IGenericParameterExecutor { 
 	
-	return (values) => {
+	return async (values) => {
 
 		// store previous values (we restore them in case of error)
 		const previousValues = Object.keys(values).reduce((acc, paramId) => {
@@ -79,16 +89,41 @@ function createGenericParameterExecutorForSession(session: ISessionApi) : IGener
 			
 			return acc;
 		}, {} as { [paramId: string]: unknown});
+
+		// get ids of default exports that should be requested
+		const exports = defaultExports[session.id] || [];
+
 		try {
 			// set values and call customize
 			Object.keys(values).forEach(id => session.parameters[id].value = values[id]);
-
-			return session.customize();
-		} 
+		
+			if (exports.length > 0) {
+				// prepare parameters (e.g. upload)
+				await Promise.all(Object.values(session.parameters)
+					.filter(isFileParameter)
+					.map(async p => {
+						const fileId = await p.upload();
+						p.value = fileId;
+					})
+				);
+				// prepare body and send request
+				const body: ShapeDiverRequestExport = { 
+					parameters: session.parameterValues as ShapeDiverRequestCustomization, // TODO fix this
+					exports, 
+					outputs: Object.keys(session.outputs) 
+				};
+				const response = await session.requestExports(body, true);
+				exportResponseSetter(response.exports as IExportResponse);
+			}
+			else {
+				await session.customize();
+			}
+		}
 		catch (e: any)
 		{
 			// in case of an error, restore the previous values
 			Object.keys(previousValues).forEach(id => session.parameters[id].value = previousValues[id]);
+			// TODO store error
 			throw e;
 		}
 	};
@@ -206,6 +241,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	exportStores: {},
 	parameterChanges: {},
 	defaultExports: {},
+	defaultExportResponses: {},
 
 	removeChanges: (sessionId: string) => {
 		const { parameterChanges } = get();
@@ -281,8 +317,18 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	addSession: (session: ISessionApi, _acceptRejectMode: boolean | IAcceptRejectModeSelector) => {
 		const sessionId = session.id;
-		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
-		const executor = createGenericParameterExecutorForSession(session);
+		const { parameterStores: parameters, exportStores: exports, getChanges, defaultExports } = get();
+
+		const setExportResponse = (response: IExportResponse) => {
+			set((_state) => ({
+				defaultExportResponses: {
+					..._state.defaultExportResponses,
+					...{ [sessionId]: response }
+				}
+			}), false, "setExportResponse");
+		};
+		const executor = createGenericParameterExecutorForSession(session, defaultExports, setExportResponse);
+
 		const acceptRejectModeSelector = typeof(_acceptRejectMode) === "boolean" ? () => _acceptRejectMode : _acceptRejectMode;
 
 		set((_state) => ({
