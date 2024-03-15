@@ -206,6 +206,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	parameterStores: {},
 	exportStores: {},
 	parameterChanges: {},
+	defaultExports: {},
 
 	removeChanges: (sessionId: string) => {
 		const { parameterChanges } = get();
@@ -381,6 +382,43 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 			return def.id === exportId || def.name === exportId || def.displayname === exportId;
 		}) as IExportStore;
+	},
+
+	registerDefaultExport: (sessionId: string, exportId: string | string[]) => {
+		const exportIds = Array.isArray(exportId) ? exportId : [exportId];
+		if (exportIds.length === 0)
+			return;
+		const { defaultExports } = get();
+		const existing = defaultExports[sessionId];
+		const filtered = existing ? exportIds.filter(id => existing.indexOf(id) < 0) : exportIds;
+		const newExports = existing ? existing.concat(filtered) : exportIds;
+
+		set((_state) => ({
+			defaultExports: {
+				..._state.defaultExports,
+				...{ [sessionId]: newExports }
+			}
+		}), false, "registerDefaultExport");
+	},
+
+	deregisterDefaultExport: (sessionId: string, exportId: string | string[]) => {
+		const { defaultExports } = get();
+		const existing = defaultExports[sessionId];
+		if (!existing) 
+			return;
+		const exportIds = Array.isArray(exportId) ? exportId : [exportId];
+		if (exportIds.length === 0)
+			return;
+		const newExports = existing.filter(id => exportIds.indexOf(id) < 0);
+		if (newExports.length === existing.length)
+			return;
+
+		set((_state) => ({
+			defaultExports: {
+				..._state.defaultExports,
+				...{ [sessionId]: newExports }
+			}
+		}), false, "deregisterDefaultExport");
 	},
 
 }
