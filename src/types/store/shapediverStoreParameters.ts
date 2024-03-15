@@ -15,6 +15,8 @@ export type IExportStores = { [parameterId: string]: IExportStore }
 
 export type IExportStoresPerSession = { [sessionId: string]: IExportStores };
 
+export type IDefaultExportsPerSession = { [sessionId: string]: string[] };
+
 /**
  * Pending parameter changes (waiting to be executed).
  */
@@ -87,6 +89,11 @@ export interface IShapeDiverStoreParameters {
 	 * Pending parameter changes.
 	 */
 	parameterChanges: IParameterChangesPerSession;
+
+	/**
+	 * Default exports.
+	 */
+	defaultExports: IDefaultExportsPerSession;
 
 	/**
 	 * Add parameter and export stores for all parameters and exports of the session.
@@ -163,4 +170,21 @@ export interface IShapeDiverStoreParameters {
 	 * @returns 
 	 */
 	removeChanges: (sessionId: string) => void,
+
+	/**
+	 * Register a default export for a given session id. The given export
+	 * will always be included when running computations.
+	 * @param sessionId 
+	 * @param exportId 
+	 * @returns 
+	 */
+	registerDefaultExport: (sessionId: string, exportId: string | string[]) => void,
+
+	/**
+	 * Deregister a default export for a given session id.
+	 * @param sessionId 
+	 * @param exportId 
+	 * @returns 
+	 */
+	deregisterDefaultExport: (sessionId: string, exportId: string | string[]) => void,
 }
