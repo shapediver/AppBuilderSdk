@@ -50,7 +50,7 @@ export default function ViewPage(props: Partial<Props>) {
 	// get parameters that don't have a group or whose group name includes "export"
 	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"));
 	// get parameters whose group name includes "export"
-	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group!.name.toLowerCase().includes("export"));
+	const exportParameterProps = useSessionPropsParameter(sessionId, param => param.group?.name.toLowerCase().includes("export") ?? false);
 	const exportProps = useSessionPropsExport(sessionId);
 
 	/////
