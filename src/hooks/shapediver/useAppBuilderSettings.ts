@@ -28,10 +28,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 			return result.data;
 		}
 		else {
-			// TODO set error state
-			console.error("AppBuilder settings validation failed", result.error.message);
-
-			return undefined;
+			throw new Error(`Parsing AppBuilder settings failed: ${result.error.message}`);
 		}
 	};
 	const { value, error, loading } = useAsync(async () => {
