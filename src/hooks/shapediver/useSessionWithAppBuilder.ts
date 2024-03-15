@@ -1,3 +1,4 @@
+import { validateAppBuilder } from "types/shapediver/appbuildertypecheck";
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./viewer/useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
@@ -36,11 +37,25 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 
 	// get data output, parse it
 	const { outputApi, outputContent } = useOutputContent( sessionId, CUSTOM_DATA_OUTPUT_NAME );
+
+	const validate = (data: any) : IAppBuilder | undefined => {
+		const result = validateAppBuilder(data);
+		if (result.success) {
+			return result.data;
+		}
+		else {
+			// TODO set error state
+			console.error("AppBuilder data validation failed", result.error.message);
+
+			return undefined;
+		}
+	};
+
 	const appBuilderData = ((data : IAppBuilder | string | undefined) => { 
 		if (!data) return undefined;
 		if (typeof data === "string") {
 			try {
-				return JSON.parse(data);
+				return validate(JSON.parse(data));
 			} catch (e) {
 				console.error("Error parsing AppBuilder data", e);
 				
@@ -48,7 +63,7 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 			}
 		}
 		
-		return data;
+		return validate(data);
 	})(outputContent?.[0]?.data as IAppBuilder | string | undefined);
 	console.debug(CUSTOM_DATA_OUTPUT_NAME, appBuilderData);
 	const hasAppBuilderOutput = !!outputApi;

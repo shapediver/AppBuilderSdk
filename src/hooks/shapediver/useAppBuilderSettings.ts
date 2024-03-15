@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import useAsync from "../misc/useAsync";
 import { IAppBuilderSettings, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useResolveAppBuilderSettings from "./useResolveAppBuilderSettings";
+import { validateAppBuilderSettings } from "types/shapediver/appbuildertypecheck";
 
 const DEFAULT_PLATFORM_URL = "https://app.shapediver.com";
 
@@ -21,11 +22,23 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 
 	// try to load settings json
 	const url = parameters.get(queryParamName);
+	const validate = (data: any) : IAppBuilderSettings | undefined => {
+		const result = validateAppBuilderSettings(data);
+		if (result.success) {
+			return result.data;
+		}
+		else {
+			// TODO set error state
+			console.error("AppBuilder settings validation failed", result.error.message);
+
+			return undefined;
+		}
+	};
 	const { value, error, loading } = useAsync(async () => {
 		if (!url) return;
 		const response = await fetch(url, { mode: "cors" });
 		
-		return await response.json() as IAppBuilderSettings; // TODO validation
+		return validate(await response.json());
 	}, [url]);
 
 	// check for ticket, modelViewUrl, slug and platformUrl
