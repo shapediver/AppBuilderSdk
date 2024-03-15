@@ -1,8 +1,8 @@
 import React from "react";
-import { AppShell, Burger, Group, useMantineTheme } from "@mantine/core";
+import { AppShell, Burger, Group } from "@mantine/core";
 import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
-import { useColorScheme, useDisclosure } from "@mantine/hooks";
+import { useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./ExampleTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
@@ -23,8 +23,6 @@ interface Props {
 }
 
 export default function ExamplePage({ children = <></>, aside = <></>, className = "viewer-fullscreen-area" }: Props) {
-	const scheme = useColorScheme();
-	const theme = useMantineTheme();
 	const [opened, { toggle }] = useDisclosure();
 	const isMobile = useIsMobile();
 	const isLandscape = useIsLandscape();
@@ -37,6 +35,9 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				className={className}
 				header={{ height: 60 }}
 				navbar={{ breakpoint: "md", width: { md: 150, lg: 200 }, collapsed: { mobile: !opened }  }}
+				// We need to define the background color here, because the corresponding element
+				// is used for fullscreen mode and would otherwise be transparent (show as black).
+				style={{backgroundColor: "var(--mantine-color-body)"}}
 			>
 				<AppShell.Header>
 					<Group h="100%" px="md" justify="space-between" wrap="nowrap">
@@ -52,7 +53,6 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				>
 					<section
 						className={classes.appShellMainMain}
-						style={{ backgroundColor: scheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0]}}
 					>
 						{ children }
 					</section>

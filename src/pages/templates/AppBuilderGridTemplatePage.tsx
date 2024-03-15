@@ -149,6 +149,9 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 
 	const rootRef = useRef<HTMLDivElement>(null);
 	const [rootStyle, setRootStyle] = useState<React.CSSProperties>({
+		// We need to define the background color here, because the corresponding element
+		// is used for fullscreen mode and would otherwise be transparent (show as black).
+		backgroundColor: "var(--mantine-color-body)",
 		...(generateLayoutStyles(
 			showContainerButtons ? isTopDisplayed : !!top, 
 			showContainerButtons ? isLeftDisplayed : !!left,

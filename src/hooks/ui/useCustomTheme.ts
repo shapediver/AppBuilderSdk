@@ -80,10 +80,10 @@ export const useCustomTheme = () => {
 			},
 			AppBuilderGridTemplatePage: {
 				defaultProps: {
-					bgTop: "inherit", 
-					bgLeft: "inherit", 
-					bgRight: "inherit", 
-					bgBottom: "inherit", 
+					bgTop: "transparent", 
+					bgLeft: "transparent", 
+					bgRight: "transparent", 
+					bgBottom: "transparent", 
 					// showContainerButtons: true,
 					// columns: 5,
 					// rows: 4,
