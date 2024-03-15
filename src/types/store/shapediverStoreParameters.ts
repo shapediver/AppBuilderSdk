@@ -1,3 +1,4 @@
+import { ShapeDiverResponseExport } from "@shapediver/api.geometry-api-dto-v2";
 import { ISessionApi } from "@shapediver/viewer";
 import { IShapeDiverExport } from "types/shapediver/export";
 import { IShapeDiverParameter, IShapeDiverParameterDefinition } from "types/shapediver/parameter";
@@ -16,6 +17,10 @@ export type IExportStores = { [parameterId: string]: IExportStore }
 export type IExportStoresPerSession = { [sessionId: string]: IExportStores };
 
 export type IDefaultExportsPerSession = { [sessionId: string]: string[] };
+
+export type IExportResponse = { [exportId: string]: ShapeDiverResponseExport };
+
+export type IExportResponsesPerSession = { [sessionId: string]: IExportResponse };
 
 /**
  * Pending parameter changes (waiting to be executed).
@@ -94,6 +99,11 @@ export interface IShapeDiverStoreParameters {
 	 * Default exports.
 	 */
 	defaultExports: IDefaultExportsPerSession;
+
+	/**
+	 * Responses to default exports.
+	 */
+	defaultExportResponses: IExportResponsesPerSession;
 
 	/**
 	 * Add parameter and export stores for all parameters and exports of the session.
