@@ -3,6 +3,7 @@ import { useExport } from "hooks/shapediver/parameters/useExport";
 import React, { useEffect, useRef, useState } from "react";
 import AppBuilderImage from "./AppBuilderImage";
 import { AppBuilderContainerTypeEnum } from "types/shapediver/appbuilder";
+import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 
 interface Props {
 	/** 
@@ -28,24 +29,41 @@ export default function AppBuilderImageExportWidgetComponent({sessionId, exportI
 	const promiseChain = useRef(Promise.resolve());
 	const [ href, setHref ] = useState<string | undefined>(undefined);
 
+	const { registerDefaultExport, deregisterDefaultExport } = useShapeDiverStoreParameters();
 	useEffect(() => {
-		promiseChain.current = promiseChain.current.then(async () => {
+		registerDefaultExport(sessionId, definition.id);
 
-			if (definition.type !== EXPORT_TYPE.DOWNLOAD)
-				return;
+		return () => deregisterDefaultExport(sessionId, definition.id);
+	}, [sessionId, definition]);
 
-			// request the export
-			const response = await actions.request();
+	const responses = useShapeDiverStoreParameters(state => state.defaultExportResponses[sessionId]);
 
-			if ( response.content &&
-				response.content[0] &&
-				response.content[0].href
-			) {
+	useEffect(() => {
+		if (responses && responses[definition.id]) {
+			const response = responses[definition.id];
+			if (response.content && response.content[0] && response.content[0].href) {
 				setHref(response.content[0].href);
 			}
-		});
+		}
+		else {
+			promiseChain.current = promiseChain.current.then(async () => {
+
+				if (definition.type !== EXPORT_TYPE.DOWNLOAD)
+					return;
+
+				// request the export
+				const response = await actions.request();
+
+				if ( response.content &&
+					response.content[0] &&
+					response.content[0].href
+				) {
+					setHref(response.content[0].href);
+				}
+			});
+		}
 		
-	}, [{}]);
+	}, [responses, definition]);
 
 	if (href)
 		return <AppBuilderImage src={href} containerType={containerType} />;

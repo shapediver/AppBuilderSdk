@@ -5,7 +5,6 @@ import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
 	IAcceptRejectModeSelector,
-	IDefaultExportsPerSession,
 	IExportResponse,
 	IExportStore,
 	IExportStores, IExportStoresPerSession,
@@ -72,6 +71,7 @@ function createParameterExecutor<T>(sessionId: string, param: IGenericParameterD
 	};
 }
 
+type DefaultExportsGetter = () => string[];
 type ExportResponseSetter = (response: IExportResponse) => void;
 
 function isFileParameter(param: IParameterApi<unknown>): param is IFileParameterApi {
@@ -79,7 +79,7 @@ function isFileParameter(param: IParameterApi<unknown>): param is IFileParameter
 }
 
 function createGenericParameterExecutorForSession(session: ISessionApi, 
-	defaultExports: IDefaultExportsPerSession, exportResponseSetter: ExportResponseSetter) : IGenericParameterExecutor { 
+	getDefaultExports: DefaultExportsGetter, exportResponseSetter: ExportResponseSetter) : IGenericParameterExecutor { 
 	
 	return async (values) => {
 
@@ -91,7 +91,7 @@ function createGenericParameterExecutorForSession(session: ISessionApi,
 		}, {} as { [paramId: string]: unknown});
 
 		// get ids of default exports that should be requested
-		const exports = defaultExports[session.id] || [];
+		const exports = getDefaultExports();
 
 		try {
 			// set values and call customize
@@ -318,8 +318,11 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	addSession: (session: ISessionApi, _acceptRejectMode: boolean | IAcceptRejectModeSelector) => {
 		const sessionId = session.id;
-		const { parameterStores: parameters, exportStores: exports, getChanges, defaultExports } = get();
+		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
 
+		const getDefaultExports = () => {
+			return get().defaultExports[sessionId] || [];
+		};
 		const setExportResponse = (response: IExportResponse) => {
 			set((_state) => ({
 				defaultExportResponses: {
@@ -328,7 +331,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 				}
 			}), false, "setExportResponse");
 		};
-		const executor = createGenericParameterExecutorForSession(session, defaultExports, setExportResponse);
+		const executor = createGenericParameterExecutorForSession(session, getDefaultExports, setExportResponse);
 
 		const acceptRejectModeSelector = typeof(_acceptRejectMode) === "boolean" ? () => _acceptRejectMode : _acceptRejectMode;
 
