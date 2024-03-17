@@ -98,13 +98,14 @@ function createGenericParameterExecutorForSession(session: ISessionApi) : IGener
 /**
  * Create store for a single parameter.
  */
-function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>, acceptRejectMode: boolean) {
+function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>, acceptRejectMode: boolean, defaultValue?: T | string) {
 	const definition = executor.definition;
 
 	/** The static definition of a parameter. */
+	const defval = defaultValue !== undefined ? defaultValue : definition.defval;
 	const state: IShapeDiverParameterState<T> = {
-		uiValue: definition.defval,
-		execValue: definition.defval,
+		uiValue: defval,
+		execValue: defval,
 		dirty: false
 	};
 
@@ -295,7 +296,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, 
 							{ definition: param, isValid: (value, throwError) => param.isValid(value, throwError) }, 
 							() => getChanges(sessionId, executor)
-						), acceptRejectMode);
+						), acceptRejectMode, param.value);
 
 						return acc;
 					}, {} as IParameterStores) } // Create new parameter stores
