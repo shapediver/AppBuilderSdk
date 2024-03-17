@@ -1,6 +1,6 @@
 import { MultiSelect, Notification } from "@mantine/core";
 import { ISelectedModel, useModelSelectStore } from "store/useModelSelectStore";
-import React from "react";
+import React, { useMemo } from "react";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { ShapeDiverExampleModels } from "tickets";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
@@ -49,21 +49,23 @@ export default function ModelSelect() {
 	const parameterProps = useSessionPropsParameter(sessionIds);
 	const exportProps = useSessionPropsExport(sessionIds);
 
-	const tabProps: ITabsComponentProps = {
-		defaultValue: selectedModels.length === 0 ? "" : selectedModels[0].slug,
-		tabs: selectedModels.map(model => {
-			return {
-				name: model.slug,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={parameterProps.filter(p => p.sessionId === model.slug)}
-						exports={exportProps.filter(p => p.sessionId === model.slug)}
-						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-					/>
-				]
-			};
-		})
-	};
+	const tabProps: ITabsComponentProps = useMemo(() => {
+		return {
+			defaultValue: selectedModels.length === 0 ? "" : selectedModels[0].slug,
+			tabs: selectedModels.map(model => {
+				return {
+					name: model.slug,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={parameterProps.filter(p => p.sessionId === model.slug)}
+							exports={exportProps.filter(p => p.sessionId === model.slug)}
+							topSection={<AcceptRejectButtons parameters={parameterProps}/>}
+						/>
+					]
+				};
+			})
+		};
+	}, [selectedModels, parameterProps, exportProps]);
 
 	const tabs = <TabsComponent {...tabProps} />;
 

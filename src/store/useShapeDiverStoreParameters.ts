@@ -247,6 +247,10 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 	removeChanges: (sessionId: string) => {
 		const { parameterChanges } = get();
 
+		// check if there is something to remove
+		if (!parameterChanges[sessionId])
+			return;
+
 		// create a new object, omitting the session to be removed
 		const changes: IParameterChangesPerSession = {};
 		Object.keys(parameterChanges).forEach(id => {
@@ -320,6 +324,10 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		const sessionId = session.id;
 		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
 
+		// check if there is something to add
+		if (parameters[sessionId] || exports[sessionId])
+			return;
+
 		const getDefaultExports = () => {
 			return get().defaultExports[sessionId] || [];
 		};
@@ -366,6 +374,11 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	addGeneric: (sessionId: string, _acceptRejectMode: boolean | IAcceptRejectModeSelector, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
 		const { parameterStores: parameters, getChanges } = get();
+
+		// check if there is something to add
+		if (parameters[sessionId])
+			return;
+
 		const acceptRejectModeSelector = typeof(_acceptRejectMode) === "boolean" ? () => _acceptRejectMode : _acceptRejectMode;
 
 		set((_state) => ({
@@ -388,6 +401,10 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 
 	removeSession: (sessionId: string) => {
 		const {parameterStores: parametersPerSession, exportStores: exportsPerSession } = get();
+
+		// check if there is something to remove
+		if (!parametersPerSession[sessionId] && !exportsPerSession[sessionId])
+			return;
 
 		// create a new object, omitting the session to be removed
 		const parameters: IParameterStoresPerSession = {};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { IAppBuilderWidgetPropsAccordion } from "types/shapediver/appbuilder";
@@ -16,21 +16,21 @@ interface Props extends IAppBuilderWidgetPropsAccordion {
 
 export default function AppBuilderAccordionWidgetComponent({ sessionId, parameters = [], exports = [], defaultGroupName }: Props) {
 	
-	const parameterProps: PropsParameter[] = parameters.map(p => { 
+	const parameterProps: PropsParameter[] = useMemo(() => parameters.map(p => { 
 		return { 
 			sessionId: p.sessionId ?? sessionId, 
 			parameterId: p.name,
 			disableIfDirty: p.disableIfDirty,
 			acceptRejectMode: !!p.acceptRejectMode,
 		}; 
-	});
+	}), [parameters, sessionId]);
 
-	const exportProps: PropsExport[] = exports.map(p => { 
+	const exportProps: PropsExport[] = useMemo(() => exports.map(p => { 
 		return { 
 			sessionId: p.sessionId ?? sessionId, 
 			exportId: p.name,
 		}; 
-	});
+	}), [exports, sessionId]);
 
 	return <ParametersAndExportsAccordionComponent
 		parameters={parameterProps}

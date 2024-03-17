@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { AppBuilderContainerTypeEnum, IAppBuilderTab } from "types/shapediver/appbuilder";
 import AppBuilderWidgetsComponent from "./AppBuilderWidgetsComponent";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
@@ -21,18 +21,20 @@ export default function AppBuilderTabsComponent({ sessionId, tabs, containerType
 		return <></>;
 	}
 
-	const tabProps: ITabsComponentProps = {
-		defaultValue: tabs[0].name,
-		tabs: tabs.map(tab => {
-			return {
-				name: tab.name,
-				icon: tab.icon,
-				children: [
-					<AppBuilderWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} containerType={containerType} />
-				]
-			};
-		})
-	};
+	const tabProps: ITabsComponentProps = useMemo(() => { 
+		return {
+			defaultValue: tabs[0].name,
+			tabs: tabs.map(tab => {
+				return {
+					name: tab.name,
+					icon: tab.icon,
+					children: [
+						<AppBuilderWidgetsComponent key={0} sessionId={sessionId} widgets={tab.widgets} containerType={containerType} />
+					]
+				};
+			})
+		};
+	}, [sessionId, tabs, containerType]);
 
 	return <TabsComponent {...tabProps} />;
 

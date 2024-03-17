@@ -1,6 +1,6 @@
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React from "react";
+import React, { useMemo } from "react";
 import { IUseSessionDto, useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
 import { Grid } from "@mantine/core";
@@ -73,33 +73,35 @@ export default function MultipleViewportPage() {
 		})
 	];
 
-	const tabProps: ITabsComponentProps = {
-		defaultValue: "Bench",
-		tabs: [
-			{
-				name: "Bench",
-				icon: IconTypeEnum.AdjustmentsHorizontal,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={parameterBenchProps}
-						defaultGroupName="Bench parameters"
-						topSection={<AcceptRejectButtons parameters={parameterBenchProps}/>}
-					/>
-				]
-			},
-			{
-				name: "Bookshelf",
-				icon: IconTypeEnum.Download,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={parameterBookshelfProps}
-						defaultGroupName="Bookshelf parameters"
-						topSection={<AcceptRejectButtons parameters={parameterBookshelfProps}/>}
-					/>
-				]
-			}
-		]
-	};
+	const tabProps: ITabsComponentProps = useMemo(() => {
+		return {
+			defaultValue: "Bench",
+			tabs: [
+				{
+					name: "Bench",
+					icon: IconTypeEnum.AdjustmentsHorizontal,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={parameterBenchProps}
+							defaultGroupName="Bench parameters"
+							topSection={<AcceptRejectButtons parameters={parameterBenchProps}/>}
+						/>
+					]
+				},
+				{
+					name: "Bookshelf",
+					icon: IconTypeEnum.Download,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={parameterBookshelfProps}
+							defaultGroupName="Bookshelf parameters"
+							topSection={<AcceptRejectButtons parameters={parameterBookshelfProps}/>}
+						/>
+					]
+				}
+			]
+		};
+	}, [parameterBenchProps, parameterBookshelfProps]);
 
 
 	const aside = <TabsComponent {...tabProps} />;
