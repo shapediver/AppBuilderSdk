@@ -2,6 +2,7 @@ import { validateAppBuilder } from "types/shapediver/appbuildertypecheck";
 import { IUseSessionDto, useSession } from "./useSession";
 import { useOutputContent } from "./viewer/useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
+import { useEffect, useMemo } from "react";
 
 /** Prefix used to register custom parameters */
 //const CUSTOM_SESSION_ID_POSTFIX = "_appbuilder";
@@ -48,7 +49,8 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 		}
 	};
 
-	const parsedData = ((data : IAppBuilder | string | undefined) => { 
+	const outputData = outputContent?.[0]?.data as IAppBuilder | string | undefined;
+	const parsedData = useMemo(() => ((data : IAppBuilder | string | undefined) => { 
 		if (!data) return undefined;
 		if (typeof data === "string") {
 			let parsedJson : string;
@@ -62,8 +64,9 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 		}
 		
 		return validate(data);
-	})(outputContent?.[0]?.data as IAppBuilder | string | undefined);
-	console.debug(CUSTOM_DATA_OUTPUT_NAME, parsedData);
+	})(outputData), [outputData]);
+
+	useEffect(() => console.debug(CUSTOM_DATA_OUTPUT_NAME, parsedData), [parsedData]);
 
 	const error = parsedData instanceof Error ? parsedData : undefined;
 	const appBuilderData = parsedData instanceof Error ? undefined : parsedData;

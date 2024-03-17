@@ -1,5 +1,5 @@
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React, { } from "react";
+import React, { useMemo } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
@@ -33,32 +33,34 @@ export default function CustomUiPage(props: Partial<Props>) {
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { parameterProps, exportProps } = useSessionWithCustomUi(sessionDto);
 
-	const tabProps: ITabsComponentProps = {
-		defaultValue: "Parameters",
-		tabs: [
-			{
-				name: "Parameters",
-				icon: IconTypeEnum.AdjustmentsHorizontal,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={parameterProps}
-						defaultGroupName="My parameters"
-						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-					/>
-				]
-			},
-			{
-				name: "Exports",
-				icon: IconTypeEnum.Download,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						exports={exportProps}
-						defaultGroupName="Exports"
-					/>
-				]
-			}
-		]
-	};
+	const tabProps: ITabsComponentProps = useMemo(() => {
+		return {
+			defaultValue: "Parameters",
+			tabs: [
+				{
+					name: "Parameters",
+					icon: IconTypeEnum.AdjustmentsHorizontal,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={parameterProps}
+							defaultGroupName="My parameters"
+							topSection={<AcceptRejectButtons parameters={parameterProps}/>}
+						/>
+					]
+				},
+				{
+					name: "Exports",
+					icon: IconTypeEnum.Download,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							exports={exportProps}
+							defaultGroupName="Exports"
+						/>
+					]
+				}
+			]
+		};
+	}, [parameterProps, exportProps]);
 
 	const parameterTabs = <TabsComponent {...tabProps} />;
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 import ParametersAndExportsAccordionComponent from "../ui/ParametersAndExportsAccordionComponent";
@@ -13,30 +13,32 @@ interface Props {
 
 export default function AppBuilderFallbackContainerComponent({ parameters, exports }: Props) {
 
-	const tabProps: ITabsComponentProps = {
-		defaultValue: "Parameters",
-		tabs: [
-			{
-				name: "Parameters",
-				icon: IconTypeEnum.AdjustmentsHorizontal,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={parameters}
-						topSection={<AcceptRejectButtons parameters={parameters}/>}
-					/>
-				]
-			},
-			{
-				name: "Exports",
-				icon: IconTypeEnum.Download,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						exports={exports}
-					/>
-				]
-			}
-		]
-	};
+	const tabProps: ITabsComponentProps = useMemo(() => {
+		return {
+			defaultValue: "Parameters",
+			tabs: [
+				{
+					name: "Parameters",
+					icon: IconTypeEnum.AdjustmentsHorizontal,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={parameters}
+							topSection={<AcceptRejectButtons parameters={parameters}/>}
+						/>
+					]
+				},
+				{
+					name: "Exports",
+					icon: IconTypeEnum.Download,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							exports={exports}
+						/>
+					]
+				}
+			]
+		};
+	}, [parameters, exports]);
 
 	return <TabsComponent {...tabProps} />;
 

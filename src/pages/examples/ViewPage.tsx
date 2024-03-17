@@ -1,6 +1,6 @@
 import { IMaterialStandardDataProperties, MaterialEngine, MATERIAL_TYPE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
@@ -183,34 +183,36 @@ export default function ViewPage(props: Partial<Props>) {
 	// END - Example on how to apply a custom material to an output
 	/////
 
-	const tabProps: ITabsComponentProps = {
-		defaultValue: "Parameters",
-		tabs: [
-			{
-				name: "Parameters",
-				icon: IconTypeEnum.AdjustmentsHorizontal,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
-						defaultGroupName="Custom material"
-						topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-					/>
-				]
-			},
-			{
-				name: "Exports",
-				icon: IconTypeEnum.Download,
-				children: [
-					<ParametersAndExportsAccordionComponent key={0}
-						parameters={exportParameterProps}
-						exports={exportProps}
-						defaultGroupName="Exports"
-						topSection={<AcceptRejectButtons parameters={exportParameterProps}/>}
-					/>
-				]
-			}
-		]
-	};
+	const tabProps: ITabsComponentProps = useMemo(() => { 
+		return {
+			defaultValue: "Parameters",
+			tabs: [
+				{
+					name: "Parameters",
+					icon: IconTypeEnum.AdjustmentsHorizontal,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={parameterProps.length > 0 ? parameterProps.concat(myParameterProps) : []}
+							defaultGroupName="Custom material"
+							topSection={<AcceptRejectButtons parameters={parameterProps}/>}
+						/>
+					]
+				},
+				{
+					name: "Exports",
+					icon: IconTypeEnum.Download,
+					children: [
+						<ParametersAndExportsAccordionComponent key={0}
+							parameters={exportParameterProps}
+							exports={exportProps}
+							defaultGroupName="Exports"
+							topSection={<AcceptRejectButtons parameters={exportParameterProps}/>}
+						/>
+					]
+				}
+			]
+		};
+	}, [parameterProps, exportParameterProps, exportProps, myParameterProps]);
 
 	const parameterTabs = <TabsComponent {...tabProps} />;
 
