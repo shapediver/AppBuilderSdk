@@ -44,6 +44,9 @@ export default function AppBuilderImageExportWidgetComponent({sessionId, exportI
 			if (response.content && response.content[0] && response.content[0].href) {
 				setHref(response.content[0].href);
 			}
+			else {
+				setHref(undefined);
+			}
 		}
 		else {
 			promiseChain.current = promiseChain.current.then(async () => {
@@ -59,6 +62,9 @@ export default function AppBuilderImageExportWidgetComponent({sessionId, exportI
 					response.content[0].href
 				) {
 					setHref(response.content[0].href);
+				} 
+				else {
+					setHref(undefined);
 				}
 			});
 		}
