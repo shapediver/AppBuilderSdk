@@ -45,6 +45,8 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined) {
 			return result.data;
 		}
 		else {
+			console.debug("Invalid AppBuilder data", data);
+			
 			return new Error(`Parsing AppBuilder data failed: ${result.error.message}`);
 		}
 	};
