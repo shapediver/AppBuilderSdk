@@ -50,12 +50,12 @@ export default function AppBuilderPage(props: Partial<Props>) {
 
 	if (appBuilderData?.containers) {
 		appBuilderData.containers.forEach((container) => {
-			containers[container.name] = AppBuilderContainerComponent({...container, sessionId });
+			containers[container.name] = <AppBuilderContainerComponent sessionId={sessionId} {...container}/>;
 		});
 	}
 	else if ( !hasAppBuilderOutput && (parameterProps.length > 0 || exportProps.length > 0) )
 	{
-		containers.right = AppBuilderFallbackContainerComponent({parameters: parameterProps, exports: exportProps});
+		containers.right = <AppBuilderFallbackContainerComponent parameters={parameterProps} exports={exportProps}/>;
 	}
 
 	const show = Object.values(containers).some((c) => c !== undefined);
