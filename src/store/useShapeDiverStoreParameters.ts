@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { IShapeDiverParameter, IShapeDiverParameterExecutor, IShapeDiverParameterState } from "types/shapediver/parameter";
-import { IFileParameterApi, IParameterApi, ISessionApi } from "@shapediver/viewer";
+import { ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
@@ -19,6 +19,7 @@ import {
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 import { ShapeDiverRequestCustomization, ShapeDiverRequestExport } from "@shapediver/api.geometry-api-dto-v2";
+import { isFileParameter } from "types/shapediver/viewer";
 
 /**
  * Create an IShapeDiverParameterExecutor for a single parameter, 
@@ -73,10 +74,6 @@ function createParameterExecutor<T>(sessionId: string, param: IGenericParameterD
 
 type DefaultExportsGetter = () => string[];
 type ExportResponseSetter = (response: IExportResponse) => void;
-
-function isFileParameter(param: IParameterApi<unknown>): param is IFileParameterApi {
-	return ("upload" in param);
-}
 
 function createGenericParameterExecutorForSession(session: ISessionApi, 
 	getDefaultExports: DefaultExportsGetter, exportResponseSetter: ExportResponseSetter) : IGenericParameterExecutor { 
