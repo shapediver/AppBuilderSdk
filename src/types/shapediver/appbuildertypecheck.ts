@@ -120,10 +120,16 @@ const IAppBuilderSettingsSessionSchema = z.object({
 	acceptRejectMode: z.boolean().optional(),
 });
 
+// Zod type definition for IAppBuilderSettingsSettings
+const IAppBuilderSettingsSettingsSchema = z.object({
+	disableFallbackUi: z.boolean().optional(),
+});
+
 // Zod type definition for IAppBuilderSettings
 const IAppBuilderSettingsSchema = z.object({
 	version: z.literal("1.0"),
 	sessions: z.array(IAppBuilderSettingsSessionSchema),
+	settings: IAppBuilderSettingsSettingsSchema.optional(),
 });
 
 export const validateAppBuilderSettings = (value: any) => {

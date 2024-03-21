@@ -6,6 +6,10 @@ import { validateAppBuilderSettings } from "types/shapediver/appbuildertypecheck
 
 const DEFAULT_PLATFORM_URL = "https://app.shapediver.com";
 
+function isTrueish(value: string | null | undefined) {
+	return value === "true" || value === "1";
+}
+
 /**
  * Load settings for the app builder from a JSON file defined by an URL query parameter.
  * As an alternative, use URL query parameters to define the session directly, based on 
@@ -19,7 +23,7 @@ const DEFAULT_PLATFORM_URL = "https://app.shapediver.com";
 export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettingsSession, queryParamName = "g") {
 
 	const parameters = useMemo<URLSearchParams>(() => new URLSearchParams(window.location.search), []);
-
+	
 	// try to load settings json
 	const url = parameters.get(queryParamName);
 	const validate = (data: any) : IAppBuilderSettings | undefined => {
@@ -43,6 +47,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 	const modelViewUrl = parameters.get("modelViewUrl");
 	const slug = parameters.get("slug");
 	const platformUrl = parameters.get("platformUrl");
+	const disableFallbackUi = isTrueish(parameters.get("disableFallbackUi"));
 
 	// define fallback session settings to be used in case loading from json failed
 	// in case slug and optionally platformUrl are defined, use them
@@ -54,7 +59,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 	// use settings loaded from json, or settings defined by query parameters, or default settings
 	const settings = useMemo<IAppBuilderSettings|undefined>(
 		() => !value && (defaultSession || queryParamSession) ? 
-			{ version: "1.0", sessions: [(queryParamSession ?? defaultSession)!] } : 
+			{ version: "1.0", sessions: [(queryParamSession ?? defaultSession)!], settings: { disableFallbackUi } } : 
 			value, 
 		[value, defaultSession, queryParamSession]
 	);
@@ -64,6 +69,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 	return {
 		settings: resolvedSettings, 
 		error: error || resolveError, 
-		loading: loading || resolveLoading
+		loading: loading || resolveLoading,
+		hasSettings: parameters.size > 0
 	};
 }

@@ -31,7 +31,7 @@ interface Props extends IAppBuilderSettingsSession {
 export default function AppBuilderPage(props: Partial<Props>) {
 
 	const { defaultSessionDto } = useDefaultSessionDto(props);
-	const { settings, error: settingsError, loading } = useAppBuilderSettings(defaultSessionDto);
+	const { settings, error: settingsError, loading, hasSettings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { sessionId, error: appBuilderError, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto);
 	const error = settingsError ?? appBuilderError;
@@ -48,17 +48,23 @@ export default function AppBuilderPage(props: Partial<Props>) {
 		right: undefined,
 	};
 
+	// should fallback containers be shown?
+	const showFallbackContainers = settings?.settings?.disableFallbackUi !== true;
+
 	if (appBuilderData?.containers) {
 		appBuilderData.containers.forEach((container) => {
 			containers[container.name] = <AppBuilderContainerComponent sessionId={sessionId} {...container}/>;
 		});
 	}
-	else if ( !hasAppBuilderOutput && (parameterProps.length > 0 || exportProps.length > 0) )
+	else if ( !hasAppBuilderOutput 
+		&& (parameterProps.length > 0 || exportProps.length > 0) 
+		&& showFallbackContainers
+	)
 	{
 		containers.right = <AppBuilderFallbackContainerComponent parameters={parameterProps} exports={exportProps}/>;
 	}
 
-	const show = Object.values(containers).some((c) => c !== undefined);
+	const show = Object.values(containers).some((c) => c !== undefined) || !showFallbackContainers;
 
 	const NoSettingsMarkdown = `
 ## Welcome to the ShapeDiver AppBuilder
@@ -95,7 +101,7 @@ You need to disable the *Require strong authorization* setting for your model.
 `;
 
 	return (
-		!settings && !loading && !error ? <AlertPage>
+		!settings && !loading && !error && !hasSettings ? <AlertPage>
 			<MarkdownWidgetComponent>
 				{NoSettingsMarkdown}
 			</MarkdownWidgetComponent>

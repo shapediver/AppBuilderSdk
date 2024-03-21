@@ -174,10 +174,23 @@ export interface IAppBuilderSettingsSession extends SessionCreateDto {
 }
 
 /**
+ * AppBuilder-related settings.
+ */
+export interface IAppBuilderSettingsSettings {
+	/**
+	 * If true, hide the fallback AppBuilder containers which 
+	 * are shown in case no AppBuilder data output is found.
+	 */
+	disableFallbackUi?: boolean,
+}
+
+/**
  * Settings for initializing an AppBuilder application. This defines the sessions to create.
  */
 export interface IAppBuilderSettings {
     version: "1.0",
 	/** Session to load. */
     sessions: IAppBuilderSettingsSession[]
+	/** Settings */
+	settings?: IAppBuilderSettingsSettings
 }
