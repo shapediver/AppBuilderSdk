@@ -30,7 +30,10 @@
     "test": "jest",
     "build-appbuilder": "scripts/build-appbuilder.sh $npm_package_version",
     "publish-appbuilder": "scripts/build-appbuilder.sh $npm_package_version 1",
-    "publish-appbuilder-latest": "scripts/build-appbuilder.sh latest 1"
+    "publish-appbuilder-latest": "scripts/build-appbuilder.sh latest 1",
+    "build-appbuilder-platform": "scripts/build-appbuilder-platform.sh $npm_package_version",
+    "publish-appbuilder-platform": "scripts/build-appbuilder-platform.sh $npm_package_version 1",
+    "publish-appbuilder-platform-latest": "scripts/build-appbuilder-platform.sh latest 1"
   },
   "eslintConfig": {
     "extends": [
