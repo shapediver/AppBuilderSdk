@@ -8,7 +8,12 @@ const PROD_PLATFORM_HOST = "shapediver.com";
 const STAGING_PLATFORM_HOST = "staging-wwwcdn.us-east-1.shapediver.com";
 const DEV_PLATFORM_HOST = "dev-wwwcdn.us-east-1.shapediver.com";
 const SANDBOX_PLATFORM_HOST = "sandbox-wwwcdn.us-east-1.shapediver.com";
-function getDefaultPlatformUrl() {
+
+/**
+ * Get the default platform URL based on the current hostname.
+ * @returns 
+ */
+export function getDefaultPlatformUrl() {
 	const hostname = window.location.hostname;
 	if (hostname === STAGING_PLATFORM_HOST || hostname === "staging-spa.us-east-1.shapediver.com")
 		return `https://${STAGING_PLATFORM_HOST}`;
@@ -20,6 +25,28 @@ function getDefaultPlatformUrl() {
 		return `https://${PROD_PLATFORM_HOST}`;
 }
 
+/**
+ * Test whether the application is running embedded in the ShapeDiver platform. 
+ */
+export function isRunningInPlatform() {
+	const hostname = window.location.hostname;
+	if (hostname === STAGING_PLATFORM_HOST || hostname === "staging-spa.us-east-1.shapediver.com")
+		return true;
+	else if (hostname === DEV_PLATFORM_HOST || hostname === "dev-spa.us-east-1.shapediver.com")
+		return true;
+	else if (hostname === SANDBOX_PLATFORM_HOST)
+		return true;
+	else if (hostname === PROD_PLATFORM_HOST)
+		return true;
+
+	return false;
+}
+
+/**
+ * Test a string value for being "true" or "1".
+ * @param value 
+ * @returns 
+ */
 function isTrueish(value: string | null | undefined) {
 	return value === "true" || value === "1";
 }
