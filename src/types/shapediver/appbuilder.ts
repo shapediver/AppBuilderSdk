@@ -185,6 +185,16 @@ export interface IAppBuilderSettingsSettings {
 }
 
 /**
+ * Platform authorization.
+ */
+export interface IAppBuilderSettingsAuthorization {
+	/** Access token for the ShapeDiver platform. */
+	jwtToken?: string
+	/** Platform base URL */
+	platformUrl: string
+}
+
+/**
  * Settings for initializing an AppBuilder application. This defines the sessions to create.
  */
 export interface IAppBuilderSettings {
@@ -193,4 +203,6 @@ export interface IAppBuilderSettings {
     sessions: IAppBuilderSettingsSession[]
 	/** Settings */
 	settings?: IAppBuilderSettingsSettings
+	/** Authorization for the ShapeDiver platform */
+	auth?: IAppBuilderSettingsAuthorization
 }
