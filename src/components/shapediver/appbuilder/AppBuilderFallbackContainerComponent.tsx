@@ -14,30 +14,37 @@ interface Props {
 export default function AppBuilderFallbackContainerComponent({ parameters, exports }: Props) {
 
 	const tabProps: ITabsComponentProps = useMemo(() => {
-		return {
-			defaultValue: "Parameters",
-			tabs: [
-				{
-					name: "Parameters",
-					icon: IconTypeEnum.AdjustmentsHorizontal,
-					children: [
-						<ParametersAndExportsAccordionComponent key={0}
-							parameters={parameters}
-							topSection={<AcceptRejectButtons parameters={parameters}/>}
-						/>
-					]
-				},
-				{
-					name: "Exports",
-					icon: IconTypeEnum.Download,
-					children: [
-						<ParametersAndExportsAccordionComponent key={0}
-							exports={exports}
-						/>
-					]
-				}
-			]
+		const tabProps: ITabsComponentProps = {
+			defaultValue: "",
+			tabs: []
 		};
+		if (parameters.length > 0) {
+			tabProps.defaultValue = "Parameters";
+			tabProps.tabs.push({
+				name: "Parameters",
+				icon: IconTypeEnum.AdjustmentsHorizontal,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
+						parameters={parameters}
+						topSection={<AcceptRejectButtons parameters={parameters}/>}
+					/>
+				]
+			});
+		}
+		if (exports.length > 0) {
+			tabProps.defaultValue = tabProps.defaultValue || "Exports";
+			tabProps.tabs.push({
+				name: "Exports",
+				icon: IconTypeEnum.Download,
+				children: [
+					<ParametersAndExportsAccordionComponent key={0}
+						exports={exports}
+					/>
+				]
+			});
+		}
+		
+		return tabProps;
 	}, [parameters, exports]);
 
 	return <TabsComponent {...tabProps} />;
