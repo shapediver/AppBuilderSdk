@@ -4,7 +4,21 @@ import { IAppBuilderSettings, IAppBuilderSettingsSession } from "types/shapedive
 import useResolveAppBuilderSettings from "./useResolveAppBuilderSettings";
 import { validateAppBuilderSettings } from "types/shapediver/appbuildertypecheck";
 
-const DEFAULT_PLATFORM_URL = "https://app.shapediver.com";
+const PROD_PLATFORM_HOST = "shapediver.com";
+const STAGING_PLATFORM_HOST = "staging-wwwcdn.us-east-1.shapediver.com";
+const DEV_PLATFORM_HOST = "dev-wwwcdn.us-east-1.shapediver.com";
+const SANDBOX_PLATFORM_HOST = "sandbox-wwwcdn.us-east-1.shapediver.com";
+function getDefaultPlatformUrl() {
+	const hostname = window.location.hostname;
+	if (hostname === STAGING_PLATFORM_HOST || hostname === "staging-spa.us-east-1.shapediver.com")
+		return `https://${STAGING_PLATFORM_HOST}`;
+	else if (hostname === DEV_PLATFORM_HOST || hostname === "dev-spa.us-east-1.shapediver.com")
+		return `https://${DEV_PLATFORM_HOST}`;
+	else if (hostname === SANDBOX_PLATFORM_HOST)
+		return `https://${SANDBOX_PLATFORM_HOST}`;
+	else
+		return `https://${PROD_PLATFORM_HOST}`;
+}
 
 function isTrueish(value: string | null | undefined) {
 	return value === "true" || value === "1";
@@ -53,7 +67,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 	// in case slug and optionally platformUrl are defined, use them
 	// otherwise, if ticket and modelViewUrl are defined, use them
 	const queryParamSession = useMemo<IAppBuilderSettingsSession|undefined>(() => slug ? 
-		{ id: "default", slug, platformUrl: platformUrl ?? DEFAULT_PLATFORM_URL } as IAppBuilderSettingsSession : 
+		{ id: "default", slug, platformUrl: platformUrl ?? getDefaultPlatformUrl() } as IAppBuilderSettingsSession : 
 		(ticket && modelViewUrl ? { id: "default", ticket, modelViewUrl} : undefined), [slug, platformUrl, ticket, modelViewUrl]);
 
 	// use settings loaded from json, or settings defined by query parameters, or default settings
