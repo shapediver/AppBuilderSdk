@@ -14,15 +14,10 @@ const SANDBOX_PLATFORM_HOST = "sandbox-wwwcdn.us-east-1.shapediver.com";
  * @returns 
  */
 export function getDefaultPlatformUrl() {
-	const hostname = window.location.hostname;
-	if (hostname === STAGING_PLATFORM_HOST || hostname === "staging-spa.us-east-1.shapediver.com")
-		return `https://${STAGING_PLATFORM_HOST}`;
-	else if (hostname === DEV_PLATFORM_HOST || hostname === "dev-spa.us-east-1.shapediver.com")
-		return `https://${DEV_PLATFORM_HOST}`;
-	else if (hostname === SANDBOX_PLATFORM_HOST)
-		return `https://${SANDBOX_PLATFORM_HOST}`;
-	else
-		return `https://${PROD_PLATFORM_HOST}`;
+	if (isRunningInPlatform())
+		return origin;
+
+	return `https://${PROD_PLATFORM_HOST}`;
 }
 
 /**
