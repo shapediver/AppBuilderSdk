@@ -52,6 +52,7 @@ export default function useResolveAppBuilderSettings(settings : IAppBuilderSetti
 					SdPlatformModelGetEmbeddableFields.TokenExportFallback,
 				]);
 				const model = result?.data;
+				document.title = `${model?.title ?? model?.slug} | ShapeDiver App Builder`;
 			
 				return {
 					...session, 
