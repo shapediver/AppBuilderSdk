@@ -34,9 +34,9 @@ export function isRunningInPlatform() {
 		return true;
 	else if (hostname === DEV_PLATFORM_HOST || hostname === "dev-spa.us-east-1.shapediver.com")
 		return true;
-	else if (hostname === SANDBOX_PLATFORM_HOST)
+	else if (hostname === SANDBOX_PLATFORM_HOST || hostname === "sandbox-spa.us-east-1.shapediver.com")
 		return true;
-	else if (hostname === PROD_PLATFORM_HOST)
+	else if (hostname === PROD_PLATFORM_HOST || hostname === "www.shapediver.com")
 		return true;
 
 	return false;
