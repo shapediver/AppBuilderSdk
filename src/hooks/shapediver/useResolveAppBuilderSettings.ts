@@ -1,7 +1,8 @@
 import useAsync from "../misc/useAsync";
 import { IAppBuilderSettings } from "types/shapediver/appbuilder";
-import { create } from "@shapediver/sdk.platform-api-sdk-v1";
+import { SdPlatformModelGetEmbeddableFields, SdPlatformSdk, create } from "@shapediver/sdk.platform-api-sdk-v1";
 import { getDefaultPlatformUrl, isRunningInPlatform } from "./useAppBuilderSettings";
+import { useRef } from "react";
 
 const DEFAULT_PLATFORM_CLIENT_ID = "920794fa-245a-487d-8abe-af569a97da42";
 
@@ -11,14 +12,17 @@ const DEFAULT_PLATFORM_CLIENT_ID = "920794fa-245a-487d-8abe-af569a97da42";
  */
 export default function useResolveAppBuilderSettings(settings : IAppBuilderSettings|undefined) {
 
-	// try to get a token from the platform (refresh token grant)
+	const platformSdkRef = useRef<SdPlatformSdk>();
+
+	// when running on the platform, try to get a token (refresh token grant)
 	const { value: tokenResult } = useAsync(async () => {
 		if (!isRunningInPlatform()) return;
 		const platformUrl = getDefaultPlatformUrl();
 		const client = create({ clientId: DEFAULT_PLATFORM_CLIENT_ID, baseUrl: platformUrl });
+		platformSdkRef.current = client;
 		try {
 			const result = await client.authorization.refreshToken();
-			
+	
 			return {
 				jwtToken: result.access_token,
 				platformUrl
@@ -39,16 +43,36 @@ export default function useResolveAppBuilderSettings(settings : IAppBuilderSetti
 			if (!session.slug || !session.platformUrl)
 				return session;
 			
-			const client = create({ clientId: DEFAULT_PLATFORM_CLIENT_ID, baseUrl: session.platformUrl });
-			const result = await client.models.iframeEmbedding(session.slug);
-			const iframeData = result.data;
+			// in case we are running on the platform and the session is on the same platform,
+			// use a model get call to get ticket, modelViewUrl and token
+			if (isRunningInPlatform() && tokenResult?.platformUrl === session.platformUrl) {
+				const result = await platformSdkRef.current?.models.get(session.slug, [
+					SdPlatformModelGetEmbeddableFields.BackendSystem,
+					SdPlatformModelGetEmbeddableFields.Ticket,
+					SdPlatformModelGetEmbeddableFields.TokenExportFallback,
+				]);
+				const model = result?.data;
+			
+				return {
+					...session, 
+					ticket: model!.ticket!.ticket,
+					modelViewUrl: model!.backend_system!.model_view_url,
+					jwtToken: model?.access_token
+				};
+			}
+			// otherwise try to use iframe embedding
+			else {
+				const client = create({ clientId: DEFAULT_PLATFORM_CLIENT_ID, baseUrl: session.platformUrl });
+				const result = await client.models.iframeEmbedding(session.slug);
+				const iframeData = result.data;
 
-			return {
-				...session, 
-				ticket: iframeData.ticket,
-				modelViewUrl: iframeData.model_view_url,
-				jwtToken: iframeData.token
-			};
+				return {
+					...session, 
+					ticket: iframeData.ticket,
+					modelViewUrl: iframeData.model_view_url,
+					jwtToken: iframeData.token
+				};
+			}
 		}));
 
 		const settingsResolved: IAppBuilderSettings = { 
