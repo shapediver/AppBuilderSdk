@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IconAugmentedReality, IconZoomIn, IconMaximize, IconVideo } from "@tabler/icons-react";
-import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip, Text, useProps, MantineStyleProp, Box } from "@mantine/core";
+import { ActionIcon, ActionIconVariant, Loader, Menu, Modal, Tooltip, Text, useProps, MantineStyleProp, Box, MantineThemeComponent } from "@mantine/core";
 import { useClickEventHandler } from "hooks/misc/useClickEventHandler";
 import { isIPhone } from "utils/navigator";
 import { useFullscreen } from "utils/useFullscreen";
@@ -42,6 +42,14 @@ const defaultProps: OptionalProps = {
 	variant: "subtle",
 	variantDisabled: "transparent",
 };
+
+type ViewportIconsThemePropsType = Partial<OptionalProps>;
+
+export function ViewportIconsThemeProps(props: ViewportIconsThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
 
 export default function ViewportIcons(props: Props & Partial<OptionalProps>) {
 

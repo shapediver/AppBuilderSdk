@@ -2,7 +2,7 @@ import React from "react";
 import { useViewport } from "hooks/shapediver/viewer/useViewport";
 import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 import classes from "./ViewportComponent.module.css";
-import { useComputedColorScheme, useProps } from "@mantine/core";
+import { MantineThemeComponent, useComputedColorScheme, useProps } from "@mantine/core";
 import { BUSY_MODE_DISPLAY, SPINNER_POSITIONING } from "@shapediver/viewer";
 
 
@@ -22,6 +22,22 @@ interface ViewportBranding {
 interface ViewportBrandingProps {
 	dark: ViewportBranding;
 	light: ViewportBranding;
+}
+
+type ViewportComponentThemePropsType = Partial<Omit<ViewportCreateDto, "canvas" | "id">>;
+
+export function ViewportComponentThemeProps(props: ViewportComponentThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
+
+type ViewportBrandingThemePropsType = Partial<ViewportBrandingProps>;
+
+export function ViewportBrandingThemeProps(props: ViewportBrandingThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
 }
 
 /**

@@ -1,6 +1,6 @@
 import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import { ShapeDiverExampleModels } from "tickets";
-import { useProps } from "@mantine/core";
+import { MantineThemeComponent, useProps } from "@mantine/core";
 import { useMemo } from "react";
 
 interface Props extends IAppBuilderSettingsSession {
@@ -11,6 +11,14 @@ interface Props extends IAppBuilderSettingsSession {
 const defaultProps: Partial<Props> = {
 	
 };
+
+type DefaultSessionThemePropsType = Partial<Props>;
+
+export function DefaultSessionThemeProps(props: DefaultSessionThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
 
 /**
  * Use default session settings. In case no session settings are provided, 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./AppBuilderGridTemplatePage.module.css";
-import { Button, Group, Stack, useProps } from "@mantine/core";
+import { Button, Group, MantineThemeComponent, Stack, useProps } from "@mantine/core";
 
 interface Props {
 	top?: React.ReactNode;
@@ -48,6 +48,14 @@ const defaultStyleProps: StyleProps = {
 	topRows: 1,
 	bottomRows: 1,
 };
+
+type AppBuilderGridTemplatePageThemePropsType = Partial<StyleProps>;
+
+export function AppBuilderGridTemplatePageThemeProps(props: AppBuilderGridTemplatePageThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
 
 export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleProps>) {
 

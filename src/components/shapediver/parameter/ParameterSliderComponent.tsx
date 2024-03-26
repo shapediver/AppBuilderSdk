@@ -1,4 +1,4 @@
-import { Group, NumberInput, Slider, Tooltip, useProps } from "@mantine/core";
+import { Group, MantineThemeComponent, NumberInput, Slider, Tooltip, useProps } from "@mantine/core";
 import React from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
@@ -30,6 +30,14 @@ const defaultStyleProps: Partial<StyleProps> = {
 	sliderWidth: "60%",
 	numberWidth: "35%",
 };
+
+type ParameterSliderComponentThemePropsType = Partial<StyleProps>;
+
+export function ParameterSliderComponentThemeProps(props: ParameterSliderComponentThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
 
 /**
  * Functional component that creates a slider component for a number parameter.

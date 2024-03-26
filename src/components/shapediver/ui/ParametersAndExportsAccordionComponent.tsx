@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Accordion, Group, Loader, Paper, Stack, useProps } from "@mantine/core";
+import { Accordion, Group, Loader, MantineThemeComponent, Paper, Stack, useProps } from "@mantine/core";
 import { getExportComponent, getParameterComponent } from "types/components/shapediver/componentTypes";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { PropsExport } from "types/components/shapediver/propsExport";
@@ -51,6 +51,14 @@ const defaultProps: Partial<Props> = {
 	mergeAccordions: false,
 	pbSlider: "md",
 };
+
+type ParametersAndExportsAccordionComponentThemePropsType = Partial<Props>;
+
+export function ParametersAndExportsAccordionComponentThemeProps(props: ParametersAndExportsAccordionComponentThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
 
 export default function ParametersAndExportsAccordionComponent(props: Props) {
 
