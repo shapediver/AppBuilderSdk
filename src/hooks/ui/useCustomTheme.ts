@@ -1,4 +1,4 @@
-import { Accordion, Button, ColorInput, DEFAULT_THEME, Group, Paper, Stack, Switch, Tabs, createTheme } from "@mantine/core";
+import { Accordion, Button, ColorInput, DEFAULT_THEME, Group, Paper, Stack, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
 import { useIsMobile } from "./useIsMobile";
 import { ViewportIconsThemeProps } from "components/shapediver/viewport/ViewportIcons";
 import { ViewportBrandingThemeProps, ViewportComponentThemeProps } from "components/shapediver/viewport/ViewportComponent";
@@ -9,12 +9,13 @@ import { IconThemeProps } from "components/ui/Icon";
 import { DefaultSessionThemeProps } from "hooks/shapediver/useDefaultSessionDto";
 import { AppBuilderGridTemplatePageThemeProps } from "pages/templates/AppBuilderGridTemplatePage";
 import { AppBuilderImageThemeProps } from "components/shapediver/appbuilder/AppBuilderImage";
+import { useThemeOverrideStore } from "store/useThemeOverrideStore";
 
 export const useCustomTheme = () => {
 
 	const isMobile = useIsMobile();
 
-	const theme = createTheme({
+	const defaultTheme = createTheme({
 		defaultRadius: "md",
 		components: {
 			/**
@@ -157,6 +158,10 @@ export const useCustomTheme = () => {
 		},
 	});
 
+	const themeOverride = useThemeOverrideStore(state => state.themeOverride);
+	const theme = mergeThemeOverrides(defaultTheme, themeOverride);
+	console.debug("Theme", theme);
+	
 	return {
 		theme
 	};
