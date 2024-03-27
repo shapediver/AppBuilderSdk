@@ -130,6 +130,7 @@ const IAppBuilderSettingsSchema = z.object({
 	version: z.literal("1.0"),
 	sessions: z.array(IAppBuilderSettingsSessionSchema),
 	settings: IAppBuilderSettingsSettingsSchema.optional(),
+	themeOverrides: z.record(z.string(), z.any()).optional(),
 });
 
 export const validateAppBuilderSettings = (value: any) => {

@@ -204,5 +204,10 @@ export interface IAppBuilderSettings {
 	/** Settings */
 	settings?: IAppBuilderSettingsSettings
 	/** Authorization for the ShapeDiver platform */
-	auth?: IAppBuilderSettingsAuthorization
+	auth?: IAppBuilderSettingsAuthorization,
+	/** 
+	 * Theme overrides (Mantine, or other UI library)
+	 * @see https://mantine.dev/theming/theme-object/
+	 */
+	themeOverrides?: Record<string, any>,
 }
