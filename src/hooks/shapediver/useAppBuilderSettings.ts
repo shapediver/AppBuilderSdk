@@ -3,6 +3,7 @@ import useAsync from "../misc/useAsync";
 import { IAppBuilderSettings, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useResolveAppBuilderSettings from "./useResolveAppBuilderSettings";
 import { validateAppBuilderSettings } from "types/shapediver/appbuildertypecheck";
+import { useThemeOverrideStore } from "store/useThemeOverrideStore";
 
 const PROD_PLATFORM_HOST = "shapediver.com";
 const STAGING_PLATFORM_HOST = "staging-wwwcdn.us-east-1.shapediver.com";
@@ -77,6 +78,11 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 		
 		return validate(await response.json());
 	}, [url]);
+
+	// register theme overrides
+	const setThemeOverride = useThemeOverrideStore(state => state.setThemeOverride);
+	console.debug("Theme overrides", value);
+	setThemeOverride(value?.themeOverrides);
 
 	// check for ticket, modelViewUrl, slug and platformUrl
 	const ticket = parameters.get("ticket");
