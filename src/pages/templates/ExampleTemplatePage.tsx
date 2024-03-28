@@ -1,7 +1,5 @@
 import React from "react";
 import { AppShell, Burger, Group } from "@mantine/core";
-import NavigationBar from "components/ui/NavigationBar";
-import HeaderBar from "components/ui/HeaderBar";
 import { useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/ui/useIsMobile";
 import classes from "./ExampleTemplatePage.module.css";
@@ -17,22 +15,43 @@ import { useIsLandscape } from "hooks/ui/useIsLandscape";
  */
 
 interface Props {
-	children: React.ReactNode;
-	aside?: React.ReactNode;
-	className?: string;
+	top?: React.ReactNode;
+	left?: React.ReactNode;
+	children?: React.ReactNode;
+	right?: React.ReactNode;
+	bottom?: React.ReactNode;
 }
 
-export default function ExamplePage({ children = <></>, aside = <></>, className = "viewer-fullscreen-area" }: Props) {
+
+/**
+ * Appshell layout template page for AppBuilder
+ * @see https://mantine.dev/core/app-shell/
+ * @param  
+ * @returns 
+ */
+export default function AppBuilderAppshellTemplatePage(props: Props) {
+
+	const {
+		top = undefined,
+		left = undefined,
+		children = undefined,
+		right = undefined,
+		bottom = undefined,
+	} = props;
+	
+	if (bottom) {
+		console.debug("Container 'bottom' is not supported by the 'appshell' template.");
+	}
+
 	const [opened, { toggle }] = useDisclosure();
 	const isMobile = useIsMobile();
 	const isLandscape = useIsLandscape();
 
-	//styles={{ top: "calc(100% - 300px);", paddingTop: 0, paddingBottom: 0, height: 300 }}
 	return (
 		<>
 			<AppShell
 				padding={{ base: 0}}
-				className={className}
+				className="viewer-fullscreen-area"
 				header={{ height: 60 }}
 				navbar={{ breakpoint: "md", width: { md: 150, lg: 200 }, collapsed: { mobile: !opened }  }}
 				// We need to define the background color here, because the corresponding element
@@ -42,11 +61,11 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 				<AppShell.Header>
 					<Group h="100%" px="md" justify="space-between" wrap="nowrap">
 						<Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
-						<HeaderBar />
+						{ top }
 					</Group>
 				</AppShell.Header>
 				<AppShell.Navbar p={{base: "0", lg: "md"}} hidden={!opened} zIndex={20}>
-					<NavigationBar />
+					{ left }
 				</AppShell.Navbar>
 				<AppShell.Main
 					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
@@ -59,7 +78,7 @@ export default function ExamplePage({ children = <></>, aside = <></>, className
 					<section
 						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""} ${isLandscape && !isMobile ? classes.appShellMainAsideLandscapeLg : ""}`}
 					>
-						{ aside }
+						{ right }
 					</section>
 				</AppShell.Main>
 			</AppShell>

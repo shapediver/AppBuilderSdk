@@ -1,7 +1,7 @@
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ExamplePage from "pages/templates/ExampleTemplatePage";
+import ExamplePage from "pages/examples/ExamplePage";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";

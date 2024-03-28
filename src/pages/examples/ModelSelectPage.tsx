@@ -1,7 +1,7 @@
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import ModelSelect from "components/ui/ModelSelect";
 import React from "react";
-import ExamplePage from "pages/templates/ExampleTemplatePage";
+import ExamplePage from "pages/examples/ExamplePage";
 import ViewportOverlayWrapper from "components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "components/shapediver/viewport/ViewportIcons";
 
