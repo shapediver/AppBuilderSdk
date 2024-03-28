@@ -2,7 +2,7 @@ import React from "react";
 import { AppShell, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useIsMobile } from "hooks/ui/useIsMobile";
-import classes from "./ExampleTemplatePage.module.css";
+import classes from "./AppBuilderAppShellTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
 
 /**
@@ -29,7 +29,7 @@ interface Props {
  * @param  
  * @returns 
  */
-export default function AppBuilderAppshellTemplatePage(props: Props) {
+export default function AppBuilderAppShellTemplatePage(props: Props) {
 
 	const {
 		top = undefined,
