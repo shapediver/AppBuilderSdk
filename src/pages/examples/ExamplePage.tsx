@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationBar from "components/ui/NavigationBar";
 import HeaderBar from "components/ui/HeaderBar";
-import AppBuilderAppshellTemplatePage from "pages/templates/ExampleTemplatePage";
+import AppBuilderAppShellTemplatePage from "pages/templates/AppBuilderAppShellTemplatePage";
 
 /**
  * Template for example pages.
@@ -20,12 +20,12 @@ interface Props {
 export default function ExamplePage({ children = <></>, aside = <></>}: Props) {
 
 	return (
-		<AppBuilderAppshellTemplatePage
+		<AppBuilderAppShellTemplatePage
 			top={<HeaderBar />}
 			left={<NavigationBar />}
 			right={aside}
 		>
 			{ children }
-		</AppBuilderAppshellTemplatePage>
+		</AppBuilderAppShellTemplatePage>
 	);
 }
