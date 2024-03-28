@@ -2,7 +2,6 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { ReactElement } from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
@@ -15,6 +14,7 @@ import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import LoaderPage from "pages/misc/LoaderPage";
 import MarkdownWidgetComponent from "components/shapediver/ui/MarkdownWidgetComponent";
+import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -108,7 +108,7 @@ You need to disable the *Require strong authorization* setting for your model.
 		</AlertPage> :
 			error ? <AlertPage title="Error">{error.message}</AlertPage> :
 				loading ? <LoaderPage /> :
-					show ? <AppBuilderGridTemplatePage
+					show ? <AppBuilderTemplateSelector
 						top={containers.top}
 						left={containers.left}
 						right={containers.right}
@@ -123,7 +123,7 @@ You need to disable the *Require strong authorization* setting for your model.
 								/>
 							</ViewportOverlayWrapper>
 						</ViewportComponent>
-					</AppBuilderGridTemplatePage>
+					</AppBuilderTemplateSelector>
 						: <></>
 	);
 }

@@ -57,6 +57,11 @@ export function AppBuilderGridTemplatePageThemeProps(props: AppBuilderGridTempla
 	};
 }
 
+/**
+ * Grid layout template page for AppBuilder
+ * @param props 
+ * @returns 
+ */
 export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleProps>) {
 
 	const {

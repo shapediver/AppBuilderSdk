@@ -7,7 +7,6 @@ import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
-import AppBuilderGridTemplatePage from "../templates/AppBuilderGridTemplatePage";
 import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderImage";
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useSessionPropsParameter";
@@ -17,6 +16,7 @@ import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dt
 import { AppBuilderContainerTypeEnum, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import AppBuilderTextWidgetComponent from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
+import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -205,7 +205,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 	/>;
 
 	return (
-		<AppBuilderGridTemplatePage
+		<AppBuilderTemplateSelector
 
 			top={<>
 				<AppBuilderTextWidgetComponent text="Top secret" />
@@ -244,6 +244,6 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 					/>
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
-		</AppBuilderGridTemplatePage>
+		</AppBuilderTemplateSelector>
 	);
 }
