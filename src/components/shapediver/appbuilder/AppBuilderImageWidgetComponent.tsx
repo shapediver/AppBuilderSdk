@@ -17,7 +17,7 @@ export default function AppBuilderImageWidgetComponent({href, export: exportRef,
 		return <AppBuilderImage src={href} containerType={containerType} />;
 	}
 	else if (exportRef) {
-		return <AppBuilderImageExportWidgetComponent sessionId={sessionId} exportId={exportRef.name} />;
+		return <AppBuilderImageExportWidgetComponent sessionId={sessionId} exportId={exportRef.name} containerType={containerType} />;
 	}
 
 	return <></>;
