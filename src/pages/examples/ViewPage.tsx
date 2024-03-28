@@ -3,7 +3,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { useEffect, useMemo, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/shapediver/useSession";
-import ExamplePage from "pages/templates/ExampleTemplatePage";
+import ExamplePage from "pages/examples/ExamplePage";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";

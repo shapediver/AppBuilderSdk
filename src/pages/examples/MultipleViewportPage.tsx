@@ -2,7 +2,7 @@ import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
 import { IUseSessionDto, useSession } from "hooks/shapediver/useSession";
-import ExamplePage from "pages/templates/ExampleTemplatePage";
+import ExamplePage from "pages/examples/ExamplePage";
 import { Grid } from "@mantine/core";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
