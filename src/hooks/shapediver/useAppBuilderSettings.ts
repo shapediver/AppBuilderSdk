@@ -79,18 +79,14 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 		return validate(await response.json());
 	}, [url]);
 
-	// register theme overrides
-	const setThemeOverride = useThemeOverrideStore(state => state.setThemeOverride);
-	console.debug("Theme overrides", value);
-	setThemeOverride(value?.themeOverrides);
-
 	// check for ticket, modelViewUrl, slug and platformUrl
 	const ticket = parameters.get("ticket");
 	const modelViewUrl = parameters.get("modelViewUrl");
 	const slug = parameters.get("slug");
 	const platformUrl = parameters.get("platformUrl");
 	const disableFallbackUi = isTrueish(parameters.get("disableFallbackUi"));
-
+	const template = parameters.get("template");
+	
 	// define fallback session settings to be used in case loading from json failed
 	// in case slug and optionally platformUrl are defined, use them
 	// otherwise, if ticket and modelViewUrl are defined, use them
@@ -98,13 +94,33 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 		{ id: "default", slug, platformUrl: platformUrl ?? getDefaultPlatformUrl() } as IAppBuilderSettingsSession : 
 		(ticket && modelViewUrl ? { id: "default", ticket, modelViewUrl} : undefined), [slug, platformUrl, ticket, modelViewUrl]);
 
+	// define theme overrides based on query string params
+	const themeOverrides = useMemo(() => { return template ? {
+		components: {
+			AppBuilderTemplateSelector: {
+				defaultProps: {
+					template: template
+				}
+			}
+		}
+	} : undefined;}, [template]);
+
 	// use settings loaded from json, or settings defined by query parameters, or default settings
 	const settings = useMemo<IAppBuilderSettings|undefined>(
 		() => !value && (defaultSession || queryParamSession) ? 
-			{ version: "1.0", sessions: [(queryParamSession ?? defaultSession)!], settings: { disableFallbackUi } } : 
-			value, 
-		[value, defaultSession, queryParamSession]
+			{ 
+				version: "1.0", 
+				sessions: [(queryParamSession ?? defaultSession)!], 
+				settings: { disableFallbackUi },
+				themeOverrides: themeOverrides
+			} : value, 
+		[value, defaultSession, queryParamSession, themeOverrides]
 	);
+
+	// register theme overrides
+	const setThemeOverride = useThemeOverrideStore(state => state.setThemeOverride);
+	console.debug("Theme overrides", value);
+	setThemeOverride(settings?.themeOverrides);
 
 	const { settings: resolvedSettings, error: resolveError, loading: resolveLoading } = useResolveAppBuilderSettings(settings);
 
