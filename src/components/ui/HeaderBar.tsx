@@ -1,4 +1,4 @@
-import { Image, ActionIcon, useMantineColorScheme, Group, useComputedColorScheme } from "@mantine/core";
+import { Image, ActionIcon, useMantineColorScheme, useComputedColorScheme } from "@mantine/core";
 import { IconSun, IconMoonStars } from "@tabler/icons-react";
 import { useLinkClickHandler } from "react-router-dom";
 import React from "react";
@@ -27,7 +27,7 @@ export default function HeaderBar() {
 	const goToHome = useLinkClickHandler<HTMLImageElement>("/");
 
 	return (
-		<Group justify="space-between" w="100%">
+		<>
 			<Image
 				hiddenFrom="sm"
 				className={classes.image}
@@ -62,6 +62,6 @@ export default function HeaderBar() {
 			>
 				{colorScheme === "dark" ? <IconSun size={18} /> : <IconMoonStars size={18} />}
 			</ActionIcon>
-		</Group>
+		</>
 	);
 }

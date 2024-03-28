@@ -1,5 +1,4 @@
-import { Accordion, Button, ColorInput, DEFAULT_THEME, Group, Paper, Stack, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
-import { useIsMobile } from "./useIsMobile";
+import { Accordion, AppShellResponsiveSize, Button, CSSVariablesResolver, ColorInput, DEFAULT_THEME, Group, MantineSize, Paper, Stack, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
 import { ViewportIconsThemeProps } from "components/shapediver/viewport/ViewportIcons";
 import { ViewportBrandingThemeProps, ViewportComponentThemeProps } from "components/shapediver/viewport/ViewportComponent";
 import { ViewportOverlayWrapperThemeProps } from "components/shapediver/viewport/ViewportOverlayWrapper";
@@ -10,10 +9,33 @@ import { DefaultSessionThemeProps } from "hooks/shapediver/useDefaultSessionDto"
 import { AppBuilderGridTemplatePageThemeProps } from "pages/templates/AppBuilderGridTemplatePage";
 import { AppBuilderImageThemeProps } from "components/shapediver/appbuilder/AppBuilderImage";
 import { useThemeOverrideStore } from "store/useThemeOverrideStore";
+import { AppBuilderTemplateSelectorThemeProps } from "pages/templates/AppBuilderTemplateSelector";
+import { AppBuilderAppShellTemplatePageThemeProps } from "pages/templates/AppBuilderAppShellTemplatePage";
+import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
+
+const getAppShellSize = (size: AppShellResponsiveSize | AppShellSize, breakpoint: MantineSize | "base", defval: string): string => {
+	if (typeof size === "object") {
+		switch (breakpoint) {
+		case "base":
+			return ""+(size.base ?? defval);
+		case "xs":	
+			return ""+(size.xs ?? size.base ?? defval);
+		case "sm":
+			return ""+(size.sm ?? size.xs ?? size.base ?? defval);
+		case "md":
+			return ""+(size.md ?? size.sm ?? size.xs ?? size.base ?? defval);
+		case "lg":
+			return ""+(size.lg ?? size.md ?? size.sm ?? size.xs ?? size.base ?? defval);
+		case "xl":
+			return ""+(size.xl ?? size.lg ?? size.md ?? size.sm ?? size.xs ?? size.base ?? defval);
+		}
+	}
+
+	return ""+size;
+};
+
 
 export const useCustomTheme = () => {
-
-	const isMobile = useIsMobile();
 
 	const defaultTheme = createTheme({
 		defaultRadius: "md",
@@ -76,7 +98,10 @@ export const useCustomTheme = () => {
 			}),
 			TabsPanel: Tabs.Panel.extend({
 				defaultProps: {
-					pt: isMobile ? "" : "xs",
+					pt: {
+						base: "xs",
+						sm: "xs"
+					}
 				}
 			}),
 			/** 
@@ -85,6 +110,12 @@ export const useCustomTheme = () => {
 			AppBuilderImage: AppBuilderImageThemeProps({
 				// radius: "md",
 				// fit: "contain",
+			}),
+			AppBuilderAppShellTemplatePage: AppBuilderAppShellTemplatePageThemeProps({
+				// headerHeight: "4em",
+				headerHeight: { base: "4em", md: "6em"},
+				// navbarBreakpoint: "md",
+				// navbarWidth: { md: 200, lg: 250 }
 			}),
 			AppBuilderGridTemplatePage: AppBuilderGridTemplatePageThemeProps({
 				bgTop: "transparent", 
@@ -98,6 +129,10 @@ export const useCustomTheme = () => {
 				// rightColumns: 1,
 				// topRows: 1,
 				// bottomRows: 1,
+			}),
+			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
+				// template: "appshell"
+				// template: "grid" // default
 			}),
 			DefaultSession: DefaultSessionThemeProps({
 				// see Props of useDefaultSessionDto
@@ -162,7 +197,26 @@ export const useCustomTheme = () => {
 	const theme = mergeThemeOverrides(defaultTheme, themeOverride);
 	console.debug("Theme", theme);
 	
+	/** @see https://mantine.dev/styles/css-variables/#css-variables-resolver */
+	const resolver: CSSVariablesResolver = (theme) => ({
+		variables: {
+			"--appbuilder-appshelltemplate-headerheight-base": getAppShellSize(theme.components.AppBuilderAppShellTemplatePage.defaultProps.headerHeight, "base", ""),
+			"--appbuilder-appshelltemplate-headerheight-xs": getAppShellSize(theme.components.AppBuilderAppShellTemplatePage.defaultProps.headerHeight, "xs", ""),
+			"--appbuilder-appshelltemplate-headerheight-sm": getAppShellSize(theme.components.AppBuilderAppShellTemplatePage.defaultProps.headerHeight, "sm", ""),
+			"--appbuilder-appshelltemplate-headerheight-md": getAppShellSize(theme.components.AppBuilderAppShellTemplatePage.defaultProps.headerHeight, "md", ""),
+			"--appbuilder-appshelltemplate-headerheight-lg": getAppShellSize(theme.components.AppBuilderAppShellTemplatePage.defaultProps.headerHeight, "lg", ""),
+			"--appbuilder-appshelltemplate-headerheight-xl": getAppShellSize(theme.components.AppBuilderAppShellTemplatePage.defaultProps.headerHeight, "xl", ""),
+		},
+		light: {
+			// variables for light theme
+		},
+		dark: {
+			// variables for dark theme
+		},
+	});
+
 	return {
-		theme
+		theme,
+		resolver
 	};
 };
