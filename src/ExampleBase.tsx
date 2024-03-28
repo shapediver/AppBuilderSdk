@@ -25,10 +25,10 @@ export default function App() {
 		window.SDV = ShapeDiverViewer;
 	}, []);
 
-	const { theme } = useCustomTheme();
+	const { theme, resolver } = useCustomTheme();
 
 	return (
-		<MantineProvider defaultColorScheme="auto" theme={theme}>
+		<MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={resolver}>
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />

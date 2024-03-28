@@ -17,10 +17,10 @@ export default function AppBuilderBase() {
 		window.SDV = ShapeDiverViewer;
 	}, []);
 
-	const { theme } = useCustomTheme();
+	const { theme, resolver } = useCustomTheme();
 
 	return (
-		<MantineProvider defaultColorScheme="auto" theme={theme}>
+		<MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={resolver}>
 			<AppBuilderPage />
 		</MantineProvider>
 	);
