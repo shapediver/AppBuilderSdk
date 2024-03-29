@@ -12,6 +12,8 @@ import { useThemeOverrideStore } from "store/useThemeOverrideStore";
 import { AppBuilderTemplateSelectorThemeProps } from "pages/templates/AppBuilderTemplateSelector";
 import { AppBuilderAppShellTemplatePageThemeProps } from "pages/templates/AppBuilderAppShellTemplatePage";
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
+import { AppBuilderVerticalContainerThemeProps } from "pages/templates/AppBuilderVerticalContainer";
+import { AppBuilderHorizontalContainerThemeProps } from "pages/templates/AppBuilderHorizontalContainer";
 
 const getAppShellSize = (size: AppShellResponsiveSize | AppShellSize, breakpoint: MantineSize | "base", defval: string): string => {
 	if (typeof size === "object") {
@@ -130,9 +132,19 @@ export const useCustomTheme = () => {
 				// topRows: 1,
 				// bottomRows: 1,
 			}),
+			AppBuilderHorizontalContainer: AppBuilderHorizontalContainerThemeProps({
+				// w: "100%",
+				// h: "100%",
+				// justify: "center",
+				// wrap: "nowrap",
+				// p: "xs",
+			}),
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
 				// template: "appshell"
 				// template: "grid" // default
+			}),
+			AppBuilderVerticalContainer: AppBuilderVerticalContainerThemeProps({
+				// p: "md",
 			}),
 			DefaultSession: DefaultSessionThemeProps({
 				// see Props of useDefaultSessionDto

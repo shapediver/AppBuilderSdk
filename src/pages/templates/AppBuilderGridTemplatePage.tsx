@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./AppBuilderGridTemplatePage.module.css";
-import { Button, Group, MantineThemeComponent, Stack, useProps } from "@mantine/core";
+import { Button, MantineThemeComponent, useProps } from "@mantine/core";
+import AppBuilderVerticalContainer from "./AppBuilderVerticalContainer";
+import AppBuilderHorizontalContainer from "./AppBuilderHorizontalContainer";
 
 interface Props {
 	top?: React.ReactNode;
@@ -200,30 +202,18 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 
 			<section ref={rootRef} className={`${classes.appBuilderTemplatePage} viewer-fullscreen-area`} style={rootStyle}>
 
-				{ top && isTopDisplayed ? <section className={classes.appBuilderTemplatePageTop} style={{background: bgTop}}><Group
-					w="100%"
-					h="100%"
-					justify="center"
-					wrap="nowrap"
-					p="xs"
-				>{top}</Group></section> : undefined }
+				{ top && isTopDisplayed ? <section className={classes.appBuilderTemplatePageTop} style={{background: bgTop}}>
+					<AppBuilderHorizontalContainer>{top}</AppBuilderHorizontalContainer></section> : undefined }
 
-				{ left && isLeftDisplayed ? <section className={classes.appBuilderTemplatePageLeft} style={{background: bgLeft}}><Stack
-					p="xs"
-				>{left}</Stack></section> : undefined }
+				{ left && isLeftDisplayed ? <section className={classes.appBuilderTemplatePageLeft} style={{background: bgLeft}}>
+					<AppBuilderVerticalContainer>{left}</AppBuilderVerticalContainer></section> : undefined }
 
-				{ right && isRightDisplayed ? <section className={classes.appBuilderTemplatePageRight} style={{background: bgRight}}><Stack
-					p="xs"
-				>{right}</Stack></section> : undefined }
+				{ right && isRightDisplayed ? <section className={classes.appBuilderTemplatePageRight} style={{background: bgRight}}>
+					<AppBuilderVerticalContainer>{right}</AppBuilderVerticalContainer></section> : undefined }
 
-				{ bottom && isBottomDisplayed ? <section className={classes.appBuilderTemplatePageBottom} style={{background: bgBottom}}><Group
-					w="100%"
-					h="100%"
-					justify="center"
-					wrap="nowrap"
-					p="xs"
-				>{bottom}</Group></section> : undefined }
-
+				{ bottom && isBottomDisplayed ? <section className={classes.appBuilderTemplatePageBottom} style={{background: bgBottom}}>
+					<AppBuilderHorizontalContainer>{bottom}</AppBuilderHorizontalContainer></section> : undefined }
+				
 				<section
 					className={classes.appBuilderTemplatePageMain}
 				>

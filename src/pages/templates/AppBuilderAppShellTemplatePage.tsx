@@ -1,9 +1,11 @@
 import React from "react";
-import { AppShell, AppShellResponsiveSize, Burger, Group, MantineBreakpoint, MantineThemeComponent, Stack, useProps } from "@mantine/core";
+import { AppShell, AppShellResponsiveSize, Burger, Group, MantineBreakpoint, MantineThemeComponent, useProps } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./AppBuilderAppShellTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
+import AppBuilderHorizontalContainer from "./AppBuilderHorizontalContainer";
+import AppBuilderVerticalContainer from "./AppBuilderVerticalContainer";
 
 interface Props {
 	top?: React.ReactNode;
@@ -89,15 +91,15 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 				<AppShell.Header>
 					<Group h="100%" justify="space-between" wrap="nowrap" px="xs" >
 						<Burger opened={opened} onClick={toggle} hiddenFrom={navbarBreakpoint} size="sm" />
-						<Group w="100%" h="100%" justify="center" wrap="nowrap" p="xs">
+						<AppBuilderHorizontalContainer>
 							{ top }
-						</Group>
+						</AppBuilderHorizontalContainer>
 					</Group>
 				</AppShell.Header>
 				<AppShell.Navbar hidden={!opened} className={classes.appShellMainNavbar}>
-					<Stack p="xs" >
+					<AppBuilderVerticalContainer>
 						{ left }
-					</Stack>
+					</AppBuilderVerticalContainer>
 				</AppShell.Navbar>
 				<AppShell.Main
 					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
@@ -110,9 +112,9 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 					<section
 						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""}`}
 					>
-						<Stack p="xs">
+						<AppBuilderVerticalContainer>
 							{ right }
-						</Stack>
+						</AppBuilderVerticalContainer>
 					</section>
 				</AppShell.Main>
 			</AppShell>
