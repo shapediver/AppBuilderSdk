@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * The useAsync hook takes in a callback function that performs the asynchronous operation and an 
@@ -19,19 +19,21 @@ export default function useAsync<T>(callback: () => Promise<T>, dependencies: Re
 	const [error, setError] = useState<Error | undefined>();
 	const [value, setValue] = useState<T | undefined>();
 
+	const promiseChain = useRef(Promise.resolve());
+
 	const callbackMemoized = useCallback(() => {
 		setLoading(true);
 		setError(undefined);
 		setValue(undefined);
-		callback()
+		
+		return callback()
 			.then(setValue)
 			.catch(setError)
 			.finally(() => setLoading(false));
-
 	}, dependencies);
 
 	useEffect(() => {
-		callbackMemoized();
+		promiseChain.current = promiseChain.current.then(callbackMemoized);
 	}, [callbackMemoized]);
 
 	return { loading, error, value };

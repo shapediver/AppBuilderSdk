@@ -125,14 +125,14 @@ const IAppBuilderSettingsSettingsSchema = z.object({
 	disableFallbackUi: z.boolean().optional(),
 });
 
-// Zod type definition for IAppBuilderSettings
-const IAppBuilderSettingsSchema = z.object({
+// Zod type definition for IAppBuilderSettingsJson
+const IAppBuilderSettingsJsonSchema = z.object({
 	version: z.literal("1.0"),
-	sessions: z.array(IAppBuilderSettingsSessionSchema),
+	sessions: z.array(IAppBuilderSettingsSessionSchema).optional(),
 	settings: IAppBuilderSettingsSettingsSchema.optional(),
 	themeOverrides: z.record(z.string(), z.any()).optional(),
 });
 
-export const validateAppBuilderSettings = (value: any) => {
-	return IAppBuilderSettingsSchema.safeParse(value);
+export const validateAppBuilderSettingsJson = (value: any) => {
+	return IAppBuilderSettingsJsonSchema.safeParse(value);
 };

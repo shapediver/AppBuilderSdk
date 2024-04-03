@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import useAsync from "../misc/useAsync";
-import { IAppBuilderSettings, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
+import { IAppBuilderSettings, IAppBuilderSettingsJson, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useResolveAppBuilderSettings from "./useResolveAppBuilderSettings";
-import { validateAppBuilderSettings } from "types/shapediver/appbuildertypecheck";
+import { validateAppBuilderSettingsJson } from "types/shapediver/appbuildertypecheck";
 import { useThemeOverrideStore } from "store/useThemeOverrideStore";
 
 const PROD_PLATFORM_HOST = "shapediver.com";
@@ -63,8 +63,8 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 	
 	// try to load settings json
 	const url = parameters.get(queryParamName);
-	const validate = (data: any) : IAppBuilderSettings | undefined => {
-		const result = validateAppBuilderSettings(data);
+	const validate = (data: any) : IAppBuilderSettingsJson | undefined => {
+		const result = validateAppBuilderSettingsJson(data);
 		if (result.success) {
 			return result.data;
 		}
@@ -113,17 +113,20 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 				sessions: [(queryParamSession ?? defaultSession)!], 
 				settings: { disableFallbackUi },
 				themeOverrides: themeOverrides
-			} : value, 
+			} : (value ? 
+				{ sessions: [(queryParamSession ?? defaultSession)!], ...value } : undefined), 
 		[value, defaultSession, queryParamSession, themeOverrides]
 	);
 
 	// register theme overrides
 	const setThemeOverride = useThemeOverrideStore(state => state.setThemeOverride);
-	console.debug("Theme overrides", value);
-	setThemeOverride(settings?.themeOverrides);
-
+	useEffect(() => {
+		console.debug("Theme overrides", value);
+		setThemeOverride(settings?.themeOverrides);
+	}, [settings?.themeOverrides]);
+	
 	const { settings: resolvedSettings, error: resolveError, loading: resolveLoading } = useResolveAppBuilderSettings(settings);
-
+	
 	return {
 		settings: resolvedSettings, 
 		error: error || resolveError, 

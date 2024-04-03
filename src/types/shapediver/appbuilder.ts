@@ -195,12 +195,12 @@ export interface IAppBuilderSettingsAuthorization {
 }
 
 /**
- * Settings for initializing an AppBuilder application. This defines the sessions to create.
+ * Settings for initializing an AppBuilder application from a JSON file. This defines the sessions to create.
  */
-export interface IAppBuilderSettings {
-    version: "1.0",
+export interface IAppBuilderSettingsJson {
+	version: "1.0",
 	/** Session to load. */
-    sessions: IAppBuilderSettingsSession[]
+    sessions?: IAppBuilderSettingsSession[]
 	/** Settings */
 	settings?: IAppBuilderSettingsSettings
 	/** Authorization for the ShapeDiver platform */
@@ -210,4 +210,12 @@ export interface IAppBuilderSettings {
 	 * @see https://mantine.dev/theming/theme-object/
 	 */
 	themeOverrides?: Record<string, any>,
+}
+
+/**
+ * Settings for initializing an AppBuilder application. This defines the sessions to create.
+ */
+export interface IAppBuilderSettings extends IAppBuilderSettingsJson {
+	/** Session to load. */
+    sessions: IAppBuilderSettingsSession[]
 }
