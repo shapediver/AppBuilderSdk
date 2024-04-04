@@ -27,6 +27,7 @@ export default function ParameterSelectComponent(props: PropsParameter) {
 			onChange={(v) => handleChange(definition.choices!.indexOf(v!) + "")}
 			data={definition.choices!}
 			disabled={disabled}
+			comboboxProps={{withinPortal: false}}
 		/>}
 	</>;
 }

@@ -42,6 +42,7 @@ export default function ParameterColorComponent(props: PropsParameter) {
 			}
 			onChangeEnd={handleChange}
 			readOnly={disabled}
+			popoverProps={{withinPortal: false}}
 		/> }
 	</>;
 }
