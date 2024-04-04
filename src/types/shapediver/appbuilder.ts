@@ -206,10 +206,16 @@ export interface IAppBuilderSettingsJson {
 	/** Authorization for the ShapeDiver platform */
 	auth?: IAppBuilderSettingsAuthorization,
 	/** 
-	 * Theme overrides (Mantine, or other UI library)
+	 * Theme overrides
 	 * @see https://mantine.dev/theming/theme-object/
 	 */
 	themeOverrides?: Record<string, any>,
+	/**
+	 * Optional AppBuilder definition, to be used instead of the 
+	 * AppBuilder output of the ShapeDiver model. This is useful
+	 * for development. 
+	 */
+	appBuilderOverride?: IAppBuilder
 }
 
 /**
