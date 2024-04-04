@@ -9,7 +9,7 @@ interface Props extends IAppBuilderSettingsSession {
 }
 
 const defaultProps: Partial<Props> = {
-	
+	acceptRejectMode: false
 };
 
 type DefaultSessionThemePropsType = Partial<Props>;
