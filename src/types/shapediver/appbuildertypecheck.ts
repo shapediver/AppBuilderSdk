@@ -131,6 +131,7 @@ const IAppBuilderSettingsJsonSchema = z.object({
 	sessions: z.array(IAppBuilderSettingsSessionSchema).optional(),
 	settings: IAppBuilderSettingsSettingsSchema.optional(),
 	themeOverrides: z.record(z.string(), z.any()).optional(),
+	appBuilderOverride: IAppBuilderSchema.optional(),
 });
 
 export const validateAppBuilderSettingsJson = (value: any) => {

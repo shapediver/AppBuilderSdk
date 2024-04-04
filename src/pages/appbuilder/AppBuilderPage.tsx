@@ -33,7 +33,7 @@ export default function AppBuilderPage(props: Partial<Props>) {
 	const { defaultSessionDto } = useDefaultSessionDto(props);
 	const { settings, error: settingsError, loading, hasSettings } = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
-	const { sessionId, error: appBuilderError, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto);
+	const { sessionId, error: appBuilderError, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto, settings?.appBuilderOverride);
 	const error = settingsError ?? appBuilderError;
 
 	// get props for fallback parameters
