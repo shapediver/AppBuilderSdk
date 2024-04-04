@@ -38,10 +38,10 @@ interface StyleProps {
 }
 
 const defaultStyleProps: StyleProps = {
-	bgTop: "inherit",
-	bgLeft: "inherit",
-	bgRight: "inherit",
-	bgBottom: "inherit",
+	bgTop: "transparent",
+	bgLeft: "transparent",
+	bgRight: "transparent",
+	bgBottom: "transparent",
 	showContainerButtons: false,
 	columns: 4,
 	rows: 4,

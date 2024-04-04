@@ -27,7 +27,10 @@
 
 /**
  * Breakpoints defined by the theme (CSS variables) can't be used in media queries, 
- * see https://mantine.dev/styles/responsive/ 
+ * see https://mantine.dev/styles/responsive/, therefore we have to hard-code them here. 
+ * 
+ * The calc function can't be used in responsive properties, therefore we change the 
+ * definition of the class for the main and aside areas based on media queries here. 
  */
 @media (max-width: 36em) {
     .appShellMain, .appShellMainAsideLandscape {
