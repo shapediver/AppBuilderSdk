@@ -1,8 +1,9 @@
 import React from "react";
 import Markdown from "react-markdown";
-import { Anchor, Blockquote, Code, Text, Title, Divider, Image, MantineStyleProps, List } from "@mantine/core";
+import { Anchor, Blockquote, Code, Text, Title, Divider, Image, MantineStyleProps, List, Table } from "@mantine/core";
 import { Options } from "react-markdown/lib";
 import remarkDirective from "remark-directive";
+import remarkGfm from "remark-gfm";
 import {visit} from "unist-util-visit";
 import { v4 as uuid } from "uuid";
 
@@ -61,6 +62,7 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 	const config: Options = {
 		remarkPlugins: [
 			remarkDirective,
+			remarkGfm,
 			spanDirective,
 		],
 		components: {
@@ -152,6 +154,36 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				const {...rest} = props;
 
 				return <List.Item {...rest} />;
+			},
+			table(props) {
+				const {...rest} = props;
+
+				return <Table {...rest} {...styleProps} />;
+			},
+			thead(props) {
+				const {...rest} = props;
+
+				return <Table.Thead {...rest} {...styleProps} />;
+			},
+			tbody(props) {
+				const {...rest} = props;
+
+				return <Table.Tbody {...rest} {...styleProps} />;
+			},
+			td(props) {
+				const {...rest} = props;
+
+				return <Table.Td {...rest} {...styleProps} />;
+			},
+			th(props) {
+				const {...rest} = props;
+
+				return <Table.Th {...rest} {...styleProps} />;
+			},
+			tr(props) {
+				const {...rest} = props;
+
+				return <Table.Tr {...rest} {...styleProps} />;
 			},
 		},
 	};

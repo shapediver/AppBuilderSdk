@@ -192,6 +192,13 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 
 * :span[Bullet in an unordered list]{color="blue"}.
 * Bullet in an unordered list.
+
+| Month    | Savings |
+| -------- | ------- |
+| January  | $250    |
+| February | $80     |
+| March    | $420    |
+
 `;
 
 	// get parameters that don't have a group or whose group name includes "export"
