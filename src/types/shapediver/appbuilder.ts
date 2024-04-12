@@ -67,8 +67,19 @@ export interface IAppBuilderWidgetPropsText extends IAppBuilderWidgetPropsCommon
 	markdown?: string
 }
 
+export interface IAppBuilderWidgetPropsAnchor {
+	/** Follow link. */
+	anchor?: string,
+	/** Optional reference to specifies where to open the linked document which provides the image, "_blank" by default */
+	target?: string,
+}
+
 /** Properties of an image widget. */
-export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommon {
+export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommon, IAppBuilderWidgetPropsAnchor {
+	/** Optional reference to alternate text which provides the image. */
+	alt?: string,
+	/** Optional reference to export which provides the image. */
+	export?: IAppBuilderExportRef
 	/** URL to image. Can be a data URL including a base 64 encoded image. Takes precedence over export reference. */
 	href?: string
 	/** Optional reference to export which provides the image. */

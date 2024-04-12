@@ -4,20 +4,44 @@ import AppBuilderImage from "components/shapediver/appbuilder/AppBuilderImage";
 import AppBuilderImageExportWidgetComponent from "./AppBuilderImageExportWidgetComponent";
 
 interface Props extends IAppBuilderWidgetPropsImage {
-	/** 
-	 * Default session id to use for parameter and export references that do 
+	/**
+	 * Default session id to use for parameter and export references that do
 	 * not specify a session id.
 	 */
 	sessionId: string
 }
 
-export default function AppBuilderImageWidgetComponent({href, export: exportRef, sessionId, containerType}: Props) {
+export default function AppBuilderImageWidgetComponent(props: Props) {
+	const {
+		alt,
+		target,
+		anchor,
+		containerType,
+		// AppBuilderImage
+		href,
+		// AppBuilderImageExportWidgetComponent
+		export: exportRef,
+		sessionId,
+	} = props;
+
+	const propsCommon = {
+		anchor,
+		alt,
+		containerType,
+		target
+	};
 
 	if (href) {
-		return <AppBuilderImage src={href} containerType={containerType} />;
-	}
-	else if (exportRef) {
-		return <AppBuilderImageExportWidgetComponent sessionId={sessionId} exportId={exportRef.name} containerType={containerType} />;
+		return <AppBuilderImage
+			src={href}
+			{ ...propsCommon }
+		/>;
+	} else if (exportRef) {
+		return <AppBuilderImageExportWidgetComponent
+			sessionId={sessionId}
+			exportId={exportRef.name}
+			{ ...propsCommon }
+		/>;
 	}
 
 	return <></>;

@@ -67,8 +67,11 @@ const IAppBuilderWidgetPropsTextSchema = z.object({
 
 // Zod type definition for IAppBuilderWidgetPropsImage
 const IAppBuilderWidgetPropsImageSchema = z.object({
+	anchor: z.string().optional(),
+	alt: z.string().optional(),
 	href: z.string().optional(),
 	export: IAppBuilderExportRefSchema.optional(),
+	target: z.string().default("_blank"),
 }).extend(IAppBuilderWidgetPropsCommonSchema.shape);
 
 // Zod type definition for IAppBuilderWidget

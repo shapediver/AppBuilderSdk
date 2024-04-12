@@ -6,8 +6,8 @@ import { AppBuilderContainerTypeEnum } from "types/shapediver/appbuilder";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 
 interface Props {
-	/** 
-	 * Default session id to use for parameter and export references that do 
+	/**
+	 * Default session id to use for parameter and export references that do
 	 * not specify a session id.
 	 */
 	sessionId: string
@@ -19,11 +19,11 @@ interface Props {
 
 /**
  * TODO refactor this such that a single export call is used to get all the images
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
-export default function AppBuilderImageExportWidgetComponent({sessionId, exportId, containerType}: Props) {
-	
+export default function AppBuilderImageExportWidgetComponent({sessionId, exportId, containerType, ...rest}: Props) {
+
 	const { definition, actions } = useExport(sessionId, exportId);
 
 	const promiseChain = useRef(Promise.resolve());
@@ -62,17 +62,17 @@ export default function AppBuilderImageExportWidgetComponent({sessionId, exportI
 					response.content[0].href
 				) {
 					setHref(response.content[0].href);
-				} 
+				}
 				else {
 					setHref(undefined);
 				}
 			});
 		}
-		
+
 	}, [responses, definition]);
 
 	if (href)
-		return <AppBuilderImage src={href} containerType={containerType} />;
+		return <AppBuilderImage src={href} containerType={containerType} { ...rest } />;
 	else
 		return <></>;
 }
