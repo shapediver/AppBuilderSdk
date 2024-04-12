@@ -82,8 +82,6 @@ export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommo
 	export?: IAppBuilderExportRef
 	/** URL to image. Can be a data URL including a base 64 encoded image. Takes precedence over export reference. */
 	href?: string
-	/** Optional reference to export which provides the image. */
-	export?: IAppBuilderExportRef
 }
 
 /** A widget. */
