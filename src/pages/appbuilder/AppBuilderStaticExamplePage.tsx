@@ -13,7 +13,7 @@ import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useS
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
 import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
-import { AppBuilderContainerTypeEnum, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
+import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import AppBuilderTextWidgetComponent from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
 import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
@@ -218,7 +218,6 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 				<AppBuilderTextWidgetComponent text="Top secret" />
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
-					containerType={AppBuilderContainerTypeEnum.Row}
 				/>
 				<AppBuilderTextWidgetComponent text="Top secret" />
 			</>
@@ -228,7 +227,6 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 				<AppBuilderTextWidgetComponent markdown={markdown} />
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
-					containerType={AppBuilderContainerTypeEnum.Column}
 				/>
 			</>}
 
@@ -237,7 +235,6 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 			bottom={
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
-					containerType={AppBuilderContainerTypeEnum.Row}
 				/>
 			}
 		>

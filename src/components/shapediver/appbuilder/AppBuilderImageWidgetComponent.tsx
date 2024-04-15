@@ -16,7 +16,6 @@ export default function AppBuilderImageWidgetComponent(props: Props) {
 		alt,
 		target,
 		anchor,
-		containerType,
 		// AppBuilderImage
 		href,
 		// AppBuilderImageExportWidgetComponent
@@ -27,7 +26,6 @@ export default function AppBuilderImageWidgetComponent(props: Props) {
 	const propsCommon = {
 		anchor,
 		alt,
-		containerType,
 		target
 	};
 

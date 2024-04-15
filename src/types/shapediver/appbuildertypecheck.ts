@@ -1,7 +1,6 @@
 import { ShapeDiverResponseParameterStructure, ShapeDiverResponseParameterType, ShapeDiverResponseParameterVisualization } from "@shapediver/api.geometry-api-dto-v2";
 import { z } from "zod";
 import { IconTypeEnum } from "./icons";
-import { AppBuilderContainerTypeEnum } from "./appbuilder";
 
 // Zod type definition for IAppBuilderParameterDefinition
 const IAppBuilderParameterDefinitionSchema = z.object({
@@ -49,7 +48,6 @@ const IAppBuilderExportRefSchema = z.object({
 
 // Zod type definition for IAppBuilderWidgetPropsCommon
 const IAppBuilderWidgetPropsCommonSchema = z.object({
-	containerType: z.nativeEnum(AppBuilderContainerTypeEnum).optional(),
 });
 
 // Zod type definition for IAppBuilderWidgetPropsAccordion

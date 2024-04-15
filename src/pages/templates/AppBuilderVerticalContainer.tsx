@@ -1,5 +1,6 @@
 import React, { } from "react";
 import { MantineSpacing, MantineThemeComponent, Stack, StyleProp, useProps } from "@mantine/core";
+import { AppBuilderContainerContext } from "context/AppBuilderContext";
 
 interface Props {
 	children?: React.ReactNode;
@@ -32,8 +33,12 @@ export default function AppBuilderVerticalContainer(props: Props & Partial<Style
 		children,
 		...rest
 	} = useProps("AppBuilderVerticalContainer", defaultStyleProps, props);
-
+	
 	return (
-		<Stack {...rest}>{children}</Stack>
+		<Stack {...rest}>
+			<AppBuilderContainerContext.Provider value="vertical">
+				{children}
+			</AppBuilderContainerContext.Provider>
+		</Stack>
 	);
 }

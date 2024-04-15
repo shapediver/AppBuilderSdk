@@ -2,7 +2,6 @@ import { EXPORT_TYPE } from "@shapediver/viewer";
 import { useExport } from "hooks/shapediver/parameters/useExport";
 import React, { useEffect, useRef, useState } from "react";
 import AppBuilderImage from "./AppBuilderImage";
-import { AppBuilderContainerTypeEnum } from "types/shapediver/appbuilder";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 
 interface Props {
@@ -13,8 +12,6 @@ interface Props {
 	sessionId: string
 	/** Id or name or displayname of the export to get the image from. */
 	exportId: string
-	/** Type of container */
-	containerType?: AppBuilderContainerTypeEnum
 }
 
 /**
@@ -22,7 +19,7 @@ interface Props {
  * @param param0
  * @returns
  */
-export default function AppBuilderImageExportWidgetComponent({sessionId, exportId, containerType, ...rest}: Props) {
+export default function AppBuilderImageExportWidgetComponent({sessionId, exportId, ...rest}: Props) {
 
 	const { definition, actions } = useExport(sessionId, exportId);
 
@@ -72,7 +69,7 @@ export default function AppBuilderImageExportWidgetComponent({sessionId, exportI
 	}, [responses, definition]);
 
 	if (href)
-		return <AppBuilderImage src={href} containerType={containerType} { ...rest } />;
+		return <AppBuilderImage src={href} { ...rest } />;
 	else
 		return <></>;
 }
