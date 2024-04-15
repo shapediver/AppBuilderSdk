@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./AppBuilderGridTemplatePage.module.css";
 import { Button, MantineThemeComponent, useProps } from "@mantine/core";
-import AppBuilderVerticalContainer from "./AppBuilderVerticalContainer";
-import AppBuilderHorizontalContainer from "./AppBuilderHorizontalContainer";
+import AppBuilderContainerWrapper from "./AppBuilderContainerWrapper";
 
 interface Props {
 	top?: React.ReactNode;
@@ -203,16 +202,16 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 			<section ref={rootRef} className={`${classes.appBuilderTemplatePage} viewer-fullscreen-area`} style={rootStyle}>
 
 				{ top && isTopDisplayed ? <section className={classes.appBuilderTemplatePageTop} style={{background: bgTop}}>
-					<AppBuilderHorizontalContainer>{top}</AppBuilderHorizontalContainer></section> : undefined }
+					<AppBuilderContainerWrapper orientation="horizontal" name="top">{top}</AppBuilderContainerWrapper></section> : undefined }
 
 				{ left && isLeftDisplayed ? <section className={classes.appBuilderTemplatePageLeft} style={{background: bgLeft}}>
-					<AppBuilderVerticalContainer>{left}</AppBuilderVerticalContainer></section> : undefined }
+					<AppBuilderContainerWrapper orientation="vertical" name="left">{left}</AppBuilderContainerWrapper></section> : undefined }
 
 				{ right && isRightDisplayed ? <section className={classes.appBuilderTemplatePageRight} style={{background: bgRight}}>
-					<AppBuilderVerticalContainer>{right}</AppBuilderVerticalContainer></section> : undefined }
+					<AppBuilderContainerWrapper orientation="vertical" name="right">{right}</AppBuilderContainerWrapper></section> : undefined }
 
 				{ bottom && isBottomDisplayed ? <section className={classes.appBuilderTemplatePageBottom} style={{background: bgBottom}}>
-					<AppBuilderHorizontalContainer>{bottom}</AppBuilderHorizontalContainer></section> : undefined }
+					<AppBuilderContainerWrapper orientation="horizontal" name="bottom">{bottom}</AppBuilderContainerWrapper></section> : undefined }
 				
 				<section
 					className={classes.appBuilderTemplatePageMain}

@@ -4,8 +4,7 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import classes from "./AppBuilderAppShellTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
-import AppBuilderHorizontalContainer from "./AppBuilderHorizontalContainer";
-import AppBuilderVerticalContainer from "./AppBuilderVerticalContainer";
+import AppBuilderContainerWrapper from "./AppBuilderContainerWrapper";
 
 interface Props {
 	top?: React.ReactNode;
@@ -105,15 +104,15 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 				<AppShell.Header>
 					<Group h="100%" justify="space-between" wrap="nowrap" px="xs" >
 						{ left ? <Burger opened={opened} onClick={toggle} hiddenFrom={navbarBreakpoint} size="sm" /> : undefined }
-						<AppBuilderHorizontalContainer>
+						<AppBuilderContainerWrapper orientation="horizontal" name="top">
 							{ top }
-						</AppBuilderHorizontalContainer>
+						</AppBuilderContainerWrapper>
 					</Group>
 				</AppShell.Header>
 				<AppShell.Navbar hidden={!opened} className={classes.appShellMainNavbar}>
-					<AppBuilderVerticalContainer>
+					<AppBuilderContainerWrapper orientation="vertical" name="left">
 						{ left }
-					</AppBuilderVerticalContainer>
+					</AppBuilderContainerWrapper>
 				</AppShell.Navbar>
 				<AppShell.Main
 					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
@@ -126,9 +125,9 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 					<section
 						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""}`}
 					>
-						<AppBuilderVerticalContainer>
+						<AppBuilderContainerWrapper orientation="vertical" name="right">
 							{ right }
-						</AppBuilderVerticalContainer>
+						</AppBuilderContainerWrapper>
 					</section>
 				</AppShell.Main>
 			</AppShell>

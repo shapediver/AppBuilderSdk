@@ -14,7 +14,7 @@ import { AppBuilderAppShellTemplatePageThemeProps } from "pages/templates/AppBui
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
 import { AppBuilderVerticalContainerThemeProps } from "pages/templates/AppBuilderVerticalContainer";
 import { AppBuilderHorizontalContainerThemeProps } from "pages/templates/AppBuilderHorizontalContainer";
-import { AppBuilderPageThemeProps } from "pages/appbuilder/AppBuilderPage";
+import { AppBuilderPageThemeProps } from "pages/templates/AppBuilderContainerWrapper";
 
 /**
  * Helper function for defining CSS variables for the AppBuilderAppShellTemplate
@@ -141,7 +141,7 @@ export const useCustomTheme = () => {
 					py: padding,
 					//shadow: "xs",
 					withBorder: true,
-				},
+				}
 			}),
 			/**
 			 * Stack
@@ -184,6 +184,31 @@ export const useCustomTheme = () => {
              * Below here - custom components implemented by ShapeDiver 
              */
 
+			/**
+			 * AppBuilderContainerWrapper
+			 * 
+			 * Used for defining theme overrides per AppBuilder container.
+			 */
+			AppBuilderContainerWrapper: AppBuilderPageThemeProps({
+				containerThemeOverrides: {
+					/** Example: Theme overrides for the "top" container. */
+					top:  {
+						components: {
+							Paper: {
+								defaultProps: {
+									withBorder: false,
+								}
+							},
+							AppBuilderHorizontalContainer: {
+								defaultProps: {
+									//p: "0",
+									justify: "left"
+								}
+							}
+						}
+					}
+				}
+			}),
 			/**
 			 * AppBuilderImage
 			 * 
@@ -237,31 +262,12 @@ export const useCustomTheme = () => {
 				// p: "xs",
 			}),
 			/**
-			 * AppBuilderPage
-			 * 
-			 * Used for defining theme overrides per AppBuilder container.
-			 */
-			AppBuilderPage: AppBuilderPageThemeProps({
-				containerThemeOverrides: {
-					/** Example: Theme overrides for the "top" container. */
-					top:  {
-						components: {
-							Paper: {
-								defaultProps: {
-									withBorder: false,
-								}
-							}
-						}
-					}
-				}
-			}),
-			/**
 			 * AppBuilderTemplateSelector
 			 * 
 			 * Used for selecting the AppBuilder template.
 			 */
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
-				// template: "appshell"
+				template: "appshell"
 				// template: "grid" // default
 			}),
 			/**

@@ -11,6 +11,45 @@
         "version": "1.0",
         "containers": [
             {
+                "name": "top",
+                "widgets": [
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "# Heading level 1\n## :span[Heading level 2]{color=\"lightgreen\"}\n### Heading level 3"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "# Heading level 1"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "Some text"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "### Heading level 3"
+                        }
+                    },
+                    {
+                        "type": "image",
+                        "props": {
+                            "anchor": "https://help.shapediver.com/doc/",
+                            "alt": "InfographicBitmap image",
+                            "export": {
+                                "name": "InfographicBitmap"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
                 "name": "left",
                 "tabs": [],
                 "widgets": [

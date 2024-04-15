@@ -15,7 +15,6 @@ import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import LoaderPage from "pages/misc/LoaderPage";
 import MarkdownWidgetComponent from "components/shapediver/ui/MarkdownWidgetComponent";
 import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
-import { MantineThemeComponent, MantineThemeOverride, MantineThemeProvider, useProps } from "@mantine/core";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -24,43 +23,15 @@ interface Props extends IAppBuilderSettingsSession {
 	example?: string;
 }
 
-/** Type for defining them overrides per AppBuilder container */
-type ThemeOverridePerContainerType = { [key: string]: MantineThemeOverride | undefined };
-
-interface StyleProps {
-	/** Theme overrides per container */
-	containerThemeOverrides: ThemeOverridePerContainerType;
-}
-
-const defaultStyleProps: StyleProps = {
-	containerThemeOverrides: {}
-};
-
-type AppBuilderPageThemePropsType = Partial<StyleProps>;
-
-export function AppBuilderPageThemeProps(props: AppBuilderPageThemePropsType): MantineThemeComponent {
-	return {
-		defaultProps: props
-	};
-}
-
 /**
  * Function that creates the web app page.
  *
  * @returns
  */
-export default function AppBuilderPage(props: Partial<Props> & Partial<StyleProps>) {
-
-	const { containerThemeOverrides: _themeOverrides, ...sessionProps } = props;
-
-	// style properties
-	const { 
-		containerThemeOverrides,
-	} = useProps("AppBuilderPage", defaultStyleProps, { containerThemeOverrides: _themeOverrides});
-	console.debug("containerThemeOverrides", containerThemeOverrides);
-
+export default function AppBuilderPage(props: Partial<Props>) {
+	
 	// get default session dto, if any
-	const { defaultSessionDto } = useDefaultSessionDto(sessionProps);
+	const { defaultSessionDto } = useDefaultSessionDto(props);
 
 	// get settings for app builder from query string
 	const { settings, error: settingsError, loading, hasSettings } = useAppBuilderSettings(defaultSessionDto);
@@ -87,15 +58,7 @@ export default function AppBuilderPage(props: Partial<Props> & Partial<StyleProp
 
 	if (appBuilderData?.containers) {
 		appBuilderData.containers.forEach((container) => {
-			if (container.name in containerThemeOverrides) {
-				const theme = containerThemeOverrides[container.name];
-				containers[container.name] = <MantineThemeProvider theme={theme}>
-					<AppBuilderContainerComponent sessionId={sessionId} {...container}/>
-				</MantineThemeProvider>;
-			}
-			else {
-				containers[container.name] = <AppBuilderContainerComponent sessionId={sessionId} {...container}/>;
-			}
+			containers[container.name] = <AppBuilderContainerComponent sessionId={sessionId} {...container}/>;
 		});
 	}
 	else if ( !hasAppBuilderOutput 

@@ -26,19 +26,20 @@ export default function AppBuilderImage(props: SomeImageProps & Props ) {
 	const { anchor, target, ...rest } = props;
 	const { radius, fit } = useProps("AppBuilderImage", defaultStyleProps, rest);
 
-	const containerType = useContext(AppBuilderContainerContext);
+	const context = useContext(AppBuilderContainerContext);
+	const orientation = context.orientation;
 	
 	const componentImage = <Image
 		{...rest}
 		fit={fit}
 		radius={radius}
-		h={containerType === "horizontal" ? "100%" : undefined}
-		w={containerType === "vertical" ? "100%" : undefined}
+		h={orientation === "horizontal" ? "100%" : undefined}
+		w={orientation === "vertical" ? "100%" : undefined}
 	/>;
 
 	return <Paper
-		h={containerType === "horizontal" ? "100%" : undefined}
-		w={containerType === "vertical" ? "100%" : undefined}
+		h={orientation === "horizontal" ? "100%" : undefined}
+		w={orientation === "vertical" ? "100%" : undefined}
 		radius={radius}
 		pt={0}
 		pr={0}
