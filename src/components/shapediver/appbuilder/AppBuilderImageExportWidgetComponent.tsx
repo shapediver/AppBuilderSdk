@@ -14,11 +14,6 @@ interface Props {
 	exportId: string
 }
 
-/**
- * TODO refactor this such that a single export call is used to get all the images
- * @param param0
- * @returns
- */
 export default function AppBuilderImageExportWidgetComponent({sessionId, exportId, ...rest}: Props) {
 
 	const { definition, actions } = useExport(sessionId, exportId);

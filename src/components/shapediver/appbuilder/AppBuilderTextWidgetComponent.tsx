@@ -1,11 +1,28 @@
 import React, { useContext } from "react";
-import { MantineStyleProp, Paper } from "@mantine/core";
+import { MantineStyleProp, MantineThemeComponent, Paper, PaperProps } from "@mantine/core";
 import { IAppBuilderWidgetPropsText } from "types/shapediver/appbuilder";
 import MarkdownWidgetComponent from "../ui/MarkdownWidgetComponent";
 import { AppBuilderContainerContext } from "context/AppBuilderContext";
+import { usePropsAppBuilder } from "hooks/ui/usePropsAppBuilder";
 
+type StylePros = PaperProps;
 
-export default function AppBuilderTextWidgetComponent({ text, markdown }: IAppBuilderWidgetPropsText) {
+const defaultStyleProps : Partial<StylePros> = {
+};
+
+type AppBuilderTextWidgetThemePropsType = Partial<StylePros>;
+
+export function AppBuilderTextWidgetThemeProps(props: AppBuilderTextWidgetThemePropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
+}
+
+export default function AppBuilderTextWidgetComponent(props: IAppBuilderWidgetPropsText & AppBuilderTextWidgetThemePropsType) {
+	
+	const { text, markdown, ...rest } = props;
+
+	const themeProps = usePropsAppBuilder("AppBuilderTextWidgetComponent", defaultStyleProps, rest);
 	
 	const context = useContext(AppBuilderContainerContext);
 
@@ -15,12 +32,12 @@ export default function AppBuilderTextWidgetComponent({ text, markdown }: IAppBu
 	}
 	
 	if (text) {
-		return <Paper style={styleProps}>
+		return <Paper {...themeProps} style={styleProps}>
 			{ text }
 		</Paper>;
 	}
 	else if (markdown) {
-		return <Paper style={styleProps}>
+		return <Paper {...themeProps} style={styleProps}>
 			<MarkdownWidgetComponent>
 				{ markdown }
 			</MarkdownWidgetComponent>

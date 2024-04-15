@@ -21,7 +21,7 @@ export function usePropsAppBuilder<T extends Record<string, any>, U extends Part
 	defaultProps: U, 
 	props: T, 
 	defaultOverrideProps: Partial<IAppBuilderContainerWrapperStyleProps> = {}
-) {
+): T {
     
 	const customprops = useProps(component, defaultProps, props);
 

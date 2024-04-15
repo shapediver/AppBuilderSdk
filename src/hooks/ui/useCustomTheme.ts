@@ -15,6 +15,7 @@ import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.typ
 import { AppBuilderVerticalContainerThemeProps } from "pages/templates/AppBuilderVerticalContainer";
 import { AppBuilderHorizontalContainerThemeProps } from "pages/templates/AppBuilderHorizontalContainer";
 import { AppBuilderPageThemeProps } from "pages/templates/AppBuilderContainerWrapper";
+import { AppBuilderTextWidgetThemeProps } from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
 
 /**
  * Helper function for defining CSS variables for the AppBuilderAppShellTemplate
@@ -194,17 +195,20 @@ export const useCustomTheme = () => {
 					/** Example: Theme overrides for the "top" container. */
 					top:  {
 						components: {
-							Paper: {
+							Paper: Paper.extend({
 								defaultProps: {
 									withBorder: false,
 								}
-							},
+							}),
 							AppBuilderHorizontalContainer: {
 								defaultProps: {
 									//p: "0",
 									justify: "left"
 								}
-							}
+							},
+							AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+								styles: { root: { overflow: "clip" }}
+							}),
 						}
 					}
 				}
@@ -269,6 +273,16 @@ export const useCustomTheme = () => {
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
 				template: "appshell"
 				// template: "grid" // default
+			}),
+			/***
+			 * AppBuilderTextWidgetComponent
+			 * 
+			 * Used for text widgets in AppBuilder.
+			 */
+			AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+				// withBorder: false,
+				// shadow: "xs",
+				// styles: { root: { overflow: "auto" }}
 			}),
 			/**
 			 * AppBuilderVerticalContainer
