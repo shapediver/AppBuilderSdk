@@ -33,7 +33,6 @@ export default function AppBuilderVerticalContainer(props: Props & Partial<Style
 		children,
 		...rest
 	} = usePropsAppBuilder("AppBuilderVerticalContainer", defaultStyleProps, props);
-	console.debug("rest", rest);
 	
 	return (
 		<Stack {...rest}>
