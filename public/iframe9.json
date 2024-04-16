@@ -1,0 +1,149 @@
+{
+    "version": "1.0",
+    "sessions": [
+        {
+            "id": "Diagrid app builder example",
+            "ticket": "19de2bd79ffb723b1add371029aa2d378b8ae29beb29824ff636b8b9045fbda7d6793e528bc6b3efd1651f654df6839aa3c184bdfa380f86544ef1c2bba3a8167414ebc89042cd4b2b25d49c81a0822b8b40fb75231db84bc633020aa34ff7c7254d113b9efa7d-2f55ba8d0ec917ec27471adc5bad6ff4",
+		    "modelViewUrl": "https://sddev3.eu-central-1.shapediver.com"
+        }
+    ],
+    "appBuilderOverride": {
+        "version": "1.0",
+        "containers": [
+            {
+                "name": "top",
+                "widgets": [
+                    {
+                        "type": "image",
+                        "props": {
+                            "href": "https://static.wixstatic.com/media/4f6038_e368a8ae706c408c8bc2155e89c88a57~mv2.png/v1/fill/w_466,h_128,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/Logo_Text_edited.png",
+                            "anchor": "https://www.interstice.studio/"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "[LinkedIn](https://www.linkedin.com/company/intersticestudio/)"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "[Contact](https://www.interstice.studio/blank-5)"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "left",
+                "widgets": [
+                    {
+                        "type": "accordion",
+                        "props": {
+                            "parameters": [
+                                {
+                                    "name": "Enable Plan Visualizer Mode",
+                                    "acceptRejectMode": false
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "## Mode: Plan Visualizer\r\n---\r\n**Visualization Date:**\r\nWednesday, Week: 12 at 0% Daily Progress\r\n\r\n**Planned Install Progress:** 1701/4093\r\n\r\n \r\n "
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "bottom",
+                "widgets": [
+                    {
+                        "type": "image",
+                        "props": {
+                            "export": {
+                                "name": "InfographicBitmap"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "right",
+                "tabs": [
+                    {
+                        "name": "Plan Visualizer",
+                        "icon": "adjustments",
+                        "widgets": [
+                            {
+                                "type": "accordion",
+                                "props": {
+                                    "parameters": [
+                                        {
+                                            "name": "Week",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Day",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Daily Progress %",
+                                            "acceptRejectMode": false
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Display Settings",
+                        "icon": "camera",
+                        "widgets": [
+                            {
+                                "type": "accordion",
+                                "props": {
+                                    "parameters": [
+                                        {
+                                            "name": "Highlight Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Concrete Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Timber Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Enclosure Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Ahead Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Behind Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Last Installed Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Behind Opacity",
+                                            "acceptRejectMode": false
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

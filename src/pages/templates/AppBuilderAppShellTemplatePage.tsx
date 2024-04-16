@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AppShell, AppShellResponsiveSize, Burger, Group, MantineBreakpoint, MantineThemeComponent, useMantineTheme, useProps } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import classes from "./AppBuilderAppShellTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
 import AppBuilderContainerWrapper from "./AppBuilderContainerWrapper";
+import { createGridLayout } from "utils/layout";
 
 interface Props {
 	top?: React.ReactNode;
@@ -37,6 +38,9 @@ export function AppBuilderAppShellTemplatePageThemeProps(props: AppBuilderAppShe
 	};
 }
 
+const COLUMNS = 3;
+const ROWS = 3;
+
 /**
  * AppShell layout template page for AppBuilder. 
  * This template is partially based on Mantine's AppShell component. 
@@ -54,27 +58,14 @@ export function AppBuilderAppShellTemplatePageThemeProps(props: AppBuilderAppShe
  */
 export default function AppBuilderAppShellTemplatePage(props: Props & Partial<StyleProps>) {
 
-	let {
-		top = undefined,
-		bottom = undefined,
-	} = props;
-
 	const {
+		top = undefined,
+		//bottom = undefined,
 		left = undefined,
 		children = undefined,
 		right = undefined,
 	} = props;
 	
-	if (bottom && !top) {
-		console.debug("Displaying 'bottom' on 'top'.");
-		top = bottom;
-		bottom = undefined;
-	}
-
-	if (bottom) {
-		console.debug("Container 'bottom' is not supported by the 'appshell' template.");
-	}
-
 	// style properties
 	const { 
 		headerHeight,
@@ -86,6 +77,27 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 	const isLandscape = useIsLandscape();
 	const theme = useMantineTheme();
 	const aboveNavbarBreakpoint = useMediaQuery(`(min-width: ${theme.breakpoints[navbarBreakpoint]})`);
+
+	const [rootStyle, setRootStyle] = useState<React.CSSProperties>({
+		...(createGridLayout({
+			hasRight: !!right && isLandscape,
+			hasBottom: !!right && !isLandscape,
+			rows: ROWS,
+			columns: COLUMNS
+		}))
+	});
+
+	useEffect(() => {
+		setRootStyle({
+			...rootStyle,
+			...(createGridLayout({
+				hasRight: !!right && isLandscape,
+				hasBottom: !!right && !isLandscape,
+				rows: ROWS,
+				columns: COLUMNS
+			}))
+		});
+	}, [right, isLandscape]);
 
 	return (
 		<>
@@ -115,15 +127,15 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 					</AppBuilderContainerWrapper>
 				</AppShell.Navbar>
 				<AppShell.Main
-					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
+					className={`${classes.appShellMain}`} style={rootStyle}
 				>
 					<section
-						className={classes.appShellMainMain}
+						className={classes.appShellGridAreaMain}
 					>
 						{ children }
 					</section>
 					<section
-						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""}`}
+						className={`${isLandscape ? classes.appShellGridAreaRight : classes.appShellGridAreaBottomPortrait}`}
 					>
 						<AppBuilderContainerWrapper orientation="vertical" name="right">
 							{ right }

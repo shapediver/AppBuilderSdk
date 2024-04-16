@@ -271,8 +271,8 @@ export const useCustomTheme = () => {
 			 * Used for selecting the AppBuilder template.
 			 */
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
-				template: "appshell"
-				// template: "grid" // default
+				// template: "appshell" // default
+				// template: "grid" 
 			}),
 			/***
 			 * AppBuilderTextWidgetComponent

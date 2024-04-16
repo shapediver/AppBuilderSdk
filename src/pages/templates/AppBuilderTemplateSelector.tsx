@@ -26,7 +26,7 @@ interface StyleProps {
 }
 
 const defaultStyleProps: StyleProps = {
-	template: "grid",
+	template: "appshell",
 };
 
 type AppBuilderTemplateSelectorThemePropsType = Partial<StyleProps>;

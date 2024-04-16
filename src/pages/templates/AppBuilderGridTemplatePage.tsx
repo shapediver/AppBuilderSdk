@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import classes from "./AppBuilderGridTemplatePage.module.css";
 import { Button, MantineThemeComponent, useProps } from "@mantine/core";
 import AppBuilderContainerWrapper from "./AppBuilderContainerWrapper";
+import { createGridLayout } from "utils/layout";
 
 interface Props {
 	top?: React.ReactNode;
@@ -93,96 +94,30 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 	const [isRightDisplayed, setIsRightDisplayed] = useState(!!right);
 	const [isBottomDisplayed, setIsBottomDisplayed] = useState(!!bottom);
 
-	const generateLayoutStyles = (isTop: boolean, isLeft: boolean, isRight: boolean, isBottom: boolean) => {
-		const m = "main";
-		const t = "top";
-		const l = "left";
-		const r = "right";
-		const b = "bottom";
-
-		const area: string[][] = [];
-		
-		for (let i = 0; i < rows; i++) {
-			const row: string[] = [];
-			for (let j = 0; j < columns; j++) {
-				row.push(m);
-			}
-			area.push(row);
-		}
-
-		if (isTop) {
-			for (let j = 0; j < columns; j++) {
-				for (let i = 0; i < topRows; i++) {
-					area[i][j] = t;
-				}
-			}
-		}
-
-		if (isBottom) {
-			for (let j = 0; j < columns; j++) {
-				for (let i = rows - bottomRows; i < rows; i++)
-					area[i][j] = b;
-			}
-		}
-
-		if (isLeft) {
-			for (let i = 0; i < rows; i++) {
-				for (let j = 0; j < leftColumns; j++)
-					area[i][j] = l;
-			}
-		}
-
-		if (isRight) {
-			for (let i = 0; i < rows; i++) {
-				for (let j = columns - rightColumns; j < columns; j++)
-					area[i][j] = r;
-			}
-		}
-
-		let gridTemplateAreas = "";
-		let column = "";
-
-		area.forEach((areaRow) => {
-			areaRow.forEach((areaCol) => {
-				column += `${areaCol} `;
-			});
-			gridTemplateAreas = gridTemplateAreas.concat(`"${column.trim()}" `);
-			column = "";
-		});
-
-		gridTemplateAreas = gridTemplateAreas.trim();
-
-		// console.debug("gridTemplateAreas", gridTemplateAreas);
-
-		return {
-			gridTemplateAreas,
-			gridTemplateColumns: `repeat(${columns}, 1fr)`,
-			gridTemplateRows: `repeat(${rows}, 1fr)`,
-		};
-	};
-
 	const rootRef = useRef<HTMLDivElement>(null);
 	const [rootStyle, setRootStyle] = useState<React.CSSProperties>({
 		// We need to define the background color here, because the corresponding element
 		// is used for fullscreen mode and would otherwise be transparent (show as black).
 		backgroundColor: "var(--mantine-color-body)",
-		...(generateLayoutStyles(
-			showContainerButtons ? isTopDisplayed : !!top, 
-			showContainerButtons ? isLeftDisplayed : !!left,
-			showContainerButtons ? isRightDisplayed : !!right,
-			showContainerButtons ? isBottomDisplayed : !!bottom
-		)),
+		...(createGridLayout({
+			hasTop: showContainerButtons ? isTopDisplayed : !!top, 
+			hasLeft: showContainerButtons ? isLeftDisplayed : !!left,
+			hasRight: showContainerButtons ? isRightDisplayed : !!right,
+			hasBottom: showContainerButtons ? isBottomDisplayed : !!bottom,
+			rows, columns, topRows, leftColumns, rightColumns, bottomRows
+		})),
 	});
 
 	useEffect(() => {
 		setRootStyle({
 			...rootStyle,
-			...(generateLayoutStyles(
-				showContainerButtons ? isTopDisplayed : !!top, 
-				showContainerButtons ? isLeftDisplayed : !!left,
-				showContainerButtons ? isRightDisplayed : !!right,
-				showContainerButtons ? isBottomDisplayed : !!bottom
-			))
+			...(createGridLayout({
+				hasTop: showContainerButtons ? isTopDisplayed : !!top, 
+				hasLeft: showContainerButtons ? isLeftDisplayed : !!left,
+				hasRight: showContainerButtons ? isRightDisplayed : !!right,
+				hasBottom: showContainerButtons ? isBottomDisplayed : !!bottom,
+				rows, columns, topRows, leftColumns, rightColumns, bottomRows
+			}))
 		});
 	}, [left, right, bottom, top, 
 		isTopDisplayed, isLeftDisplayed, isRightDisplayed, isBottomDisplayed, 
