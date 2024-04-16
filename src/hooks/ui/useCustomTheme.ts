@@ -292,7 +292,7 @@ export const useCustomTheme = () => {
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
 				// template: "appshell" // default
 				// template: "grid" 
-				showContainerButtons: true,
+				// showContainerButtons: true,
 			}),
 			/***
 			 * AppBuilderTextWidgetComponent
