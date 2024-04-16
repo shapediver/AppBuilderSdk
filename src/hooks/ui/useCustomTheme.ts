@@ -112,7 +112,7 @@ export const useCustomTheme = () => {
 			Anchor: Anchor.extend({
 				defaultProps: {
 					// underline: "hover",
-					c: "inherit",
+					// c: "inherit",
 				}
 			}),
 			/**
@@ -207,6 +207,11 @@ export const useCustomTheme = () => {
 						/** Theme overrides for the "top" container. */
 						top:  {
 							components: {
+								Anchor: Anchor.extend({
+									defaultProps: {
+										c: "inherit",
+									}
+								}),
 								Paper: Paper.extend({
 									defaultProps: {
 										withBorder: false,
@@ -225,6 +230,11 @@ export const useCustomTheme = () => {
 						/** Theme overrides for the "bottom" container. */
 						bottom: {
 							components: {
+								Anchor: Anchor.extend({
+									defaultProps: {
+										c: "inherit",
+									}
+								}),
 								AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
 									styles: { root: { overflow: "auto" }}
 								}),
