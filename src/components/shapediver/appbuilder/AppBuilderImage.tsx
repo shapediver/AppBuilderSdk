@@ -1,10 +1,10 @@
-import React from "react";
-import { Image, ImageProps, MantineThemeComponent, Paper, useProps, Anchor } from "@mantine/core";
-import { AppBuilderContainerTypeEnum, IAppBuilderWidgetPropsAnchor } from "types/shapediver/appbuilder";
+import React, { useContext } from "react";
+import { Image, ImageProps, MantineThemeComponent, Paper, Anchor } from "@mantine/core";
+import { IAppBuilderWidgetPropsAnchor } from "types/shapediver/appbuilder";
+import { AppBuilderContainerContext } from "context/AppBuilderContext";
+import { usePropsAppBuilder } from "hooks/ui/usePropsAppBuilder";
 
 interface Props extends IAppBuilderWidgetPropsAnchor{
-	/** Type of container */
-	containerType?: AppBuilderContainerTypeEnum
 }
 
 type SomeImageProps = Pick<ImageProps, "src" | "radius" | "fit">;
@@ -23,19 +23,24 @@ export function AppBuilderImageThemeProps(props: AppBuilderImageThemePropsType):
 }
 
 export default function AppBuilderImage(props: SomeImageProps & Props ) {
-	const { containerType, anchor, target, ...rest } = props;
-	const { radius, fit } = useProps("AppBuilderImage", defaultStyleProps, rest);
+	
+	const { anchor, target, ...rest } = props;
+	const { radius, fit } = usePropsAppBuilder("AppBuilderImage", defaultStyleProps, rest);
+
+	const context = useContext(AppBuilderContainerContext);
+	const orientation = context.orientation;
+	
 	const componentImage = <Image
 		{...rest}
 		fit={fit}
 		radius={radius}
-		h={containerType === AppBuilderContainerTypeEnum.Row ? "100%" : undefined}
-		w={containerType === AppBuilderContainerTypeEnum.Column ? "100%" : undefined}
+		h={orientation === "horizontal" ? "100%" : undefined}
+		w={orientation === "vertical" ? "100%" : undefined}
 	/>;
 
 	return <Paper
-		h={containerType === AppBuilderContainerTypeEnum.Row ? "100%" : undefined}
-		w={containerType === AppBuilderContainerTypeEnum.Column ? "100%" : undefined}
+		h={orientation === "horizontal" ? "100%" : undefined}
+		w={orientation === "vertical" ? "100%" : undefined}
 		radius={radius}
 		pt={0}
 		pr={0}

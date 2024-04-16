@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBuilderContainerTypeEnum, IAppBuilderWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/appbuilder";
+import { IAppBuilderWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/appbuilder";
 import AppBuilderTextWidgetComponent from "./AppBuilderTextWidgetComponent";
 import AppBuilderImageWidgetComponent from "./AppBuilderImageWidgetComponent";
 import AppBuilderAccordionWidgetComponent from "./AppBuilderAccordionWidgetComponent";
@@ -12,11 +12,9 @@ interface Props {
 	sessionId: string,
 	/** The widgets to display. */
 	widgets: IAppBuilderWidget[] | undefined,
-	/** Type of container. */
-	containerType: AppBuilderContainerTypeEnum,
 }
 
-export default function AppBuilderWidgetsComponent({ sessionId, widgets, containerType }: Props) {
+export default function AppBuilderWidgetsComponent({ sessionId, widgets }: Props) {
 
 	if (!widgets) {
 		return <></>;
@@ -25,11 +23,11 @@ export default function AppBuilderWidgetsComponent({ sessionId, widgets, contain
 	return <>
 		{ widgets.map((w, i) => {
 			if (isTextWidget(w))
-				return <AppBuilderTextWidgetComponent key={i} {...w.props} containerType={containerType} />;
+				return <AppBuilderTextWidgetComponent key={i} {...w.props} />;
 			else if (isImageWidget(w))
-				return <AppBuilderImageWidgetComponent key={i} sessionId={sessionId} {...w.props} containerType={containerType} />;
+				return <AppBuilderImageWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else if (isAccordionWidget(w))
-				return <AppBuilderAccordionWidgetComponent key={i} sessionId={sessionId} {...w.props} containerType={containerType} />;
+				return <AppBuilderAccordionWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else
 				return null;
 		})}

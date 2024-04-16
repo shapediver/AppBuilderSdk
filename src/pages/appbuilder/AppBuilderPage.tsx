@@ -29,9 +29,14 @@ interface Props extends IAppBuilderSettingsSession {
  * @returns
  */
 export default function AppBuilderPage(props: Partial<Props>) {
-
+	
+	// get default session dto, if any
 	const { defaultSessionDto } = useDefaultSessionDto(props);
+
+	// get settings for app builder from query string
 	const { settings, error: settingsError, loading, hasSettings } = useAppBuilderSettings(defaultSessionDto);
+
+	// for now we only make use of the first session in the settings
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { sessionId, error: appBuilderError, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto, settings?.appBuilderOverride);
 	const error = settingsError ?? appBuilderError;

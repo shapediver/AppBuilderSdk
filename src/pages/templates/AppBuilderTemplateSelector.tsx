@@ -1,7 +1,9 @@
-import React, { ReactElement } from "react";
-import { MantineThemeComponent, useProps } from "@mantine/core";
+import React, { ReactElement, useState } from "react";
+import { Button, MantineThemeComponent, useProps } from "@mantine/core";
 import AppBuilderAppShellTemplatePage from "./AppBuilderAppShellTemplatePage";
 import AppBuilderGridTemplatePage from "./AppBuilderGridTemplatePage";
+import classes from "./AppBuilderTemplateSelector.module.css";
+import { AppBuilderTemplateContext } from "context/AppBuilderContext";
 
 export type AppBuilderTemplateType = "grid" | "appshell"
 
@@ -23,10 +25,13 @@ interface Props {
 interface StyleProps {
 	/** template to use */
 	template: AppBuilderTemplateType;
+	/** Should buttons for showing/hiding the containers be shown? */
+	showContainerButtons: boolean;
 }
 
 const defaultStyleProps: StyleProps = {
-	template: "grid",
+	template: "appshell",
+	showContainerButtons: false,
 };
 
 type AppBuilderTemplateSelectorThemePropsType = Partial<StyleProps>;
@@ -42,12 +47,36 @@ export default function AppBuilderTemplateSelector(props: Props & Partial<StyleP
 	// style properties
 	const { 
 		template,
-		...rest
+		showContainerButtons,
+		...nodes
 	} = useProps("AppBuilderTemplateSelector", defaultStyleProps, props);
+
+	const { top, left, right, bottom, ...otherNodes } = nodes;
+
+	const [isTopDisplayed, setIsTopDisplayed] = useState(!!top);
+	const [isLeftDisplayed, setIsLeftDisplayed] = useState(!!left);
+	const [isRightDisplayed, setIsRightDisplayed] = useState(!!right);
+	const [isBottomDisplayed, setIsBottomDisplayed] = useState(!!bottom);
+
+	const mainNodes = {
+		top: isTopDisplayed ? top : undefined,
+		left: isLeftDisplayed ? left : undefined,
+		right: isRightDisplayed ? right : undefined,
+		bottom: isBottomDisplayed ? bottom : undefined,
+	};
 
 	const Template = templateMap[template];
 
-	return (
-		<Template {...rest} />
+	return (<>
+		{showContainerButtons ? <Button.Group className={classes.buttonsTop}>
+			<Button variant="filled" onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
+			<Button variant="filled" onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
+			<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
+			<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
+		</Button.Group> : <></>}
+		<AppBuilderTemplateContext.Provider value={{ name: template }}>
+			<Template {...mainNodes} {...otherNodes} />
+		</AppBuilderTemplateContext.Provider>
+	</>
 	);
 }

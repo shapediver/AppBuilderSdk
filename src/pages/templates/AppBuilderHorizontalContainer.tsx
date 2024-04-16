@@ -1,5 +1,6 @@
 import React, { } from "react";
-import { Group, MantineSpacing, MantineThemeComponent, StyleProp, useProps } from "@mantine/core";
+import { Group, MantineSpacing, MantineThemeComponent, StyleProp } from "@mantine/core";
+import { usePropsAppBuilder } from "hooks/ui/usePropsAppBuilder";
 
 interface Props {
 	children?: React.ReactNode;
@@ -38,9 +39,11 @@ export default function AppBuilderHorizontalContainer(props: Props & Partial<Sty
 	const { 
 		children,
 		...rest
-	} = useProps("AppBuilderHorizontalContainer", defaultStyleProps, props);
+	} = usePropsAppBuilder("AppBuilderHorizontalContainer", defaultStyleProps, props);
 
 	return (
-		<Group {...rest}>{children}</Group>
+		<Group {...rest}>
+			{children}
+		</Group>
 	);
 }

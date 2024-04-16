@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AppShell, AppShellResponsiveSize, Burger, Group, MantineBreakpoint, MantineThemeComponent, useMantineTheme, useProps } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import classes from "./AppBuilderAppShellTemplatePage.module.css";
 import { useIsLandscape } from "hooks/ui/useIsLandscape";
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
-import AppBuilderHorizontalContainer from "./AppBuilderHorizontalContainer";
-import AppBuilderVerticalContainer from "./AppBuilderVerticalContainer";
+import AppBuilderContainerWrapper from "./AppBuilderContainerWrapper";
+import { createGridLayout } from "utils/layout";
 
 interface Props {
 	top?: React.ReactNode;
@@ -27,7 +27,7 @@ interface StyleProps {
 const defaultStyleProps: StyleProps = {
 	headerHeight:{ base: "4em", md: "4em"},
 	navbarBreakpoint: "md",
-	navbarWidth: { md: 200, lg: 250 }
+	navbarWidth: { md: 250, lg: 300 }
 };
 
 type AppBuilderAppShellTemplatePageThemePropsType = Partial<StyleProps>;
@@ -38,6 +38,9 @@ export function AppBuilderAppShellTemplatePageThemeProps(props: AppBuilderAppShe
 	};
 }
 
+const COLUMNS = 3;
+const ROWS = 3;
+
 /**
  * AppShell layout template page for AppBuilder. 
  * This template is partially based on Mantine's AppShell component. 
@@ -46,36 +49,24 @@ export function AppBuilderAppShellTemplatePageThemeProps(props: AppBuilderAppShe
  * children (the viewport) and the right container if the device is in landscape mode.
  * In portrait mode the right container is shown below the main area, using a 
  * height of 300px. 
- * This template does not support the "bottom" AppBuilder container. In case there is no
- * "top" container and if a "bottom" container is defined, the "bottom" container 
- * is displayed on top.
+ * The bottom container is shown at the bottom of the grid layout if and only if
+ * the device is in landscape mode and the width is above the navbar breakpoint.
+ * Otherwise the bottom container is shown as part of the navigation bar area, 
+ * using vertical layout.
  * @see https://mantine.dev/core/app-shell/
  * @param  
  * @returns 
  */
 export default function AppBuilderAppShellTemplatePage(props: Props & Partial<StyleProps>) {
 
-	let {
+	const {
 		top = undefined,
 		bottom = undefined,
-	} = props;
-
-	const {
 		left = undefined,
 		children = undefined,
 		right = undefined,
 	} = props;
 	
-	if (bottom && !top) {
-		console.debug("Displaying 'bottom' on 'top'.");
-		top = bottom;
-		bottom = undefined;
-	}
-
-	if (bottom) {
-		console.debug("Container 'bottom' is not supported by the 'appshell' template.");
-	}
-
 	// style properties
 	const { 
 		headerHeight,
@@ -87,6 +78,30 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 	const isLandscape = useIsLandscape();
 	const theme = useMantineTheme();
 	const aboveNavbarBreakpoint = useMediaQuery(`(min-width: ${theme.breakpoints[navbarBreakpoint]})`);
+	const showBottomInGrid = !!bottom && aboveNavbarBreakpoint && isLandscape;
+	const hasNavbarContent = !!left || (!!bottom && !showBottomInGrid);
+	const showHeader = !!top || (!!left && !aboveNavbarBreakpoint) || (!!bottom && !showBottomInGrid && !aboveNavbarBreakpoint); 
+
+	const [rootStyle, setRootStyle] = useState<React.CSSProperties>({
+		...(createGridLayout({
+			hasRight: !!right && isLandscape,
+			hasBottom: (!!right && !isLandscape) || (!!bottom && showBottomInGrid),
+			rows: ROWS,
+			columns: COLUMNS
+		}))
+	});
+
+	useEffect(() => {
+		setRootStyle({
+			...rootStyle,
+			...(createGridLayout({
+				hasRight: !!right && isLandscape,
+				hasBottom: (!!right && !isLandscape) || (!!bottom && showBottomInGrid),
+				rows: ROWS,
+				columns: COLUMNS
+			}))
+		});
+	}, [right, isLandscape, bottom, showBottomInGrid]);
 
 	return (
 		<>
@@ -96,40 +111,53 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 				// We hide the header in case there is no top and no left container content.
 				// In case there left container content, we only show the header below the navbar breakpoint 
 				// (see hiddenFrom prop of AppShell.Header).
-				header={{ height: headerHeight, collapsed: !top && (!left || aboveNavbarBreakpoint) }}
-				navbar={{ breakpoint: navbarBreakpoint, width: navbarWidth, collapsed: { mobile: !opened || !left, desktop: !left }  }}
+				header={{ height: headerHeight, collapsed: !showHeader }}
+				navbar={{ breakpoint: navbarBreakpoint, width: navbarWidth, collapsed: { mobile: !opened || !hasNavbarContent, desktop: !hasNavbarContent }  }}
 				// We need to define the background color here, because the corresponding element
 				// is used for fullscreen mode and would otherwise be transparent (show as black).
 				style={{backgroundColor: "var(--mantine-color-body)"}}
 			>
 				<AppShell.Header>
 					<Group h="100%" justify="space-between" wrap="nowrap" px="xs" >
-						{ left ? <Burger opened={opened} onClick={toggle} hiddenFrom={navbarBreakpoint} size="sm" /> : undefined }
-						<AppBuilderHorizontalContainer>
+						{ hasNavbarContent ? <Burger opened={opened} onClick={toggle} hiddenFrom={navbarBreakpoint} size="sm" /> : undefined }
+						<AppBuilderContainerWrapper orientation="horizontal" name="top">
 							{ top }
-						</AppBuilderHorizontalContainer>
+						</AppBuilderContainerWrapper>
 					</Group>
 				</AppShell.Header>
 				<AppShell.Navbar hidden={!opened} className={classes.appShellMainNavbar}>
-					<AppBuilderVerticalContainer>
+					<AppBuilderContainerWrapper orientation="vertical" name="left">
 						{ left }
-					</AppBuilderVerticalContainer>
+					</AppBuilderContainerWrapper>
+					{
+						!bottom ? undefined : showBottomInGrid ? undefined : <AppBuilderContainerWrapper orientation="vertical" name="bottom">
+							{ bottom }
+						</AppBuilderContainerWrapper>
+					}
 				</AppShell.Navbar>
 				<AppShell.Main
-					className={`${classes.appShellMain} ${isLandscape ? classes.appShellMainLandscape : ""}`}
+					className={`${classes.appShellMain} ${showHeader ? classes.appShellMaxHeightBelowHeader : classes.appShellMaxHeight}`} style={rootStyle}
 				>
 					<section
-						className={classes.appShellMainMain}
+						className={classes.appShellGridAreaMain}
 					>
 						{ children }
 					</section>
 					<section
-						className={`${classes.appShellMainAside} ${isLandscape ? classes.appShellMainAsideLandscape : ""}`}
+						className={`${isLandscape ? classes.appShellGridAreaRight : classes.appShellGridAreaBottomPortrait}`}
 					>
-						<AppBuilderVerticalContainer>
+						<AppBuilderContainerWrapper orientation="vertical" name="right">
 							{ right }
-						</AppBuilderVerticalContainer>
+						</AppBuilderContainerWrapper>
 					</section>
+					{ bottom && showBottomInGrid ? <section
+						className={classes.appShellGridAreaBottom}
+					>
+						<AppBuilderContainerWrapper orientation="horizontal" name="bottom">
+							{ bottom }
+						</AppBuilderContainerWrapper>
+					</section> : undefined
+					}
 				</AppShell.Main>
 			</AppShell>
 		</>

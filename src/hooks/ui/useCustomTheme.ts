@@ -1,4 +1,4 @@
-import { Accordion, AppShellResponsiveSize, Button, CSSVariablesResolver, ColorInput, DEFAULT_THEME, Group, MantineSize, MantineSpacing, Paper, Stack, StyleProp, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
+import { Accordion, Anchor, AppShellResponsiveSize, Button, CSSVariablesResolver, ColorInput, DEFAULT_THEME, Group, MantineSize, MantineSpacing, Paper, Stack, StyleProp, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
 import { ViewportIconsThemeProps } from "components/shapediver/viewport/ViewportIcons";
 import { ViewportBrandingThemeProps, ViewportComponentThemeProps } from "components/shapediver/viewport/ViewportComponent";
 import { ViewportOverlayWrapperThemeProps } from "components/shapediver/viewport/ViewportOverlayWrapper";
@@ -14,6 +14,8 @@ import { AppBuilderAppShellTemplatePageThemeProps } from "pages/templates/AppBui
 import { AppShellSize } from "@mantine/core/lib/components/AppShell/AppShell.types";
 import { AppBuilderVerticalContainerThemeProps } from "pages/templates/AppBuilderVerticalContainer";
 import { AppBuilderHorizontalContainerThemeProps } from "pages/templates/AppBuilderHorizontalContainer";
+import { AppBuilderPageThemeProps } from "pages/templates/AppBuilderContainerWrapper";
+import { AppBuilderTextWidgetThemeProps } from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
 
 /**
  * Helper function for defining CSS variables for the AppBuilderAppShellTemplate
@@ -104,6 +106,16 @@ export const useCustomTheme = () => {
 				}
 			}),
 			/**
+			 * Anchor
+			 * @see https://mantine.dev/core/anchor/
+			 */
+			Anchor: Anchor.extend({
+				defaultProps: {
+					// underline: "hover",
+					c: "inherit",
+				}
+			}),
+			/**
 			 * Button
 			 * @see https://mantine.dev/core/button/?t=props
 			 */
@@ -140,7 +152,7 @@ export const useCustomTheme = () => {
 					py: padding,
 					//shadow: "xs",
 					withBorder: true,
-				},
+				}
 			}),
 			/**
 			 * Stack
@@ -184,6 +196,44 @@ export const useCustomTheme = () => {
              */
 
 			/**
+			 * AppBuilderContainerWrapper
+			 * 
+			 * Used for defining theme overrides per template and per AppBuilder container.
+			 */
+			AppBuilderContainerWrapper: AppBuilderPageThemeProps({
+				containerThemeOverrides: {
+					/** Theme overrides for the "appshell" template. */
+					appshell: {
+						/** Theme overrides for the "top" container. */
+						top:  {
+							components: {
+								Paper: Paper.extend({
+									defaultProps: {
+										withBorder: false,
+									}
+								}),
+								AppBuilderHorizontalContainer: {
+									defaultProps: {
+										justify: "left"
+									}
+								},
+								AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+									styles: { root: { overflow: "clip" }}
+								}),
+							}
+						},
+						/** Theme overrides for the "bottom" container. */
+						bottom: {
+							components: {
+								AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+									styles: { root: { overflow: "auto" }}
+								}),
+							}
+						}
+					}
+				}
+			}),
+			/**
 			 * AppBuilderImage
 			 * 
 			 * Used to display AppBuilder image widgets.
@@ -215,7 +265,6 @@ export const useCustomTheme = () => {
 				// bgLeft: "transparent", 
 				// bgRight: "transparent", 
 				// bgBottom: "transparent", 
-				// showContainerButtons: true,
 				// columns: 5,
 				// rows: 4,
 				// leftColumns: 1,
@@ -241,8 +290,19 @@ export const useCustomTheme = () => {
 			 * Used for selecting the AppBuilder template.
 			 */
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
-				// template: "appshell"
-				// template: "grid" // default
+				// template: "appshell" // default
+				// template: "grid" 
+				showContainerButtons: true,
+			}),
+			/***
+			 * AppBuilderTextWidgetComponent
+			 * 
+			 * Used for text widgets in AppBuilder.
+			 */
+			AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+				// withBorder: false,
+				// shadow: "xs",
+				// styles: { root: { overflow: "auto" }}
 			}),
 			/**
 			 * AppBuilderVerticalContainer

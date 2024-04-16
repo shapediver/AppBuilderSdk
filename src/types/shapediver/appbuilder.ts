@@ -38,8 +38,6 @@ export type AppBuilderWidgetType = "accordion" | "text" | "image";
 
 /** Common properties of widgets. */
 export interface IAppBuilderWidgetPropsCommon {
-	/** Type of the container that contains the widget. */
-	containerType?: AppBuilderContainerTypeEnum
 }
 
 /** 
@@ -117,12 +115,6 @@ export interface IAppBuilderContainer extends IAppBuilderWidgetPropsCommon {
 	tabs?: IAppBuilderTab[]
 	/** Further widgets displayed in the container. */
 	widgets?: IAppBuilderWidget[]
-}
-
-/** Types of container direction */
-export enum AppBuilderContainerTypeEnum {
-	Row = "row",
-	Column = "column"
 }
 
 /**

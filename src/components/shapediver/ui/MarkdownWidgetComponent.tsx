@@ -141,9 +141,9 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 			},
 			a(props) {
 				const {...rest} = props;
-
+			
 				// @ts-expect-error ignore
-				return <Anchor underline="hover" {...rest} />;
+				return <Anchor target="_blank" {...rest} />;
 			},
 			ul(props) {
 				const {...rest} = props;
