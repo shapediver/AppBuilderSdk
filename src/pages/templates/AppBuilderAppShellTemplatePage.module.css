@@ -23,6 +23,11 @@
     overflow: auto;
 }
 
+.appShellMaxHeight {
+    height: 100vh;
+    max-height: 100vh;
+}
+
 /**
  * Breakpoints defined by the theme (CSS variables) can't be used in media queries, 
  * see https://mantine.dev/styles/responsive/, therefore we have to hard-code them here. 
@@ -31,35 +36,35 @@
  * definition of the class for the main and aside areas based on media queries here. 
  */
 @media (max-width: 36em) {
-    .appShellMain, .appShellGridAreaRight {
+    .appShellMaxHeightBelowHeader {
         height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-xs));
         max-height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-xs));
     }
 }
 
 @media (max-width: 48em) {
-    .appShellMain, .appShellGridAreaRight {
+    .appShellMaxHeightBelowHeader {
         height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-sm));
         max-height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-sm));
     }
 }
 
 @media (max-width: 62em) {
-    .appShellMain, .appShellGridAreaRight {
+    .appShellMaxHeightBelowHeader {
         height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-md));
         max-height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-md));
     }
 }
 
 @media (max-width: 75em) {
-    .appShellMain, .appShellGridAreaRight {
+    .appShellMaxHeightBelowHeader {
         height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-lg));
         max-height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-lg));
     }
 }
 
 @media (min-width: 75em) {
-    .appShellMain, .appShellGridAreaRight {
+    .appShellMaxHeightBelowHeader {
         height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-xl));
         max-height: calc(100vh - var(--appbuilder-appshelltemplate-headerheight-xl));
     }

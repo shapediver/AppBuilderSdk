@@ -136,7 +136,7 @@ export default function AppBuilderAppShellTemplatePage(props: Props & Partial<St
 					}
 				</AppShell.Navbar>
 				<AppShell.Main
-					className={`${classes.appShellMain}`} style={rootStyle}
+					className={`${classes.appShellMain} ${showHeader ? classes.appShellMaxHeightBelowHeader : classes.appShellMaxHeight}`} style={rootStyle}
 				>
 					<section
 						className={classes.appShellGridAreaMain}
