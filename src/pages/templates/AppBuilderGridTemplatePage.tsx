@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./AppBuilderGridTemplatePage.module.css";
-import { Button, MantineThemeComponent, useProps } from "@mantine/core";
+import { MantineThemeComponent, useProps } from "@mantine/core";
 import AppBuilderContainerWrapper from "./AppBuilderContainerWrapper";
 import { createGridLayout } from "utils/layout";
 
@@ -21,8 +21,6 @@ interface StyleProps {
 	bgRight: string;
 	/** bottom background color */
 	bgBottom: string;
-	/** Should buttons for showing/hiding the containers be shown? */
-	showContainerButtons: boolean;
 	/** Number of grid columns */
 	columns: number;
 	/** Number of grid rows */
@@ -42,7 +40,6 @@ const defaultStyleProps: StyleProps = {
 	bgLeft: "transparent",
 	bgRight: "transparent",
 	bgBottom: "transparent",
-	showContainerButtons: false,
 	columns: 4,
 	rows: 4,
 	leftColumns: 1,
@@ -80,7 +77,6 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 		bgLeft, 
 		bgRight, 
 		bgBottom,
-		showContainerButtons,
 		columns,
 		rows,
 		leftColumns,
@@ -89,21 +85,16 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 		bottomRows,
 	} = useProps("AppBuilderGridTemplatePage", defaultStyleProps, props);
 
-	const [isTopDisplayed, setIsTopDisplayed] = useState(!!top);
-	const [isLeftDisplayed, setIsLeftDisplayed] = useState(!!left);
-	const [isRightDisplayed, setIsRightDisplayed] = useState(!!right);
-	const [isBottomDisplayed, setIsBottomDisplayed] = useState(!!bottom);
-
 	const rootRef = useRef<HTMLDivElement>(null);
 	const [rootStyle, setRootStyle] = useState<React.CSSProperties>({
 		// We need to define the background color here, because the corresponding element
 		// is used for fullscreen mode and would otherwise be transparent (show as black).
 		backgroundColor: "var(--mantine-color-body)",
 		...(createGridLayout({
-			hasTop: showContainerButtons ? isTopDisplayed : !!top, 
-			hasLeft: showContainerButtons ? isLeftDisplayed : !!left,
-			hasRight: showContainerButtons ? isRightDisplayed : !!right,
-			hasBottom: showContainerButtons ? isBottomDisplayed : !!bottom,
+			hasTop: !!top, 
+			hasLeft: !!left,
+			hasRight: !!right,
+			hasBottom: !!bottom,
 			rows, columns, topRows, leftColumns, rightColumns, bottomRows
 		})),
 	});
@@ -112,40 +103,31 @@ export default function AppBuilderGridTemplatePage(props: Props & Partial<StyleP
 		setRootStyle({
 			...rootStyle,
 			...(createGridLayout({
-				hasTop: showContainerButtons ? isTopDisplayed : !!top, 
-				hasLeft: showContainerButtons ? isLeftDisplayed : !!left,
-				hasRight: showContainerButtons ? isRightDisplayed : !!right,
-				hasBottom: showContainerButtons ? isBottomDisplayed : !!bottom,
+				hasTop: !!top, 
+				hasLeft: !!left,
+				hasRight: !!right,
+				hasBottom: !!bottom,
 				rows, columns, topRows, leftColumns, rightColumns, bottomRows
 			}))
 		});
 	}, [left, right, bottom, top, 
-		isTopDisplayed, isLeftDisplayed, isRightDisplayed, isBottomDisplayed, 
-		showContainerButtons,
 		columns, rows, leftColumns, rightColumns, topRows, bottomRows
 	]);
 
 	return (
 		<>
-			{showContainerButtons ? <Button.Group className={classes.buttonsTop}>
-				<Button variant="filled" onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
-				<Button variant="filled" onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
-				<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
-				<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
-			</Button.Group> : <></>}
-
 			<section ref={rootRef} className={`${classes.appBuilderTemplatePage} viewer-fullscreen-area`} style={rootStyle}>
 
-				{ top && isTopDisplayed ? <section className={classes.appBuilderTemplatePageTop} style={{background: bgTop}}>
+				{ top ? <section className={classes.appBuilderTemplatePageTop} style={{background: bgTop}}>
 					<AppBuilderContainerWrapper orientation="horizontal" name="top">{top}</AppBuilderContainerWrapper></section> : undefined }
 
-				{ left && isLeftDisplayed ? <section className={classes.appBuilderTemplatePageLeft} style={{background: bgLeft}}>
+				{ left ? <section className={classes.appBuilderTemplatePageLeft} style={{background: bgLeft}}>
 					<AppBuilderContainerWrapper orientation="vertical" name="left">{left}</AppBuilderContainerWrapper></section> : undefined }
 
-				{ right && isRightDisplayed ? <section className={classes.appBuilderTemplatePageRight} style={{background: bgRight}}>
+				{ right ? <section className={classes.appBuilderTemplatePageRight} style={{background: bgRight}}>
 					<AppBuilderContainerWrapper orientation="vertical" name="right">{right}</AppBuilderContainerWrapper></section> : undefined }
 
-				{ bottom && isBottomDisplayed ? <section className={classes.appBuilderTemplatePageBottom} style={{background: bgBottom}}>
+				{ bottom ? <section className={classes.appBuilderTemplatePageBottom} style={{background: bgBottom}}>
 					<AppBuilderContainerWrapper orientation="horizontal" name="bottom">{bottom}</AppBuilderContainerWrapper></section> : undefined }
 				
 				<section

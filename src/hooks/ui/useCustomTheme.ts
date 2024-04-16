@@ -252,7 +252,6 @@ export const useCustomTheme = () => {
 				// bgLeft: "transparent", 
 				// bgRight: "transparent", 
 				// bgBottom: "transparent", 
-				// showContainerButtons: true,
 				// columns: 5,
 				// rows: 4,
 				// leftColumns: 1,
@@ -280,6 +279,7 @@ export const useCustomTheme = () => {
 			AppBuilderTemplateSelector: AppBuilderTemplateSelectorThemeProps({
 				// template: "appshell" // default
 				// template: "grid" 
+				showContainerButtons: true,
 			}),
 			/***
 			 * AppBuilderTextWidgetComponent
