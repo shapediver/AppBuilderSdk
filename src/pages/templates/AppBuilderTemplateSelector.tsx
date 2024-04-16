@@ -3,6 +3,7 @@ import { Button, MantineThemeComponent, useProps } from "@mantine/core";
 import AppBuilderAppShellTemplatePage from "./AppBuilderAppShellTemplatePage";
 import AppBuilderGridTemplatePage from "./AppBuilderGridTemplatePage";
 import classes from "./AppBuilderTemplateSelector.module.css";
+import { AppBuilderTemplateContext } from "context/AppBuilderContext";
 
 export type AppBuilderTemplateType = "grid" | "appshell"
 
@@ -73,7 +74,9 @@ export default function AppBuilderTemplateSelector(props: Props & Partial<StyleP
 			<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
 			<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
 		</Button.Group> : <></>}
-		<Template {...mainNodes} {...otherNodes} />
+		<AppBuilderTemplateContext.Provider value={{ name: template }}>
+			<Template {...mainNodes} {...otherNodes} />
+		</AppBuilderTemplateContext.Provider>
 	</>
 	);
 }

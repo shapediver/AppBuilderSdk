@@ -188,34 +188,37 @@ export const useCustomTheme = () => {
 			/**
 			 * AppBuilderContainerWrapper
 			 * 
-			 * Used for defining theme overrides per AppBuilder container.
+			 * Used for defining theme overrides per template and per AppBuilder container.
 			 */
 			AppBuilderContainerWrapper: AppBuilderPageThemeProps({
 				containerThemeOverrides: {
-					/** Theme overrides for the "top" container. */
-					top:  {
-						components: {
-							Paper: Paper.extend({
-								defaultProps: {
-									withBorder: false,
-								}
-							}),
-							AppBuilderHorizontalContainer: {
-								defaultProps: {
-									justify: "left"
-								}
-							},
-							AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
-								styles: { root: { overflow: "clip" }}
-							}),
-						}
-					},
-					/** Theme overrides for the "bottom" container. */
-					bottom: {
-						components: {
-							AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
-								styles: { root: { overflow: "auto" }}
-							}),
+					/** Theme overrides for the "appshell" template. */
+					appshell: {
+						/** Theme overrides for the "top" container. */
+						top:  {
+							components: {
+								Paper: Paper.extend({
+									defaultProps: {
+										withBorder: false,
+									}
+								}),
+								AppBuilderHorizontalContainer: {
+									defaultProps: {
+										justify: "left"
+									}
+								},
+								AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+									styles: { root: { overflow: "clip" }}
+								}),
+							}
+						},
+						/** Theme overrides for the "bottom" container. */
+						bottom: {
+							components: {
+								AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+									styles: { root: { overflow: "auto" }}
+								}),
+							}
 						}
 					}
 				}

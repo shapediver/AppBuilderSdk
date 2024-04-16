@@ -1,5 +1,5 @@
 import { useProps } from "@mantine/core";
-import { AppBuilderContainerContext } from "context/AppBuilderContext";
+import { AppBuilderContainerContext, AppBuilderTemplateContext } from "context/AppBuilderContext";
 import { IAppBuilderContainerWrapperStyleProps } from "pages/templates/AppBuilderContainerWrapper";
 import { useContext } from "react";
 
@@ -29,8 +29,9 @@ export function usePropsAppBuilder<T extends Record<string, any>, U extends Part
 		containerThemeOverrides,
 	} = useProps("AppBuilderPage", defaultStyleProps, defaultOverrideProps);
 
+	const { name: template } = useContext(AppBuilderTemplateContext);
 	const context = useContext(AppBuilderContainerContext);
-	const overrides = containerThemeOverrides[context.name]?.components?.[component]?.defaultProps ?? {};
+	const overrides = containerThemeOverrides[template]?.[context.name]?.components?.[component]?.defaultProps ?? {};
  
 	return {
 		...customprops,

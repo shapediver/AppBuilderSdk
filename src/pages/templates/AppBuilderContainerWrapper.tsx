@@ -1,5 +1,5 @@
-import React, { } from "react";
-import { AppBuilderContainerContext, IAppBuilderContainerContext } from "context/AppBuilderContext";
+import React, { useContext } from "react";
+import { AppBuilderContainerContext, AppBuilderTemplateContext, IAppBuilderContainerContext } from "context/AppBuilderContext";
 import { MantineThemeComponent, MantineThemeOverride, MantineThemeProvider, useProps } from "@mantine/core";
 import AppBuilderVerticalContainer from "./AppBuilderVerticalContainer";
 import AppBuilderHorizontalContainer from "./AppBuilderHorizontalContainer";
@@ -10,8 +10,8 @@ interface Props {
 	children?: React.ReactNode;
 }
 
-/** Type for defining them overrides per AppBuilder container */
-type ThemeOverridePerContainerType = { [key: string]: MantineThemeOverride };
+/** Type for defining them overrides per Template name and AppBuilder container name */
+type ThemeOverridePerContainerType = { [key: string]: { [key: string]: MantineThemeOverride } };
 
 export interface IAppBuilderContainerWrapperStyleProps {
 	/** Theme overrides per container */
@@ -48,6 +48,8 @@ export default function AppBuilderContainerWrapper(props: Props & AppBuilderCont
 		name
 	};
 
+	const { name: template } = useContext(AppBuilderTemplateContext);
+
 	const container = orientation === "vertical" ? 
 		<AppBuilderVerticalContainer>{children}</AppBuilderVerticalContainer> : 
 		<AppBuilderHorizontalContainer>{children}</AppBuilderHorizontalContainer>;
@@ -56,8 +58,8 @@ export default function AppBuilderContainerWrapper(props: Props & AppBuilderCont
 		{container}
 	</AppBuilderContainerContext.Provider>;
 
-	if (name in containerThemeOverrides) {
-		const theme = containerThemeOverrides[name];
+	if (containerThemeOverrides[template]?.[name]) {
+		const theme = containerThemeOverrides[template]?.[name];
 		
 		return <MantineThemeProvider theme={theme}>
 			{c}

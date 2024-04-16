@@ -13,3 +13,15 @@ export const AppBuilderContainerContext = createContext<IAppBuilderContainerCont
 	orientation: "unspecified",
 	name: "unspecified"
 });
+
+/** Types of templates */
+export type AppBuilderTemplateType = "appshell" | "grid" | "unspecified";
+
+export interface IAppBuilderTemplateContext {
+    name: AppBuilderTemplateType,
+}
+
+/** Information about a template. */
+export const AppBuilderTemplateContext = createContext<IAppBuilderTemplateContext>({
+	name: "unspecified"
+});
