@@ -27,7 +27,7 @@ interface StyleProps {
 const defaultStyleProps: StyleProps = {
 	headerHeight:{ base: "4em", md: "4em"},
 	navbarBreakpoint: "md",
-	navbarWidth: { md: 200, lg: 250 }
+	navbarWidth: { md: 250, lg: 300 }
 };
 
 type AppBuilderAppShellTemplatePageThemePropsType = Partial<StyleProps>;
