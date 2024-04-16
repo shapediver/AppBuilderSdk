@@ -192,7 +192,7 @@ export const useCustomTheme = () => {
 			 */
 			AppBuilderContainerWrapper: AppBuilderPageThemeProps({
 				containerThemeOverrides: {
-					/** Example: Theme overrides for the "top" container. */
+					/** Theme overrides for the "top" container. */
 					top:  {
 						components: {
 							Paper: Paper.extend({
@@ -202,12 +202,19 @@ export const useCustomTheme = () => {
 							}),
 							AppBuilderHorizontalContainer: {
 								defaultProps: {
-									//p: "0",
 									justify: "left"
 								}
 							},
 							AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
 								styles: { root: { overflow: "clip" }}
+							}),
+						}
+					},
+					/** Theme overrides for the "bottom" container. */
+					bottom: {
+						components: {
+							AppBuilderTextWidgetComponent: AppBuilderTextWidgetThemeProps({
+								styles: { root: { overflow: "auto" }}
 							}),
 						}
 					}
