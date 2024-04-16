@@ -9,6 +9,7 @@
 .appShellGridAreaRight {
     grid-area: right;
     overflow: auto;
+    border-inline-start: calc(0.0625rem* var(--mantine-scale)) solid var(--app-shell-border-color);
 }
 
 .appShellGridAreaBottom {
