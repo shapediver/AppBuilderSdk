@@ -1,4 +1,4 @@
-import { Accordion, AppShellResponsiveSize, Button, CSSVariablesResolver, ColorInput, DEFAULT_THEME, Group, MantineSize, MantineSpacing, Paper, Stack, StyleProp, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
+import { Accordion, Anchor, AppShellResponsiveSize, Button, CSSVariablesResolver, ColorInput, DEFAULT_THEME, Group, MantineSize, MantineSpacing, Paper, Stack, StyleProp, Switch, Tabs, createTheme, mergeThemeOverrides } from "@mantine/core";
 import { ViewportIconsThemeProps } from "components/shapediver/viewport/ViewportIcons";
 import { ViewportBrandingThemeProps, ViewportComponentThemeProps } from "components/shapediver/viewport/ViewportComponent";
 import { ViewportOverlayWrapperThemeProps } from "components/shapediver/viewport/ViewportOverlayWrapper";
@@ -103,6 +103,16 @@ export const useCustomTheme = () => {
 					pl: padding,
 					pr: padding,
 					pb: padding,
+				}
+			}),
+			/**
+			 * Anchor
+			 * @see https://mantine.dev/core/anchor/
+			 */
+			Anchor: Anchor.extend({
+				defaultProps: {
+					// underline: "hover",
+					c: "inherit",
 				}
 			}),
 			/**
