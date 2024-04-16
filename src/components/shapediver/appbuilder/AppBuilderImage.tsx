@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { Image, ImageProps, MantineThemeComponent, Paper, useProps, Anchor } from "@mantine/core";
+import { Image, ImageProps, MantineThemeComponent, Paper, Anchor } from "@mantine/core";
 import { IAppBuilderWidgetPropsAnchor } from "types/shapediver/appbuilder";
 import { AppBuilderContainerContext } from "context/AppBuilderContext";
+import { usePropsAppBuilder } from "hooks/ui/usePropsAppBuilder";
 
 interface Props extends IAppBuilderWidgetPropsAnchor{
 }
@@ -24,7 +25,7 @@ export function AppBuilderImageThemeProps(props: AppBuilderImageThemePropsType):
 export default function AppBuilderImage(props: SomeImageProps & Props ) {
 	
 	const { anchor, target, ...rest } = props;
-	const { radius, fit } = useProps("AppBuilderImage", defaultStyleProps, rest);
+	const { radius, fit } = usePropsAppBuilder("AppBuilderImage", defaultStyleProps, rest);
 
 	const context = useContext(AppBuilderContainerContext);
 	const orientation = context.orientation;
