@@ -34,7 +34,7 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined, appB
 	const sessionId = props?.id ?? "";
 
 	// start session and register parameters and exports
-	const { sessionApi } = useSession(props ? {
+	const { sessionApi, error: sessionError } = useSession(props ? {
 		...props,
 		acceptRejectMode: true,
 	} : undefined);
@@ -84,7 +84,7 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined, appB
 
 	useEffect(() => console.debug(CUSTOM_DATA_OUTPUT_NAME, parsedData), [parsedData]);
 
-	const error = parsedData instanceof Error ? parsedData : undefined;
+	const error = sessionError ?? (parsedData instanceof Error ? parsedData : undefined);
 	const appBuilderData = parsedData instanceof Error ? undefined : parsedData;
 	const hasAppBuilderOutput = !!outputApi;
 

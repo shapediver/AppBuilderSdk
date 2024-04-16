@@ -37,6 +37,7 @@ export function useSession(props: IUseSessionDto | undefined) {
 	const { createSession, closeSession } = useShapeDiverStoreViewer();
 	const { addSession: addSessionParameters, removeSession: removeSessionParameters } = useShapeDiverStoreParameters();
 	const [sessionApi, setSessionApi] = useState<ISessionApi | undefined>(undefined);
+	const [error, setError] = useState<Error | undefined>(undefined);
 	const promiseChain = useRef(Promise.resolve());
 
 	useEffect(() => {
@@ -48,7 +49,7 @@ export function useSession(props: IUseSessionDto | undefined) {
 		const { registerParametersAndExports = true, acceptRejectMode = false } = props;
 	
 		promiseChain.current = promiseChain.current.then(async () => {
-			const api = await createSession(props);
+			const api = await createSession(props, { onError: setError });
 			setSessionApi(api);
 
 			if (registerParametersAndExports && api) {
@@ -68,6 +69,7 @@ export function useSession(props: IUseSessionDto | undefined) {
 	}, [props?.id]);
 
 	return {
-		sessionApi
+		sessionApi,
+		error
 	};
 }
