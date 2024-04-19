@@ -1,12 +1,21 @@
-# ShapeDiver React template
+# ShapeDiver App Builder SDK
 
-This project introduces some useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer). 
+This repository contains the code of the single page application (SPA) which serves as the frontend of [ShapeDiver App Builder](https://help.shapediver.com/doc/shapediver-app-builder). 
 
 > [!NOTE] 
-> You can see a deployed version of this example [here](https://appbuilder.shapediver.com/v1/main/latest/example.html).
+> You can find the latest deployed version of this code here: [https://appbuilder.shapediver.com/v1/main/latest/](https://appbuilder.shapediver.com/v1/main/latest/)
+>
+> Specific versions can be accessed by using this URL pattern: https://appbuilder.shapediver.com/v1/main/{VERSION}/ 
+>
+> Example: [https://appbuilder.shapediver.com/v1/main/0.3.0-beta.4/](https://appbuilder.shapediver.com/v1/main/0.3.0-beta.4/)
 
-> [!WARNING]
-> Work in progress, please expect frequent changes and refactoring!
+## How to use this
+
+Apart from the App Builder functionality, this repository contains useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer) and the [ShapeDiver Platform Backend](https://help.shapediver.com/doc/platform-backend). If you want to develop a web application using React and ShapeDiver, this is a great codebase to start from. 
+
+Feel free to fork from this repository in case you want to develop and deploy your own flavour of the [App Builder](https://help.shapediver.com/doc/shapediver-app-builder) SPA. 
+
+In case you want to contribute to this repository, feel free to fork it and open pull requests. 
 
 ## Some hints about ShapeDiver
 
