@@ -112,8 +112,6 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 				checked={isVisible}
 				onChange={handleToggle}
 			/>
-
-			{result}
 		</Paper>
 
 		{isVisible && (
