@@ -1,15 +1,15 @@
-import { ShapeDiverResponseParameter } from "@shapediver/sdk.geometry-api-sdk-v2";
 import { AppBuilderSettingsContext } from "context/AppBuilderContext";
 import { Paper, Title, Checkbox, Button, Switch, Slider, Text} from "@mantine/core";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
-import { useSortedParametersAndExports } from "hooks/shapediver/parameters/useSortedParametersAndExports";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
-import { IObjectiveOutputData, OBJECTIVE_OUTPUT_NAME, ParameterValuesType, ShapeDiverModelOptimizerNsga2 } from "optimization/optimizer";
+import { INSGA2ResultExt, IObjectiveOutputData, IShapeDiverModelOptimizer, OBJECTIVE_OUTPUT_NAME, ParameterValuesType, ShapeDiverModelOptimizerNsga2 } from "optimization/optimizer";
 import AlertPage from "pages/misc/AlertPage";
 import React, { useContext, useEffect, useState } from "react";
 import { IAppBuilderWidgetPropsOptimizer } from "types/shapediver/appbuilder";
 import { useParametersStateless } from "hooks/shapediver/parameters/useParametersStateless";
 import { useParameterChanges } from "hooks/shapediver/parameters/useParameterChanges";
+import { ShapeDiverResponseParameterType } from "@shapediver/sdk.geometry-api-sdk-v2";
+import { INSGA2Props } from "optimization/nsga2";
 
 interface Props extends IAppBuilderWidgetPropsOptimizer {
 	/**
@@ -59,19 +59,30 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 		defaultValues[id] = parameters[id].definition.defval;
 	});
 
+	// define parameters to be optimized
+	const parameterIds = Object.keys(parameters).filter(id => 
+		parameters[id].definition.type === ShapeDiverResponseParameterType.FLOAT ||
+		parameters[id].definition.type === ShapeDiverResponseParameterType.INT ||
+		parameters[id].definition.type === ShapeDiverResponseParameterType.BOOL || 
+		parameters[id].definition.type === ShapeDiverResponseParameterType.ODD ||
+		parameters[id].definition.type === ShapeDiverResponseParameterType.EVEN
+	);
+
 	const [populationSize, setPopulationSize] = useState(10);
 	const [maxGenerations, setMaxGenerations] = useState(10);
 	const [checkboxValues, setCheckboxValues] = useState([true, true]);
 	const [isRunning, setIsRunning] = useState(false);
+	const [optimizer, setOptimizer] = useState<IShapeDiverModelOptimizer<INSGA2Props, INSGA2ResultExt<string>>|undefined>(undefined);
 
 	const runOptimizer = async (values) => {
 		const optimizer = await ShapeDiverModelOptimizerNsga2.create({
 			sessionDto, 
 			defaultParameterValues: defaultValues,
 		});
+		setOptimizer(optimizer);
 		console.log("Running optimizer with values:", values);
 		const result = await optimizer.optimize({
-			parameterIds: undefined,
+			parameterIds,
 			optimizerProps: {
 				populationSize: populationSize,
 				maxGenerations: maxGenerations,
@@ -89,7 +100,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	
 	const handleToggle = (event) => {
 		setIsVisible(event.currentTarget.checked);
-	  };
+	};
 
 	const handleCheckboxChange = (index) => {
 		const newValues = [...checkboxValues];
@@ -100,11 +111,11 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	const handleStartClick = () => {
 		setIsRunning(true);
 		runOptimizer(checkboxValues);
-	  };
+	};
 
-	  const handleEndClick = () => {
-		// stop optimizer
-	  };
+	const handleEndClick = () => {
+		optimizer?.requestCancellation();
+	};
 
 	return <>
 
@@ -118,15 +129,16 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 					defaultChecked
 					label={key}
 					onChange={() => handleCheckboxChange(index)}
+					key={index}
 				/>
 
 			))}
 
 			<Button onClick={isRunning ? handleEndClick : handleStartClick} 
 				variant="filled"
-				color={isRunning ? 'orange' : 'blue'}
+				color={isRunning ? "orange" : "blue"}
 			>
-				{isRunning ? 'Stop Optimization' : 'Run Optimization'}
+				{isRunning ? "Stop Optimization" : "Run Optimization"}
 			</Button>
 
 		</Paper>
