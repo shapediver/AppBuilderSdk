@@ -50,6 +50,10 @@ export interface IShapeDiverModelOptimizer<Tprops, Tresult> {
      * @returns 
      */
     optimize: (options: IShapeDiverModelOptimizerProps<Tprops>) => Promise<Tresult>;
+	/**
+	 * Request the cancellation of the optimization
+	 */
+	requestCancellation: () => void;
 }
 
 export interface INSGA2ResultExt<T> extends INSGA2Result<T> {
@@ -80,12 +84,19 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 	constructor(
         private sdk: ShapeDiverSdk, 
         private modelDto: ShapeDiverResponseDto, 
-        private defaultParameterValues: ParameterValuesType
+        private defaultParameterValues: ParameterValuesType,
+		private nsga2?: NSGA2<ChromosomeType>
 	) {
 		this.initialObjectives = this.getObjectives(modelDto);
 		this.objectiveSize = Object.keys(this.initialObjectives).length;
 	}
-
+	
+	requestCancellation() {
+		if (this.nsga2) {
+			this.nsga2.requestCancellation();
+		}
+	}
+	
 	getObjectives(response: ShapeDiverResponseDto): IObjectiveOutputData {
 		const _objectiveOutput = Object.values(response.outputs!).find(output => output.name === OBJECTIVE_OUTPUT_NAME);
 		if (!_objectiveOutput) {
@@ -202,14 +213,15 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 			return objectiveValues;
 		};
 
-		const nsga2 = new NSGA2({
+		this.nsga2 = new NSGA2({
 			chromosomeSize, 
 			genomeFunction, 
 			objectiveSize: this.objectiveSize, 
 			objectiveFunction,
 			...optimizerOptions});
         
-		const { individuals } = await nsga2.optimize(true);
+		const { individuals } = await this.nsga2.optimize(true);
+		this.nsga2 = undefined;
 		const result = {
 			individuals,
 			parameterValues: individuals.map(individual => { 
