@@ -3,7 +3,7 @@
 /**
  * Type of the objective function.
  */
-type ObjectiveFunctionType<Tchromosome> = (chromosome: Tchromosome[]) => number[];
+type ObjectiveFunctionType<Tchromosome> = (chromosome: Tchromosome[]) => Promise<number[]>;
 
 /**
  * Type of the genome function which creates a random chromosome based on the index of the chromosome.
@@ -16,9 +16,17 @@ type GenomeFunctionType<Tchromosome> = (index: number) => Tchromosome;
  */
 export class NSGA2<Tchromosome>
 {
+	/** number of parameters to optimize */
 	chromosomeSize: number;
+	/** number of objectives (metrics) */
 	objectiveSize: number;
+	/** 
+     * Size of the population.
+     */
 	populationSize: number;
+	/** 
+     * Maximum number of generations to compute.
+     */
 	maxGenerations: number;
 	mutationRate: number = 0;
 	crossoverRate: number = 0;
@@ -41,17 +49,24 @@ export class NSGA2<Tchromosome>
 		this.objectiveFunction = objectiveFunction;
 	}
 
-	optimize(frontOnly: boolean = false): any {
+	/**
+     * Run the optimization.
+     * @param frontOnly If true return the individuals on the pareto front only.
+     * @returns 
+     */
+	async optimize(frontOnly: boolean = false): Promise<Individual<Tchromosome>[]> {
 		const timeStamp = Date.now();
 		// First parents
 		let pop: Individual<Tchromosome>[];
-		pop = this.initPopulation();
+		pop = await this.initPopulation();
 		this.sort(pop);
 		pop = this.setCrowdingDistances(pop);
 		// Main loop
 		let generationCount: number = 1;
 		while (generationCount < this.maxGenerations) {
-			const offsprings = this.generateOffsprings(pop);
+			// create offsprings
+			const offsprings = await this.generateOffsprings(pop);
+			// extend the population with the offsprings
 			pop = pop.concat(offsprings);
 			const sortedPop = this.sort(pop);
 			pop = this.setCrowdingDistances(pop);
@@ -74,8 +89,7 @@ export class NSGA2<Tchromosome>
 			generationCount++;
 		}
 		// Timestamp
-		console.log("NSGA2 Finished in " + (Date.now() - timeStamp) + 
-            " milliseconds.");
+		console.log(`NSGA2 Finished in ${(Date.now() - timeStamp)} milliseconds.`);
 		// Return pareto fronts only
 		if (frontOnly) {
 			const fpop: Individual<Tchromosome>[] = [];
@@ -92,22 +106,30 @@ export class NSGA2<Tchromosome>
 	}
 
 
-
-	protected initPopulation(): Individual<Tchromosome>[] {
+	/**
+     * Create initial randome population.
+     * The size is given by the globally configured population size.
+     * @returns 
+     */
+	protected async initPopulation(): Promise<Individual<Tchromosome>[]> {
 		const population : Individual<Tchromosome>[] = [];
 		for (let i = 0; i < this.populationSize; i++) {
-			population[i] = this.createRandomIndividual();
+			population[i] = await this.createRandomIndividual();
 		}
         
 		return population;
 	}
 
-	protected createRandomIndividual(): Individual<Tchromosome> {
+	/**
+     * Create a random individual using the genome function.
+     * @returns 
+     */
+	protected async createRandomIndividual(): Promise<Individual<Tchromosome>> {
 		const newIndividual = new Individual<Tchromosome>(this.chromosomeSize);
 		for (let i = 0; i < this.chromosomeSize; i++) {
 			newIndividual.chromosome[i] = this.genomeFunction(i);
 		}
-		newIndividual.calculateObjectives(this.objectiveFunction);
+		await newIndividual.calculateObjectives(this.objectiveFunction);
         
 		return newIndividual;
 	}
@@ -205,19 +227,31 @@ export class NSGA2<Tchromosome>
 		}
 	}
 
-	protected generateOffsprings(parents: Individual<Tchromosome>[]): Individual<Tchromosome>[] {
+	/**
+     * Create offsprings from the given parents.
+     * The number of offsprings is given by the globally configured population size.
+     * @param parents 
+     * @returns 
+     */
+	protected async generateOffsprings(parents: Individual<Tchromosome>[]): Promise<Individual<Tchromosome>[]> {
 		const offsprings: Individual<Tchromosome>[] = [];
 		while (offsprings.length < this.populationSize) {
 			const parentA = this.getGoodParent(parents);
 			const parentB = this.getGoodParent(parents);
-			const childs = this.mate(parentA, parentB);
+			const childs = await this.mate(parentA, parentB);
 			offsprings.push(childs[0], childs[1]);
 		}
         
 		return offsprings;
 	}
 
-	protected mate(parentA: Individual<Tchromosome>, parentB: Individual<Tchromosome>): Individual<Tchromosome>[] {
+	/**
+     * Mate two parents and return two childs.
+     * @param parentA 
+     * @param parentB 
+     * @returns 
+     */
+	protected async mate(parentA: Individual<Tchromosome>, parentB: Individual<Tchromosome>): Promise<Individual<Tchromosome>[]> {
 		// Create two childs
 		const childs = [new Individual<Tchromosome>(this.chromosomeSize), new Individual<Tchromosome>(this.chromosomeSize)];
 		childs[0].chromosome = 
@@ -229,12 +263,18 @@ export class NSGA2<Tchromosome>
 		// Mutations
 		this.mutate(childs[0], this.mutationRate);
 		this.mutate(childs[1], this.mutationRate);
-		childs[0].calculateObjectives(this.objectiveFunction);
-		childs[1].calculateObjectives(this.objectiveFunction);
+		await childs[0].calculateObjectives(this.objectiveFunction);
+		await childs[1].calculateObjectives(this.objectiveFunction);
         
 		return childs;
 	}
 
+	/**
+     * Crossover two individuals using the given rate.
+     * @param a 
+     * @param b 
+     * @param rate 
+     */
 	protected crossover(a: Individual<Tchromosome>, b: Individual<Tchromosome>, rate: number) {
 		for (let i = 0; i < this.chromosomeSize; i++) {
 			if (Math.random() < rate) {
@@ -245,6 +285,11 @@ export class NSGA2<Tchromosome>
 		}
 	}
 
+	/**
+     * Mutate the individual using the given rate.
+     * @param individual 
+     * @param rate 
+     */
 	protected mutate(individual: Individual<Tchromosome>, rate: number) {
 		for (let i = 0; i < individual.chromosome.length; i++) {
 			if (Math.random() < rate) {
@@ -253,6 +298,11 @@ export class NSGA2<Tchromosome>
 		}
 	}
 
+	/**
+     * Choose a random good parent from the given parents.
+     * @param parents 
+     * @returns 
+     */
 	protected getGoodParent(parents: Individual<Tchromosome>[]): Individual<Tchromosome> {
 		let r: number[];
 		do {
@@ -277,7 +327,7 @@ export class NSGA2<Tchromosome>
 				return parents[r[1]];
 			}
 		}
-        
+
 		/**
          * This should never happen.
          */
@@ -325,8 +375,8 @@ export class Individual<Tchromosome>
      * Calculate the objectives of the individual using the given objective function.
      * @param objectiveFunction 
      */
-	calculateObjectives(objectiveFunction: ObjectiveFunctionType<Tchromosome>) {
-		this.objectives = objectiveFunction(this.chromosome);
+	async calculateObjectives(objectiveFunction: ObjectiveFunctionType<Tchromosome>) {
+		this.objectives = await objectiveFunction(this.chromosome);
 	}
 
 	/**
