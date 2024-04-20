@@ -15,6 +15,7 @@ import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import LoaderPage from "pages/misc/LoaderPage";
 import MarkdownWidgetComponent from "components/shapediver/ui/MarkdownWidgetComponent";
 import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
+import { AppBuilderSettingsContext } from "context/AppBuilderContext";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -113,7 +114,7 @@ You need to disable the *Require strong authorization* setting for your model.
 		</AlertPage> :
 			error ? <AlertPage title="Error">{error.message}</AlertPage> :
 				loading ? <LoaderPage /> :
-					show ? <AppBuilderTemplateSelector
+					show ? <AppBuilderSettingsContext.Provider value={{settings}}><AppBuilderTemplateSelector
 						top={containers.top}
 						left={containers.left}
 						right={containers.right}
@@ -128,7 +129,7 @@ You need to disable the *Require strong authorization* setting for your model.
 								/>
 							</ViewportOverlayWrapper>
 						</ViewportComponent>
-					</AppBuilderTemplateSelector>
+					</AppBuilderTemplateSelector></AppBuilderSettingsContext.Provider>
 						: <></>
 	);
 }

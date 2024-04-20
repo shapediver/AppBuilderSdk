@@ -72,11 +72,17 @@ const IAppBuilderWidgetPropsImageSchema = z.object({
 	target: z.string().default("_blank"),
 }).extend(IAppBuilderWidgetPropsCommonSchema.shape);
 
+// Zod type definition for IAppBuilderWidgetPropsOptimizer
+const IAppBuilderWidgetPropsOptimizerSchema = z.object({
+
+}).extend(IAppBuilderWidgetPropsCommonSchema.shape);
+
 // Zod type definition for IAppBuilderWidget
 const IAppBuilderWidgetSchema = z.discriminatedUnion("type", [
 	z.object({type: z.literal("accordion"), props: IAppBuilderWidgetPropsAccordionSchema}),
 	z.object({type: z.literal("text"), props: IAppBuilderWidgetPropsTextSchema}),
 	z.object({type: z.literal("image"), props: IAppBuilderWidgetPropsImageSchema}),
+	z.object({type: z.literal("optimizer"), props: IAppBuilderWidgetPropsOptimizerSchema}),
 ]);
 
 // Zod type definition for IAppBuilderTab

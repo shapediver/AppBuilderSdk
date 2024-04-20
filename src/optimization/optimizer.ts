@@ -55,12 +55,12 @@ export interface IShapeDiverModelOptimizer<Tprops, Tresult> {
 /**
  * Name of the data output which defines the objectives
  */
-const OBJECTIVE_OUTPUT_NAME = "Objectives";
+export const OBJECTIVE_OUTPUT_NAME = "Objectives";
 
 /**
  * Interface for the data output of the objectives
  */
-interface IObjectOutputData { [key: string]: number }
+export interface IObjectiveOutputData { [key: string]: number }
 
 /**
  * ShapeDiver model optimizer using NSGA2
@@ -68,7 +68,7 @@ interface IObjectOutputData { [key: string]: number }
 export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<INSGA2Props, INSGA2Result<ChromosomeType>> {
 
 	objectiveOutput: ShapeDiverResponseOutputDefinition;
-	initialObjectives: IObjectOutputData;
+	initialObjectives: IObjectiveOutputData;
 	objectiveSize: number;
 
 	constructor(
@@ -88,7 +88,7 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 			throw new Error(`Output "${OBJECTIVE_OUTPUT_NAME}" must have exactly one content item`);
 		}
 
-		this.initialObjectives = content[0].data as IObjectOutputData;
+		this.initialObjectives = content[0].data as IObjectiveOutputData;
 		this.objectiveSize = Object.keys(this.initialObjectives).length;
 	}
 	

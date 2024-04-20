@@ -34,7 +34,7 @@ export interface IAppBuilderExportRef {
 }
 
 /** Types of widgets */
-export type AppBuilderWidgetType = "accordion" | "text" | "image";
+export type AppBuilderWidgetType = "accordion" | "text" | "image" | "optimizer";
 
 /** Common properties of widgets. */
 export interface IAppBuilderWidgetPropsCommon {
@@ -82,12 +82,18 @@ export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommo
 	href?: string
 }
 
+/** Properties of an optimizer widget. */
+export interface IAppBuilderWidgetPropsOptimizer extends IAppBuilderWidgetPropsCommon {
+	/** TODO add properties which can be defined from Grasshopper. */
+	
+}
+
 /** A widget. */
 export interface IAppBuilderWidget {
 	/** Type of the widget. */
 	type: AppBuilderWidgetType
 	/** Properties of the widget. */
-	props: IAppBuilderWidgetPropsAccordion | IAppBuilderWidgetPropsText | IAppBuilderWidgetPropsImage
+	props: IAppBuilderWidgetPropsAccordion | IAppBuilderWidgetPropsText | IAppBuilderWidgetPropsImage | IAppBuilderWidgetPropsOptimizer
 }
 
 /** 
@@ -154,6 +160,11 @@ export function isTextWidget(widget: IAppBuilderWidget): widget is { type: "text
 /** assert widget type "image" */
 export function isImageWidget(widget: IAppBuilderWidget): widget is { type: "image", props: IAppBuilderWidgetPropsImage } {
 	return widget.type === "image";
+}
+
+/** assert widget type "optimizer" */
+export function isOptimizerWidget(widget: IAppBuilderWidget): widget is { type: "optimizer", props: IAppBuilderWidgetPropsOptimizer } {
+	return widget.type === "optimizer";
 }
 
 /**
