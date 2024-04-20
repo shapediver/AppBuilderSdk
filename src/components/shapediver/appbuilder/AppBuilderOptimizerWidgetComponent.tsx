@@ -62,6 +62,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	const [populationSize, setPopulationSize] = useState(10);
 	const [maxGenerations, setMaxGenerations] = useState(10);
 	const [checkboxValues, setCheckboxValues] = useState([true, true]);
+	const [isRunning, setIsRunning] = useState(false);
 
 	const runOptimizer = async (values) => {
 		const optimizer = await ShapeDiverModelOptimizerNsga2.create({sessionDto, defaultParameterValues: defaultValues});
@@ -73,6 +74,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 				maxGenerations: maxGenerations,
 			}
 		});
+		setIsRunning(false);
 		
 		customize(result.parameterValues[0]);
 	};
@@ -88,6 +90,15 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 		newValues[index] = !newValues[index];
 		setCheckboxValues(newValues);
 	};
+
+	const handleStartClick = () => {
+		setIsRunning(true);
+		runOptimizer(checkboxValues);
+	  };
+
+	  const handleEndClick = () => {
+		// stop optimizer
+	  };
 
 	return <>
 
@@ -105,14 +116,20 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 
 			))}
 
-			<Button onClick={() => runOptimizer(checkboxValues)} variant="filled">Run Optimization</Button>
+			<Button onClick={isRunning ? handleEndClick : handleStartClick} 
+				variant="filled"
+				color={isRunning ? 'orange' : 'blue'}
+			>
+				{isRunning ? 'Stop Optimization' : 'Run Optimization'}
+			</Button>
 
-			<Switch
-				label="Avanced options"
-				checked={isVisible}
-				onChange={handleToggle}
-			/>
 		</Paper>
+
+		<Switch
+			label="Avanced options"
+			checked={isVisible}
+			onChange={handleToggle}
+		/>
 
 		{isVisible && (
 			<Paper>
