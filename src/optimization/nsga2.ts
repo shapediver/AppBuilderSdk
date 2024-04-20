@@ -182,12 +182,12 @@ export class NSGA2<Tchromosome>
      * @returns 
      */
 	protected async initPopulation(): Promise<Individual<Tchromosome>[]> {
-		const population : Individual<Tchromosome>[] = [];
+		const population : Promise<Individual<Tchromosome>>[] = [];
 		for (let i = 0; i < this.populationSize; i++) {
-			population[i] = await this.createRandomIndividual();
+			population.push(this.createRandomIndividual());
 		}
-        
-		return population;
+		
+		return await Promise.all(population);
 	}
 
 	/**
@@ -304,16 +304,16 @@ export class NSGA2<Tchromosome>
      * @returns 
      */
 	protected async generateOffsprings(parents: Individual<Tchromosome>[]): Promise<Individual<Tchromosome>[]> {
-		const offsprings: Individual<Tchromosome>[] = [];
-		// TODO parallelize the computation of offsprings
-		while (offsprings.length < this.populationSize) {
+		const offspring: Promise<Individual<Tchromosome>[]>[] = [];
+		let numOffsprings = 0;
+		while (numOffsprings < this.populationSize) {
 			const parentA = this.getGoodParent(parents);
 			const parentB = this.getGoodParent(parents);
-			const childs = await this.mate(parentA, parentB);
-			offsprings.push(childs[0], childs[1]);
+			offspring.push(this.mate(parentA, parentB));
+			numOffsprings += 2;
 		}
-        
-		return offsprings;
+		
+		return (await Promise.all(offspring)).flat(1);
 	}
 
 	/**
