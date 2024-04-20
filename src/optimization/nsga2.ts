@@ -31,7 +31,7 @@ export interface INSGA2Result<Tchromosome> {
     /**
      * The individuals on the pareto front.
      */
-    individuals: Individual<Tchromosome>[]
+    individuals: IIndividual<Tchromosome>[]
 
 }
 
@@ -134,10 +134,10 @@ export class NSGA2<Tchromosome>
 				}
 			}
             
-			return { individuals: fpop };
+			return { individuals: fpop.map(i => i.getData()) };
 		}
         
-		return { individuals: pop };
+		return { individuals: pop.map(i => i.getData()) };
 	}
 
 
@@ -387,10 +387,18 @@ export class NSGA2<Tchromosome>
 	}
 }
 
+export interface IIndividual<Tchromosome> {
+    chromosome: Tchromosome[];
+	objectives: number[];
+	paretoRank: number;
+	dominatedCount: number;
+	crowdingDistance: number;
+}
+
 /**
  * An individual in the population.
  */
-export class Individual<Tchromosome> 
+export class Individual<Tchromosome> implements IIndividual<Tchromosome>
 {
 	chromosome: Tchromosome[];
 	objectives: number[] = [];
@@ -405,6 +413,17 @@ export class Individual<Tchromosome>
      */
 	constructor(chromosomeSize: number) {
 		this.chromosome = new Array(chromosomeSize);
+	}
+
+	getData(): IIndividual<Tchromosome> {
+
+		return {
+			chromosome: this.chromosome,
+			objectives: this.objectives,
+			paretoRank: this.paretoRank,
+			dominatedCount: this.dominatedCount,
+			crowdingDistance: this.crowdingDistance
+		};
 	}
 
 	/**

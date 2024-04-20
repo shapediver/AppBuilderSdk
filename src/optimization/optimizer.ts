@@ -202,7 +202,22 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 			objectiveFunction,
 			...optimizerOptions});
         
-		return await nsga2.optimize(true);
+		const { individuals } = await nsga2.optimize(true);
+		const result = {
+			individuals: individuals.map(individual => { 
+				const parameterValues = { ...this.defaultParameterValues};
+				individual.chromosome.forEach((value, index) => {
+					parameterValues[parameterIds[index]] = value;
+				});
+
+				return { 
+					parameterValues,
+					...individual
+				};
+			})
+		};
+
+		return result;
 	}
 
 
