@@ -11,35 +11,70 @@ type ObjectiveFunctionType<Tchromosome> = (chromosome: Tchromosome[]) => Promise
 type GenomeFunctionType<Tchromosome> = (index: number) => Tchromosome;
 
 /**
+ * User-facing properties of the NSGA-II optimization algorithm.
+ */
+export interface INSGA2Props {
+    /** 
+     * Size of the population.
+     */
+    populationSize: number,
+    /** 
+     * Maximum number of generations to compute.
+     */
+    maxGenerations: number,
+}
+
+/**
+ * Result of the NSGA-II optimization algorithm.
+ */
+export interface INSGA2Result<Tchromosome> {
+    /**
+     * The individuals on the pareto front.
+     */
+    individuals: Individual<Tchromosome>[]
+
+}
+
+/**
+ * Internal properties of the NSGA-II optimization algorithm.
+ */
+export interface INSGA2InternalProps<Tchromosome> extends INSGA2Props {
+    /** number of parameters to optimize */
+	chromosomeSize: number, 
+    /** number of objectives (metrics) */
+	objectiveSize: number,
+    /**
+     * Compute the objectives of a chromosome.
+     */
+    objectiveFunction: ObjectiveFunctionType<Tchromosome>,
+    /**
+     * Create a random chromosome based on the index.
+     */
+    genomeFunction: GenomeFunctionType<Tchromosome>
+}
+
+/**
  * A class for the NSGA-II optimization algorithm.
  * Copied and adapted from https://github.com/Aiei/nsga2/tree/master
  */
 export class NSGA2<Tchromosome>
 {
-	/** number of parameters to optimize */
 	chromosomeSize: number;
-	/** number of objectives (metrics) */
 	objectiveSize: number;
-	/** 
-     * Size of the population.
-     */
 	populationSize: number;
-	/** 
-     * Maximum number of generations to compute.
-     */
 	maxGenerations: number;
 	mutationRate: number = 0;
 	crossoverRate: number = 0;
 	objectiveFunction: ObjectiveFunctionType<Tchromosome>;
 	genomeFunction: GenomeFunctionType<Tchromosome>;
 
-	constructor(
-		chromosomeSize: number, 
-		objectiveSize: number,
-		populationSize: number,
-		maxGenerations: number,
-		objectiveFunction: ObjectiveFunctionType<Tchromosome>,
-		genomeFunction: GenomeFunctionType<Tchromosome>
+	constructor( {
+		chromosomeSize, 
+		objectiveSize,
+		populationSize,
+		maxGenerations,
+		objectiveFunction,
+		genomeFunction }: INSGA2InternalProps<Tchromosome>
 	) {
 		this.chromosomeSize = chromosomeSize;
 		this.objectiveSize = objectiveSize;
@@ -52,9 +87,9 @@ export class NSGA2<Tchromosome>
 	/**
      * Run the optimization.
      * @param frontOnly If true return the individuals on the pareto front only.
-     * @returns 
+     * @returns
      */
-	async optimize(frontOnly: boolean = false): Promise<Individual<Tchromosome>[]> {
+	async optimize(frontOnly: boolean = false): Promise<INSGA2Result<Tchromosome>> {
 		const timeStamp = Date.now();
 		// First parents
 		let pop: Individual<Tchromosome>[];
@@ -99,10 +134,10 @@ export class NSGA2<Tchromosome>
 				}
 			}
             
-			return fpop;
+			return { individuals: fpop };
 		}
         
-		return pop;
+		return { individuals: pop };
 	}
 
 
@@ -235,6 +270,7 @@ export class NSGA2<Tchromosome>
      */
 	protected async generateOffsprings(parents: Individual<Tchromosome>[]): Promise<Individual<Tchromosome>[]> {
 		const offsprings: Individual<Tchromosome>[] = [];
+		// TODO parallelize the computation of offsprings
 		while (offsprings.length < this.populationSize) {
 			const parentA = this.getGoodParent(parents);
 			const parentB = this.getGoodParent(parents);
