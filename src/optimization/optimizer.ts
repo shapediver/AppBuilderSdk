@@ -11,7 +11,7 @@ import { INSGA2Props, INSGA2Result, NSGA2 } from "./nsga2";
 /**
  * Type for default parameter values (parameters not to be optimized)
  */
-type DefaultParameterValueType = { [key: string]: string };
+export type ParameterValuesType = { [key: string]: string };
 
 /**
  * Type used for Chromosomes
@@ -29,7 +29,7 @@ export interface IShapeDiverModelOptimizerCreateProps {
     /**
      * Default values for the parameters which should not be optimized
      */
-    defaultParameterValues: DefaultParameterValueType,
+    defaultParameterValues: ParameterValuesType,
 }
 
 /**
@@ -52,6 +52,13 @@ export interface IShapeDiverModelOptimizer<Tprops, Tresult> {
     optimize: (options: IShapeDiverModelOptimizerProps<Tprops>) => Promise<Tresult>;
 }
 
+export interface INSGA2ResultExt<T> extends INSGA2Result<T> {
+	/**
+	 * Parameter values corresponding to the individuals
+	 */
+	parameterValues: ParameterValuesType[];
+}
+
 /**
  * Name of the data output which defines the objectives
  */
@@ -65,7 +72,7 @@ export interface IObjectiveOutputData { [key: string]: number }
 /**
  * ShapeDiver model optimizer using NSGA2
  */
-export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<INSGA2Props, INSGA2Result<ChromosomeType>> {
+export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<INSGA2Props, INSGA2ResultExt<ChromosomeType>> {
 
 	initialObjectives: IObjectiveOutputData;
 	objectiveSize: number;
@@ -73,7 +80,7 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 	constructor(
         private sdk: ShapeDiverSdk, 
         private modelDto: ShapeDiverResponseDto, 
-        private defaultParameterValues: DefaultParameterValueType
+        private defaultParameterValues: ParameterValuesType
 	) {
 		this.initialObjectives = this.getObjectives(modelDto);
 		this.objectiveSize = Object.keys(this.initialObjectives).length;
@@ -103,7 +110,7 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
      * @param props 
      * @returns 
      */
-	public static async create(props: IShapeDiverModelOptimizerCreateProps): Promise<IShapeDiverModelOptimizer<INSGA2Props, INSGA2Result<ChromosomeType>>> {
+	public static async create(props: IShapeDiverModelOptimizerCreateProps): Promise<IShapeDiverModelOptimizer<INSGA2Props, INSGA2ResultExt<ChromosomeType>>> {
 		
 		const { sessionDto, defaultParameterValues } = props;
    
@@ -113,7 +120,7 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 		return new ShapeDiverModelOptimizerNsga2(sdk, modelDto, defaultParameterValues);
 	}
 
-	public async optimize(props: IShapeDiverModelOptimizerProps<INSGA2Props>): Promise<INSGA2Result<ChromosomeType>> {
+	public async optimize(props: IShapeDiverModelOptimizerProps<INSGA2Props>): Promise<INSGA2ResultExt<ChromosomeType>> {
 		const { parameterIds: _parameterIds, optimizerProps: optimizerOptions } = props;
 		
 		const parameterIds = _parameterIds ?? Object.keys(this.modelDto.parameters!);
@@ -204,16 +211,14 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
         
 		const { individuals } = await nsga2.optimize(true);
 		const result = {
-			individuals: individuals.map(individual => { 
+			individuals,
+			parameterValues: individuals.map(individual => { 
 				const parameterValues = { ...this.defaultParameterValues};
 				individual.chromosome.forEach((value, index) => {
 					parameterValues[parameterIds[index]] = value;
 				});
 
-				return { 
-					parameterValues,
-					...individual
-				};
+				return parameterValues;
 			})
 		};
 

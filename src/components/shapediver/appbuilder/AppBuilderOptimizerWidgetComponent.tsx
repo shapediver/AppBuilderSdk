@@ -4,11 +4,12 @@ import { Paper, Title, Checkbox, Button, Switch, Slider, Text} from "@mantine/co
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSortedParametersAndExports } from "hooks/shapediver/parameters/useSortedParametersAndExports";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
-import { IObjectiveOutputData, OBJECTIVE_OUTPUT_NAME, ShapeDiverModelOptimizerNsga2 } from "optimization/optimizer";
+import { IObjectiveOutputData, OBJECTIVE_OUTPUT_NAME, ParameterValuesType, ShapeDiverModelOptimizerNsga2 } from "optimization/optimizer";
 import AlertPage from "pages/misc/AlertPage";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IAppBuilderWidgetPropsOptimizer } from "types/shapediver/appbuilder";
-
+import { useParametersStateless } from "hooks/shapediver/parameters/useParametersStateless";
+import { useParameterChanges } from "hooks/shapediver/parameters/useParameterChanges";
 
 interface Props extends IAppBuilderWidgetPropsOptimizer {
 	/**
@@ -31,15 +32,31 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	const objectives = outputContent?.[0]?.data as IObjectiveOutputData | undefined;
 	if (!objectives) return <AlertPage title="Error">An output named {OBJECTIVE_OUTPUT_NAME} could not be found or provides no data.</AlertPage>;
 
+	const [solution, setSolution] = useState<ParameterValuesType>({});
 
-	// get the parameters of the model
+	// get parameter stores
+	const parameters = useParametersStateless(sessionId);
+	const customize = (values: ParameterValuesType) => {
+		Object.keys(values).forEach(id => {
+			const actions = parameters[id].actions;
+			if (actions.setUiValue(values[id])) {
+				actions.execute(false);
+			}
+		});
+		setSolution(values);
+	};
+	
+	// get parameter changes
 	const parameterProps = useSessionPropsParameter(sessionId);
-	const sortedParamsAndExports = useSortedParametersAndExports(parameterProps);
-
+	const parameterChanges = useParameterChanges(parameterProps);
+	useEffect(() => {
+		parameterChanges.forEach(c => c.accept());
+	}, [solution]);
+	
 	// get default values for the parameters
-	const defaultValues: { [key: string]: string } = {};
-	sortedParamsAndExports.forEach(p => {
-		defaultValues[p.definition.id] = (p.definition as ShapeDiverResponseParameter).defval;
+	const defaultValues: ParameterValuesType = {};
+	Object.keys(parameters).forEach(id => {
+		defaultValues[id] = parameters[id].definition.defval;
 	});
 
 	const [populationSize, setPopulationSize] = useState(10);
@@ -57,6 +74,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 			}
 		});
 		
+		customize(result.parameterValues[0]);
 	};
 
 	const [isVisible, setIsVisible] = useState(false);
@@ -95,6 +113,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 				onChange={handleToggle}
 			/>
 
+			{result}
 		</Paper>
 
 		{isVisible && (
