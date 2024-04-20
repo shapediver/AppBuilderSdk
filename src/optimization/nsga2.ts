@@ -82,14 +82,14 @@ export class NSGA2<Tchromosome>
 	objectiveSize: number;
 	populationSize: number;
 	maxGenerations: number;
-	progressCallback?: ProgressCallbackType;
 	mutationRate: number;
 	crossoverRate: number;
 	objectiveFunction: ObjectiveFunctionType<Tchromosome>;
 	genomeFunction: GenomeFunctionType<Tchromosome>;
-
+	progressCallback?: ProgressCallbackType;
+	cancellationRequested: boolean = false;
+	
 	constructor( {
-		progressCallback,
 		chromosomeSize, 
 		objectiveSize,
 		populationSize,
@@ -97,8 +97,9 @@ export class NSGA2<Tchromosome>
 		mutationRate,
 		crossoverRate,
 		objectiveFunction,
-		genomeFunction }: INSGA2InternalProps<Tchromosome>
-	) {
+		genomeFunction,
+		progressCallback,
+	}: INSGA2InternalProps<Tchromosome>	) {
 		this.chromosomeSize = chromosomeSize;
 		this.objectiveSize = objectiveSize;
 		this.populationSize = populationSize;
@@ -125,6 +126,7 @@ export class NSGA2<Tchromosome>
 		// Main loop
 		let generationCount: number = 1;
 		while (generationCount < this.maxGenerations) {
+			if (this.cancellationRequested) break;
 			this.progressCallback?.(generationCount / this.maxGenerations);
 			// create offsprings
 			const offsprings = await this.generateOffsprings(pop);
@@ -167,6 +169,12 @@ export class NSGA2<Tchromosome>
 		return { individuals: pop.map(i => i.getData()) };
 	}
 
+	/**
+	 * Request cancellation of the optimization.
+	 */
+	async requestCancellation() {
+		this.cancellationRequested = true;
+	}
 
 	/**
      * Create initial randome population.
