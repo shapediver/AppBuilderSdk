@@ -11,6 +11,11 @@ type ObjectiveFunctionType<Tchromosome> = (chromosome: Tchromosome[]) => Promise
 type GenomeFunctionType<Tchromosome> = (index: number) => Tchromosome;
 
 /**
+ * Type of the progress callback.
+ */
+export type ProgressCallbackType = (progress: number) => void;
+
+/**
  * User-facing properties of the NSGA-II optimization algorithm.
  */
 export interface INSGA2Props {
@@ -22,6 +27,20 @@ export interface INSGA2Props {
      * Maximum number of generations to compute.
      */
     maxGenerations: number,
+	/**
+	 * Mutation rate, number between 0 and 1.
+	 */
+	mutationRate: number,
+	/**
+	 * Crossover rate, number between 0 and 1.
+	 */
+	crossoverRate: number,
+	/**
+	 * Optional callback for being notified about the progress of the optimization.
+	 * @param generation 
+	 * @returns 
+	 */
+	progressCallback?: ProgressCallbackType
 }
 
 /**
@@ -63,16 +82,20 @@ export class NSGA2<Tchromosome>
 	objectiveSize: number;
 	populationSize: number;
 	maxGenerations: number;
-	mutationRate: number = 0;
-	crossoverRate: number = 0;
+	progressCallback?: ProgressCallbackType;
+	mutationRate: number;
+	crossoverRate: number;
 	objectiveFunction: ObjectiveFunctionType<Tchromosome>;
 	genomeFunction: GenomeFunctionType<Tchromosome>;
 
 	constructor( {
+		progressCallback,
 		chromosomeSize, 
 		objectiveSize,
 		populationSize,
 		maxGenerations,
+		mutationRate,
+		crossoverRate,
 		objectiveFunction,
 		genomeFunction }: INSGA2InternalProps<Tchromosome>
 	) {
@@ -80,8 +103,11 @@ export class NSGA2<Tchromosome>
 		this.objectiveSize = objectiveSize;
 		this.populationSize = populationSize;
 		this.maxGenerations = maxGenerations;
+		this.progressCallback = progressCallback;
 		this.genomeFunction = genomeFunction;
 		this.objectiveFunction = objectiveFunction;
+		this.crossoverRate = crossoverRate;
+		this.mutationRate = mutationRate;
 	}
 
 	/**
@@ -99,6 +125,7 @@ export class NSGA2<Tchromosome>
 		// Main loop
 		let generationCount: number = 1;
 		while (generationCount < this.maxGenerations) {
+			this.progressCallback?.(generationCount / this.maxGenerations);
 			// create offsprings
 			const offsprings = await this.generateOffsprings(pop);
 			// extend the population with the offsprings
