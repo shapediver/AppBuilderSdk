@@ -11,7 +11,7 @@ import { INSGA2Props, INSGA2Result, NSGA2 } from "./nsga2";
 /**
  * Type for default parameter values (parameters not to be optimized)
  */
-type ParameterValuesType = { [key: string]: string };
+export type ParameterValuesType = { [key: string]: string };
 
 /**
  * Type used for Chromosomes
