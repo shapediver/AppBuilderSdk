@@ -1,5 +1,6 @@
 import { ShapeDiverResponseParameter } from "@shapediver/sdk.geometry-api-sdk-v2";
 import { AppBuilderSettingsContext } from "context/AppBuilderContext";
+import { Paper, Title, List, Button} from "@mantine/core";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSortedParametersAndExports } from "hooks/shapediver/parameters/useSortedParametersAndExports";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
@@ -7,6 +8,8 @@ import { IObjectiveOutputData, OBJECTIVE_OUTPUT_NAME, ShapeDiverModelOptimizerNs
 import AlertPage from "pages/misc/AlertPage";
 import React, { useContext } from "react";
 import { IAppBuilderWidgetPropsOptimizer } from "types/shapediver/appbuilder";
+
+import ParameterSliderComponent from "components/shapediver/parameter/ParameterSliderComponent";
 
 
 interface Props extends IAppBuilderWidgetPropsOptimizer {
@@ -53,6 +56,22 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	};
 
 
-	return <></>;
+	return <>
+	
+		<Paper>
+			<Title order={2}>"Goals to optimize</Title>
+
+			<List>
+				{Object.entries(objectives).map(([key, value], index) => (
+					<List.Item key={index}>
+						{key}: {value}
+					</List.Item>
+				))}
+			</List>
+
+			<Button onClick={runOptimizer} variant="filled">Run Optimization</Button>
+
+		</Paper>
+	</>;
 		
 }
