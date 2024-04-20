@@ -65,14 +65,20 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	const [isRunning, setIsRunning] = useState(false);
 
 	const runOptimizer = async (values) => {
-		const optimizer = await ShapeDiverModelOptimizerNsga2.create({sessionDto, defaultParameterValues: defaultValues});
+		const optimizer = await ShapeDiverModelOptimizerNsga2.create({
+			sessionDto, 
+			defaultParameterValues: defaultValues,
+		});
 		console.log("Running optimizer with values:", values);
 		const result = await optimizer.optimize({
 			parameterIds: undefined,
 			optimizerProps: {
 				populationSize: populationSize,
 				maxGenerations: maxGenerations,
-			}
+				mutationRate: 0.5,
+				crossoverRate: 0.5,
+				progressCallback: (progress) => console.log("Progress:", progress),
+			},
 		});
 		setIsRunning(false);
 		
@@ -143,8 +149,8 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 					onChange={setPopulationSize}
 					showLabelOnHover={false}
 					marks={[
-					{ value: 1, label: '1' },
-					{ value: 100, label: '100' }
+						{ value: 1, label: "1" },
+						{ value: 100, label: "100" }
 					]}
 				/>
 
@@ -157,8 +163,8 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 					onChange={setMaxGenerations}
 					showLabelOnHover={false}
 					marks={[
-					{ value: 1, label: '1' },
-					{ value: 100, label: '100' }
+						{ value: 1, label: "1" },
+						{ value: 100, label: "100" }
 					]}
 				/>
 
