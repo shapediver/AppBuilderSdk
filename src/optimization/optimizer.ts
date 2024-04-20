@@ -1,7 +1,7 @@
 import { 
 	ShapeDiverResponseDto, 
 	ShapeDiverResponseOutput, 
-	ShapeDiverResponseOutputDefinition, 
+	ShapeDiverResponseParameterType, 
 	ShapeDiverSdk, 
 	create 
 } from "@shapediver/sdk.geometry-api-sdk-v2";
@@ -36,7 +36,7 @@ export interface IShapeDiverModelOptimizerCreateProps {
  * Properties for optimizing a ShapeDiver model
  */
 export interface IShapeDiverModelOptimizerProps<Tprops> {
-    parameterIds: string[], 
+    parameterIds?: string[], 
     optimizerProps: Tprops,
 }
 
@@ -67,7 +67,6 @@ export interface IObjectiveOutputData { [key: string]: number }
  */
 export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<INSGA2Props, INSGA2Result<ChromosomeType>> {
 
-	objectiveOutput: ShapeDiverResponseOutputDefinition;
 	initialObjectives: IObjectiveOutputData;
 	objectiveSize: number;
 
@@ -76,20 +75,27 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
         private modelDto: ShapeDiverResponseDto, 
         private defaultParameterValues: DefaultParameterValueType
 	) {
+		this.initialObjectives = this.getObjectives(modelDto);
+		this.objectiveSize = Object.keys(this.initialObjectives).length;
+	}
 
-		const _objectiveOutput = Object.values(modelDto.outputs!).find(output => output.name === OBJECTIVE_OUTPUT_NAME);
+	getObjectives(response: ShapeDiverResponseDto): IObjectiveOutputData {
+		const _objectiveOutput = Object.values(response.outputs!).find(output => output.name === OBJECTIVE_OUTPUT_NAME);
 		if (!_objectiveOutput) {
 			throw new Error(`Output "${OBJECTIVE_OUTPUT_NAME}" not found in model`);
 		}
-		this.objectiveOutput = _objectiveOutput;
+
+		const objectiveOutput = _objectiveOutput as ShapeDiverResponseOutput;
+		if (objectiveOutput.status_computation !== "success" || objectiveOutput.status_collect !== "success") {
+			throw new Error(`Output "${OBJECTIVE_OUTPUT_NAME}" not successfully computed`);
+		}
 		
-		const content = (_objectiveOutput as ShapeDiverResponseOutput).content;
+		const content = objectiveOutput.content;
 		if (!content || content.length !== 1) {
 			throw new Error(`Output "${OBJECTIVE_OUTPUT_NAME}" must have exactly one content item`);
 		}
 
-		this.initialObjectives = content[0].data as IObjectiveOutputData;
-		this.objectiveSize = Object.keys(this.initialObjectives).length;
+		return content[0].data as IObjectiveOutputData;
 	}
 	
 	/**
@@ -108,39 +114,96 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 	}
 
 	public async optimize(props: IShapeDiverModelOptimizerProps<INSGA2Props>): Promise<INSGA2Result<ChromosomeType>> {
-		const { parameterIds, optimizerProps: optimizerOptions } = props;
-
+		const { parameterIds: _parameterIds, optimizerProps: optimizerOptions } = props;
+		
+		const parameterIds = _parameterIds ?? Object.keys(this.modelDto.parameters!);
 		const chromosomeSize = parameterIds.length;
+		
 		const genomeFunction = (index: number): string => {
 			const parameterId = parameterIds[index];
 			const parameterDefinition = this.modelDto.parameters![parameterId];
-			// TODO create random value for parameter
+			if (parameterDefinition.type === ShapeDiverResponseParameterType.BOOL)
+			{
+				return Math.random() < 0.5 ? "true" : "false";
+			}
+			else if (parameterDefinition.type === ShapeDiverResponseParameterType.INT)
+			{
+				const min = parameterDefinition.min as number;
+				const max = parameterDefinition.max as number;
+				const range = max - min;
+				const value = Math.floor(Math.random() * (range + 1)) + min;
+				
+				return (value >= max ? max : value).toString();
+			}
+			else if (parameterDefinition.type === ShapeDiverResponseParameterType.FLOAT)
+			{
+				const min = parameterDefinition.min as number;
+				const max = parameterDefinition.max as number;
+				const range = max - min;
+				
+				return (Math.random() * range + min).toFixed(parameterDefinition.decimalplaces).toString();
+			}
+			else if (parameterDefinition.type === ShapeDiverResponseParameterType.ODD || parameterDefinition.type === ShapeDiverResponseParameterType.EVEN)
+			{
+				const min = parameterDefinition.min as number;
+				const max = parameterDefinition.max as number;
+				const range = Math.round((max - min) / 2);
+				const value = 2 * Math.floor(Math.random() * (range + 1)) + min;
+				
+				return (value >= max ? max : value).toString();
+			}
+			else if (parameterDefinition.type === ShapeDiverResponseParameterType.STRINGLIST)
+			{
+				const choices = parameterDefinition.choices as string[];
+				const index = Math.floor(Math.random() * choices.length);
+				
+				return choices[index >= choices.length ? choices.length - 1 : index];
+			}
+			else {
+				throw new Error(`Unsupported parameter type: ${parameterDefinition.type}`);
+			}
+		};
 
-			return parameterDefinition.defval;
+		const objectiveFunction = async (chromosome: string[]): Promise<number[]> => {
+			// run ShapeDiver computation
+			console.debug("Running ShapeDiver computation with chromosome", chromosome);
+	
+			const body: { [key: string]: string } = { ...this.defaultParameterValues };
+			chromosome.forEach((value, index) => {
+				const parameterId = parameterIds[index];
+				body[parameterId] = value;
+			});
+	
+			const result = await this.sdk.output.customize(this.modelDto.sessionId!, body);
+			const objectives =  this.getObjectives(result);
+
+			if (Object.keys(objectives).length !== this.objectiveSize) {
+				throw new Error(`Expected ${this.objectiveSize} objectives, but got ${Object.keys(objectives).length}`);
+			}
+
+			for (const key in this.initialObjectives) {
+				if (!(key in objectives)) {
+					throw new Error(`Objective "${key}" not found in result`);
+				}
+			}
+
+			const objectiveValues: number[] = [];
+			Object.keys(this.initialObjectives).sort().forEach(key => {
+				objectiveValues.push(objectives[key]);
+			});
+
+			return objectiveValues;
 		};
 
 		const nsga2 = new NSGA2({
 			chromosomeSize, 
 			genomeFunction, 
 			objectiveSize: this.objectiveSize, 
-			objectiveFunction: this.objectiveFunction.bind(this),
+			objectiveFunction,
 			...optimizerOptions});
         
 		return await nsga2.optimize(true);
 	}
-
-	/**
-     * Evaluate the objectives for a given chromosome
-     * @param chromosome 
-     * @returns 
-     */
-	async objectiveFunction(chromosome: string[]): Promise<number[]> {
-		// TODO run ShapeDiver computation
-		console.debug("Running ShapeDiver computation with chromosome", chromosome);
-		
-		return new Array(this.objectiveSize).fill(0);
-	}
-
 
 
 }    
