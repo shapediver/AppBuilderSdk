@@ -1,5 +1,5 @@
 import { AppBuilderSettingsContext } from "context/AppBuilderContext";
-import { Paper, Title, Checkbox, Button, Switch, Slider, Text} from "@mantine/core";
+import { Paper, Title, Checkbox, Button, Switch, Slider, Text, Progress} from "@mantine/core";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
 import { INSGA2ResultExt, IObjectiveOutputData, IShapeDiverModelOptimizer, OBJECTIVE_OUTPUT_NAME, ParameterValuesType, ShapeDiverModelOptimizerNsga2 } from "optimization/optimizer";
@@ -73,6 +73,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	const [checkboxValues, setCheckboxValues] = useState([true, true]);
 	const [isRunning, setIsRunning] = useState(false);
 	const [optimizer, setOptimizer] = useState<IShapeDiverModelOptimizer<INSGA2Props, INSGA2ResultExt<string>>|undefined>(undefined);
+	const [progress, setProgress] = useState(0);
 
 	const runOptimizer = async (values) => {
 		const optimizer = await ShapeDiverModelOptimizerNsga2.create({
@@ -88,11 +89,10 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 				maxGenerations: maxGenerations,
 				mutationRate: 0.5,
 				crossoverRate: 0.5,
-				progressCallback: (progress) => console.log("Progress:", progress),
+				progressCallback: (progress) => setProgress(progress*100),
 			},
 		});
 		setIsRunning(false);
-		
 		customize(result.parameterValues[0]);
 	};
 
@@ -130,6 +130,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 					label={key}
 					onChange={() => handleCheckboxChange(index)}
 					key={index}
+					style={{ marginTop: 20 }}
 				/>
 
 			))}
@@ -137,9 +138,14 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 			<Button onClick={isRunning ? handleEndClick : handleStartClick} 
 				variant="filled"
 				color={isRunning ? "orange" : "blue"}
+				style={{ marginTop: 20 }}
 			>
 				{isRunning ? "Stop Optimization" : "Run Optimization"}
 			</Button>
+
+			{isRunning && (
+				<Progress value={progress} style={{ marginTop: 20 }} />
+			)}
 
 		</Paper>
 
@@ -164,6 +170,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 						{ value: 1, label: "1" },
 						{ value: 100, label: "100" }
 					]}
+					style={{ marginTop: 20 }}
 				/>
 
 				<Text>Maximum number of generations</Text>
@@ -178,6 +185,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 						{ value: 1, label: "1" },
 						{ value: 100, label: "100" }
 					]}
+					style={{ marginTop: 20,  marginBottom: 20 }}
 				/>
 
 			</Paper>
