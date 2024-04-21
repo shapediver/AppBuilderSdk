@@ -33,11 +33,26 @@ export interface IShapeDiverModelOptimizerCreateProps {
 }
 
 /**
+ * Type of the generation callback. "individuals" is the current population.
+ */
+export type GenerationCallbackTypeExt<Tchromosome> = (generation: INSGA2ResultExt<Tchromosome>) => void;
+
+/**
  * Properties for optimizing a ShapeDiver model
  */
 export interface IShapeDiverModelOptimizerProps<Tprops> {
+	/**
+	 * Ids of the parameters to be included in the optimization. If not set, all parameters are included.
+	 */
     parameterIds?: string[], 
+	/**
+	 * Optimizer-specific properties
+	 */
     optimizerProps: Tprops,
+	/**
+	 * Callback function to be called after each generation.
+	 */
+	generationCallback?: GenerationCallbackTypeExt<ChromosomeType>,
 }
 
 /**
@@ -132,7 +147,11 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 	}
 
 	public async optimize(props: IShapeDiverModelOptimizerProps<INSGA2Props>): Promise<INSGA2ResultExt<ChromosomeType>> {
-		const { parameterIds: _parameterIds, optimizerProps: optimizerOptions } = props;
+		const { 
+			parameterIds: _parameterIds, 
+			optimizerProps,
+			generationCallback: _generationCallback,
+		} = props;
 		
 		const parameterIds = _parameterIds ?? Object.keys(this.modelDto.parameters!);
 		const chromosomeSize = parameterIds.length;
@@ -184,7 +203,7 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 
 		const objectiveFunction = async (chromosome: string[]): Promise<number[]> => {
 			// run ShapeDiver computation
-			console.debug("Running ShapeDiver computation with chromosome", chromosome);
+			//console.debug("Running ShapeDiver computation with chromosome", chromosome);
 	
 			const body: { [key: string]: string } = { ...this.defaultParameterValues };
 			chromosome.forEach((value, index) => {
@@ -213,16 +232,28 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 			return objectiveValues;
 		};
 
+		const generationCallback = _generationCallback ? 
+			(generation: INSGA2Result<ChromosomeType>) => {
+				_generationCallback(this.mapResult(generation, parameterIds));
+			} : undefined;
+	
 		this.nsga2 = new NSGA2({
 			chromosomeSize, 
 			genomeFunction, 
 			objectiveSize: this.objectiveSize, 
 			objectiveFunction,
-			...optimizerOptions});
+			generationCallback,
+			...optimizerProps});
         
-		const { individuals } = await this.nsga2.optimize(true);
+		const result = await this.nsga2.optimize(true);
 		this.nsga2 = undefined;
-		const result = {
+		
+		return this.mapResult(result, parameterIds);
+	}
+
+	mapResult(result: INSGA2Result<ChromosomeType>, parameterIds: string[]): INSGA2ResultExt<ChromosomeType> {
+		const { individuals } = result;
+		const resultExt = {
 			individuals,
 			parameterValues: individuals.map(individual => { 
 				const parameterValues = { ...this.defaultParameterValues};
@@ -234,8 +265,7 @@ export class ShapeDiverModelOptimizerNsga2 implements IShapeDiverModelOptimizer<
 			})
 		};
 
-		return result;
+		return resultExt;
 	}
-
 
 }    
