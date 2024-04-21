@@ -4,6 +4,10 @@ Find the original paper by Kalyanmoy Deb et al [here](https://www.cse.unr.edu/~s
 
 A video explaining NSGA-II can be found [here](https://www.youtube.com/watch?v=SL-u_7hIqjA).
 
+We started our implementation based on the code available [here](https://github.com/Aiei/nsga2/tree/master), and 
+extended it by extended TypeScript types, support for asynchronous execution, and implementing a connector 
+to ShapeDiver Geometry Backend systems. 
+
 ## NSGA-II as summarized by ChatGPT
 
 The NSGA-II (Non-dominated Sorting Genetic Algorithm II) is a popular multi-objective optimization algorithm designed to solve problems involving multiple conflicting objectives. Developed by Kalyanmoy Deb et al. in 2002, the algorithm is an enhancement of its predecessor, NSGA, and is specifically known for its efficiency and ability to maintain a diverse set of solutions. Here’s a breakdown of its key principles and how it operates:
