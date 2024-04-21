@@ -142,7 +142,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 				crossoverRate: 0.5,
 				progressCallback: (progress) => setProgress(progress*100),
 			},
-			generationCallback: (generation) => customize(generation.parameterValues[0])
+			generationCallback: (generation) => customize(generation.parameterValues[currentBest(generation)])
 		});
 		setIsRunning(false);
 		console.log(currResult);
