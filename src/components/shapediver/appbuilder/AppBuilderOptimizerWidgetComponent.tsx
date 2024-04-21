@@ -1,5 +1,5 @@
 import { AppBuilderSettingsContext } from "context/AppBuilderContext";
-import { Paper, Title, Checkbox, Button, Switch, Slider, Text, Progress} from "@mantine/core";
+import { Paper, Title, Checkbox, Button, Switch, Slider, Text, Progress, Group} from "@mantine/core";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
 import { INSGA2ResultExt, IObjectiveOutputData, IShapeDiverModelOptimizer, OBJECTIVE_OUTPUT_NAME, ParameterValuesType, ShapeDiverModelOptimizerNsga2 } from "optimization/optimizer";
@@ -74,6 +74,57 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 	const [isRunning, setIsRunning] = useState(false);
 	const [optimizer, setOptimizer] = useState<IShapeDiverModelOptimizer<INSGA2Props, INSGA2ResultExt<string>>|undefined>(undefined);
 	const [progress, setProgress] = useState(0);
+	const [result, setResult] = useState< INSGA2ResultExt<string>>();
+
+	const updateWeights = (index,value,custom) => {
+		const newWeights = [...weights];
+    	newWeights[index].value = value;
+    	setWeights(newWeights);
+		if (result&&custom) {
+			console.log(currentBest(result));
+			customize(result.parameterValues[currentBest(result)]);
+		} 
+	};
+
+	const setInitialWeights = () => {
+		const newWeights= [];
+		{Object.entries(objectives).map(([key, value], index) => (
+			newWeights.push({key: key, value: 0.5})
+		))}
+		return newWeights;
+	};
+
+	const [weights, setWeights] = useState(setInitialWeights);
+
+	const individualScore= (ind) => {
+
+		let sum=0;
+		const weightValues = weights.sort((a, b) => a.key.localeCompare(b.key)).map(item => item.value);
+			
+		for (let i = 0; i < ind.objectives.length; i++) {
+			sum += ind.objectives[i]*weightValues[i];
+		}
+
+		return sum;
+	}
+
+	const currentBest = (result: INSGA2ResultExt<string>) => {
+		
+		let bestIndex = 0;
+		let best = individualScore(result.individuals[0]);
+		console.log("looking for curr best: ");
+		console.log(result.individuals);
+		for (let i = 0; i < result.individuals.length; i++) {
+			let curr = individualScore(result.individuals[i]);
+			console.log(curr);
+			if (curr < best) {
+				best=curr;
+				bestIndex=i;
+			}
+		}
+
+		return bestIndex;
+	};
 
 	const runOptimizer = async (values) => {
 		const optimizer = await ShapeDiverModelOptimizerNsga2.create({
@@ -82,7 +133,7 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 		});
 		setOptimizer(optimizer);
 		console.log("Running optimizer with values:", values);
-		const result = await optimizer.optimize({
+		const currResult = await optimizer.optimize({
 			parameterIds,
 			optimizerProps: {
 				populationSize: populationSize,
@@ -93,7 +144,10 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 			},
 		});
 		setIsRunning(false);
-		customize(result.parameterValues[0]);
+		console.log(currResult);
+		setResult(currResult);
+		customize(currResult.parameterValues[currentBest(currResult)]);
+
 	};
 
 	const [isVisible, setIsVisible] = useState(false);
@@ -121,17 +175,33 @@ export default function AppBuilderOptimizerWidgetComponent(props: Props) {
 
 		<Paper>
 			<Title order={2}>Goals to optimize</Title>
-
-
 			{Object.entries(objectives).map(([key, value], index) => (
 
-				<Checkbox
-					defaultChecked
-					label={key}
-					onChange={() => handleCheckboxChange(index)}
-					key={index}
-					style={{ marginTop: 20 }}
-				/>
+				<Group style={{ marginBottom: 20, alignItems: 'center' }}>
+					<Checkbox
+						defaultChecked
+						label={key}
+						onChange={() => handleCheckboxChange(index)}
+						key={index}
+						style={{ marginTop: 20 }}
+					/>
+
+					<Slider
+						min={0}
+						max={1}
+						step={0.1}
+						value={ weights[index].value } 
+						onChange={(val) => updateWeights(index,val, false)}
+						onChangeEnd={(val) => updateWeights(index,val, true)}
+						marks={[
+							{ value: 0, label: "0" },
+							{ value: 1, label: "1" }
+						]}
+						style={{ flexGrow: 1 }}
+					/>
+				</Group>
+
+
 
 			))}
 
