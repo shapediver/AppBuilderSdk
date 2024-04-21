@@ -11,9 +11,14 @@ type ObjectiveFunctionType<Tchromosome> = (chromosome: Tchromosome[]) => Promise
 type GenomeFunctionType<Tchromosome> = (index: number) => Tchromosome;
 
 /**
- * Type of the progress callback.
+ * Type of the progress callback. "progress" is a number between 0 and 1.
  */
 export type ProgressCallbackType = (progress: number) => void;
+
+/**
+ * Type of the generation callback. "individuals" is the current population.
+ */
+export type GenerationCallbackType<Tchromosome> = (generation: INSGA2Result<Tchromosome>) => void;
 
 /**
  * User-facing properties of the NSGA-II optimization algorithm.
@@ -37,8 +42,6 @@ export interface INSGA2Props {
 	crossoverRate: number,
 	/**
 	 * Optional callback for being notified about the progress of the optimization.
-	 * @param generation 
-	 * @returns 
 	 */
 	progressCallback?: ProgressCallbackType
 }
@@ -51,7 +54,6 @@ export interface INSGA2Result<Tchromosome> {
      * The individuals on the pareto front.
      */
     individuals: IIndividual<Tchromosome>[]
-
 }
 
 /**
@@ -70,6 +72,10 @@ export interface INSGA2InternalProps<Tchromosome> extends INSGA2Props {
      * Create a random chromosome based on the index.
      */
     genomeFunction: GenomeFunctionType<Tchromosome>
+	/**
+	 * Optional callback for being notified about the current generation.
+	 */
+	generationCallback?: GenerationCallbackType<Tchromosome>
 }
 
 /**
@@ -89,6 +95,7 @@ export class NSGA2<Tchromosome>
 	currentProgress: number = 0;
 	progressCallback?: ProgressCallbackType;
 	cancellationRequested: boolean = false;
+	generationCallback?: GenerationCallbackType<Tchromosome>;
 	
 	constructor( {
 		chromosomeSize, 
@@ -100,6 +107,7 @@ export class NSGA2<Tchromosome>
 		objectiveFunction,
 		genomeFunction,
 		progressCallback,
+		generationCallback,
 	}: INSGA2InternalProps<Tchromosome>	) {
 		this.chromosomeSize = chromosomeSize;
 		this.objectiveSize = objectiveSize;
@@ -110,6 +118,7 @@ export class NSGA2<Tchromosome>
 		this.objectiveFunction = objectiveFunction;
 		this.crossoverRate = crossoverRate;
 		this.mutationRate = mutationRate;
+		this.generationCallback = generationCallback;
 	}
 
 	/**
@@ -152,22 +161,29 @@ export class NSGA2<Tchromosome>
 				}
 			}
 			pop = nextPop;
+			if (generationCount < this.maxGenerations)
+				this.generationCallback?.(this.createResult(pop, frontOnly));
 			generationCount++;
 		}
 		// Timestamp
 		console.log(`NSGA2 Finished in ${(Date.now() - timeStamp)} milliseconds.`);
-		// Return pareto fronts only
+		
+		return this.createResult(pop, frontOnly);
+	}
+
+	createResult(pop: Individual<Tchromosome>[], frontOnly: boolean): INSGA2Result<Tchromosome> {
 		if (frontOnly) {
+			// Return pareto front only
 			const fpop: Individual<Tchromosome>[] = [];
 			for (const p of pop) {
 				if (p.paretoRank == 1) {
 					fpop.push(p);
 				}
 			}
-            
+
 			return { individuals: fpop.map(i => i.getData()) };
 		}
-        
+		
 		return { individuals: pop.map(i => i.getData()) };
 	}
 
