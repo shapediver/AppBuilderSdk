@@ -86,6 +86,7 @@ export class NSGA2<Tchromosome>
 	crossoverRate: number;
 	objectiveFunction: ObjectiveFunctionType<Tchromosome>;
 	genomeFunction: GenomeFunctionType<Tchromosome>;
+	currentProgress: number = 0;
 	progressCallback?: ProgressCallbackType;
 	cancellationRequested: boolean = false;
 	
@@ -118,6 +119,7 @@ export class NSGA2<Tchromosome>
      */
 	async optimize(frontOnly: boolean = false): Promise<INSGA2Result<Tchromosome>> {
 		const timeStamp = Date.now();
+		this.setProgress(0);
 		// First parents
 		let pop: Individual<Tchromosome>[];
 		pop = await this.initPopulation();
@@ -127,7 +129,7 @@ export class NSGA2<Tchromosome>
 		let generationCount: number = 1;
 		while (generationCount < this.maxGenerations) {
 			if (this.cancellationRequested) break;
-			this.progressCallback?.(generationCount / this.maxGenerations);
+			this.setProgress(generationCount / this.maxGenerations);
 			// create offsprings
 			const offsprings = await this.generateOffsprings(pop);
 			// extend the population with the offsprings
@@ -169,6 +171,16 @@ export class NSGA2<Tchromosome>
 		return { individuals: pop.map(i => i.getData()) };
 	}
 
+	setProgress(progress: number) {
+		this.currentProgress = progress;
+		this.progressCallback?.(progress);
+	}
+
+	addProgress(progress: number) {
+		this.currentProgress += progress;
+		this.progressCallback?.(this.currentProgress);
+	}
+
 	/**
 	 * Request cancellation of the optimization.
 	 */
@@ -184,7 +196,12 @@ export class NSGA2<Tchromosome>
 	protected async initPopulation(): Promise<Individual<Tchromosome>[]> {
 		const population : Promise<Individual<Tchromosome>>[] = [];
 		for (let i = 0; i < this.populationSize; i++) {
-			population.push(this.createRandomIndividual());
+			population.push((() => {
+				const res = this.createRandomIndividual();
+				this.addProgress(1 / (this.populationSize * this.maxGenerations));
+
+				return res;
+			})());
 		}
 		
 		return await Promise.all(population);
@@ -309,7 +326,12 @@ export class NSGA2<Tchromosome>
 		while (numOffsprings < this.populationSize) {
 			const parentA = this.getGoodParent(parents);
 			const parentB = this.getGoodParent(parents);
-			offspring.push(this.mate(parentA, parentB));
+			offspring.push((async () => {
+				const res = await this.mate(parentA, parentB);
+				this.addProgress(2 / (this.populationSize * this.maxGenerations));
+				
+				return res;
+			})());
 			numOffsprings += 2;
 		}
 		
