@@ -1,6 +1,6 @@
 import { ActionIcon, ColorInput } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import ParameterLabelComponent from "components/shapediver/parameter/ParameterLabelComponent";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameterComponentCommons } from "hooks/shapediver/parameters/useParameterComponentCommons";
@@ -18,30 +18,28 @@ export default function ParameterColorComponent(props: PropsParameter) {
 
 	const {
 		definition,
-		value,
-		setValue,
 		handleChange,
+		value,
 		onCancel,
 		disabled
 	} = useParameterComponentCommons<string>(props, 0, state => state.uiValue);
 
-	const defaultValue = convertFromSdColor(definition.defval);
-
-	useEffect(() => setValue(defaultValue), [defaultValue]);
+	const handleSdColorChange = useCallback((val: string) => {
+		handleChange(val.replace("#", "0x") + "ff");
+	}, [handleChange]);
 
 	return <>
 		<ParameterLabelComponent { ...props } cancel={onCancel} />
 		{ definition && <ColorInput
 			placeholder="Pick color"
-			value={value}
-			onChange={setValue}
+			value={convertFromSdColor(value)}
 			rightSection={
-				<ActionIcon onClick={() => handleChange(defaultValue)}>
+				<ActionIcon onClick={() => handleChange(definition.defval)}>
 					<IconRefresh size={16} />
 				</ActionIcon>
 			}
-			onChangeEnd={handleChange}
-			readOnly={disabled}
+			onChangeEnd={handleSdColorChange}
+			disabled={disabled}
 			popoverProps={{withinPortal: false}}
 		/> }
 	</>;
