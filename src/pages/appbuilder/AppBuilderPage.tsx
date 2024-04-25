@@ -93,7 +93,7 @@ or individually for each model in the [Developer settings](https://help.shapediv
 
 Example:
 
-[${window.location}? ticket=TICKET& modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
+[${window.location}?ticket=TICKET&modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
 
 You need to allow [direct embedding](https://help.shapediver.com/doc/developers-settings) for this to work. 
 Copy the *Embedding ticket* and the *Model view URL* from the [Developer settings](https://help.shapediver.com/doc/developers-settings) of your model,
@@ -105,10 +105,22 @@ You need to disable the *Require strong authorization* setting for your model.
 
 `;
 
+	const LocalHostMarkdown = window.location.hostname === "localhost" ? `
+### Local development
+
+Loading models based on their slug is not supported when developing locally.
+Either provide a ticket and modelViewUrl as explained above, or 
+create a json file in directory public and use it like this:
+
+[${window.location}?g=example.json](${window.location}?g=example.json)
+
+
+	` : "";
+
 	return (
 		!settings && !loading && !error && !hasSettings ? <AlertPage>
 			<MarkdownWidgetComponent>
-				{NoSettingsMarkdown}
+				{NoSettingsMarkdown + LocalHostMarkdown}
 			</MarkdownWidgetComponent>
 		</AlertPage> :
 			error ? <AlertPage title="Error">{error.message}</AlertPage> :
