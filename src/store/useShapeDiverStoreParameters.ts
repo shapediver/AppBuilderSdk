@@ -217,13 +217,22 @@ function createExportStore(session: ISessionApi, exportId: string) {
 	/** The static definition of the export. */
 	const definition = exportApi;
 	const sessionExport = exportApi;
+	/** We need to access latest parameter values */
+	const parameterApis = Object.values(session.parameters);
 
 	return create<IShapeDiverExport>(() => ({
 		definition,
 		/** Actions that can be taken on the export. */
 		actions: {
 			request: async (parameters?: { [key: string]: string }) => {
-				return sessionExport.request(parameters);
+				const parametersComplete = parameterApis.reduce((acc, p) => {
+					if ( !(p.id in acc) )
+						acc[p.id] = p.stringify();
+
+					return acc;
+				}, parameters ?? {});
+			
+				return sessionExport.request(parametersComplete);
 			}
 		}
 	}));
