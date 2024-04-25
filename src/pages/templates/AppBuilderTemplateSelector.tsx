@@ -42,6 +42,10 @@ export function AppBuilderTemplateSelectorThemeProps(props: AppBuilderTemplateSe
 	};
 }
 
+const showContainer = (toggleState: boolean | undefined): boolean => toggleState === undefined || toggleState === true;
+
+const buttonVariant = (toggleState: boolean | undefined) => toggleState === undefined ? "outline" : toggleState ? "filled" : "light";
+
 export default function AppBuilderTemplateSelector(props: Props & Partial<StyleProps>) {
 
 	// style properties
@@ -53,26 +57,26 @@ export default function AppBuilderTemplateSelector(props: Props & Partial<StyleP
 
 	const { top, left, right, bottom, ...otherNodes } = nodes;
 
-	const [isTopDisplayed, setIsTopDisplayed] = useState(!!top);
-	const [isLeftDisplayed, setIsLeftDisplayed] = useState(!!left);
-	const [isRightDisplayed, setIsRightDisplayed] = useState(!!right);
-	const [isBottomDisplayed, setIsBottomDisplayed] = useState(!!bottom);
+	const [isTopDisplayed, setIsTopDisplayed] = useState<boolean|undefined>(undefined);
+	const [isLeftDisplayed, setIsLeftDisplayed] = useState<boolean|undefined>(undefined);
+	const [isRightDisplayed, setIsRightDisplayed] = useState<boolean|undefined>(undefined);
+	const [isBottomDisplayed, setIsBottomDisplayed] = useState<boolean|undefined>(undefined);
 
 	const mainNodes = {
-		top: isTopDisplayed ? top : undefined,
-		left: isLeftDisplayed ? left : undefined,
-		right: isRightDisplayed ? right : undefined,
-		bottom: isBottomDisplayed ? bottom : undefined,
+		top: showContainer(isTopDisplayed) ? top : undefined,
+		left: showContainer(isLeftDisplayed) ? left : undefined,
+		right: showContainer(isRightDisplayed) ? right : undefined,
+		bottom: showContainer(isBottomDisplayed) ? bottom : undefined,
 	};
 
 	const Template = templateMap[template];
 
 	return (<>
 		{showContainerButtons ? <Button.Group className={classes.buttonsTop}>
-			<Button variant="filled" onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
-			<Button variant="filled" onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
-			<Button variant="filled" onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
-			<Button variant="filled" onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
+			<Button variant={buttonVariant(isTopDisplayed)} onClick={() => setIsTopDisplayed(!isTopDisplayed)}>Top</Button>
+			<Button variant={buttonVariant(isLeftDisplayed)}  onClick={() => setIsLeftDisplayed(!isLeftDisplayed)} color="indigo">Left</Button>
+			<Button variant={buttonVariant(isRightDisplayed)}  onClick={() => setIsRightDisplayed(!isRightDisplayed)} color="violet">Right</Button>
+			<Button variant={buttonVariant(isBottomDisplayed)}  onClick={() => setIsBottomDisplayed(!isBottomDisplayed)} color="cyan">Bottom</Button>
 		</Button.Group> : <></>}
 		<AppBuilderTemplateContext.Provider value={{ name: template }}>
 			<Template {...mainNodes} {...otherNodes} />
