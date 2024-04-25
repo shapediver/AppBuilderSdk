@@ -60,9 +60,9 @@ function createParameterExecutor<T>(sessionId: string, param: IGenericParameterD
 				
 				return uiValue;
 			}
-			catch // TODO provide possibility to react to exception
+			catch (e)// TODO provide possibility to react to exception
 			{
-				console.debug(`Rejecting change of parameter ${paramId} to ${uiValue}, resetting to ${execValue}`);
+				console.debug(`Rejecting change of parameter ${paramId} to ${uiValue}, resetting to "${execValue}"`, e ?? "(Unknown error)");
 				
 				return execValue;
 			}
