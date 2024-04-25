@@ -27,10 +27,8 @@ export default function useResolveAppBuilderSettings(settings : IAppBuilderSetti
 				jwtToken: result.access_token,
 				platformUrl
 			};
-		} catch (error) {
-			return {
-				platformUrl
-			};
+		} catch (_) {
+			window.location.href = `${platformUrl}/app/login?redirect=${window.location.origin}${window.location.search}`;
 		}
 	});
 
