@@ -479,7 +479,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		if (newDefaultExports.length === existingDefaultExports.length)
 			return;
 		
-		const existingDefaultExportResponses = defaultExportResponses[sessionId];
+		const existingDefaultExportResponses = defaultExportResponses[sessionId] ?? {};
 		const newDefaultExportResponses: IExportResponse = {};
 		Object.keys(existingDefaultExportResponses).forEach(id => {
 			if (exportIds.indexOf(id) < 0)
