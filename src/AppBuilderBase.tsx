@@ -4,6 +4,9 @@ import React, { useEffect } from "react";
 import * as ShapeDiverViewer from "@shapediver/viewer";
 import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "hooks/ui/useCustomTheme";
+import packagejson from "../package.json";
+
+console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 
 declare global {
 	interface Window {
