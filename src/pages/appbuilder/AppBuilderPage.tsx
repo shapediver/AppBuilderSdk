@@ -165,7 +165,7 @@ export default function AppBuilderPage(props: Partial<Props>) {
 
 	return (
 		!settings && !loading && !error && !hasSettings ? <AlertPage>
-			<MarkdownWidgetComponent>
+			<MarkdownWidgetComponent anchorTarget="_self">
 				{NoSettingsMarkdown}
 			</MarkdownWidgetComponent>
 		</AlertPage> :

@@ -1,6 +1,6 @@
 import React from "react";
 import Markdown from "react-markdown";
-import { Anchor, Blockquote, Code, Text, Title, Divider, Image, MantineStyleProps, List, Table } from "@mantine/core";
+import { Anchor, Blockquote, Code, Text, Title, Divider, Image, MantineStyleProps, List, Table, MantineThemeComponent, useProps } from "@mantine/core";
 import { Options } from "react-markdown/lib";
 import remarkDirective from "remark-directive";
 import remarkGfm from "remark-gfm";
@@ -9,6 +9,22 @@ import { v4 as uuid } from "uuid";
 
 interface Props {
 	children: string,
+}
+
+interface StyleProps {
+	anchorTarget: React.HTMLAttributeAnchorTarget
+}
+
+const defaultStyleProps : Partial<StyleProps> = {
+	anchorTarget: "_blank"
+};
+
+type MarkdownWidgetComponentPropsType = Partial<StyleProps>;
+
+export function MarkdownWidgetComponentProps(props: MarkdownWidgetComponentPropsType): MantineThemeComponent {
+	return {
+		defaultProps: props
+	};
 }
 
 const spanDirective = function() {
@@ -52,9 +68,11 @@ const spanDirective = function() {
  *
  * @returns
  */
+export default function MarkdownWidgetComponent(props: Props & Partial<StyleProps>) {
 
+	const { children, ...rest } = props;
+	const { anchorTarget } = useProps("MarkdownWidgetComponent", defaultStyleProps, rest);
 
-export default function MarkdownWidgetComponent({ children = "" }: Props) {
 	const styleProps: MantineStyleProps = {
 		mb: "xs"
 	};
@@ -143,7 +161,7 @@ export default function MarkdownWidgetComponent({ children = "" }: Props) {
 				const {...rest} = props;
 			
 				// @ts-expect-error ignore
-				return <Anchor target="_blank" {...rest} />;
+				return <Anchor target={anchorTarget} {...rest} />;
 			},
 			ul(props) {
 				const {...rest} = props;

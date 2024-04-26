@@ -16,6 +16,7 @@ import { AppBuilderVerticalContainerThemeProps } from "pages/templates/AppBuilde
 import { AppBuilderHorizontalContainerThemeProps } from "pages/templates/AppBuilderHorizontalContainer";
 import { AppBuilderPageThemeProps } from "pages/templates/AppBuilderContainerWrapper";
 import { AppBuilderTextWidgetThemeProps } from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
+import { MarkdownWidgetComponentProps } from "components/shapediver/ui/MarkdownWidgetComponent";
 
 /**
  * Helper function for defining CSS variables for the AppBuilderAppShellTemplate
@@ -346,6 +347,14 @@ export const useCustomTheme = () => {
 			Icon: IconThemeProps({
 				// size: 14,
 				// stroke: 1,
+			}),
+			/**
+			 * MarkdownWidgetComponent
+			 * 
+			 * Used by AppBuilder for displaying markdown.
+			 */
+			MarkdownWidgetComponent: MarkdownWidgetComponentProps({
+				// anchorTarget: "_blank"
 			}),
 			/**
 			 * ParametersAndExportsAccordionComponent
