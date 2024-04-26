@@ -29,7 +29,14 @@ export default function useResolveAppBuilderSettings(settings : IAppBuilderSetti
 			};
 		} catch (error) {
 			if (isPBInvalidRequestOAuthResponseError(error)) {
-				window.location.href = `${platformUrl}/app/login?redirect=${window.location.origin}${window.location.search}`;
+				if (window.location.origin === "https://shapediver.com") {
+					// redirect to www.shapediver.com, because 3rd party auth requires it
+					window.location.href = `https://www.shapediver.com${window.location.pathname}${window.location.search}`;
+				}
+				else {
+					// redirect to platform login
+					window.location.href = `${platformUrl}/app/login?redirect=${window.location.origin}${window.location.pathname}${window.location.search}`;
+				}
 			}
 
 			return { platformUrl };
