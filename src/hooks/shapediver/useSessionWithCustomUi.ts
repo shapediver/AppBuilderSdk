@@ -58,6 +58,7 @@ interface ICustomUiState {
  * Updates of the custom parameter values are fed back to the model as JSON into 
  * a text input named "CustomUI".
  * 
+ * @deprecated The functionality of this hook has been superseded by App Builder. It will be phased out.
  * @param props 
  * @returns 
  */

@@ -6,7 +6,7 @@ import ViewportOverlayWrapper from "../../components/shapediver/viewport/Viewpor
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";

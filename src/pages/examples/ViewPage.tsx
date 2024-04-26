@@ -12,7 +12,7 @@ import { IGenericParameterDefinition } from "types/store/shapediverStoreParamete
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";

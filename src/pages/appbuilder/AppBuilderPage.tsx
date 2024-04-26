@@ -2,8 +2,8 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { ReactElement } from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import useAppBuilderSettings, { isRunningInPlatform } from "hooks/shapediver/useAppBuilderSettings";
-import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
+import useAppBuilderSettings, { isRunningInPlatform } from "hooks/shapediver/appbuilder/useAppBuilderSettings";
+import { useSessionWithAppBuilder } from "hooks/shapediver/appbuilder/useSessionWithAppBuilder";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
 import AppBuilderContainerComponent from "components/shapediver/appbuilder/AppBuilderContainerComponent";

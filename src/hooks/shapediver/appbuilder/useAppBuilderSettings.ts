@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import useAsync from "../misc/useAsync";
+import useAsync from "../../misc/useAsync";
 import { IAppBuilderSettings, IAppBuilderSettingsJson, IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useResolveAppBuilderSettings from "./useResolveAppBuilderSettings";
 import { validateAppBuilderSettingsJson } from "types/shapediver/appbuildertypecheck";
