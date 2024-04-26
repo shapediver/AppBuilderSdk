@@ -3,11 +3,16 @@
 This repository contains the code of the single page application (SPA) which serves as the frontend of [ShapeDiver App Builder](https://help.shapediver.com/doc/shapediver-app-builder). 
 
 > [!NOTE] 
-> You can find the latest deployed version of this code here: [https://appbuilder.shapediver.com/v1/main/latest/](https://appbuilder.shapediver.com/v1/main/latest/)
+> You can find the latest deployed version of this code here:
+>   * Anonymous access (used for embedding of App Builder): [https://appbuilder.shapediver.com/v1/main/latest/](https://appbuilder.shapediver.com/v1/main/latest/)
+>   * In-platform access (requires you to be logged in on the ShapeDiver platform): [https://www.shapediver.com/app/builder/v1/main/latest/](https://www.shapediver.com/app/builder/v1/main/latest/)
 >
-> Specific versions can be accessed by using this URL pattern: https://appbuilder.shapediver.com/v1/main/{VERSION}/ 
+> Click one of these links to see instructions on how to load your model.
+> 
+> Specific versions of the App Builder can be accessed by replacing `latest` with a version string.  
 >
-> Example: [https://appbuilder.shapediver.com/v1/main/0.3.0-beta.7/](https://appbuilder.shapediver.com/v1/main/0.3.0-beta.7/)
+> Example:
+>   * [https://appbuilder.shapediver.com/v1/main/0.3.0-beta.7/](https://appbuilder.shapediver.com/v1/main/0.3.0-beta.7/)
 
 ## What is App Builder ?
 
@@ -16,7 +21,7 @@ Read about ShapeDiver App Builder in our [help center](https://help.shapediver.c
 Highlights of the App Builder SDK: 
 
   * Extensive support for styling using themes
-  * Easy to be forked and extended
+  * Easy to be extended by further types of widgets etc
   * Great starting point for custom web apps using ShapeDiver and React
 
 ### Some hints about the code
@@ -28,8 +33,8 @@ These [components](src/components/shapediver/appbuilder/) are used to render the
 So far we have implemented two [page templates](src/pages/templates/). The template to be used can be configured using a property of the theme. 
 
   * `appshell` (default): 
-    * This template is based on the [AppShell](https://mantine.dev/core/app-shell/) component of Mantine. 
-    * This template allows customization using the theme. 
+    * This template is based on the [AppShell](https://mantine.dev/core/app-shell/) component of Mantine (the components library used by this codebase, read more about it below). 
+    * The `appshell` template allows customization using the theme. 
     * Review the template code [here](src/pages/templates/AppBuilderAppShellTemplatePage.tsx).
   
   * `grid`: 
@@ -38,41 +43,69 @@ So far we have implemented two [page templates](src/pages/templates/). The templ
     * Review the template code [here](src/pages/templates/AppBuilderGridTemplatePage.tsx).
   
 #### App Builder main page
-This [component](src/pages/appbuilder/AppBuilderPage.tsx) serves as the root of all App Builder pages. It does this: 
+The main page [component](src/pages/appbuilder/AppBuilderPage.tsx) serves as the root of all App Builder pages. It does this: 
 
-  * Use some [custom hooks](src/hooks/appbuilder/) to resolve all the settings to be used based on the [query string](https://en.wikipedia.org/wiki/Query_string). 
-  * Open a [session](https://help.shapediver.com/doc/sessions) with the ShapeDiver model to be used.
-  * Get the JSON content of the [data output](https://help.shapediver.com/doc/outputs-on-the-api#OutputsontheAPI-Dataoutputs) called _AppBuilder_. This content represents the _skeleton_.  
-  * Instantiate App Builder React components based on the skeleton. 
-  * Use the template [selector](src/pages/templates/AppBuilderTemplateSelector.tsx) to render the instantiated components using the selected page template.
+  * Uses some [custom hooks](src/hooks/appbuilder/) to resolve all the settings based on the [query string](https://en.wikipedia.org/wiki/Query_string). 
+  * Opens a [session](https://help.shapediver.com/doc/sessions) with the ShapeDiver model to be used.
+  * Gets the JSON content of the [data output](https://help.shapediver.com/doc/outputs-on-the-api#OutputsontheAPI-Dataoutputs) called _AppBuilder_. This content represents the _skeleton_.  
+  * Instantiates App Builder React components based on the skeleton. 
+  * Uses the template [selector](src/pages/templates/AppBuilderTemplateSelector.tsx) to render the instantiated components using the selected page template.
   * You can find the TypeScript type definition of the skeleton and the settings [here](src/types/shapediver/appbuilder.ts). There are also [validators](src/types/shapediver/appbuildertypecheck.ts) for parsing these objects from JSON and validating them. 
 
 ### Themes
 
-The [useCustomTheme](src/hooks/ui/useCustomTheme.ts) hook defines the default theme. Refer to the documentation of the [Mantine theme object](https://mantine.dev/theming/theme-object/) and the possibility to define [default props for components](https://mantine.dev/theming/default-props/) to understand what can be customized (basically everything). The App Builder components make use of Mantine's [useProps](https://mantine.dev/theming/default-props/#useprops-hook) hook to plug into the theme, which means the behavior and styling of the App Builder components can be controlled by the theme as well.
+The [useCustomTheme](src/hooks/ui/useCustomTheme.ts) hook defines the default theme. Refer to the documentation of the [Mantine theme object](https://mantine.dev/theming/theme-object/) and the possibility to define [default props for Mantine components](https://mantine.dev/theming/default-props/) to understand what can be customized (basically everything). The App Builder components make use of Mantine's [useProps](https://mantine.dev/theming/default-props/#useprops-hook) hook to plug into the theme, which means the behavior and styling of the App Builder components can be controlled by the theme as well.
 
-There is no need to fork and adapt the code to customize the theme. You can store the theme properties to be overridden in a json file, and instruct the App Builder SPA to use this json file using the `g` query string parameter. Some examples: 
+There is no need to fork and adapt the code to customize the theme. You can store the theme properties in a settings file in JSON format, and instruct the App Builder SPA to use the settings from this file using the `g` query string parameter. Some examples: 
 
   * Default theme: 
-    * [Example](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4)
+    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4) 
+    (notice that there is no `g` query string parameter)
   * Custom theme 1: 
-    * [Example](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme1.json)
-    * [JSON file](https://appbuilder.shapediver.com/v1/main/latest/customTheme1.json)
+    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme1.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme1.json)
+    * [customTheme1.json](https://appbuilder.shapediver.com/v1/main/latest/customTheme1.json)
   * Custom theme 2: 
-    * [Example](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme2.json)
-    * [JSON file](https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json)
+    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme2.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme2.json)
+    * [customTheme2.json](https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json)
 
-Note that you can pass an absolute URL to the json file when using the `g` query string parameter. 
+Note that you can pass an absolute URL to the settings file when using the `g` query string parameter, i.e., you can host the settings file anywhere: [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json)
+
+In a later release, we plan to implement a theme editor and to host the settings on the ShapeDiver platform. 
+
+### How to reference models
+
+The following query string parameters can be used to instruct the App Builder SPA which model to load: 
+
+#### Option 1: `slug`
+
+See the following link for instructions on how to use this: [https://www.shapediver.com/app/builder/v1/main/latest/](https://www.shapediver.com/app/builder/v1/main/latest/)
+
+#### Option 2: `ticket` and `modelViewUrl`
+
+See the following link for instructions on how to use this: [https://appbuilder.shapediver.com/v1/main/latest/](https://appbuilder.shapediver.com/v1/main/latest/)
+
+#### Option 3: Referencing a settings file using `g`
+
+You can use a settings file in JSON format to specify which model to load. This supports referencing the model using `slug` or using a `ticket` and `modelViewUrl`. The settings file can also include theme properties as explained above. Example: 
+
+   * Settings file: [perforationswall.json](https://appbuilder.shapediver.com/v1/main/latest/perforationswall.json)
+   * Using the settings file: [https://appbuilder.shapediver.com/v1/main/latest/?g=perforationswall.json](https://appbuilder.shapediver.com/v1/main/latest/?g=perforationswall.json)
+
+As mentioned above, you can pass an absolute URL to the settings file when using the `g` query string parameter, i.e., you can host the settings file anywhere.
  
-### How to contribute
+### How to implement new widgets and contribute
 
 Feel free to fork from this repository in case you want to develop and deploy your own flavour of the [App Builder](https://help.shapediver.com/doc/shapediver-app-builder) SPA. 
 
 In case you want to extend App Builder by new widgets, these are your options: 
 
-  * Option 1: Fork this repository, extend the skeleton [type definition](src/types/shapediver/appbuilder.ts) and the [validator](src/types/shapediver/appbuildertypecheck.ts) by your new widgets, implement them. Then
+  * Option 1: 
+    * Fork this repository, 
+    * extend the skeleton [type definition](src/types/shapediver/appbuilder.ts) and the [skeleton validator](src/types/shapediver/appbuildertypecheck.ts) by your new widget properties (look for `IAppBuilderWidget`), and
+    * implement them. 
+    * Plug your new widgets into [AppBuilderWidgetsComponent](src/components/shapediver/appbuilder/AppBuilderWidgetsComponent.tsx). Then
     * build and deploy yourself, or
-    * submit a pull request. 
+    * submit a pull request to this repository. 
   * Option 2: Create an [issue](issues) and tell us about the widgets you would like to be included. 
   * Option 3: Ask us on the [forum](https://forum.shapediver.com).
 
