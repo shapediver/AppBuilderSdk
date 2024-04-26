@@ -2,7 +2,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { ReactElement } from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import useAppBuilderSettings, { isRunningInPlatform } from "hooks/shapediver/useAppBuilderSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/useSessionWithAppBuilder";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
@@ -17,6 +17,94 @@ import MarkdownWidgetComponent from "components/shapediver/ui/MarkdownWidgetComp
 import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
 
 const VIEWPORT_ID = "viewport_1";
+
+const WelcomePlatformMarkdown = `
+## Welcome to the ShapeDiver App Builder
+
+You can use this page to display any model from your ShapeDiver platform [library](https://help.shapediver.com/doc/model-library), 
+as well as public models. You will be redirected to the login page if you are not logged in to the platform.
+
+You can display:
+
+   * models owned by your account (including private models), 
+   * models shared with you, and
+   * public models.
+
+Note: You do **not** need to enable iframe or direct embedding for this to work.
+
+Example: 
+
+[${window.location}?slug=react-ar-cube](${window.location}?slug=react-ar-cube)
+`;
+
+const WelcomeIframeMarkdown = `
+## Welcome to the ShapeDiver App Builder
+
+This page can be opened directly or embedded in an iframe. 
+Use this page in one of the following ways to display your model:
+
+### Provide the slug of your model
+
+Example: 
+
+[${window.location}?slug=react-ar-cube](${window.location}?slug=react-ar-cube)
+
+You need to allow [iframe embedding](https://help.shapediver.com/doc/iframe-settings) for this to work.
+
+This method supports protection of your model by a short lived token. You can use the *Require strong authorization* setting for your model. 
+This protection can be enabled in the [Embedding settings](https://help.shapediver.com/doc/setup-domains-for-embedding) for all of your models, 
+or individually for each model in the [Developer settings](https://help.shapediver.com/doc/developers-settings).  
+
+### Provide ticket and modelViewUrl
+
+Example:
+
+[${window.location}?ticket=TICKET&modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
+
+You need to allow [direct embedding](https://help.shapediver.com/doc/developers-settings) for this to work. 
+Copy the *Embedding ticket* and the *Model view URL* from the [Developer settings](https://help.shapediver.com/doc/developers-settings) of your model,
+and replace YOUR_TICKET and MODEL_VIEW_URL in the URL shown above.
+
+**Note:**
+This method does **not** support protection of your model by a short lived token. 
+You need to disable the *Require strong authorization* setting for your model. 
+`;
+
+const WelcomeLocalhostMarkdown = `
+## Welcome to the ShapeDiver App Builder
+
+You are using the App Builder SDK in local development mode. 
+Use this page in one of the following ways to display your model:
+
+### Provide the slug of your model
+
+Loading models based on their slug is **not** supported when developing locally.
+
+### Provide ticket and modelViewUrl
+
+Example:
+
+[${window.location}?ticket=TICKET&modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
+
+You need to allow [direct embedding](https://help.shapediver.com/doc/developers-settings) for this to work. 
+Copy the *Embedding ticket* and the *Model view URL* from the [Developer settings](https://help.shapediver.com/doc/developers-settings) of your model,
+and replace YOUR_TICKET and MODEL_VIEW_URL in the URL shown above.
+
+**Note:**
+This method does **not** support protection of your model by a short lived token. 
+You need to disable the *Require strong authorization* setting for your model. 
+
+### Provide a json file
+
+You can store the \`ticket\` and \`modelViewUrl\` in a json file in the \`public\` directory and use it like this:
+
+Example: 
+
+[${window.location}?g=example.json](${window.location}?g=example.json)
+
+Using this method, you can also provide theme settings, as well as further settings useful for local development. 
+Check out the interface \`IAppBuilderSettingsJson\` in the code for all available settings.
+`;
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
@@ -71,56 +159,14 @@ export default function AppBuilderPage(props: Partial<Props>) {
 
 	const show = Object.values(containers).some((c) => c !== undefined) || !showFallbackContainers;
 
-	const NoSettingsMarkdown = `
-## Welcome to the ShapeDiver AppBuilder
-
-This page can be opened directly or embedded in an iframe. 
-Use this page in one of the following ways to display your model:
-
-### Provide the slug of your model
-
-Example: 
-
-[${window.location}?slug=react-ar-cube](${window.location}?slug=react-ar-cube)
-
-You need to allow [iframe embedding](https://help.shapediver.com/doc/iframe-settings) for this to work.
-
-This method supports protection of your model by a short lived token. You can use the *Require strong authorization* setting for your model. 
-This protection can be enabled in the [Embedding settings](https://help.shapediver.com/doc/setup-domains-for-embedding) for all of your models, 
-or individually for each model in the [Developer settings](https://help.shapediver.com/doc/developers-settings).  
-
-### Provide ticket and modelViewUrl
-
-Example:
-
-[${window.location}?ticket=TICKET&modelViewUrl=MODEL_VIEW_URL](${window.location}?ticket=YOUR_TICKET&modelViewUrl=MODEL_VIEW_URL)
-
-You need to allow [direct embedding](https://help.shapediver.com/doc/developers-settings) for this to work. 
-Copy the *Embedding ticket* and the *Model view URL* from the [Developer settings](https://help.shapediver.com/doc/developers-settings) of your model,
-and replace YOUR_TICKET and MODEL_VIEW_URL in the URL shown above.
-
-**Note:**
-This method does **not** support protection of your model by a short lived token. 
-You need to disable the *Require strong authorization* setting for your model. 
-
-`;
-
-	const LocalHostMarkdown = window.location.hostname === "localhost" ? `
-### Local development
-
-Loading models based on their slug is not supported when developing locally.
-Either provide a ticket and modelViewUrl as explained above, or 
-create a json file in directory public and use it like this:
-
-[${window.location}?g=example.json](${window.location}?g=example.json)
-
-
-	` : "";
+	const NoSettingsMarkdown = window.location.hostname === "localhost" ?
+		WelcomeLocalhostMarkdown : 
+		isRunningInPlatform() ? WelcomePlatformMarkdown : WelcomeIframeMarkdown;
 
 	return (
 		!settings && !loading && !error && !hasSettings ? <AlertPage>
 			<MarkdownWidgetComponent>
-				{NoSettingsMarkdown + LocalHostMarkdown}
+				{NoSettingsMarkdown}
 			</MarkdownWidgetComponent>
 		</AlertPage> :
 			error ? <AlertPage title="Error">{error.message}</AlertPage> :
