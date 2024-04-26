@@ -1,6 +1,6 @@
 import useAsync from "../misc/useAsync";
 import { IAppBuilderSettings } from "types/shapediver/appbuilder";
-import { SdPlatformModelGetEmbeddableFields, SdPlatformSdk, create } from "@shapediver/sdk.platform-api-sdk-v1";
+import { SdPlatformModelGetEmbeddableFields, SdPlatformSdk, create, isPBInvalidRequestOAuthResponseError } from "@shapediver/sdk.platform-api-sdk-v1";
 import { getDefaultPlatformUrl, isRunningInPlatform } from "./useAppBuilderSettings";
 import { useRef } from "react";
 
@@ -28,9 +28,11 @@ export default function useResolveAppBuilderSettings(settings : IAppBuilderSetti
 				platformUrl
 			};
 		} catch (error) {
-			return {
-				platformUrl
-			};
+			if (isPBInvalidRequestOAuthResponseError(error)) {
+				window.location.href = `${platformUrl}/app/login?redirect=${window.location.origin}${window.location.search}`;
+			}
+
+			return { platformUrl };
 		}
 	});
 
