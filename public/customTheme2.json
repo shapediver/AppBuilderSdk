@@ -1,0 +1,21 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "primaryColor": "green",
+        "fontFamily": "Courier",
+        "primaryShade": { "light": 3, "dark": 9 },
+        "components": {
+            "Paper": {
+                "defaultProps": {
+                    "shadow": "md"
+                }
+            },
+            "ViewportBranding": {
+                "defaultProps": {
+                    "light": {"logo": null},
+                    "dark": {"logo": null}
+                }
+            }
+        }
+    }
+}

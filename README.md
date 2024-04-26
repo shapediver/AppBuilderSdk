@@ -13,30 +13,68 @@ This repository contains the code of the single page application (SPA) which ser
 
 Read about ShapeDiver App Builder in our [help center](https://help.shapediver.com/doc/shapediver-app-builder). This repository contains the [App Builder Open-Source SDK](https://help.shapediver.com/doc/app-builder-open-source-sdk). Building this code results in the single page application that renders the skeleton consisting of containers, tabs, widgets, and elements as explained [here](https://help.shapediver.com/doc/build-apps-in-grasshopper). 
 
-### Some pointers to the code
+Highlights of the App Builder SDK: 
 
-  * [App Builder React components](src/components/shapediver/appbuilder/) (containers, tabs, widgets)
-  * [App Builder page templates](src/pages/templates/)
-  * [Main App Builder page](src/pages/appbuilder/) (uses the template selector)
-  * [Default theme](src/hooks/ui/useCustomTheme.ts)
-  * [App Builder skeleton type definition](src/types/shapediver/appbuilder.ts)
+  * Extensive support for styling using themes
+  * Easy to be forked and extended
+  * Great starting point for custom web apps using ShapeDiver and React
+
+### Some hints about the code
+
+#### App Builder React components
+These [components](src/components/shapediver/appbuilder/) are used to render the containers, tabs, widgets, and elements defined by the [skeleton](https://help.shapediver.com/doc/build-apps-in-grasshopper). 
+
+#### App Builder page templates
+So far we have implemented two [page templates](src/pages/templates/). The template to be used can be configured using a property of the theme. 
+
+  * `appshell` (default): 
+    * This template is based on the [AppShell](https://mantine.dev/core/app-shell/) component of Mantine. 
+    * This template allows customization using the theme. 
+    * Review the template code [here](src/pages/templates/AppBuilderAppShellTemplatePage.tsx).
+  
+  * `grid`: 
+    * A simple [grid layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout) without responsiveness. 
+    * This template allows customization using the theme.
+    * Review the template code [here](src/pages/templates/AppBuilderGridTemplatePage.tsx).
+  
+#### App Builder main page
+This [component](src/pages/appbuilder/AppBuilderPage.tsx) serves as the root of all App Builder pages. It does this: 
+
+  * Use some [custom hooks](src/hooks/appbuilder/) to resolve all the settings to be used based on the [query string](https://en.wikipedia.org/wiki/Query_string). 
+  * Open a [session](https://help.shapediver.com/doc/sessions) with the ShapeDiver model to be used.
+  * Get the JSON content of the [data output](https://help.shapediver.com/doc/outputs-on-the-api#OutputsontheAPI-Dataoutputs) called _AppBuilder_. This content represents the _skeleton_.  
+  * Instantiate App Builder React components based on the skeleton. 
+  * Use the template [selector](src/pages/templates/AppBuilderTemplateSelector.tsx) to render the instantiated components using the selected page template.
+  * You can find the TypeScript type definition of the skeleton and the settings [here](src/types/shapediver/appbuilder.ts). There are also [validators](src/types/shapediver/appbuildertypecheck.ts) for parsing these objects from JSON and validating them. 
+
+### Themes
+
+The [useCustomTheme](src/hooks/ui/useCustomTheme.ts) hook defines the default theme. Refer to the documentation of the [Mantine theme object](https://mantine.dev/theming/theme-object/) and the possibility to define [default props for components](https://mantine.dev/theming/default-props/) to understand what can be customized (basically everything). The App Builder components make use of Mantine's [useProps](https://mantine.dev/theming/default-props/#useprops-hook) hook to plug into the theme, which means the behavior and styling of the App Builder components can be controlled by the theme as well.
+
+There is no need to fork and adapt the code to customize the theme. You can store the theme properties to be overridden in a json file, and instruct the App Builder SPA to use this json file using the `g` query string parameter. Some examples: 
+
+  * Default theme: 
+    * [Example](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4)
+  * Custom theme 1: 
+    * [Example](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme1.json)
+    * [JSON file](https://appbuilder.shapediver.com/v1/main/latest/customTheme1.json)
+  * Custom theme 2: 
+    * [Example](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme2.json)
+    * [JSON file](https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json)
+
+Note that you can pass an absolute URL to the json file when using the `g` query string parameter. 
+ 
+### How to contribute
 
 Feel free to fork from this repository in case you want to develop and deploy your own flavour of the [App Builder](https://help.shapediver.com/doc/shapediver-app-builder) SPA. 
 
 In case you want to extend App Builder by new widgets, these are your options: 
 
-  * Fork this repository, extend the skeleton [type definition](src/types/shapediver/appbuilder.ts) by your new widgets, implement them. Then
+  * Option 1: Fork this repository, extend the skeleton [type definition](src/types/shapediver/appbuilder.ts) and the [validator](src/types/shapediver/appbuildertypecheck.ts) by your new widgets, implement them. Then
     * build and deploy yourself, or
     * submit a pull request. 
-  * Create an [issue](issues) and tell us about the widgets you would like to be included. 
-  * Ask us on the [forum](https://forum.shapediver.com).
-
-## What else can this codebase do for me ?
-
-Apart from the App Builder functionality, this repository contains useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer) and the [ShapeDiver Platform Backend](https://help.shapediver.com/doc/platform-backend). If you want to develop a web application using React and ShapeDiver, this is a great codebase to start from. 
-
-In case you want to contribute to this repository, feel free to fork it and open pull requests. 
-
+  * Option 2: Create an [issue](issues) and tell us about the widgets you would like to be included. 
+  * Option 3: Ask us on the [forum](https://forum.shapediver.com).
 
 ## Getting started
 
@@ -59,7 +97,7 @@ Recommended extensions:
 
   * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-The example works using [node.js](https://nodejs.dev/en/about/releases/) 18 and 20. 
+The code works using [node.js](https://nodejs.dev/en/about/releases/) 18 and 20. 
 
 ### Further available scripts
 
@@ -92,18 +130,22 @@ The complete API documentation of the ShapeDiver 3D Viewer can be found [here](h
 This example includes some [tickets](https://help.shapediver.com/doc/enable-embedding) of ShapeDiver models for testing. 
 You can [author](https://help.shapediver.com/doc/grasshopper) and [upload](https://help.shapediver.com/doc/uploading-models) your own Grasshopper models.  
 
+## What else can this codebase do for me ?
+
+Apart from the App Builder functionality, this repository contains useful [React](https://react.dev/) components and hooks for using the [ShapeDiver 3D Viewer](https://help.shapediver.com/doc/viewer) and the [ShapeDiver Platform Backend](https://help.shapediver.com/doc/platform-backend). If you want to develop a web application using React and ShapeDiver, this is a great codebase to start from. 
+
+In case you want to contribute to this repository, feel free to fork it and open pull requests. 
 
 ## Dependencies and insights for developers
 
 ### Basics
 
-The example is coded using [TypeScript](https://www.typescriptlang.org/). We use [Vite](https://vitejs.dev/) as a build tool for 
+This codebase is implemented using [TypeScript](https://www.typescriptlang.org/). We use [Vite](https://vitejs.dev/) as a build tool for 
 fast development experience. 
 
 ### UI Kit
 
-This template uses the [Mantine](https://mantine.dev/) UI Kit. However, the code has been developed having reusability in mind, which means 
-it should easily be possible to swap out the UI Kit. 
+This codebase uses the [Mantine](https://mantine.dev/) UI Kit. However, the code has been developed having reusability in mind, which means it will easily be possible to swap out the UI Kit. 
 
 ### State management
 
@@ -145,14 +187,16 @@ Related hooks:
   * [useExport](src/hooks/parameters/useExport.ts)
   * [useParameterComponentCommons](src/hooks/shapediver/parameters/useParameterComponentCommons.ts)
   * [useSortedParametersAndExports](src/hooks/shapediver/parameters/useSortedParametersAndExports.ts)
-
+  * [useParameterChanges](src/hooks/shapediver/parameters/useParameterChanges.ts)
+ 
 Related components: 
  
-  * [Parameter components](src/components/shapediver/parameter) for the most common parameter types supported by ShapeDiver, uses [useParameterComponentCommons](src/hooks/shapediver/parameters/useParameterComponentCommons.ts)
-  * [ExportButtonComponent](src/components/shapediver/exports/ExportButtonComponent.tsx) allows to trigger an export and makes use of [useExport](src/hooks/parameters/useExport.ts)
-  * [ParametersAndExportsAccordionComponent](src/components/shapediver/ui/ParametersAndExportsAccordionComponent.tsx) implements an accordion of grouped parameter and export components
+  * [Parameter components](src/components/shapediver/parameter) 
+  Components for the most common parameter types supported by ShapeDiver, uses [useParameterComponentCommons](src/hooks/shapediver/parameters/useParameterComponentCommons.ts).
+  * [ExportButtonComponent](src/components/shapediver/exports/ExportButtonComponent.tsx) allows to trigger an export and makes use of [useExport](src/hooks/parameters/useExport.ts).
+  * [ParametersAndExportsAccordionComponent](src/components/shapediver/ui/ParametersAndExportsAccordionComponent.tsx) implements an accordion of grouped parameter and export components.
 
 
 ## Disclaimer
 
-This code example is provided as is. We do not warrant it to be useful for any purpose.  
+This code is provided as is. We do not warrant it to be useful for any purpose.  
