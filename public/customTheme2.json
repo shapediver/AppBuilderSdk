@@ -1,0 +1,21 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "primaryColor": "green",
+        "fontFamily": "Courier",
+        "primaryShade": { "light": 3, "dark": 9 },
+        "components": {
+            "Paper": {
+                "defaultProps": {
+                    "shadow": "md"
+                }
+            },
+            "ViewportBranding": {
+                "defaultProps": {
+                    "light": {"logo": "https://i.giphy.com/PkoBC2GlkLJ5yFIWtf.webp"},
+                    "dark": {"logo": "https://i.giphy.com/3y0oCOkdKKRi0.webp"}
+                }
+            }
+        }
+    }
+}

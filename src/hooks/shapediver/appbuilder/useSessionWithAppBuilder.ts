@@ -1,6 +1,6 @@
 import { validateAppBuilder } from "types/shapediver/appbuildertypecheck";
-import { IUseSessionDto, useSession } from "./useSession";
-import { useOutputContent } from "./viewer/useOutputContent";
+import { IUseSessionDto, useSession } from "../useSession";
+import { useOutputContent } from "../viewer/useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
 import { useEffect, useMemo } from "react";
 

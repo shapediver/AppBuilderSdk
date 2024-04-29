@@ -1,4 +1,4 @@
-import useAsync from "../misc/useAsync";
+import useAsync from "../../misc/useAsync";
 import { IAppBuilderSettings } from "types/shapediver/appbuilder";
 import { SdPlatformModelGetEmbeddableFields, SdPlatformSdk, create, isPBInvalidRequestOAuthResponseError } from "@shapediver/sdk.platform-api-sdk-v1";
 import { getDefaultPlatformUrl, isRunningInPlatform } from "./useAppBuilderSettings";

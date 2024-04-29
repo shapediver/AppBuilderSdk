@@ -1,0 +1,22 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "primaryColor": "red",
+        "primaryShade": { "light": 8, "dark": 8 },
+        "defaultRadius": "md",
+        "white": "#a0a0a0",
+        "components": {
+            "AppBuilderTemplateSelector": {
+                "defaultProps": {
+                    "template": "appshell"
+                }
+            },
+            "AppBuilderAppShellTemplatePage": {
+                "defaultProps": {
+                    "headerHeight": {"base": "8em", "md": "10em"},
+                    "navbarWidth": { "md": "20em", "lg": "25em" }
+                }
+            }
+        }
+    }
+}

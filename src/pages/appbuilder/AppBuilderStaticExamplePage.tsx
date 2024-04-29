@@ -11,7 +11,7 @@ import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderIm
 import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
+import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
 import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";

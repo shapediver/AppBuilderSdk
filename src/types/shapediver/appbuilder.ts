@@ -36,16 +36,12 @@ export interface IAppBuilderExportRef {
 /** Types of widgets */
 export type AppBuilderWidgetType = "accordion" | "text" | "image";
 
-/** Common properties of widgets. */
-export interface IAppBuilderWidgetPropsCommon {
-}
-
 /** 
  * Properties of a parameter and export accordion widget.
  * UI elements of the referenced parameters and exports are grouped 
  * and ordered according to their properties (which might be overridden).
  */
-export interface IAppBuilderWidgetPropsAccordion extends IAppBuilderWidgetPropsCommon {
+export interface IAppBuilderWidgetPropsAccordion {
 	/** References to parameters which shall be displayed by the accordion. */
 	parameters?: IAppBuilderParameterRef[]
 	/** References to exports which shall be displayed by the accordion. */
@@ -58,7 +54,7 @@ export interface IAppBuilderWidgetPropsAccordion extends IAppBuilderWidgetPropsC
 }
 
 /** Properties of a text widget. */
-export interface IAppBuilderWidgetPropsText extends IAppBuilderWidgetPropsCommon {
+export interface IAppBuilderWidgetPropsText {
 	/** Plain text. Takes precedence. */
 	text?: string
 	/** Optional markdown. */
@@ -73,7 +69,7 @@ export interface IAppBuilderWidgetPropsAnchor {
 }
 
 /** Properties of an image widget. */
-export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommon, IAppBuilderWidgetPropsAnchor {
+export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsAnchor {
 	/** Optional reference to alternate text which provides the image. */
 	alt?: string,
 	/** Optional reference to export which provides the image. */
@@ -82,18 +78,26 @@ export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsCommo
 	href?: string
 }
 
-/** A widget. */
+/** 
+ * A widget.
+ * 
+ * When implementing a new widget type, extend this interface and 
+ * 
+ *   * add the identifier for the new type to AppBuilderWidgetType, and
+ *   * define a new interface for the properties of the widget type and 
+ *     add it to the union type of "props".
+ */
 export interface IAppBuilderWidget {
 	/** Type of the widget. */
 	type: AppBuilderWidgetType
-	/** Properties of the widget. */
+	/** Properties of the widget. Add properties of  */
 	props: IAppBuilderWidgetPropsAccordion | IAppBuilderWidgetPropsText | IAppBuilderWidgetPropsImage
 }
 
 /** 
  * A tab displayed in a container.
  */
-export interface IAppBuilderTab extends IAppBuilderWidgetPropsCommon {
+export interface IAppBuilderTab {
 	/** Name of the tab. */
 	name: string
 	/** Optional icon of the tab. */
@@ -108,7 +112,7 @@ export type AppBuilderContainerNameType = "left" | "right" | "top" | "bottom";
 /**
  * A container for UI elements
  */
-export interface IAppBuilderContainer extends IAppBuilderWidgetPropsCommon {
+export interface IAppBuilderContainer {
 	/** Name of the container. */
 	name: AppBuilderContainerNameType
 	/** Tabs displayed in the container. */
