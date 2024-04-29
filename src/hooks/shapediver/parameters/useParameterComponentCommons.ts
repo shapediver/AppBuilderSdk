@@ -7,8 +7,10 @@ import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters
 /**
  * Hook providing functionality common to all parameter components like 
  * {@link ParameterSliderComponent}, {@link ParameterStringComponent}, etc.
- * @param props 
- * @returns 
+ * @param props
+ * @param debounceTimeoutForImmediateExecution
+ * @param initializer
+ * @returns
  */
 export function useParameterComponentCommons<T>(
 	props: PropsParameter, 
