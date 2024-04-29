@@ -17,6 +17,7 @@ import { AppBuilderHorizontalContainerThemeProps } from "pages/templates/AppBuil
 import { AppBuilderPageThemeProps } from "pages/templates/AppBuilderContainerWrapper";
 import { AppBuilderTextWidgetThemeProps } from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
 import { MarkdownWidgetComponentProps } from "components/shapediver/ui/MarkdownWidgetComponent";
+import { LoaderPageThemeProps } from "pages/misc/LoaderPage";
 
 /**
  * Helper function for defining CSS variables for the AppBuilderAppShellTemplate
@@ -347,6 +348,18 @@ export const useCustomTheme = () => {
 			Icon: IconThemeProps({
 				// size: 14,
 				// stroke: 1,
+			}),
+			/**
+			 * LoaderPage
+			 * 
+			 * Loader page displayed by AppBuilder while loading.
+			 * 
+			 * Note: Customizing the loader page using a settings json file is not supported, 
+			 * because the loader page is displayed before the settings json file is loaded.
+			 */
+			LoaderPage: LoaderPageThemeProps({
+				// size: "lg",
+				// type: "bars" //| "dots" | "oval"
 			}),
 			/**
 			 * MarkdownWidgetComponent
