@@ -114,7 +114,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 				settings: { disableFallbackUi },
 				themeOverrides: themeOverrides
 			} : (value ? 
-				{ sessions: [(queryParamSession ?? defaultSession)!], ...value } : undefined), 
+				{ sessions: defaultSession || queryParamSession ? [(queryParamSession ?? defaultSession)!] : [], ...value } : undefined), 
 		[value, defaultSession, queryParamSession, themeOverrides]
 	);
 
@@ -131,6 +131,7 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 		settings: resolvedSettings, 
 		error: error || resolveError, 
 		loading: loading || resolveLoading,
-		hasSettings: parameters.size > 0
+		hasSettings: parameters.size > 0,
+		hasSession: (settings?.sessions && settings.sessions.length > 0) || (resolvedSettings?.sessions && resolvedSettings.sessions.length > 0)
 	};
 }

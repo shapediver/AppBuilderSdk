@@ -122,13 +122,13 @@ export default function AppBuilderPage(props: Partial<Props>) {
 	const { defaultSessionDto } = useDefaultSessionDto(props);
 
 	// get settings for app builder from query string
-	const { settings, error: settingsError, loading, hasSettings } = useAppBuilderSettings(defaultSessionDto);
+	const { settings, error: settingsError, loading, hasSettings, hasSession } = useAppBuilderSettings(defaultSessionDto);
 
 	// for now we only make use of the first session in the settings
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const { sessionId, error: appBuilderError, hasAppBuilderOutput, appBuilderData } = useSessionWithAppBuilder(sessionDto, settings?.appBuilderOverride);
 	const error = settingsError ?? appBuilderError;
-
+	
 	// get props for fallback parameters
 	const parameterProps = useSessionPropsParameter(sessionId);
 	const exportProps = useSessionPropsExport(sessionId);
@@ -158,13 +158,18 @@ export default function AppBuilderPage(props: Partial<Props>) {
 	}
 
 	const show = Object.values(containers).some((c) => c !== undefined) || !showFallbackContainers;
+	
+	const showMarkdown = !(settings && hasSession) // no settings or no session
+		&& !loading // not loading
+		&& !error // no error
+		&& !(hasSettings && hasSession); // there are no query string parameters or no session
 
 	const NoSettingsMarkdown = window.location.hostname === "localhost" ?
 		WelcomeLocalhostMarkdown : 
 		isRunningInPlatform() ? WelcomePlatformMarkdown : WelcomeIframeMarkdown;
 
 	return (
-		!settings && !loading && !error && !hasSettings ? <AlertPage>
+		showMarkdown ? <AlertPage>
 			<MarkdownWidgetComponent anchorTarget="_self">
 				{NoSettingsMarkdown}
 			</MarkdownWidgetComponent>

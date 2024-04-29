@@ -92,6 +92,7 @@ You can use a settings file in JSON format to specify which model to load. This 
    * Using the settings file: [https://appbuilder.shapediver.com/v1/main/latest/?g=perforationswall.json](https://appbuilder.shapediver.com/v1/main/latest/?g=perforationswall.json)
 
 As mentioned above, you can pass an absolute URL to the settings file when using the `g` query string parameter, i.e., you can host the settings file anywhere.
+Note that the `slug` (or `ticket` and `modelViewUrl`) defined directly in the settings file take precedence over the query string parameters. 
  
 ### How to implement new widgets and contribute
 
