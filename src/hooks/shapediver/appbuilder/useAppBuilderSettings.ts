@@ -81,9 +81,9 @@ export default function useAppBuilderSettings(defaultSession?: IAppBuilderSettin
 
 	// check for ticket, modelViewUrl, slug and platformUrl
 	const ticket = parameters.get("ticket");
-	const modelViewUrl = parameters.get("modelViewUrl");
+	const modelViewUrl = parameters.get("modelViewUrl")?.replace(/\/+$/, "");
 	const slug = parameters.get("slug");
-	const platformUrl = parameters.get("platformUrl");
+	const platformUrl = parameters.get("platformUrl")?.replace(/\/+$/, "");
 	const disableFallbackUi = isTrueish(parameters.get("disableFallbackUi"));
 	const template = parameters.get("template");
 	
