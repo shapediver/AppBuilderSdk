@@ -212,7 +212,7 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>, acce
 /**
  * Create store for a single export.
  */
-function createExportStore(session: ISessionApi, exportId: string) {
+function createExportStore(session: ISessionApi, exportId: string, token?: string) {
 	const exportApi = session.exports[exportId];
 	/** The static definition of the export. */
 	const definition = exportApi;
@@ -233,6 +233,11 @@ function createExportStore(session: ISessionApi, exportId: string) {
 				}, parameters ?? {});
 			
 				return sessionExport.request(parametersComplete);
+			},
+			fetch: async (url: string) => {
+				return fetch(url, {
+					...(token ? { headers: { Authorization: token } } : {}),
+				});
 			}
 		}
 	}));
@@ -326,7 +331,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 		return changes;
 	},
 
-	addSession: (session: ISessionApi, _acceptRejectMode: boolean | IAcceptRejectModeSelector) => {
+	addSession: (session: ISessionApi, _acceptRejectMode: boolean | IAcceptRejectModeSelector, token?: string) => {
 		const sessionId = session.id;
 		const { parameterStores: parameters, exportStores: exports, getChanges } = get();
 
@@ -370,7 +375,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 				...exports[sessionId]
 					? {} // Keep existing export stores
 					: { [sessionId]: Object.keys(session.exports).reduce((acc, exportId) => {
-						acc[exportId] = createExportStore(session, exportId);
+						acc[exportId] = createExportStore(session, exportId, token);
 
 						return acc;
 					}, {} as IExportStores) } // Create new export stores

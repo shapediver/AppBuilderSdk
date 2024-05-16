@@ -109,9 +109,10 @@ export interface IShapeDiverStoreParameters {
 	 * Add parameter and export stores for all parameters and exports of the session.
 	 * @param session
 	 * @param acceptRejectMode If true, changes are not executed immediately. May be specified as a boolean or a function of the parameter definition.
+	 * @param token Token (JWT) that was used when creating the session. If provided, it will be used for export downloads. Optional.
 	 * @returns
 	 */
-	addSession: (session: ISessionApi, acceptRejectMode: boolean | IAcceptRejectModeSelector) => void,
+	addSession: (session: ISessionApi, acceptRejectMode: boolean | IAcceptRejectModeSelector, token?: string) => void,
 
 	/**
 	 * Add generic parameters. 
