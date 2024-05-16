@@ -28,7 +28,9 @@ export default function ExportButtonComponent(props: PropsExport) {
 				response.content[0] &&
 				response.content[0].href
 			) {
-				await fetchFileWithToken(response.content[0].href, `${response.filename}.${response.content[0].format}`);
+				const url = response.content[0].href;
+				const res = await actions.fetch(url);
+				await fetchFileWithToken(res, `${response.filename}.${response.content[0].format}`);
 			}
 		}
 	};
