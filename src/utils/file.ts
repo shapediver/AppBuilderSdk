@@ -1,5 +1,43 @@
+import { guessMimeTypeFromFilename } from "@shapediver/viewer.utils.mime-type";
+
 /**
- * Download a blob with and use the specified filename.
+ * Given a file name, extract the file extension. 
+ * @param fileName 
+ * @returns 
+ */
+export const getFileExtension = (fileName: string) => {
+	const match = fileName.match(/\.([0-9a-z]+)$/i);
+  
+	return (match && match[1]) ? match[1].toLowerCase() : undefined;
+};
+
+/**
+ * Guess the mime type of a file by its extension.
+ * @param fileName 
+ * @returns 
+ */
+export const guessMimeTypeByExt = (fileName: string) => {
+	return guessMimeTypeFromFilename(fileName)[0];
+};
+
+/**
+ * In case a file is missing a mime type, try to guess it from the file name.
+ * @param file 
+ * @returns 
+ */
+export const guessMissingMimeType = (file: File | string) : File | string => {
+	if (typeof(file) === "string") {
+		return file;
+	}
+	if (file.type) {
+		return file;
+	}
+
+	return new File([file], file.name, { type: guessMimeTypeByExt(file.name) });
+};
+
+/**
+ * Download a blob and use the specified filename.
  *
  * @param blob
  * @param filename
@@ -15,6 +53,47 @@ export const downloadBlobFile = (blob: Blob, filename: string) => {
 };
 
 /**
+ * Download a blob and use the specified filename with the save as dialog.
+ * @param blob 
+ * @param filename 
+ * @returns 
+ */
+export const downloadBlobFileSaveAs = async (blob: Blob, filename: string) => {
+	const isSupported = window && "showSaveFilePicker" in window;
+  
+	if (!isSupported) return downloadBlobFile(blob, filename);
+  
+	const extension = getFileExtension(filename);
+  
+	try {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		const handle = await window.showSaveFilePicker({
+			suggestedName: filename,
+			types: [
+				{
+					accept: { "multipart/form-data": [`.${extension}`] },
+				},
+			],
+		});
+		const writable = await handle.createWritable();
+		await writable.write(blob);
+		await writable.close();
+	
+		return handle;
+
+	} catch (err: any) {
+		if (err.code === 20) return; // Dialog closed
+	
+		if (err.code === 18) { // User interaction time expired
+			return downloadBlobFile(blob, filename);
+		}
+	
+		throw err;
+	}
+};
+
+/**
  * Fetch and download a file.
  * If provided a token, use that token in the Authorization header.
  *
@@ -22,10 +101,17 @@ export const downloadBlobFile = (blob: Blob, filename: string) => {
  * @param filename
  * @param token
  */
-export const fetchFileWithToken = async (url: string, filename: string, token: string | null = null) => {
-	const res = await fetch(url, {
+export const fetchFileWithToken = async (url: string | Response, filename: string, token: string|null = null, finallyCb = () => {}, isSaveAs = false) => {
+	return (typeof url === "string" ? fetch(url, {
 		...(token ? { headers: { Authorization: token } } : {}),
-	});
-	const blob = await res.blob();
-	downloadBlobFile(blob, filename);
+	}) : Promise.resolve(url))
+		.then((res) => res.blob())
+		.then((blob) => {
+			isSaveAs ? downloadBlobFileSaveAs(blob, filename) : downloadBlobFile(blob, filename);
+		}).catch((err) => {
+			throw new Error(err.message);
+		})
+		.finally(() => {
+			finallyCb();
+		});
 };
