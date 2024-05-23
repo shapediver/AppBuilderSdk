@@ -94,17 +94,17 @@ export const downloadBlobFileSaveAs = async (blob: Blob, filename: string) => {
 };
 
 /**
- * Fetch and download a file.
- * If provided a token, use that token in the Authorization header.
+ * Fetch and save a file. Optionally, a Response object resulting from a previous fetch call
+ * can be provided instead of a URL. 
  *
- * @param url
+ * @param urlOrResponse URL to fetch from, or a Response object resulting from a previous fetch call.
  * @param filename
- * @param token
+ * @param token If provided a token, use that token in the Authorization header of the fetch request.
  */
-export const fetchFileWithToken = async (url: string | Response, filename: string, token: string|null = null, finallyCb = () => {}, isSaveAs = false) => {
-	return (typeof url === "string" ? fetch(url, {
+export const fetchFileWithToken = async (urlOrResponse: string | Response, filename: string, token: string|null = null, finallyCb = () => {}, isSaveAs = false) => {
+	return (typeof urlOrResponse === "string" ? fetch(urlOrResponse, {
 		...(token ? { headers: { Authorization: token } } : {}),
-	}) : Promise.resolve(url))
+	}) : Promise.resolve(urlOrResponse))
 		.then((res) => res.blob())
 		.then((blob) => {
 			isSaveAs ? downloadBlobFileSaveAs(blob, filename) : downloadBlobFile(blob, filename);
