@@ -53,7 +53,7 @@ export function useSession(props: IUseSessionDto | undefined) {
 			setSessionApi(api);
 
 			if (registerParametersAndExports && api) {
-				addSessionParameters(api, acceptRejectMode);
+				addSessionParameters(api, acceptRejectMode, props.jwtToken);
 			}
 		});
 

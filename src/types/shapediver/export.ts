@@ -19,6 +19,13 @@ export interface IShapeDiverExportActions {
      * @throws {@type ShapeDiverViewerError}
      */
     request(parameters?: { [key: string]: string }): Promise<ShapeDiverResponseExport>;
+
+    /**
+     * Fetch the export from the given URL. Use is in case the model is configured to require a JWT for every request. 
+     * 
+     * @param url The URL of the export to fetch.
+     */
+    fetch(url: string): Promise<Response>;
 }
 
 /**
