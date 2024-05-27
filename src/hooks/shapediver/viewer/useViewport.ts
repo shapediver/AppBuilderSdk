@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 
@@ -12,6 +12,7 @@ import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
  */
 export function useViewport(props: ViewportCreateDto) {
 	const { createViewport, closeViewport } = useShapeDiverStoreViewer();
+	const [error, setError] = useState<Error | undefined>(undefined);
 	const promiseChain = useRef(Promise.resolve());
 	const canvasRef = useRef(null);
 
@@ -20,7 +21,7 @@ export function useViewport(props: ViewportCreateDto) {
 			const viewportApi = await createViewport({
 				canvas: canvasRef.current!,
 				...props
-			});
+			}, { onError: setError });
 			if (viewportApi && props.showStatistics)
 				viewportApi.showStatistics = true;
 		});
@@ -31,6 +32,7 @@ export function useViewport(props: ViewportCreateDto) {
 	}, [props.id]);
 
 	return {
-		canvasRef
+		canvasRef,
+		error
 	};
 }

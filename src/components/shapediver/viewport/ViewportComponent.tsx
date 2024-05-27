@@ -4,6 +4,7 @@ import { ViewportCreateDto } from "types/store/shapediverStoreViewer";
 import classes from "./ViewportComponent.module.css";
 import { MantineThemeComponent, useComputedColorScheme, useProps } from "@mantine/core";
 import { BUSY_MODE_DISPLAY, SPINNER_POSITIONING } from "@shapediver/viewer";
+import AlertPage from "pages/misc/AlertPage";
 
 
 interface Props extends ViewportCreateDto {
@@ -77,12 +78,13 @@ export default function ViewportComponent(props: Props) {
 	if (!_props.branding) 
 		_props.branding = brandingProps[scheme];
 
-	const { canvasRef } = useViewport(_props);
+	const { canvasRef, error } = useViewport(_props);
 
 	return (
-		<div className={`${classes.container} ${className}`}>
-			<canvas ref={canvasRef} />
-			{children}
-		</div>
+		error ? <AlertPage title="Error">{error.message}</AlertPage> :
+			<div className={`${classes.container} ${className}`}>
+				<canvas ref={canvasRef} />
+				{children}
+			</div>
 	);
 }
