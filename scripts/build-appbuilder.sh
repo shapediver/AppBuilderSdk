@@ -1,9 +1,18 @@
 #!/bin/bash
 
+# trap exceptions and restore sentryconfig.ts
+trap 'if [ -f "sentryconfig.ts.bak" ]; then mv sentryconfig.ts.bak sentryconfig.ts; fi' EXIT
+
 version=$1
 if [ -z "$version" ]; then
     echo "Usage: $0 <version>"
     exit 1
+fi
+
+# Check if sentryconfig.local.ts exists, copy it to sentryconfig.ts if it does
+if [ -f "sentryconfig.local.ts" ]; then
+    mv sentryconfig.ts sentryconfig.ts.bak
+    cp sentryconfig.local.ts sentryconfig.ts
 fi
 
 prefix=v1/main

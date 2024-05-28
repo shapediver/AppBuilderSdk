@@ -1,3 +1,4 @@
+import "instruments/sentry";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import AppBuilderBase from "AppBuilderBase";
