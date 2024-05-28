@@ -1,7 +1,4 @@
-import { ISessionApi, IViewportApi, SessionCreationDefinition } from "@shapediver/viewer";
-import {
-	ViewportCreationDefinition
-} from "@shapediver/viewer.main.creation-control-center/src/interfaces/ICreationControlCenter";
+import { ISessionApi, IViewportApi, SessionCreationDefinition, ViewportCreationDefinition } from "@shapediver/viewer";
 
 /**
  * Redeclaration of SessionCreationDefinition to always have an id.
