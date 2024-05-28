@@ -19,7 +19,6 @@ import {
 } from "types/store/shapediverStoreParameters";
 import { IShapeDiverExport } from "types/shapediver/export";
 import { ShapeDiverRequestCustomization, ShapeDiverRequestExport } from "@shapediver/api.geometry-api-dto-v2";
-import { isFileParameter } from "types/shapediver/viewer";
 
 /**
  * Create an IShapeDiverParameterExecutor for a single parameter, 
@@ -95,14 +94,6 @@ function createGenericParameterExecutorForSession(session: ISessionApi,
 			Object.keys(values).forEach(id => session.parameters[id].value = values[id]);
 		
 			if (exports.length > 0) {
-				// prepare parameters (e.g. upload)
-				await Promise.all(Object.values(session.parameters)
-					.filter(isFileParameter)
-					.map(async p => {
-						const fileId = await p.upload();
-						p.value = fileId;
-					})
-				);
 				// prepare body and send request
 				const body: ShapeDiverRequestExport = { 
 					parameters: session.parameterValues as ShapeDiverRequestCustomization, // TODO fix this
