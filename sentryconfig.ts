@@ -1,5 +1,6 @@
 export const CONFIG = {
 	SENTRY_DSN: "",
 	SENTRY_ORG: "",
-	SENTRY_PROJECT: ""
+	SENTRY_PROJECT: "",
+	SENTRY_RELEASE_TIMESTAMP: ""
 };

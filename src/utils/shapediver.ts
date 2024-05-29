@@ -44,6 +44,8 @@ export function getEnvironmentIdentifier() {
 		return "sandbox";
 	else if (hostname === PROD_PLATFORM_HOST || hostname === "www.shapediver.com")
 		return "production";
+	else if (hostname === "appbuilder.shapediver.com")
+		return "iframe";
 
 	return "unknown";
 }
