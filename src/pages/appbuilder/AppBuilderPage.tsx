@@ -2,7 +2,7 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { ReactElement } from "react";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import useAppBuilderSettings, { isRunningInPlatform } from "hooks/shapediver/appbuilder/useAppBuilderSettings";
+import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
 import { useSessionWithAppBuilder } from "hooks/shapediver/appbuilder/useSessionWithAppBuilder";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "hooks/shapediver/parameters/useSessionPropsExport";
@@ -15,6 +15,7 @@ import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import LoaderPage from "pages/misc/LoaderPage";
 import MarkdownWidgetComponent from "components/shapediver/ui/MarkdownWidgetComponent";
 import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
+import { isRunningInPlatform } from "utils/shapediver";
 
 const VIEWPORT_ID = "viewport_1";
 

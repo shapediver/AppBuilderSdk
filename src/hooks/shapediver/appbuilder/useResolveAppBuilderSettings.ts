@@ -1,8 +1,8 @@
 import useAsync from "../../misc/useAsync";
 import { IAppBuilderSettings } from "types/shapediver/appbuilder";
 import { SdPlatformModelGetEmbeddableFields, SdPlatformSdk, create, isPBInvalidRequestOAuthResponseError } from "@shapediver/sdk.platform-api-sdk-v1";
-import { getDefaultPlatformUrl, isRunningInPlatform } from "./useAppBuilderSettings";
 import { useRef } from "react";
+import { getDefaultPlatformUrl, isRunningInPlatform } from "utils/shapediver";
 
 const DEFAULT_PLATFORM_CLIENT_ID = "920794fa-245a-487d-8abe-af569a97da42";
 

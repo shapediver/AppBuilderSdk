@@ -1,9 +1,32 @@
 #!/bin/bash
+SENTRY_CLI="node_modules/.bin/sentry-cli"
+SENTRY_ORG="shapediver"
+SENTRY_PROJECT="app-builder"
+
+# trap exceptions and restore sentryconfig.ts
+trap 'if [ -f "sentryconfig.ts.bak" ]; then mv sentryconfig.ts.bak sentryconfig.ts; fi' EXIT
 
 version=$1
 if [ -z "$version" ]; then
     echo "Usage: $0 <version>"
     exit 1
+fi
+
+# should we deploy, or just build?
+deploy=$2
+
+# Check if sentry-cli exists
+if [ ! -z "$deploy" -a ! -x "$SENTRY_CLI" ]; then
+    echo "Could not find sentry-cli."
+    exit 1
+fi
+
+# Check if sentryconfig.local.ts exists, copy it to sentryconfig.ts if it does
+build_timestamp=$(date +'%Y-%m-%d_%H:%M')
+if [ -f "sentryconfig.local.ts" -a ! -z "${deploy}" ]; then
+    echo "Configuring sentry for build timestamp: ${build_timestamp}"
+    mv sentryconfig.ts sentryconfig.ts.bak
+    sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/" sentryconfig.local.ts > sentryconfig.ts
 fi
 
 prefix=v1/main
@@ -14,7 +37,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-if [ -z "$2" ]; then
+if [ -z "${deploy}" ]; then
     echo "Skipping deployment."
     exit 0
 fi
@@ -34,3 +57,18 @@ touch empty
 aws s3 cp empty s3://$APPBUILDER_BUCKET/appbuilder/$prefix/$version --region us-east-1 \
     --website-redirect https://appbuilder.shapediver.com/$prefix/$version/ --cache-control "$cachecontrol"
 rm empty
+
+# Create a sentry release
+sentry_release="${version}+${build_timestamp}"
+$SENTRY_CLI releases new -p $SENTRY_PROJECT --org $SENTRY_ORG $sentry_release
+if [ $? -ne 0 ]; then
+    echo "Failed to create a Sentry release."
+    exit 1
+fi
+
+# Associate commits with the release
+$SENTRY_CLI releases set-commits --org $SENTRY_ORG --auto $sentry_release
+if [ $? -ne 0 ]; then
+    echo "Failed to associate commits with the Sentry release."
+    exit 1
+fi

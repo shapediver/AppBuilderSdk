@@ -18,6 +18,8 @@
 .env.test.local
 .env.production.local
 
+sentryconfig.local.ts
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -30,3 +32,6 @@ yarn-error.log*
 dist
 empty
 
+
+# Sentry Config File
+.env.sentry-build-plugin
