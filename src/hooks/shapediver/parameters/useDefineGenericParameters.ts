@@ -6,7 +6,8 @@ import { IAcceptRejectModeSelector, IGenericParameterDefinition, IGenericParamet
 /**
  * Hook for defining generic parameters to be displayed in the UI. 
  * Generic parameters are not based on parameters exposed by a ShapeDiver model. 
- * They allow you to add custom controls to your web app.  
+ * They allow you to add custom controls to your web app. 
+ * CAUTION: Changes to the executor or acceptRejectMode are not reactive.
  * 
  * @see {@link useShapeDiverStoreParameters} to access the abstracted parameters and exports.
  *
@@ -20,16 +21,19 @@ export function useDefineGenericParameters(sessionId: string, acceptRejectMode: 
 	definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 
 	executor: IGenericParameterExecutor) {
 	
-	const { addGeneric, removeSession } = useShapeDiverStoreParameters();
+	const { syncGeneric, removeSession } = useShapeDiverStoreParameters();
 	
+	// keep the generic parameters in sync
 	useEffect(() => {
-		/** execute changes immediately if the component is not running in accept/reject mode */
-		addGeneric(sessionId, acceptRejectMode, definitions, executor);
-	
+		syncGeneric(sessionId, acceptRejectMode, definitions, executor);
+	}, [sessionId, definitions]);
+
+	// in case the session id changes, remove the parameters for the previous session
+	useEffect(() => {
 		return () => {
 			removeSession(sessionId);
 		};
-	}, [sessionId, definitions]);
+	}, [sessionId]);
 
 	return {
 		
