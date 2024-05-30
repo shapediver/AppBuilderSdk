@@ -8,8 +8,8 @@ import { PropsExport } from "types/components/shapediver/propsExport";
  *
  * @returns
  */
-export default function ExportLabelComponent({ sessionId, exportId }: PropsExport) {
-	const { definition } = useExport(sessionId, exportId);
+export default function ExportLabelComponent(props: PropsExport) {
+	const { definition } = useExport(props);
 
 	return <Text pb={4} size="sm" fw={500}>
 		{definition.displayname || definition.name}

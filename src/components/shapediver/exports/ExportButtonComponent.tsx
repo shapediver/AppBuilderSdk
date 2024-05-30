@@ -14,8 +14,7 @@ import { useExport } from "hooks/shapediver/parameters/useExport";
  * @returns
  */
 export default function ExportButtonComponent(props: PropsExport) {
-	const { sessionId, exportId } = props;
-	const { definition, actions } = useExport(sessionId, exportId);
+	const { definition, actions } = useExport(props);
 
 	const exportRequest = async () => {
 		// request the export

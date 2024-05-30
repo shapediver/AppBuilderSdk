@@ -105,10 +105,8 @@ export default function ParametersAndExportsAccordionComponent(props: Props) {
 			elementGroups[groupId].elements.push(
 				<Paper key={param.definition.id} pb={extraBottomPadding ? pbSlider : undefined}>
 					<ParameterComponent
-						sessionId={param.parameter.sessionId}
-						parameterId={param.parameter.parameterId}
+						{...param.parameter}
 						disableIfDirty={param.parameter.disableIfDirty ?? !param.parameter.acceptRejectMode}
-						acceptRejectMode={param.parameter.acceptRejectMode}
 					/>
 				</Paper>
 			);
@@ -120,8 +118,8 @@ export default function ParametersAndExportsAccordionComponent(props: Props) {
 			elementGroups[groupId].elements.push(
 				<Paper key={param.definition.id}>
 					<ExportComponent
-						sessionId={param.export.sessionId}
-						exportId={param.export.exportId} />
+						{...param.export}
+					/>
 				</Paper>
 			);
 		}

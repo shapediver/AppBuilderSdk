@@ -32,18 +32,32 @@ const IAppBuilderParameterDefinitionSchema = z.object({
 	hidden: z.boolean(),
 });
 
+// Zod type definition for property "overrides" of IAppBuilderParameterRef
+const IAppBuilderParameterOverridesSchema = IAppBuilderParameterDefinitionSchema.partial().pick({
+	displayname: true,
+	group: true,
+	order: true,
+	tooltip: true,
+	hidden: true,
+}); 
+
 // Zod type definition for IAppBuilderParameterRef
 const IAppBuilderParameterRefSchema = z.object({
 	name: z.string(),
 	sessionId: z.string().optional(),
+	overrides: IAppBuilderParameterOverridesSchema.optional(),
 	disableIfDirty: z.boolean().optional(),
 	acceptRejectMode: z.boolean().optional(),
 });
+
+// Zod type definition for property "overrides" of IAppBuilderExportRef
+const IAppBuilderExportOverridesSchema = IAppBuilderParameterOverridesSchema; 
 
 // Zod type definition for IAppBuilderExportRef
 const IAppBuilderExportRefSchema = z.object({
 	name: z.string(),
 	sessionId: z.string().optional(),
+	overrides: IAppBuilderExportOverridesSchema.optional(),
 });
 
 // Zod type definition for IAppBuilderWidgetPropsCommon

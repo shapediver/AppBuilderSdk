@@ -3,25 +3,25 @@ import { ShapeDiverCommonsGroup } from "@shapediver/api.geometry-api-dto-v2/dist
 export interface IShapeDiverParamOrExportDefinition {
 
     /** ID of the parameter or export. */
-    id: string;
+    readonly id: string;
 
     /** Name of the parameter or export. */
-    name: string;
+    readonly name: string;
 
     /** Name to be displayed instead of name. */
-    displayname?: string;
+    readonly displayname?: string;
 
     /** Ordering of the parameter or export in client applications. */
-    order?: number;
+    readonly order?: number;
 
     /** Group of the parameter or export. */
-    group?: ShapeDiverCommonsGroup;
+    readonly group?: ShapeDiverCommonsGroup;
 
     /** Controls whether the parameter or export should be hidden in the UI */
-    hidden: boolean;
+    readonly hidden: boolean;
 
     /** The type of parameter or export. */
-    type: string;
+    readonly type: string;
 }
 
 /**
