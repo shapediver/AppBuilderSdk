@@ -13,8 +13,9 @@ interface Props extends PropsParameter {
  *
  * @returns
  */
-export default function ParameterLabelComponent({ sessionId, parameterId, cancel}: Props) {
-	const { definition } = useParameter<any>(sessionId, parameterId);
+export default function ParameterLabelComponent(props: Props) {
+	const { cancel } = props;
+	const { definition } = useParameter<any>(props);
 
 	return <Group justify="space-between" w="100%" wrap="nowrap">
 		<Text pb={4} size="sm" fw={500}>

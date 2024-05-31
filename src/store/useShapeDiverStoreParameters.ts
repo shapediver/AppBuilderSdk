@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { IShapeDiverParameter, IShapeDiverParameterExecutor, IShapeDiverParameterState } from "types/shapediver/parameter";
-import { ISessionApi } from "@shapediver/viewer";
+import { IShapeDiverParameter, IShapeDiverParameterDefinition, IShapeDiverParameterExecutor, IShapeDiverParameterState } from "types/shapediver/parameter";
+import { IExportApi, IParameterApi, ISessionApi } from "@shapediver/viewer";
 import { devtools } from "zustand/middleware";
 import { devtoolsSettings } from "store/storeSettings";
 import {
@@ -17,7 +17,7 @@ import {
 	IParameterStoresPerSession,
 	IShapeDiverStoreParameters
 } from "types/store/shapediverStoreParameters";
-import { IShapeDiverExport } from "types/shapediver/export";
+import { IShapeDiverExport, IShapeDiverExportDefinition } from "types/shapediver/export";
 import { ShapeDiverRequestCustomization, ShapeDiverRequestExport } from "@shapediver/api.geometry-api-dto-v2";
 
 /**
@@ -201,12 +201,65 @@ function createParameterStore<T>(executor: IShapeDiverParameterExecutor<T>, acce
 }
 
 /**
+ * Map definition of parameter from API to store.
+ * @param parameterApi 
+ * @returns 
+ */
+function mapParameterDefinition<T>(parameterApi: IParameterApi<T>): IShapeDiverParameterDefinition {
+	return {
+		id: parameterApi.id,
+		choices: parameterApi.choices,
+		decimalplaces: parameterApi.decimalplaces,
+		defval: parameterApi.defval,
+		expression: parameterApi.expression,
+		format: parameterApi.format,
+		min: parameterApi.min,
+		max: parameterApi.max,
+		umin: parameterApi.umin,
+		umax: parameterApi.umax,
+		vmin: parameterApi.vmin,
+		vmax: parameterApi.vmax,
+		interval: parameterApi.interval,
+		name: parameterApi.name,
+		type: parameterApi.type,
+		visualization: parameterApi.visualization,
+		structure: parameterApi.structure,
+		group: parameterApi.group,
+		hint: parameterApi.hint,
+		order: parameterApi.order,
+		tooltip: parameterApi.tooltip,
+		displayname: parameterApi.displayname,
+		hidden: parameterApi.hidden,
+	};
+}
+
+/**
+ * Map definition of export from API to store.
+ * @param exportApi 
+ * @returns 
+ */
+function mapExportDefinition(exportApi: IExportApi): IShapeDiverExportDefinition {
+	return {
+		id: exportApi.id,
+		uid: exportApi.uid,
+		name: exportApi.name,
+		type: exportApi.type,
+		dependency: exportApi.dependency,
+		group: exportApi.group,
+		order: exportApi.order,
+		tooltip: exportApi.tooltip,
+		displayname: exportApi.displayname,
+		hidden: exportApi.hidden,
+	};
+}
+
+/**
  * Create store for a single export.
  */
 function createExportStore(session: ISessionApi, exportId: string, token?: string) {
 	const exportApi = session.exports[exportId];
 	/** The static definition of the export. */
-	const definition = exportApi;
+	const definition = mapExportDefinition(exportApi);
 	const sessionExport = exportApi;
 	/** We need to access latest parameter values */
 	const parameterApis = Object.values(session.parameters);
@@ -354,7 +407,7 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 						const param = session.parameters[paramId];
 						const acceptRejectMode = acceptRejectModeSelector(param);
 						acc[paramId] = createParameterStore(createParameterExecutor(sessionId, 
-							{ definition: param, isValid: (value, throwError) => param.isValid(value, throwError) }, 
+							{ definition: mapParameterDefinition(param), isValid: (value, throwError) => param.isValid(value, throwError) }, 
 							() => getChanges(sessionId, executor)
 						), acceptRejectMode, param.value);
 

@@ -9,5 +9,145 @@
                 "Spacing horizontal": "500"
             }
         }
-    ]
+    ],
+    "appBuilderOverride": {
+        "version": "1.0",
+        "containers": [
+            {
+                "name": "right",
+                "tabs": [
+                    {
+                        "name": "Spacing",
+                        "icon": "adjustments",
+                        "widgets": [
+                            {
+                                "type": "accordion",
+                                "props": {
+                                    "parameters": [
+                                        {
+                                            "name": "Spacing horizontal",
+                                            "acceptRejectMode": true,
+                                            "overrides": {
+                                                "displayname": "Horizontal spacing"
+                                            }
+                                        },
+                                        {
+                                            "name": "Spacing vertical",
+                                            "acceptRejectMode": true,
+                                            "overrides": {
+                                                "displayname": "Vertical spacing"
+                                            }
+                                        },
+                                        {
+                                            "name": "Side board",
+                                            "acceptRejectMode": false,
+                                            "overrides": {
+                                                "displayname": "Width of side board"
+                                            }
+                                        },
+                                        {
+                                            "name": "Top board",
+                                            "acceptRejectMode": false,
+                                            "overrides": {
+                                                "displayname": "Width of top board"
+                                            }
+                                        }
+                                    ],
+                                    "exports": [{
+                                        "name": "Download 3D",
+                                        "overrides": {
+                                            "displayname": "Download 3D model",
+                                            "group": {
+                                                "id": "7094b726-d2d0-4d3e-8570-6a4371cb4083",
+                                                "name": "Geometry"
+                                            },
+                                            "order": 100
+                                        }
+                                    }]
+                                }
+                            },
+                            {
+                                "type": "text",
+                                "props": {
+                                    "text": "Here you can change the spacing between boards"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Count",
+                        "icon": "adjustments-horizontal",
+                        "widgets": [
+                            {
+                                "type": "accordion",
+                                "props": {
+                                    "parameters": [
+                                        {
+                                            "name": "Count horizontal",
+                                            "acceptRejectMode": false,
+                                            "overrides": {
+                                                "displayname": "Horizontal count"
+                                            }
+                                        },
+                                        {
+                                            "name": "Count vertical",
+                                            "acceptRejectMode": false,
+                                            "overrides": {
+                                                "displayname": "Vertical count"
+                                            }
+                                        }
+                                    ],
+                                    "exports": []
+                                }
+                            },
+                            {
+                                "type": "text",
+                                "props": {
+                                    "markdown": "Here you can change the **number of shelves**"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "widgets": [
+                    {
+                        "type": "text",
+                        "props": {
+                            "text": "Spacing horizontal: 447\nSpacing vertical: 330\nCount horizontal: 3\nCount vertical: 2"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "**Spacing** horizontal: 447\n\n**Spacing** vertical: 330\n\n**Count** horizontal: 3\n\n**Count** vertical: 2"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "bottom",
+                "tabs": [],
+                "widgets": [
+                    {
+                        "type": "image",
+                        "props": {
+                            "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural.jpg"
+                        }
+                    },
+                    {
+                        "type": "image",
+                        "props": {
+                            "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural-Rough.jpg"
+                        }
+                    },
+                    {
+                        "type": "image",
+                        "props": {
+                            "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural-Normal.jpg"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
 }

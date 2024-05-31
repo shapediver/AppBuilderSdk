@@ -48,7 +48,7 @@ export interface IParameterChangesPerSession { [sessionId: string]: IParameterCh
 export interface IGenericParameterDefinition {
 
 	/** The static definition of the parameter. */
-	definition: IShapeDiverParameterDefinition,
+	readonly definition: IShapeDiverParameterDefinition,
 
 	/**
      * Evaluates if a given value is valid for this parameter.

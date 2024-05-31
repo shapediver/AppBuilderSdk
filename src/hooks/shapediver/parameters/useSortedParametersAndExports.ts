@@ -30,7 +30,7 @@ export function useSortedParametersAndExports(parameters?: PropsParameter[], exp
 		for (const store of stores) {
 			const definition = store.getState().definition;
 			if (definition.id === p.parameterId || definition.name === p.parameterId || definition.displayname === p.parameterId)
-				return { parameter: p, definition };
+				return { parameter: p, definition: {...definition, ...p.overrides} };
 		}
 
 		return [];
@@ -41,7 +41,7 @@ export function useSortedParametersAndExports(parameters?: PropsParameter[], exp
 		for (const store of stores) {
 			const definition = store.getState().definition;
 			if (definition.id === e.exportId || definition.name === e.exportId  || definition.displayname === e.exportId )
-				return { export: e, definition };
+				return { export: e, definition: {...definition, ...e.overrides} };
 		}
 		
 		return [];
