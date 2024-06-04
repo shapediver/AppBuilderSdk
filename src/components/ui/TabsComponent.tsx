@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { Stack, Tabs } from "@mantine/core";
 import Icon from "./Icon";
 import { IconType } from "types/shapediver/icons";
+import classes from "./TabsComponent.module.css";
 
 interface PropsTab {
 	/** Name (value) of tab. */
@@ -36,7 +37,7 @@ export default function TabsComponent({defaultValue, tabs}: ITabsComponentProps)
 		}
 	}, [tabNames.join(""), defaultValue]);
 
-	return tabs.length === 0 ? <></> : <Tabs value={activeTab} onChange={setActiveTab}>
+	return tabs.length === 0 ? <></> : <Tabs value={activeTab} onChange={setActiveTab} className={classes.tabs}>
 		<Tabs.List>
 			{
 				tabs.map((tab, index) => <Tabs.Tab
