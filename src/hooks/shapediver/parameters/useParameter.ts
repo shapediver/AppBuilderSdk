@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { IShapeDiverParameter } from "types/shapediver/parameter";
@@ -19,8 +20,12 @@ export function useParameter<T>(props: PropsParameter) {
 	const parametersStore = useShapeDiverStoreParameters();
 	const parameter = parametersStore.getParameter(sessionId, parameterId)!(state => state as IShapeDiverParameter<T>);
 
-	return {
-		...parameter,
-		definition: { ...parameter.definition, ...props.overrides }
-	};
+	const memoizedParameter = useMemo(() => {
+		return {
+			...parameter,
+			definition: { ...parameter.definition, ...props.overrides }
+		};
+	}, [parameter, props.overrides]);
+
+	return memoizedParameter;
 }

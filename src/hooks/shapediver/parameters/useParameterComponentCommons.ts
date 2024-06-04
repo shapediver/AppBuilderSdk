@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PropsParameter } from "types/components/shapediver/propsParameter";
 import { useParameter } from "./useParameter";
 import { IShapeDiverParameterState } from "types/shapediver/parameter";
@@ -53,8 +53,12 @@ export function useParameterComponentCommons<T>(
 	 */
 	const disabled = (disableIfDirty && state.dirty) || changes?.executing;
 
+	const memoizedDefinition = useMemo(() => {
+		return { ...definition, ...props.overrides };
+	}, [definition, props.overrides]);
+
 	return {
-		definition: { ...definition, ...props.overrides },
+		definition: memoizedDefinition,
 		actions,
 		state,
 		value,

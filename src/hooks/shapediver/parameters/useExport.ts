@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useShapeDiverStoreParameters } from "store/useShapeDiverStoreParameters";
 import { PropsExport } from "types/components/shapediver/propsExport";
 import { IShapeDiverExport } from "types/shapediver/export";
@@ -16,9 +17,13 @@ export function useExport(props: PropsExport) {
 	const { sessionId, exportId } = props;
 	const parametersStore = useShapeDiverStoreParameters();
 	const parameter = parametersStore.getExport(sessionId, exportId)!(state => state as IShapeDiverExport);
+	
+	const memoizedParameter = useMemo(() => {
+		return {
+			...parameter,
+			definition: { ...parameter.definition, ...props.overrides }
+		};
+	}, [parameter, props.overrides]);
 
-	return {
-		...parameter,
-		definition: { ...parameter.definition, ...props.overrides }
-	};
+	return memoizedParameter;
 }
