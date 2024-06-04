@@ -6,6 +6,7 @@ import remarkDirective from "remark-directive";
 import remarkGfm from "remark-gfm";
 import {visit} from "unist-util-visit";
 import { v4 as uuid } from "uuid";
+import classes from "./MarkdownWidgetComponent.module.css";
 
 interface Props {
 	children: string,
@@ -171,7 +172,7 @@ export default function MarkdownWidgetComponent(props: Props & Partial<StyleProp
 			li(props) {
 				const {...rest} = props;
 
-				return <List.Item {...rest} />;
+				return <List.Item {...rest} className={classes.listItem} />;
 			},
 			table(props) {
 				const {...rest} = props;
