@@ -288,6 +288,18 @@ function createExportStore(session: ISessionApi, exportId: string, token?: strin
 }
 
 /**
+ * Check if the given parameter definition matches the given parameter store
+ */
+function isMatchingParameterDefinition(store: IParameterStore, definition: IGenericParameterDefinition) {
+	const a = store.getState().definition;
+	const b = definition.definition;
+
+	// deep comparison between a and b
+	// NOTE: this is a quick and dirty solution, ideally we would compare the definitions in a more robust way
+	return JSON.stringify(a) === JSON.stringify(b);
+}
+
+/**
  * Store data related to abstracted parameters and exports.
  * @see {@link IShapeDiverStoreParameters}
  */
@@ -452,6 +464,42 @@ export const useShapeDiverStoreParameters = create<IShapeDiverStoreParameters>()
 					}, {} as IParameterStores) } // Create new parameter stores
 			}
 		}), false, "addGeneric");
+	},
+
+	syncGeneric: (sessionId: string, _acceptRejectMode: boolean | IAcceptRejectModeSelector, definitions: IGenericParameterDefinition | IGenericParameterDefinition[], executor: IGenericParameterExecutor) => {
+		const { parameterStores: parameterStorePerSession, getChanges } = get();
+		definitions = Array.isArray(definitions) ? definitions : [definitions];
+
+		const acceptRejectModeSelector = typeof(_acceptRejectMode) === "boolean" ? () => _acceptRejectMode : _acceptRejectMode;
+
+		const existingParameterStores = parameterStorePerSession[sessionId] ?? {};
+		let hasChanges = false;
+		const parameterStores: IParameterStores = {};
+		
+		definitions.forEach(def => {
+			const paramId = def.definition.id;
+			// check if a matching parameter store already exists
+			if (paramId in existingParameterStores && isMatchingParameterDefinition(existingParameterStores[paramId], def)) {
+				parameterStores[paramId] = existingParameterStores[paramId];
+			} 
+			else {
+				const acceptRejectMode = acceptRejectModeSelector(def.definition);
+				parameterStores[paramId] = createParameterStore(createParameterExecutor(sessionId, def, 
+					() => getChanges(sessionId, executor)
+				), acceptRejectMode);
+				hasChanges = true;
+			}
+		});
+
+		if (!hasChanges && Object.keys(existingParameterStores).length === Object.keys(parameterStores).length)
+			return;
+	
+		set((_state) => ({
+			parameterStores: {
+				..._state.parameterStores,
+				...{ [sessionId]: parameterStores }
+			}
+		}), false, "syncGeneric");
 	},
 
 	removeSession: (sessionId: string) => {

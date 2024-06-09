@@ -107,6 +107,8 @@ export interface IShapeDiverStoreParameters {
 
 	/**
 	 * Add parameter and export stores for all parameters and exports of the session.
+	 * CAUTION: Repeated calls will be ignored. Use removeSession to remove a session first before 
+	 * calling addSession again for the same session.
 	 * @param session
 	 * @param acceptRejectMode If true, changes are not executed immediately. May be specified as a boolean or a function of the parameter definition.
 	 * @param token Token (JWT) that was used when creating the session. If provided, it will be used for export downloads. Optional.
@@ -116,6 +118,8 @@ export interface IShapeDiverStoreParameters {
 
 	/**
 	 * Add generic parameters. 
+	 * CAUTION: Repeated calls will be ignored. Use removeSession to remove a session first before 
+	 * calling addSession again for the same session.
 	 * @param sessionId The namespace to use.
 	 * @param acceptRejectMode If true, changes are not executed immediately. May be specified as a boolean or a function of the parameter definition.
 	 * @param definitions Definitions of the parameters.
@@ -123,6 +127,21 @@ export interface IShapeDiverStoreParameters {
 	 * @returns 
 	 */
 	addGeneric: (
+		sessionId: string, 
+		acceptRejectMode: boolean | IAcceptRejectModeSelector, 
+		definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 
+		executor: IGenericParameterExecutor
+	) => void,
+
+	/**
+	 * Synchronize (add/remove) generic parameters for a given session id. 
+	 * @param sessionId The namespace to use.
+	 * @param acceptRejectMode If true, changes are not executed immediately. May be specified as a boolean or a function of the parameter definition.
+	 * @param definitions Definitions of the parameters.
+	 * @param executor Executor of parameter changes.
+	 * @returns 
+	 */
+	syncGeneric: (
 		sessionId: string, 
 		acceptRejectMode: boolean | IAcceptRejectModeSelector, 
 		definitions: IGenericParameterDefinition | IGenericParameterDefinition[], 

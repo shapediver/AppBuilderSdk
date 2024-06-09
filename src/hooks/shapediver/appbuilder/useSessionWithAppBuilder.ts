@@ -3,17 +3,12 @@ import { IUseSessionDto, useSession } from "../useSession";
 import { useOutputContent } from "../viewer/useOutputContent";
 import { IAppBuilder } from "types/shapediver/appbuilder";
 import { useEffect, useMemo } from "react";
-
-/** Prefix used to register custom parameters */
-//const CUSTOM_SESSION_ID_POSTFIX = "_appbuilder";
+import { useAppBuilderCustomParameters } from "./useAppBuilderCustomParameters";
 
 /** 
  * Name of data output used to define the AppBuilder UI 
  */
 const CUSTOM_DATA_OUTPUT_NAME = "AppBuilder";
-
-/** Name of input (parameter of the Grasshopper model) used to consume the custom parameter values */
-//const CUSTOM_DATA_INPUT_NAME = "AppBuilder";
 
 /**
  * Hook for creating a session with a ShapeDiver model using the ShapeDiver 3D Viewer.
@@ -88,8 +83,9 @@ export function useSessionWithAppBuilder(props: IUseSessionDto | undefined, appB
 	const appBuilderData = parsedData instanceof Error ? undefined : parsedData;
 	const hasAppBuilderOutput = !!outputApi;
 
-	// TODO SS-7484 register custom parameters
-
+	// register custom parameters
+	useAppBuilderCustomParameters({sessionApi, appBuilderData, acceptRejectMode: props?.acceptRejectMode});
+	
 	return {
 		sessionApi,
 		sessionId,
