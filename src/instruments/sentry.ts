@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/react";
 import packagejson from "../../package.json";
 import { CONFIG } from "../../sentryconfig";
-import { getEnvironmentIdentifier, isRunningInPlatform } from "utils/shapediver";
+import { getEnvironmentIdentifier, isRunningInPlatform } from "shared/utils/shapediver";
 
 export const SENTRY_RELEASE = `${packagejson.version}+${CONFIG.SENTRY_RELEASE_TIMESTAMP}`;
 

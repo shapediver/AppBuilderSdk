@@ -1,22 +1,22 @@
 import { IMaterialStandardDataProperties, MaterialEngine, MATERIAL_TYPE } from "@shapediver/viewer";
-import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useState } from "react";
-import { useSession } from "hooks/shapediver/useSession";
-import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
-import { useOutputMaterial } from "hooks/shapediver/viewer/useOutputMaterial";
-import AppBuilderImage from "../../components/shapediver/appbuilder/AppBuilderImage";
-import ParametersAndExportsAccordionComponent from "../../components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "../../hooks/shapediver/parameters/useSessionPropsParameter";
-import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
+import { useSession } from "shared/hooks/shapediver/useSession";
+import ViewportOverlayWrapper from "../../shared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "../../shared/components/shapediver/viewport/ViewportIcons";
+import { IGenericParameterDefinition } from "shared/types/store/shapediverStoreParameters";
+import { useDefineGenericParameters } from "shared/hooks/shapediver/parameters/useDefineGenericParameters";
+import { useOutputMaterial } from "shared/hooks/shapediver/viewer/useOutputMaterial";
+import AppBuilderImage from "../../shared/components/shapediver/appbuilder/AppBuilderImage";
+import ParametersAndExportsAccordionComponent from "../../shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "../../shared/hooks/shapediver/parameters/useSessionPropsParameter";
+import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
+import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
-import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
-import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
-import AppBuilderTextWidgetComponent from "components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
-import AppBuilderTemplateSelector from "pages/templates/AppBuilderTemplateSelector";
+import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
+import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
+import AppBuilderTextWidgetComponent from "shared/components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
+import AppBuilderTemplateSelector from "shared/pages/templates/AppBuilderTemplateSelector";
 
 const VIEWPORT_ID = "viewport_1";
 

@@ -1,16 +1,16 @@
-import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
-import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import ExamplePage from "pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
-import { useSessionWithCustomUi } from "hooks/shapediver/useSessionWithCustomUi";
-import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
-import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
-import { IconTypeEnum } from "types/shapediver/icons";
-import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
-import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
+import ViewportOverlayWrapper from "../../shared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "../../shared/components/shapediver/viewport/ViewportIcons";
+import { useSessionWithCustomUi } from "shared/hooks/shapediver/useSessionWithCustomUi";
+import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
+import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import TabsComponent, { ITabsComponentProps } from "shared/components/ui/TabsComponent";
+import { IconTypeEnum } from "shared/types/shapediver/icons";
+import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
+import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
 
 const VIEWPORT_ID = "viewport_1";
 

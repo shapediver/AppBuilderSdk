@@ -1,5 +1,5 @@
 
-export const ShapeDiverExampleModels : {
+export const ExampleModels : {
     [key: string]: {
         slug: string,
         ticket: string,

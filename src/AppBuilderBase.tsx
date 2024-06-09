@@ -3,8 +3,8 @@ import "@mantine/notifications/styles.css";
 import { MantineProvider } from "@mantine/core";
 import React, { useEffect } from "react";
 import * as ShapeDiverViewer from "@shapediver/viewer";
-import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
-import { useCustomTheme } from "hooks/ui/useCustomTheme";
+import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
+import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import packagejson from "../package.json";
 import { Notifications } from "@mantine/notifications";
 

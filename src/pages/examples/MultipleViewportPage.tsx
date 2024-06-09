@@ -1,16 +1,16 @@
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
-import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
-import { IUseSessionDto, useSession } from "hooks/shapediver/useSession";
+import { IUseSessionDto, useSession } from "shared/hooks/shapediver/useSession";
 import ExamplePage from "pages/examples/ExamplePage";
 import { Grid } from "@mantine/core";
-import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
-import { ShapeDiverExampleModels } from "tickets";
+import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "shared/hooks/shapediver/parameters/useSessionPropsParameter";
+import { ExampleModels } from "tickets";
 import classes from "./MultipleViewportPage.module.css";
-import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
-import { IconTypeEnum } from "types/shapediver/icons";
+import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
+import TabsComponent, { ITabsComponentProps } from "shared/components/ui/TabsComponent";
+import { IconTypeEnum } from "shared/types/shapediver/icons";
 
 /**
  * Function that creates the view page.
@@ -24,15 +24,15 @@ export default function MultipleViewportPage() {
 
 	const sessionsCreateDto : { [key: string]: IUseSessionDto } = {
 		[sessionSideboardKey]: {
-			id:  ShapeDiverExampleModels[sessionSideboardKey].slug,
-			ticket: ShapeDiverExampleModels[sessionSideboardKey].ticket,
-			modelViewUrl: ShapeDiverExampleModels[sessionSideboardKey].modelViewUrl,
+			id:  ExampleModels[sessionSideboardKey].slug,
+			ticket: ExampleModels[sessionSideboardKey].ticket,
+			modelViewUrl: ExampleModels[sessionSideboardKey].modelViewUrl,
 			excludeViewports: ["viewport_multiple_2", "viewport_multiple_3"],
 		},
 		[sessionBookshelfKey]: {
-			id: ShapeDiverExampleModels[sessionBookshelfKey].slug,
-			ticket: ShapeDiverExampleModels[sessionBookshelfKey].ticket,
-			modelViewUrl: ShapeDiverExampleModels[sessionBookshelfKey].modelViewUrl,
+			id: ExampleModels[sessionBookshelfKey].slug,
+			ticket: ExampleModels[sessionBookshelfKey].ticket,
+			modelViewUrl: ExampleModels[sessionBookshelfKey].modelViewUrl,
 			excludeViewports: ["viewport_multiple_0", "viewport_multiple_1"],
 			acceptRejectMode: true,
 		},

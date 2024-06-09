@@ -1,9 +1,10 @@
-import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import ModelSelect from "components/ui/ModelSelect";
+import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
+import ModelSelect from "shared/components/ui/ModelSelect";
 import React from "react";
 import ExamplePage from "pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "components/shapediver/viewport/ViewportIcons";
+import ViewportOverlayWrapper from "shared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "shared/components/shapediver/viewport/ViewportIcons";
+import { ExampleModels } from "tickets"; 
 
 /**
  * Function that creates the model select page.
@@ -17,7 +18,7 @@ export default function ModelSelectPage() {
 	const viewportId = "viewport_2";
 	
 	return (
-		<ExamplePage aside={<ModelSelect />}>
+		<ExamplePage aside={<ModelSelect exampleModels={ExampleModels}/>}>
 			<ViewportComponent
 				id={viewportId}
 			>
