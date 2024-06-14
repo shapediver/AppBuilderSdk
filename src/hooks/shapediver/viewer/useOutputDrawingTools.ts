@@ -1,9 +1,9 @@
-import { IGeometryData, IOutputApi, ISessionApi, ITreeNode, IViewportApi } from "@shapediver/viewer";
-import { useCallback, useEffect, useRef } from "react";
-import { IDrawingToolsApi, PlaneRestrictionProperties, RESTRICTION_TYPE, createDrawingTools } from "@shapediver/viewer.features.drawing-tools";
+import { EVENTTYPE, IGeometryData, IOutputApi, addListener, removeListener } from "@shapediver/viewer";
+import { useEffect, useState } from "react";
+import { CustomizationProperties, IDrawingToolsApi, createDrawingTools } from "@shapediver/viewer.features.drawing-tools";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
-import { CustomizationPropertiesOptional } from "@shapediver/viewer.features.drawing-tools/dist/business/implementation/DrawingToolsManager";
-import { useOutputNode } from "./useOutputNode";
+import { useParameterStateless } from "../parameters/useParameterStateless";
+import { useOutputContent } from "./useOutputContent";
 
 /**
  * Hook allowing to create the drawing tools.
@@ -19,81 +19,94 @@ export function useOutputDrawingTools(sessionId: string, viewportId: string, out
 	 * API of the output
 	 * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
 	 */
-	outputApi: IOutputApi | undefined,
-
-	drawingToolsApiRef: React.MutableRefObject<IDrawingToolsApi | null>
+	outputApiCustomizationProperties: IOutputApi | undefined,
+	/**
+	 * API of the drawing tools
+	 */
+	drawingToolsApi: IDrawingToolsApi | undefined
 } {
-
-	/**
-	 * Create the callbacks for the drawing tools
-	 * @ALEX I'm not sure how to actually get parameters, if not via the API
-	 */
-	const onFinish = async (geometryData: IGeometryData) => {
-		if(!sessionApiRef.current) return;
-		console.log("onFinish"); 
-        
-		const positionArray = geometryData.primitive.attributes["POSITION"].array;
-
-		// get all points
-		const points = [];
-		for (let i = 0; i < positionArray.length; i += 3) {
-			points.push([positionArray[i], positionArray[i + 1], positionArray[i + 2]]);
-		}
-
-		sessionApiRef.current.getParameterByName("points")[0].value = JSON.stringify({ points: points });
-		await sessionApiRef.current.customize();
-	};
-	const onCancel = () => { console.log("onCancel"); };
-
-
-	// callback which will be executed on update of the output node
-	// @ALEX: it seems like sometimes this update is not triggered when the node changed, I probably have to investigate this further
-	const callback = useCallback( (newNode?: ITreeNode) => {
-		if(!newNode) return;
-		if(drawingToolsApiRef.current) drawingToolsApiRef.current.close();
-		customizationPropertiesRef.current = outputApiRef.current?.content![0].data as CustomizationPropertiesOptional;
-
-		if(viewportApiRef.current && customizationPropertiesRef.current && outputApiRef.current) {
-			// whenever this output node changes, we want to create the drawing tools
-			// @ALEX: I currently pass the customization properties here directly, there seems to be a bug in the drawing tools when parsing the incoming JSON from the output
-			drawingToolsApiRef.current = createDrawingTools(viewportApiRef.current, {onFinish, onCancel}, customizationPropertiesRef.current);
-		}
-	}, []);
+	// get the viewport API
+	const viewportApi = useShapeDiverStoreViewer(state => { return state.viewports[viewportId]; });
 	
+	// get the parameter API
+	const parameter = useParameterStateless<string>(sessionId, "points");
 
-	/**
-	 * Define the references 
-	 * @ALEX: is this the right way to do it?
-	 */
-	const drawingToolsApiRef = useRef<IDrawingToolsApi | null>(null);
-	const customizationPropertiesRef = useRef<CustomizationPropertiesOptional | undefined>();
+	// get the output API and output content for the customization properties
+	const { outputApi: outputApiCustomizationProperties, outputContent: outputContentCustomizationProperties } = useOutputContent(sessionId, outputIdOrName);
 
-	const { outputApi, outputNode } = useOutputNode(sessionId, outputIdOrName, callback);
-	const outputApiRef = useRef<IOutputApi | undefined>();
-	outputApiRef.current = outputApi;
+	// create a state for the drawing tools API
+	const [drawingToolsApi, setDrawingToolsApi] = useState<IDrawingToolsApi | undefined>();
 
-	const viewportApi = useShapeDiverStoreViewer(state => {
-		return state.viewports[viewportId];
-	});
-	const viewportApiRef = useRef<IViewportApi | undefined>();
-	viewportApiRef.current = viewportApi;
-
-	const sessionApi = useShapeDiverStoreViewer(state => {
-		return state.sessions[sessionId];
-	});
-	const sessionApiRef = useRef<ISessionApi | undefined>();
-	sessionApiRef.current = sessionApi;
+	// create a state for the drawing tools API
+	const [sessionCustomized, setSessionCustomized] = useState<number>(0);
 
 	// use an effect to apply changes to the material, and to apply the callback once the node is available
 	useEffect(() => {
-		customizationPropertiesRef.current = outputApi?.content![0].data as CustomizationPropertiesOptional;
-		outputApiRef.current = outputApi;
-		callback(outputNode);
-	}, []);
+		// add a listener to the session customized event
+		// we have to do this because the output content may not be updated, as the geometry is in a different output
+		const token = addListener(EVENTTYPE.SESSION.SESSION_CUSTOMIZED, () => {
+			setSessionCustomized(sessionCustomized + 1);
+		});
+
+		// close the drawing tools if they are open
+		if(drawingToolsApi) {
+			drawingToolsApi.close();
+			setDrawingToolsApi(undefined);
+		}
+
+		// if the output API or the output content is not available, return
+		if(!outputContentCustomizationProperties) return;
+
+		// get the customization properties from the output content
+		const customizationProperties = outputContentCustomizationProperties[0].data as CustomizationProperties;
+
+		/**
+		 * The callback to be executed once the drawing tools are finished.
+		 * 
+		 * @param geometryData 
+		 */
+		const onFinish = async (geometryData: IGeometryData) => {
+			console.log("onFinish"); 
+			if(!parameter) return;
+			
+			const positionArray = geometryData.primitive.attributes["POSITION"].array;
+	
+			// get all points
+			const points = [];
+			for (let i = 0; i < positionArray.length; i += 3) {
+				points.push([positionArray[i], positionArray[i + 1], positionArray[i + 2]]);
+			}
+	
+			parameter.actions.setUiValue(JSON.stringify({ points: points }));
+			await parameter.actions.execute(true);
+		};
+
+		/**
+		 * The callback to be executed once the drawing tools are canceled.
+		 */
+		const onCancel = () => { console.log("onCancel"); };
+
+		if(viewportApi && customizationProperties) {
+			// whenever this output node changes, we want to create the drawing tools
+			setDrawingToolsApi(createDrawingTools(viewportApi, {onFinish, onCancel}, customizationProperties));
+		}
+
+		return () => {
+			// remove the listener
+			removeListener(token);
+
+			// clean up the drawing tools
+			if(drawingToolsApi) {
+				drawingToolsApi.close();
+				setDrawingToolsApi(undefined);
+			}
+		};
+
+	}, [viewportApi, outputContentCustomizationProperties, sessionCustomized]);
 
 	return {
-		outputApi,
-		drawingToolsApiRef
+		outputApiCustomizationProperties,
+		drawingToolsApi
 	};
 }
 
