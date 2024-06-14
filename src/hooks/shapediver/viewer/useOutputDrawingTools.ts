@@ -19,11 +19,14 @@ export function useOutputDrawingTools(sessionId: string, viewportId: string, out
 	 * API of the output
 	 * @see https://viewer.shapediver.com/v3/latest/api/interfaces/IOutputApi.html
 	 */
-	outputApi: IOutputApi | undefined
+	outputApi: IOutputApi | undefined,
+
+	drawingToolsApiRef: React.MutableRefObject<IDrawingToolsApi | null>
 } {
 
 	/**
 	 * Create the callbacks for the drawing tools
+	 * @ALEX I'm not sure how to actually get parameters, if not via the API
 	 */
 	const onFinish = async (geometryData: IGeometryData) => {
 		if(!sessionApiRef.current) return;
@@ -89,7 +92,8 @@ export function useOutputDrawingTools(sessionId: string, viewportId: string, out
 	}, []);
 
 	return {
-		outputApi
+		outputApi,
+		drawingToolsApiRef
 	};
 }
 
