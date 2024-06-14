@@ -2,12 +2,10 @@ import ViewportComponent from "components/shapediver/viewport/ViewportComponent"
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/shapediver/useSession";
-import ExamplePage from "pages/templates/ExampleTemplatePage";
 import ViewportOverlayWrapper from "../../components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "../../components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSessionPropsParameter";
 import AcceptRejectButtons from "../../components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "hooks/shapediver/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "components/ui/TabsComponent";
 import { IconTypeEnum } from "types/shapediver/icons";
 import { IAppBuilderSettingsSession } from "types/shapediver/appbuilder";
@@ -19,6 +17,8 @@ import { Settings, PlaneRestrictionApi, PointsData } from "@shapediver/viewer.fe
 import { useDrawingTools } from "hooks/shapediver/viewer/useDrawingTools";
 import { useParameterStateless } from "hooks/shapediver/parameters/useParameterStateless";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
+import useAppBuilderSettings from "hooks/shapediver/appbuilder/useAppBuilderSettings";
+import ExamplePage from "./ExamplePage";
 
 const VIEWPORT_ID = "viewport_1";
 
