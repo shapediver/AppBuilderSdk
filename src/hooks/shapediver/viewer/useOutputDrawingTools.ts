@@ -56,7 +56,7 @@ export function useOutputDrawingTools(sessionId: string, viewportId: string, out
 		if(viewportApiRef.current && customizationPropertiesRef.current && outputApiRef.current) {
 			// whenever this output node changes, we want to create the drawing tools
 			// @ALEX: I currently pass the customization properties here directly, there seems to be a bug in the drawing tools when parsing the incoming JSON from the output
-			drawingToolsApiRef.current = createDrawingTools(viewportApiRef.current, {onFinish, onCancel}, { geometry: { mode: "lines", parentNode: "Outline", minPoints: 4, maxPoints: 12, origin: [523, 389, 0], close: true, autoClose: true }, restrictions: [ { type: RESTRICTION_TYPE.PLANE, gridSnapRestriction: { priority: 0, gridUnit: 1 }, gridSize: 100, normal: [0, 0, 1], angularSnapRestriction: { priority: 0, angleStep: 0.39269908169 } } as PlaneRestrictionProperties ] });
+			drawingToolsApiRef.current = createDrawingTools(viewportApiRef.current, {onFinish, onCancel}, customizationPropertiesRef.current);
 		}
 	}, []);
 	
