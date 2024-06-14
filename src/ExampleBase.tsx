@@ -1,4 +1,5 @@
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 import { MantineProvider } from "@mantine/core";
 import React, { useEffect } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
@@ -12,6 +13,7 @@ import CustomUiPage from "pages/examples/CustomUiPage";
 import AppBuilderStaticExamplePage from "./pages/appbuilder/AppBuilderStaticExamplePage";
 import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "hooks/ui/useCustomTheme";
+import { Notifications } from "@mantine/notifications";
 
 declare global {
 	interface Window {
@@ -29,6 +31,7 @@ export default function App() {
 
 	return (
 		<MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={resolver}>
+			<Notifications />
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
