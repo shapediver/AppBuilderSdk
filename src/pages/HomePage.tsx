@@ -6,6 +6,14 @@ import ModelCard from "components/ui/ModelCard";
 
 const modelCards = [
 	{
+		title: "Drawing Tools Page",
+		description: "This example opens a session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing the parameters and exports defined by the model. All components are easily customizable.",
+		btnText: "Open example",
+		btnLink: "/drawingTools",
+		imageSrc: "https://img2.storyblok.com/1280x0/filters:format(webp)/f/92524/2048x1481/81a30bd9de/0202.png",
+		imageAlt: "Under Construction"
+	},
+	{
 		title: "Model View Page",
 		description: "This example opens a session with a ShapeDiver model, displays it in a viewport, and creates two tabs of components representing the parameters and exports defined by the model. All components are easily customizable.",
 		btnText: "Open example",
