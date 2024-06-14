@@ -15,9 +15,8 @@ import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { CustomizationProperties, IDrawingToolsApi, PlaneRestrictionApi } from "@shapediver/viewer.features.drawing-tools";
+import { Settings, PlaneRestrictionApi, PointsData } from "@shapediver/viewer.features.drawing-tools";
 import { useDrawingTools } from "hooks/shapediver/viewer/useDrawingTools";
-import { IGeometryData } from "@shapediver/viewer";
 import { useParameterStateless } from "hooks/shapediver/parameters/useParameterStateless";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
 
@@ -68,28 +67,20 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 		parameterRef.current = parameter;
 	}, [parameter]);
 
-	// get the output API and output content for the customization properties
+	// get the output API and output content for the settings
 	const { outputContent } = useOutputContent(sessionId, outputNameDrawingTools);
-	const customizationProperties = outputContent ? outputContent[0].data as CustomizationProperties : undefined;
+	const drawingToolsSettings = outputContent ? outputContent[0].data as Settings : undefined;
 
 	/**
      * The callback to be executed once the drawing tools are finished.
      * 
-     * @param geometryData 
+     * @param pointsData 
      */
-	const onUpdate = useCallback(async (geometryData: IGeometryData) => {
+	const onUpdate = useCallback(async (pointsData: PointsData) => {
 		console.log("onUpdate");
 		if (!parameterRef.current) return;
 
-		const positionArray = geometryData.primitive.attributes["POSITION"].array;
-
-		// get all points
-		const points = [];
-		for (let i = 0; i < positionArray.length; i += 3) {
-			points.push([positionArray[i], positionArray[i + 1], positionArray[i + 2]]);
-		}
-
-		parameterRef.current.actions.setUiValue(JSON.stringify({ points: points }));
+		parameterRef.current.actions.setUiValue(JSON.stringify({ points: pointsData }));
 		await parameterRef.current.actions.execute(true);
 	}, []);
 
@@ -104,23 +95,18 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 	/**
 	 * The callback to be executed once the drawing tools are finished.
      * 
-     * @param geometryData 
+     * @param pointsData 
      */
-	const onFinish = useCallback(async (geometryData: IGeometryData) => {
+	const onFinish = useCallback(async (pointsData: PointsData) => {
 		console.log("onFinish");
-		onUpdate(geometryData);
+		onUpdate(pointsData);
 		setOutputNameDrawingTools("");
 	}, []);
 
 	// define the drawing tools inputs
-	const drawingToolsApi = useDrawingTools(VIEWPORT_ID, customizationProperties, { onCancel, onFinish, onUpdate });
-	const drawingToolsApiRef = useRef<IDrawingToolsApi | undefined>(undefined);
+	const drawingToolsApi = useDrawingTools(VIEWPORT_ID, drawingToolsSettings, onUpdate, onFinish, onCancel);
 
-	useEffect(() => {
-		drawingToolsApiRef.current = drawingToolsApi;
-	}, [drawingToolsApi]);
-
-	// define the parameter names for the custom material
+	// define the parameter names for the drawing tools
 	const enum PARAMETER_NAMES {
 		START_DRAWING = "startDrawing",
 		SHOW_POINT_LABELS = "showPointLabels",
@@ -134,7 +120,6 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 	const [materialParameters, setMaterialParameters] = useState<IGenericParameterDefinition[]>([]);
 
 	useEffect(() => {
-		const drawingToolsApi = drawingToolsApiRef.current;
 		let planeRestrictionApi: PlaneRestrictionApi | undefined;
 		if(drawingToolsApi)
 			planeRestrictionApi = Object.values(drawingToolsApi.restrictions).find(restriction => restriction instanceof PlaneRestrictionApi) as PlaneRestrictionApi | undefined;
@@ -174,7 +159,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						name: "Grid Snapping",
 						defval: (planeRestrictionApi?.gridRestrictionApi.enabled ?? false) + "",
 						type: ShapeDiverResponseParameterType.BOOL,
-						hidden: !outputNameDrawingTools
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.gridRestrictionApi.available ?? true)
 					}
 				},
 				{
@@ -185,7 +170,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						min: 1,
 						max: 10,
 						type: ShapeDiverResponseParameterType.INT,
-						hidden: !outputNameDrawingTools
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.gridRestrictionApi.available ?? true)
 					}
 				},
 				{
@@ -194,18 +179,18 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						name: "Angular Snapping",
 						defval: (planeRestrictionApi?.angularRestrictionApi.enabled ?? false) + "",
 						type: ShapeDiverResponseParameterType.BOOL,
-						hidden: !outputNameDrawingTools
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.angularRestrictionApi.available ?? true)
 					}
 				},
 				{
 					definition: {
 						id: PARAMETER_NAMES.ANGULAR_SECTIONS,
 						name: "Angular Sections",
-						defval: (planeRestrictionApi?.angularRestrictionApi.angleStep ?? 8 / Math.PI) * Math.PI + "",
+						defval: Math.PI / (planeRestrictionApi?.angularRestrictionApi.angleStep ?? Math.PI / 8) + "",
 						min: 2,
 						max: 24,
 						type: ShapeDiverResponseParameterType.INT,
-						hidden: !outputNameDrawingTools
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.angularRestrictionApi.available ?? true)
 					}
 				}
 			]
@@ -221,7 +206,6 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 			if (PARAMETER_NAMES.START_DRAWING in values)
 				setOutputNameDrawingTools(""+values[PARAMETER_NAMES.START_DRAWING] === "true" ? "DrawingToolsOptions" : "");
 
-			const drawingToolsApi = drawingToolsApiRef.current;
 			if(drawingToolsApi !== undefined) {
 				const planeRestrictionApi = Object.values(drawingToolsApi.restrictions).find(restriction => restriction instanceof PlaneRestrictionApi)! as PlaneRestrictionApi;
 
