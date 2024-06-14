@@ -1,5 +1,5 @@
 import ViewportComponent from "components/shapediver/viewport/ViewportComponent";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ParametersAndExportsAccordionComponent from "components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "hooks/shapediver/useSession";
 import ExamplePage from "pages/templates/ExampleTemplatePage";
@@ -15,9 +15,8 @@ import useDefaultSessionDto from "hooks/shapediver/useDefaultSessionDto";
 import { useDefineGenericParameters } from "hooks/shapediver/parameters/useDefineGenericParameters";
 import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
-import { CustomizationProperties, PlaneRestrictionApi } from "@shapediver/viewer.features.drawing-tools";
+import { CustomizationProperties, IDrawingToolsApi, PlaneRestrictionApi } from "@shapediver/viewer.features.drawing-tools";
 import { useDrawingTools } from "hooks/shapediver/viewer/useDrawingTools";
-import { useDrawingToolsApiStore } from "store/useDrawingToolsApiStore";
 import { IGeometryData } from "@shapediver/viewer";
 import { useParameterStateless } from "hooks/shapediver/parameters/useParameterStateless";
 import { useOutputContent } from "hooks/shapediver/viewer/useOutputContent";
@@ -62,6 +61,12 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 
 	// get the parameter API
 	const parameter = useParameterStateless<string>(sessionId, "points");
+	const parameterRef = useRef(parameter);
+
+	// update the parameter reference when the parameter changes
+	useEffect(() => {
+		parameterRef.current = parameter;
+	}, [parameter]);
 
 	// get the output API and output content for the customization properties
 	const { outputContent } = useOutputContent(sessionId, outputNameDrawingTools);
@@ -74,7 +79,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
      */
 	const onUpdate = useCallback(async (geometryData: IGeometryData) => {
 		console.log("onUpdate");
-		if (!parameter) return;
+		if (!parameterRef.current) return;
 
 		const positionArray = geometryData.primitive.attributes["POSITION"].array;
 
@@ -84,9 +89,9 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 			points.push([positionArray[i], positionArray[i + 1], positionArray[i + 2]]);
 		}
 
-		parameter.actions.setUiValue(JSON.stringify({ points: points }));
-		await parameter.actions.execute(true);
-	}, [parameter]);
+		parameterRef.current.actions.setUiValue(JSON.stringify({ points: points }));
+		await parameterRef.current.actions.execute(true);
+	}, []);
 
 	/**
      * The callback to be executed once the drawing tools are canceled.
@@ -105,13 +110,16 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 		console.log("onFinish");
 		onUpdate(geometryData);
 		setOutputNameDrawingTools("");
-	}, [onUpdate]);
-
+	}, []);
 
 	// define the drawing tools inputs
-	useDrawingTools(VIEWPORT_ID, customizationProperties, { onCancel, onFinish, onUpdate });
-	const { drawingToolsApi, setDrawingToolsApi } = useDrawingToolsApiStore();
-	
+	const drawingToolsApi = useDrawingTools(VIEWPORT_ID, customizationProperties, { onCancel, onFinish, onUpdate });
+	const drawingToolsApiRef = useRef<IDrawingToolsApi | undefined>(undefined);
+
+	useEffect(() => {
+		drawingToolsApiRef.current = drawingToolsApi;
+	}, [drawingToolsApi]);
+
 	// define the parameter names for the custom material
 	const enum PARAMETER_NAMES {
 		START_DRAWING = "startDrawing",
@@ -126,7 +134,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 	const [materialParameters, setMaterialParameters] = useState<IGenericParameterDefinition[]>([]);
 
 	useEffect(() => {
-		const drawingToolsApi = useDrawingToolsApiStore.getState().drawingToolsApi;
+		const drawingToolsApi = drawingToolsApiRef.current;
 		let planeRestrictionApi: PlaneRestrictionApi | undefined;
 		if(drawingToolsApi)
 			planeRestrictionApi = Object.values(drawingToolsApi.restrictions).find(restriction => restriction instanceof PlaneRestrictionApi) as PlaneRestrictionApi | undefined;
@@ -202,7 +210,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 				}
 			]
 		);
-	}, [drawingToolsApi, setDrawingToolsApi, outputNameDrawingTools]);
+	}, [drawingToolsApi, outputNameDrawingTools]);
 
 
 	// define the custom drawing tools parameters and a handler for changes
@@ -213,7 +221,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 			if (PARAMETER_NAMES.START_DRAWING in values)
 				setOutputNameDrawingTools(""+values[PARAMETER_NAMES.START_DRAWING] === "true" ? "DrawingToolsOptions" : "");
 
-			const drawingToolsApi = useDrawingToolsApiStore.getState().drawingToolsApi;
+			const drawingToolsApi = drawingToolsApiRef.current;
 			if(drawingToolsApi !== undefined) {
 				const planeRestrictionApi = Object.values(drawingToolsApi.restrictions).find(restriction => restriction instanceof PlaneRestrictionApi)! as PlaneRestrictionApi;
 
