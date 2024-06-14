@@ -169,6 +169,11 @@ export default function MarkdownWidgetComponent(props: Props & Partial<StyleProp
 
 				return <List {...rest} {...styleProps} />;
 			},
+			ol(props) {
+				const {...rest} = props;
+
+				return <List {...rest} {...styleProps } type="ordered" />;
+			},
 			li(props) {
 				const {...rest} = props;
 

@@ -38,6 +38,7 @@ export enum IconTypeEnum {
 	MaximizeOff = "maximize-off",
 	Network = "network",
 	NetworkOff = "network-off",
+	PencilPin = "pencil-pin",
 	Photo = "photo",
 	PhotoOff = "photo-off",
 	Refresh = "refresh",

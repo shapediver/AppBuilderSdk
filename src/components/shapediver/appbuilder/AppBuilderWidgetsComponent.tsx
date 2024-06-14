@@ -1,8 +1,9 @@
 import React from "react";
-import { IAppBuilderWidget, isAccordionWidget, isImageWidget, isTextWidget } from "types/shapediver/appbuilder";
+import { IAppBuilderWidget, isAccordionWidget, isDrawingToolsWidget, isImageWidget, isTextWidget } from "types/shapediver/appbuilder";
 import AppBuilderTextWidgetComponent from "./AppBuilderTextWidgetComponent";
 import AppBuilderImageWidgetComponent from "./AppBuilderImageWidgetComponent";
 import AppBuilderAccordionWidgetComponent from "./AppBuilderAccordionWidgetComponent";
+import AppBuilderDrawingToolsWidgetComponent from "./AppBuilderDrawingToolsWidgetComponent";
 
 interface Props {
 	/** 
@@ -28,6 +29,8 @@ export default function AppBuilderWidgetsComponent({ sessionId, widgets }: Props
 				return <AppBuilderImageWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else if (isAccordionWidget(w))
 				return <AppBuilderAccordionWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
+			else if (isDrawingToolsWidget(w))
+				return <AppBuilderDrawingToolsWidgetComponent key={i} sessionId={sessionId} {...w.props} />;
 			else
 				return null;
 		})}

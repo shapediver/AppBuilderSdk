@@ -86,11 +86,18 @@ const IAppBuilderWidgetPropsImageSchema = z.object({
 	target: z.string().default("_blank"),
 }).extend(IAppBuilderWidgetPropsCommonSchema.shape);
 
+// Zod type definition for IAppBuilderWidgetPropsDrawingTools
+const IAppBuilderWidgetPropsDrawingToolsSchema = z.object({
+	parameterName: z.string().optional(),
+	drawingToolsSettings: z.any(),
+}).extend(IAppBuilderWidgetPropsCommonSchema.shape);
+
 // Zod type definition for IAppBuilderWidget
 const IAppBuilderWidgetSchema = z.discriminatedUnion("type", [
 	z.object({type: z.literal("accordion"), props: IAppBuilderWidgetPropsAccordionSchema}),
 	z.object({type: z.literal("text"), props: IAppBuilderWidgetPropsTextSchema}),
 	z.object({type: z.literal("image"), props: IAppBuilderWidgetPropsImageSchema}),
+	z.object({type: z.literal("drawing_tools"), props: IAppBuilderWidgetPropsDrawingToolsSchema}),
 ]);
 
 // Zod type definition for IAppBuilderTab

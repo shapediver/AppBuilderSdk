@@ -34,6 +34,7 @@ import {
 	IconMaximizeOff,
 	IconNetwork,
 	IconNetworkOff,
+	IconPencilPin,
 	IconPhoto,
 	IconPhotoOff,
 	IconRefresh,
@@ -153,6 +154,8 @@ export default function Icon({type, ...rest} : Props) {
 		return <IconNetwork {...iconProps} />;
 	case IconTypeEnum.NetworkOff:
 		return <IconNetworkOff {...iconProps} />;
+	case IconTypeEnum.PencilPin:
+		return <IconPencilPin {...iconProps} />;
 	case IconTypeEnum.Photo:
 		return <IconPhoto {...iconProps} />;
 	case IconTypeEnum.PhotoOff:

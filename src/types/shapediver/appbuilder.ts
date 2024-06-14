@@ -2,6 +2,7 @@ import { IShapeDiverExportDefinition } from "types/shapediver/export";
 import { IShapeDiverParameterDefinition } from "types/shapediver/parameter";
 import { IconType } from "./icons";
 import { SessionCreateDto } from "types/store/shapediverStoreViewer";
+import { Settings } from "@shapediver/viewer.features.drawing-tools";
 
 /** Type used for parameter definitions */
 export type IAppBuilderParameterDefinition = IShapeDiverParameterDefinition;
@@ -34,7 +35,7 @@ export interface IAppBuilderExportRef {
 }
 
 /** Types of widgets */
-export type AppBuilderWidgetType = "accordion" | "text" | "image";
+export type AppBuilderWidgetType = "accordion" | "text" | "image" | "drawing_tools";
 
 /** 
  * Properties of a parameter and export accordion widget.
@@ -78,6 +79,14 @@ export interface IAppBuilderWidgetPropsImage extends IAppBuilderWidgetPropsAncho
 	href?: string
 }
 
+/** Properties of a drawing tools widget. */
+export interface IAppBuilderWidgetPropsDrawingTools {
+	/** The settings of the drawing tools. */
+	drawingToolsSettings?: Settings
+	/** Name of the parameter that should be used. */
+	parameterName?: string
+}
+
 /** 
  * A widget.
  * 
@@ -91,7 +100,7 @@ export interface IAppBuilderWidget {
 	/** Type of the widget. */
 	type: AppBuilderWidgetType
 	/** Properties of the widget. Add properties of  */
-	props: IAppBuilderWidgetPropsAccordion | IAppBuilderWidgetPropsText | IAppBuilderWidgetPropsImage
+	props: IAppBuilderWidgetPropsAccordion | IAppBuilderWidgetPropsText | IAppBuilderWidgetPropsImage | IAppBuilderWidgetPropsDrawingTools
 }
 
 /** 
@@ -158,6 +167,11 @@ export function isTextWidget(widget: IAppBuilderWidget): widget is { type: "text
 /** assert widget type "image" */
 export function isImageWidget(widget: IAppBuilderWidget): widget is { type: "image", props: IAppBuilderWidgetPropsImage } {
 	return widget.type === "image";
+}
+
+/** assert widget type "image" */
+export function isDrawingToolsWidget(widget: IAppBuilderWidget): widget is { type: "drawing_tools", props: IAppBuilderWidgetPropsDrawingTools } {
+	return widget.type === "drawing_tools";
 }
 
 /**
