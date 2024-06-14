@@ -8,6 +8,7 @@ import { useSessionPropsParameter } from "hooks/shapediver/parameters/useSession
 import { useDrawingTools } from "hooks/shapediver/viewer/useDrawingTools";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import ParametersAndExportsAccordionComponent from "../ui/ParametersAndExportsAccordionComponent";
+import { useId } from "@mantine/hooks";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -30,12 +31,14 @@ interface Props extends IAppBuilderWidgetPropsDrawingTools {
  * @returns 
  */
 export default function AppBuilderDrawingToolsWidgetComponent({ drawingToolsSettings, parameterName, sessionId, viewportId }: Props) {
+	// generate a unique id for the widget
+	const uuid = useId();
 
 	// state for the drawing tools application
 	const [drawingToolsActive, setDrawingToolsActive] = useState<boolean>(false);
 
 	// get the parameter API
-	const parameter = useParameterStateless<string>(sessionId, parameterName || "points");
+	const parameter = useParameterStateless<string>(sessionId, parameterName || "");
 	const parameterRef = useRef(parameter);
 
 	// update the parameter reference when the parameter changes
@@ -88,14 +91,14 @@ export default function AppBuilderDrawingToolsWidgetComponent({ drawingToolsSett
 		ANGULAR_SECTIONS = "angularSections",
 	}
 
-	const [materialParameters, setMaterialParameters] = useState<IGenericParameterDefinition[]>([]);
+	const [parameters, setParameters] = useState<IGenericParameterDefinition[]>([]);
 
 	useEffect(() => {
 		let planeRestrictionApi: PlaneRestrictionApi | undefined;
 		if (drawingToolsApi)
 			planeRestrictionApi = Object.values(drawingToolsApi.restrictions).find(restriction => restriction instanceof PlaneRestrictionApi) as PlaneRestrictionApi | undefined;
 
-		setMaterialParameters(
+		setParameters(
 			[
 				{
 					definition: {
@@ -172,7 +175,7 @@ export default function AppBuilderDrawingToolsWidgetComponent({ drawingToolsSett
 	// define the custom drawing tools parameters and a handler for changes
 	const customSessionId = "mysession";
 	useDefineGenericParameters(customSessionId, false /* acceptRejectMode */,
-		materialParameters,
+		parameters,
 		async (values) => {
 			if (PARAMETER_NAMES.START_DRAWING in values)
 				setDrawingToolsActive("" + values[PARAMETER_NAMES.START_DRAWING] === "true");
@@ -202,11 +205,11 @@ export default function AppBuilderDrawingToolsWidgetComponent({ drawingToolsSett
 			return values;
 		}
 	);
-	const myParameterProps = useSessionPropsParameter(customSessionId);
+	const parameterProps = useSessionPropsParameter(customSessionId);
 
 	if (parameterName !== undefined)
-		return <ParametersAndExportsAccordionComponent key={0}
-			parameters={myParameterProps}
+		return <ParametersAndExportsAccordionComponent key={uuid}
+			parameters={parameterProps}
 			defaultGroupName="Drawing Tools"
 		/>;
 	else
