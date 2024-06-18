@@ -2,7 +2,7 @@ import { Image, Container, Card, Group, Text, Blockquote, Center } from "@mantin
 import React from "react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import classes from "pages/HomePage.module.css";
-import ModelCard from "components/ui/ModelCard";
+import ModelCard from "shared/components/ui/ModelCard";
 
 const modelCards = [
 	{

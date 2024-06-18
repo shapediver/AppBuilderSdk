@@ -5,14 +5,14 @@ import React, { useEffect } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import HomePage from "pages/HomePage";
 import ModelSelectPage from "pages/examples/ModelSelectPage";
-import NoMatchPage from "pages/misc/NoMatchPage";
+import NoMatchPage from "shared/pages/misc/NoMatchPage";
 import ViewPage from "pages/examples/ViewPage";
 import MultipleViewportPage from "pages/examples/MultipleViewportPage";
 import * as ShapeDiverViewer from "@shapediver/viewer";
 import CustomUiPage from "pages/examples/CustomUiPage";
-import AppBuilderStaticExamplePage from "./pages/appbuilder/AppBuilderStaticExamplePage";
-import AppBuilderPage from "pages/appbuilder/AppBuilderPage";
-import { useCustomTheme } from "hooks/ui/useCustomTheme";
+import AppBuilderStaticExamplePage from "./pages/examples/AppBuilderStaticExamplePage";
+import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
+import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import { Notifications } from "@mantine/notifications";
 
 declare global {
