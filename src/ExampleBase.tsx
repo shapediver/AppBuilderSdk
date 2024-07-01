@@ -36,7 +36,7 @@ export default function App() {
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<HomePage />} />
-					<Route path="view" element={<ViewPage example="PointLineDrawingDemo" />} />
+					<Route path="view" element={<ViewPage example="Sideboard" />} />
 					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" />} />
 					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage example="AR Cube" />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
