@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Callbacks, CustomizationProperties, IDrawingToolsApi, createDrawingTools } from "@shapediver/viewer.features.drawing-tools";
+import { Settings, IDrawingToolsApi, createDrawingTools, PointsData } from "@shapediver/viewer.features.drawing-tools";
 import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
 
 /**
@@ -7,7 +7,7 @@ import { useShapeDiverStoreViewer } from "store/useShapeDiverStoreViewer";
  * 
  * @param viewportId 
  */
-export function useDrawingTools(viewportId: string, customizationProperties?: CustomizationProperties, callbacks?: Callbacks) {
+export function useDrawingTools(viewportId: string, settings?: Settings, onUpdate?: (pointsData: PointsData) => void, onFinish?: (pointsData: PointsData) => void, onCancel?: () => void): IDrawingToolsApi | undefined {
 	// get the viewport API
 	const viewportApi = useShapeDiverStoreViewer(state => { return state.viewports[viewportId]; });
 
@@ -18,9 +18,9 @@ export function useDrawingTools(viewportId: string, customizationProperties?: Cu
 
 	// use an effect to apply changes to the material, and to apply the callback once the node is available
 	useEffect(() => {
-		if(viewportApi && customizationProperties && callbacks) {
+		if(viewportApi && settings && onUpdate && onFinish && onCancel) {
 			// whenever this output node changes, we want to create the drawing tools
-			drawingToolsApiRef.current = createDrawingTools(viewportApi, callbacks, customizationProperties); 
+			drawingToolsApiRef.current = createDrawingTools(viewportApi, { onUpdate, onFinish, onCancel }, settings); 
 			setDrawingToolsApi(drawingToolsApiRef.current);
 		}
 
@@ -32,7 +32,7 @@ export function useDrawingTools(viewportId: string, customizationProperties?: Cu
 				setDrawingToolsApi(undefined);
 			}
 		};
-	}, [viewportApi, customizationProperties]);
+	}, [viewportApi, settings, onUpdate, onFinish, onCancel]);
 
 	return drawingToolsApi;
 }
