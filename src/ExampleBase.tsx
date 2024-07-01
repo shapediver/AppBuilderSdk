@@ -15,7 +15,6 @@ import AppBuilderStaticExamplePage from "./pages/examples/AppBuilderStaticExampl
 import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import { Notifications } from "@mantine/notifications";
-import DrawingToolsPage from "pages/examples/DrawingToolsPage";
 
 declare global {
 	interface Window {
@@ -38,7 +37,6 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="view" element={<ViewPage example="PointLineDrawingDemo" />} />
-					<Route path="drawingTools" element={<DrawingToolsPage example="PointLineDrawingDemo" />} />
 					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" />} />
 					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage example="AR Cube" />} />
 					<Route path="modelSelect" element={<ModelSelectPage />} />
