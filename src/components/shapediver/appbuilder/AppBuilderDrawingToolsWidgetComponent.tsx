@@ -9,6 +9,7 @@ import { useDrawingTools } from "hooks/shapediver/viewer/useDrawingTools";
 import { IGenericParameterDefinition } from "types/store/shapediverStoreParameters";
 import ParametersAndExportsAccordionComponent from "../ui/ParametersAndExportsAccordionComponent";
 import { useId } from "@mantine/hooks";
+import { Image } from "@mantine/core";
 
 const VIEWPORT_ID = "viewport_1";
 
@@ -208,10 +209,34 @@ export default function AppBuilderDrawingToolsWidgetComponent({ drawingToolsSett
 	const parameterProps = useSessionPropsParameter(customSessionId);
 
 	if (parameterName !== undefined)
-		return <ParametersAndExportsAccordionComponent key={uuid}
-			parameters={parameterProps}
-			defaultGroupName="Drawing Tools"
-		/>;
+		return <>
+			<div style={{ display: "flex", justifyContent: "flex-end" }}>
+				<Image
+					radius="md"
+					width={35}
+					height={35}
+					src="https://viewer.shapediver.com/v3/graphics/undo.svg"
+					onClick={() => {
+						if(drawingToolsApi === undefined) return;
+						drawingToolsApi.undo();
+					}}
+				/>
+				<Image
+					radius="md"
+					width={35}
+					height={35}
+					src="https://viewer.shapediver.com/v3/graphics/redo.svg"
+					onClick={() => {
+						if(drawingToolsApi === undefined) return;
+						drawingToolsApi.redo();
+					}}
+				/>
+			</div>
+			<ParametersAndExportsAccordionComponent key={uuid}
+				parameters={parameterProps}
+				defaultGroupName="Drawing Tools"
+			/>
+		</>;
 	else
 		return <></>;
 }
