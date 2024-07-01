@@ -159,7 +159,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						name: "Grid Snapping",
 						defval: (planeRestrictionApi?.gridRestrictionApi.enabled ?? false) + "",
 						type: ShapeDiverResponseParameterType.BOOL,
-						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.gridRestrictionApi.available ?? true)
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.gridRestrictionApi.enabledEditable ?? true)
 					}
 				},
 				{
@@ -170,7 +170,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						min: 1,
 						max: 10,
 						type: ShapeDiverResponseParameterType.INT,
-						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.gridRestrictionApi.available ?? true)
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.gridRestrictionApi.gridUnitEditable ?? true)
 					}
 				},
 				{
@@ -179,7 +179,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						name: "Angular Snapping",
 						defval: (planeRestrictionApi?.angularRestrictionApi.enabled ?? false) + "",
 						type: ShapeDiverResponseParameterType.BOOL,
-						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.angularRestrictionApi.available ?? true)
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.angularRestrictionApi.enabledEditable ?? true)
 					}
 				},
 				{
@@ -190,7 +190,7 @@ export default function DrawingToolsPage(props: Partial<Props>) {
 						min: 2,
 						max: 24,
 						type: ShapeDiverResponseParameterType.INT,
-						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.angularRestrictionApi.available ?? true)
+						hidden: !outputNameDrawingTools || !(planeRestrictionApi?.angularRestrictionApi.angleStepEditable ?? true)
 					}
 				}
 			]
