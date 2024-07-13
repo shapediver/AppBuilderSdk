@@ -1,4 +1,4 @@
-import { IMaterialStandardDataProperties, MaterialEngine, MATERIAL_TYPE } from "@shapediver/viewer";
+import { IMaterialStandardDataProperties, MaterialEngine, MATERIAL_TYPE, PARAMETER_TYPE } from "@shapediver/viewer";
 import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
 import React, { useEffect, useMemo, useState } from "react";
 import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
@@ -15,7 +15,6 @@ import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRej
 import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
 import TabsComponent, { ITabsComponentProps } from "shared/components/ui/TabsComponent";
 import { IconTypeEnum } from "shared/types/shapediver/icons";
-import { ShapeDiverResponseParameterType } from "@shapediver/api.geometry-api-dto-v2";
 import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
 import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
 
@@ -73,7 +72,7 @@ export default function ViewPage(props: Partial<Props>) {
 				id: PARAMETER_NAMES.COLOR,
 				name: "Custom color",
 				defval: "0x0d44f0ff",
-				type: ShapeDiverResponseParameterType.COLOR,
+				type: PARAMETER_TYPE.COLOR,
 				hidden: false
 			}
 		},
@@ -82,7 +81,7 @@ export default function ViewPage(props: Partial<Props>) {
 				id: PARAMETER_NAMES.MAP,
 				name: "Custom map",
 				defval: "",
-				type: ShapeDiverResponseParameterType.STRING,
+				type: PARAMETER_TYPE.STRING,
 				hidden: false
 			}
 		},
@@ -91,7 +90,7 @@ export default function ViewPage(props: Partial<Props>) {
 				id: PARAMETER_NAMES.ROUGHNESS,
 				name: "Custom roughness",
 				defval: "0",
-				type: ShapeDiverResponseParameterType.FLOAT,
+				type: PARAMETER_TYPE.FLOAT,
 				min: 0,
 				max: 1,
 				decimalplaces: 4,
@@ -103,7 +102,7 @@ export default function ViewPage(props: Partial<Props>) {
 				id: PARAMETER_NAMES.APPLY_TO_SHELF,
 				name: "Apply to shelf",
 				defval: "false",
-				type: ShapeDiverResponseParameterType.BOOL,
+				type: PARAMETER_TYPE.BOOL,
 				hidden: false
 			}
 		},
@@ -112,7 +111,7 @@ export default function ViewPage(props: Partial<Props>) {
 				id: PARAMETER_NAMES.APPLY_TO_PLANE,
 				name: "Apply to plane",
 				defval: "false",
-				type: ShapeDiverResponseParameterType.BOOL,
+				type: PARAMETER_TYPE.BOOL,
 				hidden: false
 			}
 		}
