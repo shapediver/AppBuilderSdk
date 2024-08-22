@@ -3,6 +3,11 @@ SENTRY_CLI="node_modules/.bin/sentry-cli"
 SENTRY_ORG="shapediver"
 SENTRY_PROJECT="app-builder"
 
+# load environment variables from .env file
+if [ -f .env ]; then
+  export $(grep -v '^#' .env | sed 's/#.*//' | sed 's/^ *//;s/ *$//' | xargs)
+fi
+
 # trap exceptions and restore sentryconfig.ts
 trap 'if [ -f "sentryconfig.ts.bak" ]; then mv sentryconfig.ts.bak sentryconfig.ts; fi' EXIT
 
@@ -31,7 +36,8 @@ fi
 
 prefix=v1/main
 
-vite build --base=/$prefix/$version/
+echo "Building AppBuilder version $version with prefix $prefix"
+vite build --base=$prefix/$version/
 if [ $? -ne 0 ]; then
     echo "Build failed."
     exit 1
