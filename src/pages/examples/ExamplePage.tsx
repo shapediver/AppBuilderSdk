@@ -21,9 +21,9 @@ export default function ExamplePage({ children = <></>, aside = <></>}: Props) {
 
 	return (
 		<AppBuilderAppShellTemplatePage
-			top={<HeaderBar />}
-			left={<NavigationBar />}
-			right={aside}
+			top={{node: <HeaderBar />}}
+			left={{node: <NavigationBar />}}
+			right={{node: aside}}
 		>
 			{ children }
 		</AppBuilderAppShellTemplatePage>

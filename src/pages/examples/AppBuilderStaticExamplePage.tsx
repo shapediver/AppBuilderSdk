@@ -213,29 +213,29 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 	return (
 		<AppBuilderTemplateSelector
 
-			top={<>
+			top={{node: <>
 				<AppBuilderTextWidgetComponent text="Top secret" />
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 				/>
 				<AppBuilderTextWidgetComponent text="Top secret" />
 			</>
-			}
+			}}
 
-			left={<>
+			left={{node: <>
 				<AppBuilderTextWidgetComponent markdown={markdown} />
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 				/>
-			</>}
+			</>}}
 
-			right={parameterTabs}
+			right={{node: parameterTabs}}
 
-			bottom={
+			bottom={{node: 
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 				/>
-			}
+			}}
 		>
 
 			<ViewportComponent
