@@ -14,7 +14,8 @@ import CustomUiPage from "pages/examples/CustomUiPage";
 import AppBuilderStaticExamplePage from "./pages/examples/AppBuilderStaticExamplePage";
 import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
-import { Notifications } from "@mantine/notifications";
+import { Notifications, notifications } from "@mantine/notifications";
+import { NotificationContext } from "shared/context/NotificationContext";
 
 declare global {
 	interface Window {
@@ -33,18 +34,20 @@ export default function App() {
 	return (
 		<MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={resolver}>
 			<Notifications />
-			<HashRouter>
-				<Routes>
-					<Route path="/" element={<HomePage />} />
-					<Route path="view" element={<ViewPage example="Sideboard" />} />
-					<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" />} />
-					<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage example="AR Cube" />} />
-					<Route path="modelSelect" element={<ModelSelectPage />} />
-					<Route path="multipleViewport" element={<MultipleViewportPage />} />
-					<Route path="customui" element={<CustomUiPage example="CustomUiBookshelf" />} />
-					<Route path="*" element={<NoMatchPage />} />
-				</Routes>
-			</HashRouter>
+			<NotificationContext.Provider value={notifications}>
+				<HashRouter>
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route path="view" element={<ViewPage example="Sideboard" />} />
+						<Route path="appBuilder" element={<AppBuilderPage example="AppBuilderExampleDiagrid" />} />
+						<Route path="appBuilderTest" element={<AppBuilderStaticExamplePage example="AR Cube" />} />
+						<Route path="modelSelect" element={<ModelSelectPage />} />
+						<Route path="multipleViewport" element={<MultipleViewportPage />} />
+						<Route path="customui" element={<CustomUiPage example="CustomUiBookshelf" />} />
+						<Route path="*" element={<NoMatchPage />} />
+					</Routes>
+				</HashRouter>
+			</NotificationContext.Provider>
 		</MantineProvider>
 	);
 }
