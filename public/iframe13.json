@@ -37,7 +37,10 @@
                         "props": {
                             "actions": [{
                                 "type": "addToCart",
-                                "props": {}
+                                "props": {
+                                    "tooltip": "Add the configured product to the shopping cart",
+                                    "icon": "upload"
+                                }
                             },  {
                                 "type": "setParameterValue",
                                 "props": {
