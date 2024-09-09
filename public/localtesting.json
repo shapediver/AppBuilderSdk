@@ -1,0 +1,170 @@
+{
+    "version": "1.0",
+    "sessions": [
+        {
+            "id": "Diagrid app builder example",
+            "ticket": "b1d3d639c61de96d729902b1ebe1eba4ecd33cf1b89ed04808698d372223595833ebbe6ce9cc76846f3062e8b5f5773a7bac8115fb3e84a342cc71bb9a34ac4815d6311c5fc155f1208eadb32c1322e1c72938ede69486ca5833a3fe82c62a9cd4d8cba24e5e4d-1b8a0ccbbb39e828d7bc2319893bc07a",
+		    "modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+        }
+    ],
+    "appBuilderOverride": {
+        "version": "1.0",
+        "containers": [
+            {
+                "name": "left",
+                "tabs": [],
+                "widgets": [
+                    {
+                        "type": "accordion",
+                        "props": {
+                            "parameters": [
+                                {
+                                    "name": "Enable Plan Visualizer Mode",
+                                    "acceptRejectMode": false
+                                }
+                            ],
+                            "exports": []
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "## Mode: Plan Visualizer\r\n---\r\n**Visualization Date:**\r\nWednesday, Week: 12 at 0% Daily Progress\r\n\r\n**Planned Install Progress:** 1701/4093\r\n\r\n \r\n "
+                        }
+                    },
+                    {
+                        "type": "actions",
+                        "props": {
+                            "actions": [{
+                                "type": "addToCart",
+                                "props": {
+                                    "tooltip": "Add the configured product to the shopping cart",
+                                    "icon": "upload"
+                                }
+                            },  {
+                                "type": "setParameterValue",
+                                "props": {
+                                    "label": "Enable Plan Visualizer Mode",
+                                    "parameter": {
+                                        "name": "Enable Plan Visualizer Mode"
+                                    },
+                                    "value": "true"
+                                }
+                            },  {
+                                "type": "setParameterValue",
+                                "props": {
+                                    "label": "Disable Plan Visualizer Mode",
+                                    "parameter": {
+                                        "name": "Enable Plan Visualizer Mode"
+                                    },
+                                    "value": "false"
+                                }
+                            },  {
+                                "type": "setBrowserLocation",
+                                "props": {
+                                    "label": "Go to shapediver.com",
+                                    "href": "https://shapediver.com",
+                                    "target": "_blank"
+                                }
+                            }]
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "bottom",
+                "tabs": [],
+                "widgets": [
+                    {
+                        "type": "image",
+                        "props": {
+                            "anchor": "https://help.shapediver.com/doc/",
+                            "alt": "InfographicBitmap image",
+                            "export": {
+                                "name": "InfographicBitmap"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "right",
+                "tabs": [
+                    {
+                        "name": "Plan Visualizer",
+                        "icon": "adjustments",
+                        "widgets": [
+                            {
+                                "type": "accordion",
+                                "props": {
+                                    "parameters": [
+                                        {
+                                            "name": "Week",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Day",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Daily Progress %",
+                                            "acceptRejectMode": false
+                                        }
+                                    ],
+                                    "exports": []
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Display Settings",
+                        "icon": "camera",
+                        "widgets": [
+                            {
+                                "type": "accordion",
+                                "props": {
+                                    "parameters": [
+                                        {
+                                            "name": "Highlight Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Concrete Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Timber Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Enclosure Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Ahead Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Behind Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Last Installed Color",
+                                            "acceptRejectMode": false
+                                        },
+                                        {
+                                            "name": "Behind Opacity",
+                                            "acceptRejectMode": false
+                                        }
+                                    ],
+                                    "exports": []
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "widgets": []
+            }
+        ]
+    }
+}
