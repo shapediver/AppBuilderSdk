@@ -27,8 +27,42 @@ export default defineConfig({
 				appbuilder: resolve(__dirname, "index.html"),
 				example: resolve(__dirname, "example.html"),
 			},
+			external: ["crypto"],
+			output: {
+				manualChunks: {
+					react: ["react", "react-dom", "react-router-dom"],
+					mantine: [
+						"@mantine/core",
+						"@mantine/hooks",
+						"@mantine/notifications",
+					],
+					mantineCharts: [
+						"@mantine/charts",
+					],
+					shapediver: [
+						"@shapediver/api.geometry-api-dto-v2",
+						"@shapediver/sdk.geometry-api-sdk-v2",
+						"@shapediver/sdk.platform-api-sdk-v1",
+					],
+					shapediverViewer: [
+						"@shapediver/viewer",
+					],
+					shapediverViewerMisc: [
+						"@shapediver/viewer.utils.mime-type",
+						"@shapediver/viewer.features.gumball",
+						"@shapediver/viewer.features.interaction"
+					],
+					utils: ["immer", "zustand", "zod", "uuid", "gl-matrix"],
+					markdown: [
+						"react-markdown",
+						"remark-directive",
+						"remark-gfm",
+						"unist-util-visit",
+					],
+					icons: ["@tabler/icons-react"],
+				}
+			}
 		},
-
 		sourcemap: true
 	},
 });

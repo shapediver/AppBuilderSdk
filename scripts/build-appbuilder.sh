@@ -21,9 +21,14 @@ fi
 deploy=$2
 
 # Check if sentry-cli exists
-if [ ! -z "$deploy" -a ! -x "$SENTRY_CLI" ]; then
-    echo "Could not find sentry-cli."
-    exit 1
+if [ ! -z "$deploy" ]; then
+    if [ ! -x "$SENTRY_CLI" ]; then
+        SENTRY_CLI="$HOME/bin/sentry-cli"
+    fi
+    if [ ! -x "$SENTRY_CLI" ]; then
+        echo "Could not find sentry-cli."
+        exit 1
+    fi
 fi
 
 # Check if sentryconfig.local.ts exists, copy it to sentryconfig.ts if it does
