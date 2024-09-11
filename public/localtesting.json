@@ -3,8 +3,8 @@
     "sessions": [
         {
             "id": "Diagrid app builder example",
-            "ticket": "b1d3d639c61de96d729902b1ebe1eba4ecd33cf1b89ed04808698d372223595833ebbe6ce9cc76846f3062e8b5f5773a7bac8115fb3e84a342cc71bb9a34ac4815d6311c5fc155f1208eadb32c1322e1c72938ede69486ca5833a3fe82c62a9cd4d8cba24e5e4d-1b8a0ccbbb39e828d7bc2319893bc07a",
-		    "modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+            "ticket": "c112632b44aa467225fe87507cf89996a99571f1941be1347361b80cae70079e7ca488ac6942d6b3896b26527579d9ed34aaa8c463580d5d2676e2ee3157c7cec42dbbe30d2f627b00d6e8b64e19d47c4589ed6d308c7a51d021ccfc030fc5f3e5cb241121d47a-20e298750b7f71ac209b3bc8f75e88d3",
+		    "modelViewUrl": "https://sddev2.eu-central-1.shapediver.com"
         }
     ],
     "appBuilderOverride": {
@@ -39,7 +39,8 @@
                                 "type": "addToCart",
                                 "props": {
                                     "tooltip": "Add the configured product to the shopping cart",
-                                    "icon": "upload"
+                                    "icon": "upload",
+                                    "description": "Dummy description of the cart item"
                                 }
                             },  {
                                 "type": "setParameterValue",
