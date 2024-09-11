@@ -27,7 +27,6 @@ export default defineConfig({
 				appbuilder: resolve(__dirname, "index.html"),
 				example: resolve(__dirname, "example.html"),
 			},
-			external: ["crypto"],
 			output: {
 				manualChunks: {
 					react: ["react", "react-dom", "react-router-dom"],
