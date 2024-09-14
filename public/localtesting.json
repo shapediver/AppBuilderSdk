@@ -43,6 +43,12 @@
                                     "description": "Dummy description of the cart item"
                                 }
                             },  {
+                                "type": "closeConfigurator",
+                                "props": {
+                                    "tooltip": "Close the configurator",
+                                    "icon": "x"
+                                }
+                            },  {
                                 "type": "setParameterValue",
                                 "props": {
                                     "label": "Enable Plan Visualizer Mode",
