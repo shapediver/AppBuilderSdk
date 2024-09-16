@@ -4,7 +4,7 @@
         {
             "id": "Diagrid app builder example",
             "ticket": "c112632b44aa467225fe87507cf89996a99571f1941be1347361b80cae70079e7ca488ac6942d6b3896b26527579d9ed34aaa8c463580d5d2676e2ee3157c7cec42dbbe30d2f627b00d6e8b64e19d47c4589ed6d308c7a51d021ccfc030fc5f3e5cb241121d47a-20e298750b7f71ac209b3bc8f75e88d3",
-		    "modelViewUrl": "https://sddev2.eu-central-1.shapediver.com"
+            "modelViewUrl": "https://sddev2.eu-central-1.shapediver.com"
         }
     ],
     "appBuilderOverride": {
@@ -35,45 +35,51 @@
                     {
                         "type": "actions",
                         "props": {
-                            "actions": [{
-                                "type": "addToCart",
-                                "props": {
-                                    "tooltip": "Add the configured product to the shopping cart",
-                                    "icon": "upload",
-                                    "description": "Dummy description of the cart item"
+                            "actions": [
+                                {
+                                    "type": "addToCart",
+                                    "props": {
+                                        "tooltip": "Add the configured product to the shopping cart",
+                                        "icon": "upload",
+                                        "description": "Dummy description of the cart item"
+                                    }
+                                },
+                                {
+                                    "type": "closeConfigurator",
+                                    "props": {
+                                        "tooltip": "Close the configurator",
+                                        "icon": "x"
+                                    }
+                                },
+                                {
+                                    "type": "setParameterValue",
+                                    "props": {
+                                        "label": "Enable Plan Visualizer Mode",
+                                        "parameter": {
+                                            "name": "Enable Plan Visualizer Mode"
+                                        },
+                                        "value": "true"
+                                    }
+                                },
+                                {
+                                    "type": "setParameterValue",
+                                    "props": {
+                                        "label": "Disable Plan Visualizer Mode",
+                                        "parameter": {
+                                            "name": "Enable Plan Visualizer Mode"
+                                        },
+                                        "value": "false"
+                                    }
+                                },
+                                {
+                                    "type": "setBrowserLocation",
+                                    "props": {
+                                        "label": "Go to shapediver.com",
+                                        "href": "https://shapediver.com",
+                                        "target": "_blank"
+                                    }
                                 }
-                            },  {
-                                "type": "closeConfigurator",
-                                "props": {
-                                    "tooltip": "Close the configurator",
-                                    "icon": "x"
-                                }
-                            },  {
-                                "type": "setParameterValue",
-                                "props": {
-                                    "label": "Enable Plan Visualizer Mode",
-                                    "parameter": {
-                                        "name": "Enable Plan Visualizer Mode"
-                                    },
-                                    "value": "true"
-                                }
-                            },  {
-                                "type": "setParameterValue",
-                                "props": {
-                                    "label": "Disable Plan Visualizer Mode",
-                                    "parameter": {
-                                        "name": "Enable Plan Visualizer Mode"
-                                    },
-                                    "value": "false"
-                                }
-                            },  {
-                                "type": "setBrowserLocation",
-                                "props": {
-                                    "label": "Go to shapediver.com",
-                                    "href": "https://shapediver.com",
-                                    "target": "_blank"
-                                }
-                            }]
+                            ]
                         }
                     }
                 ]

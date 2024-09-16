@@ -9,6 +9,7 @@ import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import packagejson from "../package.json";
 import { Notifications, notifications } from "@mantine/notifications";
 import { NotificationContext } from "shared/context/NotificationContext";
+import "AppBuilderBase.css";
 
 console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 
@@ -27,7 +28,12 @@ export default function AppBuilderBase() {
 	const { theme, resolver } = useCustomTheme();
 
 	return (
-		<MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={resolver}>
+		<MantineProvider 
+			defaultColorScheme="auto" 
+			forceColorScheme={theme.other?.forceColorScheme} 
+			theme={theme} 
+			cssVariablesResolver={resolver}
+		>
 			<Notifications />
 			<NotificationContext.Provider value={notifications}>
 				<AppBuilderPage />
