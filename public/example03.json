@@ -3,6 +3,7 @@
     "sessions": [
         {
             "id": "Bookshelf app builder example",
+            "_slug": "bookshelf-exportable-appbuilder",
             "ticket": "e69e848d9e066201dd7fe1e3e8acb0db3aac1f69344a582a0f1a01f360e82aff0e64e871fc13e31e11f9cf39c40876f82f125fe479e0eacaa07a3ce0445a4576cd103441797ee11b88c7f8c87906814e0e028d590550949f4973f8b0b07e1c4cecad4cd54de86e-2ae502dea11cfaf407e19382b55f9324",
             "modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
             "initialParameterValues": {
@@ -119,7 +120,7 @@
                     {
                         "type": "text",
                         "props": {
-                            "markdown": "# Heading 1\n ## Heading 2\n ### Heading 3\n#### Heading 4\n##### Heading 5\n###### Heading 6\n **Spacing** horizontal: 447\n\n**Spacing** vertical: 330\n\n**Count** horizontal: 3\n\n**Count** vertical: 2"
+                            "markdown": "**Spacing** horizontal: 447\n\n**Spacing** vertical: 330\n\n**Count** horizontal: 3\n\n**Count** vertical: 2"
                         }
                     }
                 ]
@@ -149,113 +150,5 @@
                 ]
             }
         ]
-    },
-    "themeOverrides": {
-        "primaryColor": "woodTechDarkNavy",
-        "colors": {
-            "woodTechDarkNavy": [
-                "#f1f3f9",
-                "#e1e4eb",
-                "#bfc6d8",
-                "#9aa6c6",
-                "#7a8bb6",
-                "#677aad",
-                "#5c72aa",
-                "#4d6195",
-                "#435686",
-                "#364a77"
-            ],
-            "woodTechLightBlue": [
-                "#e9f5ff",
-                "#d8e5f9",
-                "#b2c8ea",
-                "#89aadb",
-                "#6690ce",
-                "#507fc7",
-                "#4377c4",
-                "#3366ae",
-                "#295a9e",
-                "#184e8c"
-            ],
-            "woodTechLightBeige": [
-                "#fbf7ee",
-                "#f4ebdd",
-                "#ead6b5",
-                "#e1c08a",
-                "#d8ad64",
-                "#d3a14d",
-                "#d19b40",
-                "#b98632",
-                "#a5762b",
-                "#8f661f"
-            ]
-        },
-        "defaultRadius": "0",
-        "fontFamily": "'Work Sans', sans-serif",
-        "headings": {
-            "fontFamily": "'Work Sans', sans-serif",
-            "fontWeight": 300
-        },
-        "white": "#FFFFFF",
-        "black": "#131A2A",
-        "other": {
-            "woodTechDarkNavy": "#131A2A",
-            "woodTechLightBeige": "#FCF8F1",
-            "woodTechLightBlue": "#6F96D1",
-            "woodTechTone01": "#EFF4FA",
-            "woodTechTone02": "#D0DDF0",
-            "woodTechTone03": "#B1C7E7",
-            "woodTechTone04": "#92B0DD",
-            "defaultFontWeight": "100",
-            "forceColorScheme": "light"
-        },
-        "components": {
-            "Accordion": {
-                "defaultProps": {
-                    "styles": {
-                        "label": {
-                            "fontWeight": "300"
-                        }
-                    }
-                }
-            },
-            "Button": {
-                "defaultProps": {
-                    "fw": "300"
-                }
-            },
-            "ExportLabelComponent": {
-                "defaultProps": {
-                    "fontWeight": "100"
-                }
-            },
-            "MarkdownWidgetComponent": {
-                "defaultProps": {
-                    "boldFontWeight": "200",
-                    "strongFontWeight": "200"
-                }
-            },
-            "ParameterLabelComponent": {
-                "defaultProps": {
-                    "fontWeight": "100"
-                }
-            },
-            "Text": {
-                "defaultProps": {
-                    "fw": "100",
-                    "size": "sm"
-                }
-            },
-            "ViewportBranding": {
-                "defaultProps": {
-                    "light": {
-                        "logo": "https://appbuilder.shapediver.com/v1/main/assets/woodtech/logo-dark.png"
-                    },
-                    "dark": {
-                        "logo": "https://appbuilder.shapediver.com/v1/main/assets/woodtech/logo-light.png"
-                    }
-                }
-            }
-        }
     }
 }

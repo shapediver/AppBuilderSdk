@@ -1,0 +1,111 @@
+{
+  "version": "1.0",
+  "themeOverrides": {
+    "primaryColor": "customDarkNavy",
+    "colors": {
+      "customDarkNavy": [
+        "#f1f3f9",
+        "#e1e4eb",
+        "#bfc6d8",
+        "#9aa6c6",
+        "#7a8bb6",
+        "#677aad",
+        "#5c72aa",
+        "#4d6195",
+        "#435686",
+        "#364a77"
+      ],
+      "customLightBlue": [
+        "#e9f5ff",
+        "#d8e5f9",
+        "#b2c8ea",
+        "#89aadb",
+        "#6690ce",
+        "#507fc7",
+        "#4377c4",
+        "#3366ae",
+        "#295a9e",
+        "#184e8c"
+      ],
+      "customLightBeige": [
+        "#fbf7ee",
+        "#f4ebdd",
+        "#ead6b5",
+        "#e1c08a",
+        "#d8ad64",
+        "#d3a14d",
+        "#d19b40",
+        "#b98632",
+        "#a5762b",
+        "#8f661f"
+      ]
+    },
+    "defaultRadius": "0",
+    "fontFamily": "'Work Sans', sans-serif",
+    "headings": {
+      "fontFamily": "'Work Sans', sans-serif",
+      "fontWeight": 300
+    },
+    "white": "#FFFFFF",
+    "black": "#131A2A",
+    "other": {
+      "customDarkNavy": "#131A2A",
+      "customLightBeige": "#FCF8F1",
+      "customLightBlue": "#6F96D1",
+      "customTone01": "#EFF4FA",
+      "customTone02": "#D0DDF0",
+      "customTone03": "#B1C7E7",
+      "customTone04": "#92B0DD",
+      "defaultFontWeight": "100",
+      "forceColorScheme": "light"
+    },
+    "components": {
+      "Accordion": {
+        "defaultProps": {
+          "styles": {
+            "label": {
+              "fontWeight": "300"
+            }
+          }
+        }
+      },
+      "Button": {
+        "defaultProps": {
+          "fw": "300"
+        }
+      },
+      "ExportLabelComponent": {
+        "defaultProps": {
+          "fontWeight": "100"
+        }
+      },
+      "MarkdownWidgetComponent": {
+        "defaultProps": {
+          "boldFontWeight": "200",
+          "strongFontWeight": "200"
+        }
+      },
+      "ParameterLabelComponent": {
+        "defaultProps": {
+          "fontWeight": "100"
+        }
+      },
+      "Text": {
+        "defaultProps": {
+          "fw": "100",
+          "size": "sm"
+        }
+      },
+      "ViewportBranding": {
+        "defaultProps": {
+          "light": {
+            "logo": "https://assets.shapediver.com/icon/transparent/sd_icon_512x512.webp"
+          },
+          "dark": {
+            "logo": "https://assets.shapediver.com/icon/transparent/sd_icon_512x512.webp"
+          }
+        }
+      }
+    }
+  }
+}
