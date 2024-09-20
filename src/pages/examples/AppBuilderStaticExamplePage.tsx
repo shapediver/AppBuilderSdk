@@ -17,8 +17,6 @@ import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
 import AppBuilderTextWidgetComponent from "shared/components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
 import AppBuilderTemplateSelector from "shared/pages/templates/AppBuilderTemplateSelector";
 
-const VIEWPORT_ID = "viewport_1";
-
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
 	example?: string;
@@ -238,13 +236,9 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 			}}
 		>
 
-			<ViewportComponent
-				id={VIEWPORT_ID}
-			>
+			<ViewportComponent>
 				<ViewportOverlayWrapper>
-					<ViewportIcons
-						viewportId={VIEWPORT_ID}
-					/>
+					<ViewportIcons/>
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</AppBuilderTemplateSelector>

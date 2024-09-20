@@ -12,8 +12,6 @@ import { IconTypeEnum } from "shared/types/shapediver/icons";
 import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
 import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
 
-const VIEWPORT_ID = "viewport_1";
-
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
 	example?: string;
@@ -67,13 +65,9 @@ export default function CustomUiPage(props: Partial<Props>) {
 	return (
 		<>
 			<ExamplePage aside={parameterTabs}>
-				<ViewportComponent
-					id={VIEWPORT_ID}
-				>
+				<ViewportComponent>
 					<ViewportOverlayWrapper>
-						<ViewportIcons
-							viewportId={VIEWPORT_ID}
-						/>
+						<ViewportIcons/>
 					</ViewportOverlayWrapper>
 				</ViewportComponent>
 			</ExamplePage>
