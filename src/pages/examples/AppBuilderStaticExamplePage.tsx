@@ -14,7 +14,7 @@ import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRej
 import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
 import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
 import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
-import AppBuilderTextWidgetComponent from "shared/components/shapediver/appbuilder/AppBuilderTextWidgetComponent";
+import AppBuilderTextWidgetComponent from "shared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
 import AppBuilderTemplateSelector from "shared/pages/templates/AppBuilderTemplateSelector";
 
 interface Props extends IAppBuilderSettingsSession {
