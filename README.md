@@ -12,7 +12,7 @@ This repository contains the code of the single page application (SPA) which ser
 > Specific versions of the App Builder can be accessed by replacing `latest` with a version string.  
 >
 > Example:
->   * [https://appbuilder.shapediver.com/v1/main/0.3.0-beta.7/](https://appbuilder.shapediver.com/v1/main/0.3.0-beta.7/)
+>   * [https://appbuilder.shapediver.com/v1/main/0.3.0-beta.31/](https://appbuilder.shapediver.com/v1/main/0.3.0-beta.31/)
 
 ## What is App Builder ?
 
@@ -27,34 +27,34 @@ Highlights of the App Builder SDK:
 ### Some hints about the code
 
 #### App Builder React components
-These [components](src/shared/components/shapediver/appbuilder/) are used to render the containers, tabs, widgets, and elements defined by the [skeleton](https://help.shapediver.com/doc/build-apps-in-grasshopper). 
+These [components](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/appbuilder/) are used to render the containers, tabs, widgets, and elements defined by the [skeleton](https://help.shapediver.com/doc/build-apps-in-grasshopper). 
 
 #### App Builder page templates
-So far we have implemented two [page templates](src/shared/pages/templates/). The template to be used can be configured using a property of the theme. 
+So far we have implemented two [page templates](https://github.com/shapediver/AppBuilderShared/tree/development/pages/templates/). The template to be used can be configured using a property of the theme. 
 
   * `appshell` (default): 
     * This template is based on the [AppShell](https://mantine.dev/core/app-shell/) component of Mantine (the components library used by this codebase, read more about it below). 
     * The `appshell` template allows customization using the theme. 
-    * Review the template code [here](src/shared/pages/templates/AppBuilderAppShellTemplatePage.tsx).
+    * Review the template code [here](https://github.com/shapediver/AppBuilderShared/tree/development/pages/templates/AppBuilderAppShellTemplatePage.tsx).
   
   * `grid`: 
     * A simple [grid layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout) without responsiveness. 
     * This template allows customization using the theme.
-    * Review the template code [here](src/shared/pages/templates/AppBuilderGridTemplatePage.tsx).
+    * Review the template code [here](https://github.com/shapediver/AppBuilderShared/tree/development/pages/templates/AppBuilderGridTemplatePage.tsx).
   
 #### App Builder main page
-The main page [component](src/shared/pages/appbuilder/AppBuilderPage.tsx) serves as the root of all App Builder pages. It does this: 
+The main page [component](https://github.com/shapediver/AppBuilderShared/tree/development/pages/appbuilder/AppBuilderPage.tsx) serves as the root of all App Builder pages. It does this: 
 
-  * Uses some [custom hooks](src/shared/hooks/shapediver/appbuilder/) to resolve all the settings based on the [query string](https://en.wikipedia.org/wiki/Query_string). 
+  * Uses some [custom hooks](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/appbuilder/) to resolve all the settings based on the [query string](https://en.wikipedia.org/wiki/Query_string). 
   * Opens a [session](https://help.shapediver.com/doc/sessions) with the ShapeDiver model to be used.
   * Gets the JSON content of the [data output](https://help.shapediver.com/doc/outputs-on-the-api#OutputsontheAPI-Dataoutputs) called _AppBuilder_. This content represents the _skeleton_.  
   * Instantiates App Builder React components based on the skeleton. 
-  * Uses the template [selector](src/shared/pages/templates/AppBuilderTemplateSelector.tsx) to render the instantiated components using the selected page template.
-  * You can find the TypeScript type definition of the skeleton and the settings [here](src/shared/types/shapediver/appbuilder.ts). There are also [validators](src/shared/types/shapediver/appbuildertypecheck.ts) for parsing these objects from JSON and validating them. 
+  * Uses the template [selector](https://github.com/shapediver/AppBuilderShared/tree/development/pages/templates/AppBuilderTemplateSelector.tsx) to render the instantiated components using the selected page template.
+  * You can find the TypeScript type definition of the skeleton and the settings [here](https://github.com/shapediver/AppBuilderShared/tree/development/types/shapediver/appbuilder.ts). There are also [validators](https://github.com/shapediver/AppBuilderShared/tree/development/types/shapediver/appbuildertypecheck.ts) for parsing these objects from JSON and validating them. 
 
 ### Themes
 
-The [useCustomTheme](src/shared/hooks/ui/useCustomTheme.ts) hook defines the default theme. Refer to the documentation of the [Mantine theme object](https://mantine.dev/theming/theme-object/) and the possibility to define [default props for Mantine components](https://mantine.dev/theming/default-props/) to understand what can be customized (basically everything). The App Builder components make use of Mantine's [useProps](https://mantine.dev/theming/default-props/#useprops-hook) hook to plug into the theme, which means the behavior and styling of the App Builder components can be controlled by the theme as well.
+The [useCustomTheme](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/ui/useCustomTheme.ts) hook defines the default theme. Refer to the documentation of the [Mantine theme object](https://mantine.dev/theming/theme-object/) and the possibility to define [default props for Mantine components](https://mantine.dev/theming/default-props/) to understand what can be customized (basically everything). The App Builder components make use of Mantine's [useProps](https://mantine.dev/theming/default-props/#useprops-hook) hook to plug into the theme, which means the behavior and styling of the App Builder components can be controlled by the theme as well.
 
 There is no need to fork and adapt the code to customize the theme. You can store the theme properties in a settings file in JSON format, and instruct the App Builder SPA to use the settings from this file using the `g` query string parameter. Some examples: 
 
@@ -102,9 +102,9 @@ In case you want to extend App Builder by new widgets, these are your options:
 
   * Option 1: 
     * Fork this repository, 
-    * extend the skeleton [type definition](src/shared/types/shapediver/appbuilder.ts) and the [skeleton validator](src/shared/types/shapediver/appbuildertypecheck.ts) by your new widget properties (look for `IAppBuilderWidget`), and
+    * extend the skeleton [type definition](https://github.com/shapediver/AppBuilderShared/tree/development/types/shapediver/appbuilder.ts) and the [skeleton validator](https://github.com/shapediver/AppBuilderShared/tree/development/types/shapediver/appbuildertypecheck.ts) by your new widget properties (look for `IAppBuilderWidget`), and
     * implement them. 
-    * Plug your new widgets into [AppBuilderWidgetsComponent](src/shared/components/shapediver/appbuilder/AppBuilderWidgetsComponent.tsx). Then
+    * Plug your new widgets into [AppBuilderWidgetsComponent](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/appbuilder/AppBuilderWidgetsComponent.tsx). Then
     * build and deploy yourself, or
     * submit a pull request to this repository. 
   * Option 2: Create an [issue](issues) and tell us about the widgets you would like to be included. 
@@ -189,46 +189,46 @@ We use the [zustand](https://github.com/pmndrs/zustand) state manager to provide
 
 This store is used to manage [viewports](https://help.shapediver.com/doc/viewers) and [sessions](https://help.shapediver.com/doc/sessions) of the ShapeDiver 3D viewer. 
 
-Interface: [IShapeDiverStoreViewer](src/shared/types/store/shapediverStoreViewer.ts), 
-Implementation: [useShapeDiverStoreViewer](src/shared/store/useShapeDiverStoreViewer.ts)
+Interface: [IShapeDiverStoreViewer](https://github.com/shapediver/AppBuilderShared/tree/development/types/store/shapediverStoreViewer.ts), 
+Implementation: [useShapeDiverStoreViewer](https://github.com/shapediver/AppBuilderShared/tree/development/store/useShapeDiverStoreViewer.ts)
 
 Related hooks: 
 
-  * [useViewport](src/shared/hooks/shapediver/viewer/useViewport.ts)
-  * [useSession](src/shared/hooks/shapediver/useSession.ts)
-  * [useSessions](src/shared/hooks/shapediver/useSessions.ts)
+  * [useViewport](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/viewer/useViewport.ts)
+  * [useSession](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/useSession.ts)
+  * [useSessions](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/useSessions.ts)
 
 Related components: 
 
-  * [ViewportComponent](src/shared/components/shapediver/viewport/ViewportComponent.tsx) makes use of [useViewport](src/shared/hooks/shapediver/viewer/useViewport.ts)
-  * [ViewPage](src/shared/pages/examples/ViewPage.tsx) creates a single session using [useSession](src/shared/hooks/shapediver/useSession.ts) and uses a [ViewportComponent](src/shared/components/shapediver/viewport/ViewportComponent.tsx)
+  * [ViewportComponent](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/viewport/ViewportComponent.tsx) makes use of [useViewport](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/viewer/useViewport.ts)
+  * [ViewPage](src/pages/examples/ViewPage.tsx) creates a single session using [useSession](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/useSession.ts) and uses a [ViewportComponent](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/viewport/ViewportComponent.tsx)
 
 #### Parameter and export store
 
 This store provides a stateful abstraction of the parameter and export functionality offered by the ShapeDiver 3D Viewer. 
 
-Interface: [IShapeDiverStoreParameters](src/shared/types/store/shapediverStoreParameters.ts), 
-Implementation: [useShapeDiverStoreParameters](src/shared/store/useShapeDiverStoreParameters.ts)
+Interface: [IShapeDiverStoreParameters](https://github.com/shapediver/AppBuilderShared/tree/development/types/store/shapediverStoreParameters.ts), 
+Implementation: [useShapeDiverStoreParameters](https://github.com/shapediver/AppBuilderShared/tree/development/store/useShapeDiverStoreParameters.ts)
 
 Related hooks: 
 
-  * [useSession](src/shared/hooks/shapediver/useSession.ts)
-  * [useSessions](src/shared/hooks/shapediver/useSessions.ts)
-  * [useDefineGenericParameters](src/shared/hooks/shapediver/parameters/useDefineGenericParameters.ts)
-  * [useSessionPropsParameter](src/shared/hooks/shapediver/parameters/useSessionPropsParameter.ts)
-  * [useSessionPropsExport](src/shared/hooks/shapediver/parameters/useSessionPropsExport.ts)
-  * [useParameter](src/shared/hooks/shapediver/parameters/useParameter.ts)
-  * [useExport](src/shared/hooks/shapediver/parameters/useExport.ts)
-  * [useParameterComponentCommons](src/shared/hooks/shapediver/parameters/useParameterComponentCommons.ts)
-  * [useSortedParametersAndExports](src/shared/hooks/shapediver/parameters/useSortedParametersAndExports.ts)
-  * [useParameterChanges](src/shared/hooks/shapediver/parameters/useParameterChanges.ts)
+  * [useSession](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/useSession.ts)
+  * [useSessions](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/useSessions.ts)
+  * [useDefineGenericParameters](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useDefineGenericParameters.ts)
+  * [useSessionPropsParameter](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useSessionPropsParameter.ts)
+  * [useSessionPropsExport](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useSessionPropsExport.ts)
+  * [useParameter](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useParameter.ts)
+  * [useExport](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useExport.ts)
+  * [useParameterComponentCommons](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useParameterComponentCommons.ts)
+  * [useSortedParametersAndExports](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useSortedParametersAndExports.ts)
+  * [useParameterChanges](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useParameterChanges.ts)
  
 Related components: 
  
-  * [Parameter components](src/shared/components/shapediver/parameter/) 
-  Components for the most common parameter types supported by ShapeDiver, uses [useParameterComponentCommons](src/shared/hooks/shapediver/parameters/useParameterComponentCommons.ts).
-  * [ExportButtonComponent](src/shared/components/shapediver/exports/ExportButtonComponent.tsx) allows to trigger an export and makes use of [useExport](src/shared/hooks/shapediver/parameters/useExport.ts).
-  * [ParametersAndExportsAccordionComponent](src/shared/components/shapediver/ui/ParametersAndExportsAccordionComponent.tsx) implements an accordion of grouped parameter and export components.
+  * [Parameter components](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/parameter/) 
+  Components for the most common parameter types supported by ShapeDiver, uses [useParameterComponentCommons](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useParameterComponentCommons.ts).
+  * [ExportButtonComponent](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/exports/ExportButtonComponent.tsx) allows to trigger an export and makes use of [useExport](https://github.com/shapediver/AppBuilderShared/tree/development/hooks/shapediver/parameters/useExport.ts).
+  * [ParametersAndExportsAccordionComponent](https://github.com/shapediver/AppBuilderShared/tree/development/components/shapediver/ui/ParametersAndExportsAccordionComponent.tsx) implements an accordion of grouped parameter and export components.
 
 
 ## Disclaimer
