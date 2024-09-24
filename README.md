@@ -62,13 +62,13 @@ There is no need to fork and adapt the code to customize the theme. You can stor
     * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4) 
     (notice that there is no `g` query string parameter)
   * Custom theme 1: 
-    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme1.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme1.json)
-    * [customTheme1.json](https://appbuilder.shapediver.com/v1/main/latest/customTheme1.json)
+    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=theme01.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=theme01.json)
+    * [theme01.json](https://appbuilder.shapediver.com/v1/main/latest/theme01.json)
   * Custom theme 2: 
-    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme2.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=customTheme2.json)
-    * [customTheme2.json](https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json)
+    * [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=theme02.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=theme02.json)
+    * [theme02.json](https://appbuilder.shapediver.com/v1/main/latest/theme02.json)
 
-Note that you can pass an absolute URL to the settings file when using the `g` query string parameter, i.e., you can host the settings file anywhere: [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=https://appbuilder.shapediver.com/v1/main/latest/customTheme2.json)
+Note that you can pass an absolute URL to the settings file when using the `g` query string parameter, i.e., you can host the settings file anywhere: [https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=https://appbuilder.shapediver.com/v1/main/latest/theme01.json](https://appbuilder.shapediver.com/v1/main/latest/?slug=240425-perforationswall-4&g=https://appbuilder.shapediver.com/v1/main/latest/theme02.json)
 
 In a later release, we plan to implement a theme editor and to host the settings on the ShapeDiver platform. 
 
