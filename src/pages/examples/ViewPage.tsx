@@ -1,6 +1,6 @@
 import { IMaterialStandardDataProperties, MaterialEngine, MATERIAL_TYPE, PARAMETER_TYPE } from "@shapediver/viewer";
 import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import { useSession } from "shared/hooks/shapediver/useSession";
 import ExamplePage from "pages/examples/ExamplePage";
@@ -8,7 +8,7 @@ import ViewportOverlayWrapper from "../../shared/components/shapediver/viewport/
 import ViewportIcons from "../../shared/components/shapediver/viewport/ViewportIcons";
 import { useSessionPropsParameter } from "shared/hooks/shapediver/parameters/useSessionPropsParameter";
 import { useSessionPropsExport } from "shared/hooks/shapediver/parameters/useSessionPropsExport";
-import { IGenericParameterDefinition } from "shared/types/store/shapediverStoreParameters";
+import { IGenericParameterDefinition, IGenericParameterExecutor } from "shared/types/store/shapediverStoreParameters";
 import { useDefineGenericParameters } from "shared/hooks/shapediver/parameters/useDefineGenericParameters";
 import { useOutputMaterial } from "shared/hooks/shapediver/viewer/useOutputMaterial";
 import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
@@ -22,6 +22,67 @@ interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
 	example?: string;
 }
+
+// define the parameter names for the custom material
+const enum PARAMETER_NAMES {
+	COLOR = "color",
+	MAP = "map",
+	ROUGHNESS = "roughness",
+	APPLY_TO_SHELF = "applyToShelf",
+	APPLY_TO_PLANE = "applyToPlane"
+}
+
+// define parameters for the custom material
+const materialDefinitions: IGenericParameterDefinition[] = [
+	{
+		definition: {
+			id: PARAMETER_NAMES.COLOR,
+			name: "Custom color",
+			defval: "0x0d44f0ff",
+			type: PARAMETER_TYPE.COLOR,
+			hidden: false
+		}
+	},
+	{
+		definition: {
+			id: PARAMETER_NAMES.MAP,
+			name: "Custom map",
+			defval: "",
+			type: PARAMETER_TYPE.STRING,
+			hidden: false
+		}
+	},
+	{
+		definition: {
+			id: PARAMETER_NAMES.ROUGHNESS,
+			name: "Custom roughness",
+			defval: "0",
+			type: PARAMETER_TYPE.FLOAT,
+			min: 0,
+			max: 1,
+			decimalplaces: 4,
+			hidden: false
+		}
+	},
+	{
+		definition: {
+			id: PARAMETER_NAMES.APPLY_TO_SHELF,
+			name: "Apply to shelf",
+			defval: "false",
+			type: PARAMETER_TYPE.BOOL,
+			hidden: false
+		}
+	},
+	{
+		definition: {
+			id: PARAMETER_NAMES.APPLY_TO_PLANE,
+			name: "Apply to plane",
+			defval: "false",
+			type: PARAMETER_TYPE.BOOL,
+			hidden: false
+		}
+	}
+];
 
 /**
  * Function that creates the view page.
@@ -54,66 +115,6 @@ export default function ViewPage(props: Partial<Props>) {
 	// START - Example on how to apply a custom material to an output
 	/////
 
-	// define the parameter names for the custom material
-	const enum PARAMETER_NAMES {
-		COLOR = "color",
-		MAP = "map",
-		ROUGHNESS = "roughness",
-		APPLY_TO_SHELF = "applyToShelf",
-		APPLY_TO_PLANE = "applyToPlane"
-	}
-
-	// define parameters for the custom material
-	const materialDefinitions: IGenericParameterDefinition[] = [
-		{
-			definition: {
-				id: PARAMETER_NAMES.COLOR,
-				name: "Custom color",
-				defval: "0x0d44f0ff",
-				type: PARAMETER_TYPE.COLOR,
-				hidden: false
-			}
-		},
-		{
-			definition: {
-				id: PARAMETER_NAMES.MAP,
-				name: "Custom map",
-				defval: "",
-				type: PARAMETER_TYPE.STRING,
-				hidden: false
-			}
-		},
-		{
-			definition: {
-				id: PARAMETER_NAMES.ROUGHNESS,
-				name: "Custom roughness",
-				defval: "0",
-				type: PARAMETER_TYPE.FLOAT,
-				min: 0,
-				max: 1,
-				decimalplaces: 4,
-				hidden: false
-			}
-		},
-		{
-			definition: {
-				id: PARAMETER_NAMES.APPLY_TO_SHELF,
-				name: "Apply to shelf",
-				defval: "false",
-				type: PARAMETER_TYPE.BOOL,
-				hidden: false
-			}
-		},
-		{
-			definition: {
-				id: PARAMETER_NAMES.APPLY_TO_PLANE,
-				name: "Apply to plane",
-				defval: "false",
-				type: PARAMETER_TYPE.BOOL,
-				hidden: false
-			}
-		}
-	];
 	const [materialParameters] = useState<IGenericParameterDefinition[]>(materialDefinitions);
 
 	// state for the custom material properties
@@ -128,47 +129,50 @@ export default function ViewPage(props: Partial<Props>) {
 	const [outputNameShelf, setOutputNameShelf] = useState<string>("");
 	const [outputNamePlane, setOutputNamePlane] = useState<string>("");
 
+	// executor function for changes of custom material parameters
+	const executor = useCallback<IGenericParameterExecutor>(async (values) => {
+		if (PARAMETER_NAMES.COLOR in values)
+			setMaterialProperties(p => ({ ...p, color: values[PARAMETER_NAMES.COLOR] }));
+
+		if (PARAMETER_NAMES.ROUGHNESS in values)
+			setMaterialProperties(p => ({ ...p, roughness: values[PARAMETER_NAMES.ROUGHNESS] }));
+
+		// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
+		// this also means that we resolve the promise only after the map has been loaded or if no map is specified
+		if (PARAMETER_NAMES.MAP in values) {
+			const mapParam = values[PARAMETER_NAMES.MAP];
+			if (mapParam !== "") {
+				try {
+					const map = await MaterialEngine.instance.loadMap(mapParam);
+					if (map) {
+						setMaterialProperties(p => ({ ...p, map: map }));
+					} else {
+						setMaterialProperties(p => ({ ...p, map: undefined }));
+						console.warn(`Could not load map ${mapParam}`);
+					}
+				} catch (e) {
+					setMaterialProperties(p => ({ ...p, map: undefined }));
+					console.warn(`Could not load map ${mapParam}: ${e}`);
+				}
+			} else {
+				setMaterialProperties(p => ({ ...p, map: undefined }));
+			}
+		}
+
+		if (PARAMETER_NAMES.APPLY_TO_SHELF in values)
+			setOutputNameShelf(""+values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true" ? "Shelf" : "");
+
+		if (PARAMETER_NAMES.APPLY_TO_PLANE in values)
+			setOutputNamePlane(""+values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true" ? "Image Plane" : "");
+
+		return values;
+	}, []);
+
 	// define the custom material parameters and a handler for the parameter changes
 	const customSessionId = "mysession";
 	useDefineGenericParameters(customSessionId, false /* acceptRejectMode */,
 		materialParameters,
-		async (values) => {
-			if (PARAMETER_NAMES.COLOR in values)
-				setMaterialProperties({ ...materialProperties, color: values[PARAMETER_NAMES.COLOR] });
-
-			if (PARAMETER_NAMES.ROUGHNESS in values)
-				setMaterialProperties({ ...materialProperties, roughness: values[PARAMETER_NAMES.ROUGHNESS] });
-
-			// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
-			// this also means that we resolve the promise only after the map has been loaded or if no map is specified
-			if (PARAMETER_NAMES.MAP in values) {
-				const mapParam = values[PARAMETER_NAMES.MAP];
-				if (mapParam !== "") {
-					try {
-						const map = await MaterialEngine.instance.loadMap(mapParam);
-						if (map) {
-							setMaterialProperties({ ...materialProperties, map: map });
-						} else {
-							setMaterialProperties({ ...materialProperties, map: undefined });
-							console.warn(`Could not load map ${mapParam}`);
-						}
-					} catch (e) {
-						setMaterialProperties({ ...materialProperties, map: undefined });
-						console.warn(`Could not load map ${mapParam}: ${e}`);
-					}
-				} else {
-					setMaterialProperties({ ...materialProperties, map: undefined });
-				}
-			}
-
-			if (PARAMETER_NAMES.APPLY_TO_SHELF in values)
-				setOutputNameShelf(""+values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true" ? "Shelf" : "");
-
-			if (PARAMETER_NAMES.APPLY_TO_PLANE in values)
-				setOutputNamePlane(""+values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true" ? "Image Plane" : "");
-
-			return values;
-		}
+		executor
 	);
 	const myParameterProps = useSessionPropsParameter(customSessionId);
 
