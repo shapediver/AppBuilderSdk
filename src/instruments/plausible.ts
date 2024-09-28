@@ -1,4 +1,5 @@
 import Plausible from "plausible-tracker";
+import { setDefaultTrackerProps } from "shared/context/TrackerContext";
 import { ITrackerContext } from "shared/types/context/trackercontext";
 import { isRunningInPlatform } from "shared/utils/platform/environment";
 
@@ -9,4 +10,11 @@ const plausible = Plausible({
 	domain: isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com",
 });
 
-export const PlausibleTracker: ITrackerContext = plausible;
+const defaultProps: {[key: string]: any} = {};
+
+const params = new URLSearchParams(window.location.search);
+if (params.get("slug")) {
+	defaultProps.slug = params.get("slug");
+}
+
+export const PlausibleTracker: ITrackerContext = setDefaultTrackerProps(plausible, defaultProps);
