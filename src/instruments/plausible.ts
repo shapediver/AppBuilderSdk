@@ -5,7 +5,7 @@ import { isRunningInPlatform } from "shared/utils/platform/environment";
 
 const plausible = Plausible({
 	hashMode: false,
-	trackLocalhost: true,
+	trackLocalhost: false,
 	apiHost: isRunningInPlatform() ? window.location.origin : "https://appbuilder.shapediver.com",
 	domain: isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com",
 });
