@@ -56,6 +56,9 @@ dependencies:
   immer:
     specifier: ^10.1.1
     version: 10.1.1
+  plausible-tracker:
+    specifier: ^0.3.9
+    version: 0.3.9
   post-robot:
     specifier: ^8.0.32
     version: 8.0.32
@@ -11001,6 +11004,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       find-up: 3.0.0
+    dev: false
+
+  /plausible-tracker@0.3.9:
+    resolution: {integrity: sha512-hMhneYm3GCPyQon88SZrVJx+LlqhM1kZFQbuAgXPoh/Az2YvO1B6bitT9qlhpiTdJlsT5lsr3gPmzoVjb5CDXA==}
+    engines: {node: '>=10'}
     dev: false
 
   /pngjs@5.0.0:
