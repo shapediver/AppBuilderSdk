@@ -30,14 +30,16 @@
                                             "name": "Spacing horizontal",
                                             "acceptRejectMode": true,
                                             "overrides": {
-                                                "displayname": "Horizontal spacing"
+                                                "displayname": "Horizontal spacing",
+                                                "tooltip": "What an extremely lengthy tooltip this is! Couldn't you have made it shorter? Maybe we should render it differently?"
                                             }
                                         },
                                         {
                                             "name": "Spacing vertical",
                                             "acceptRejectMode": true,
                                             "overrides": {
-                                                "displayname": "Vertical spacing"
+                                                "displayname": "Vertical spacing",
+                                                "tooltip": "This is a short tooltip"
                                             }
                                         },
                                         {
@@ -63,7 +65,8 @@
                                                 "id": "7094b726-d2d0-4d3e-8570-6a4371cb4083",
                                                 "name": "Geometry"
                                             },
-                                            "order": 100
+                                            "order": 100,
+                                            "tooltip": "Click to export and download the 3D model"
                                         }
                                     }]
                                 }
