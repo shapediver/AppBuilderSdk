@@ -163,12 +163,12 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 	}, []);
 
 	// define the custom material parameters and a handler for the parameter changes
-	const customSessionId = "mysession";
-	useDefineGenericParameters(customSessionId, false /* acceptRejectMode */,
+	const customNamespace = "mysession";
+	useDefineGenericParameters(customNamespace, false /* acceptRejectMode */,
 		materialParameters,
 		executor,
 	);
-	const myParameterProps = useSessionPropsParameter(customSessionId);
+	const myParameterProps = useSessionPropsParameter(customNamespace);
 
 	// apply the custom material
 	useOutputMaterial(sessionId, outputNameShelf, materialProperties);
