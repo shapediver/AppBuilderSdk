@@ -7,9 +7,9 @@ import * as ShapeDiverViewer from "@shapediver/viewer";
 import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import packagejson from "../package.json";
-import { Notifications, notifications } from "@mantine/notifications";
-import { NotificationContext } from "shared/context/NotificationContext";
+import { Notifications } from "@mantine/notifications";
 import "AppBuilderBase.css";
+import NotificationWrapper from "shared/components/ui/NotificationWrapper";
 
 console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 
@@ -35,9 +35,9 @@ export default function AppBuilderBase() {
 			cssVariablesResolver={resolver}
 		>
 			<Notifications />
-			<NotificationContext.Provider value={notifications}>
+			<NotificationWrapper>
 				<AppBuilderPage />
-			</NotificationContext.Provider>
+			</NotificationWrapper>
 		</MantineProvider>
 	);
 }

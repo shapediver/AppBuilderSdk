@@ -14,8 +14,8 @@ import CustomUiPage from "pages/examples/CustomUiPage";
 import AppBuilderStaticExamplePage from "./pages/examples/AppBuilderStaticExamplePage";
 import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
-import { Notifications, notifications } from "@mantine/notifications";
-import { NotificationContext } from "shared/context/NotificationContext";
+import { Notifications } from "@mantine/notifications";
+import NotificationWrapper from "shared/components/ui/NotificationWrapper";
 
 declare global {
 	interface Window {
@@ -34,7 +34,7 @@ export default function App() {
 	return (
 		<MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={resolver}>
 			<Notifications />
-			<NotificationContext.Provider value={notifications}>
+			<NotificationWrapper>
 				<HashRouter>
 					<Routes>
 						<Route path="/" element={<HomePage />} />
@@ -47,7 +47,7 @@ export default function App() {
 						<Route path="*" element={<NoMatchPage />} />
 					</Routes>
 				</HashRouter>
-			</NotificationContext.Provider>
+			</NotificationWrapper>
 		</MantineProvider>
 	);
 }
