@@ -8,7 +8,7 @@ import { isRunningInPlatform } from "shared/utils/platform/environment";
 const domain = isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com";
 const apiHost = isRunningInPlatform() ? window.location.origin : "https://appbuilder.shapediver.com";
 const hashMode = false;
-const trackLocalhost = true;
+const trackLocalhost = false;
 
 // default plausible tracker
 let tracker: ITrackerContext = Plausible({
