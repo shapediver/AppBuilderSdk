@@ -10,7 +10,8 @@ const plugins = [react(), viteTsconfigPaths(), svgrPlugin()];
 if (CONFIG.SENTRY_ORG && CONFIG.SENTRY_PROJECT) {
 	plugins.push(sentryVitePlugin({
 		org: CONFIG.SENTRY_ORG,
-		project: CONFIG.SENTRY_PROJECT
+		project: CONFIG.SENTRY_PROJECT,
+		authToken: process.env.SENTRY_AUTH_TOKEN,
 	}));
 }
 
