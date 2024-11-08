@@ -1,20 +1,45 @@
 import Plausible from "plausible-tracker";
-import { setDefaultTrackerProps } from "shared/context/TrackerContext";
+import { combineTrackers, setDefaultTrackerProps } from "shared/context/TrackerContext";
 import { ITrackerContext } from "shared/types/context/trackercontext";
+import { DEFAULT_TRACKING_PARAMS, QUERYPARAM_TRACKING_DOMAIN } from "shared/types/shapediver/queryparams";
 import { isRunningInPlatform } from "shared/utils/platform/environment";
 
-const plausible = Plausible({
-	hashMode: false,
-	trackLocalhost: false,
-	apiHost: isRunningInPlatform() ? window.location.origin : "https://appbuilder.shapediver.com",
-	domain: isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com",
+// default tracking domain
+const domain = isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com";
+const apiHost = isRunningInPlatform() ? window.location.origin : "https://appbuilder.shapediver.com";
+const hashMode = false;
+const trackLocalhost = true;
+
+// default plausible tracker
+let tracker: ITrackerContext = Plausible({
+	hashMode,
+	trackLocalhost,
+	apiHost,
+	domain,
 });
 
+// default properties to be tracked
 const defaultProps: {[key: string]: any} = {};
-
 const params = new URLSearchParams(window.location.search);
-if (params.get("slug")) {
-	defaultProps.slug = params.get("slug");
+DEFAULT_TRACKING_PARAMS.forEach(p => {
+	if (params.get(p)) {
+		defaultProps[p] = params.get(p);
+	}
+});
+
+// optional secondary plausible tracker
+if (params.get(QUERYPARAM_TRACKING_DOMAIN)) {
+	const domain2nd = params.get(QUERYPARAM_TRACKING_DOMAIN);
+	if (domain2nd && domain2nd !== domain) {
+		const plausible2nd = Plausible({
+			hashMode,
+			trackLocalhost,
+			apiHost,
+			domain: domain2nd,
+		});
+		tracker = combineTrackers([tracker, plausible2nd]);
+	}
 }
 
-export const PlausibleTracker: ITrackerContext = setDefaultTrackerProps(plausible, defaultProps);
+// assign default properties to tracker
+export const PlausibleTracker: ITrackerContext = setDefaultTrackerProps(tracker, defaultProps);
