@@ -189,8 +189,16 @@ We use the [zustand](https://github.com/pmndrs/zustand) state manager to provide
 
 This store is used to manage [viewports](https://help.shapediver.com/doc/viewers) and [sessions](https://help.shapediver.com/doc/sessions) of the ShapeDiver 3D viewer. 
 
-Interface: [IShapeDiverStoreViewer](https://github.com/shapediver/AppBuilderShared/tree/development/types/store/shapediverStoreViewer.ts), 
-Implementation: [useShapeDiverStoreViewer](https://github.com/shapediver/AppBuilderShared/tree/development/store/useShapeDiverStoreViewer.ts)
+##### Session store
+
+Interface: [IShapeDiverStoreSession](https://github.com/shapediver/AppBuilderShared/tree/development/types/store/shapeDiverStoreSession.ts), 
+Implementation: [useShapeDiverStoreSession](https://github.com/shapediver/AppBuilderShared/tree/development/store/useShapeDiverStoreSession.ts)
+
+##### Viewport store
+
+
+Interface: [IShapeDiverStoreViewport](https://github.com/shapediver/AppBuilderShared/tree/development/types/store/shapeDiverStoreViewport.ts), 
+Implementation: [useShapeDiverStoreViewport](https://github.com/shapediver/AppBuilderShared/tree/development/store/useShapeDiverStoreViewport.ts)
 
 Related hooks: 
 

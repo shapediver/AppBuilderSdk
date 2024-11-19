@@ -3,7 +3,8 @@ import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 import { MantineProvider } from "@mantine/core";
 import React, { useEffect } from "react";
-import * as ShapeDiverViewer from "@shapediver/viewer";
+import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
+import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
 import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import packagejson from "../package.json";
@@ -15,14 +16,14 @@ console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 
 declare global {
 	interface Window {
-		SDV: typeof ShapeDiverViewer,
+		SDV: typeof ShapeDiverViewerSession & typeof ShapeDiverViewerViewport;
 	}
 }
 
 export default function AppBuilderBase() {
 
 	useEffect(() => {
-		window.SDV = ShapeDiverViewer;
+		window.SDV = Object.assign({}, ShapeDiverViewerSession, ShapeDiverViewerViewport);
 	}, []);
 
 	const { theme, resolver } = useCustomTheme();

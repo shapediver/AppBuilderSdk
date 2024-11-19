@@ -1,4 +1,4 @@
-import { SESSION_SETTINGS_MODE } from "@shapediver/viewer";
+import { SESSION_SETTINGS_MODE } from "@shapediver/viewer.session";
 import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
 import { IUseSessionDto, useSession } from "shared/hooks/shapediver/useSession";

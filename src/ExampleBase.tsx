@@ -9,7 +9,8 @@ import ModelSelectPage from "pages/examples/ModelSelectPage";
 import NoMatchPage from "shared/pages/misc/NoMatchPage";
 import ViewPage from "pages/examples/ViewPage";
 import MultipleViewportPage from "pages/examples/MultipleViewportPage";
-import * as ShapeDiverViewer from "@shapediver/viewer";
+import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
+import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import CustomUiPage from "pages/examples/CustomUiPage";
 import AppBuilderStaticExamplePage from "./pages/examples/AppBuilderStaticExamplePage";
 import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
@@ -19,14 +20,14 @@ import NotificationWrapper from "shared/components/ui/NotificationWrapper";
 
 declare global {
 	interface Window {
-		SDV: typeof ShapeDiverViewer,
+		SDV: typeof ShapeDiverViewerSession & typeof ShapeDiverViewerViewport;
 	}
 }
 
 export default function App() {
 
 	useEffect(() => {
-		window.SDV = ShapeDiverViewer;
+		window.SDV = Object.assign({}, ShapeDiverViewerSession, ShapeDiverViewerViewport);
 	}, []);
 
 	const { theme, resolver } = useCustomTheme();
