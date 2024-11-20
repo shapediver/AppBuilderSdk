@@ -1,7 +1,9 @@
 import Plausible from "plausible-tracker";
+import { PlausibleInitOptions } from "plausible-tracker/build/main/lib/tracker";
 import { combineTrackers, setDefaultTrackerProps } from "shared/context/TrackerContext";
 import { ITrackerContext } from "shared/types/context/trackercontext";
 import { DEFAULT_TRACKING_PARAMS, QUERYPARAM_TRACKING_DOMAIN } from "shared/types/shapediver/queryparams";
+import { roundToBracket } from "shared/utils/numerics";
 import { isRunningInPlatform } from "shared/utils/platform/environment";
 
 // default tracking domain
@@ -10,8 +12,44 @@ const apiHost = isRunningInPlatform() ? window.location.origin : "https://appbui
 const hashMode = false;
 const trackLocalhost = false;
 
+const mapMetricToBracket = {
+	"CLS": 0.1,
+	"FCP": 250,
+	"FID": 50,
+	"INP": 50,
+	"LCP": 250,
+	"TTFB": 100
+};
+
+function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext {
+	const plausible = Plausible(options);
+	
+	return {
+		trackPageview: function (eventData, options) {
+			plausible.trackPageview(eventData, options);
+		},
+		trackEvent: function(eventName, options) {
+			plausible.trackEvent(eventName, options);
+		},
+		trackMetric(type, metricName, value, options) {
+			const { rating } = options?.props ?? {};
+			if ( type === "Web vitals" ) {
+				const name = metricName as "CLS" | "FCP" | "FID" | "INP" | "LCP" | "TTFB";
+				const propNameValue = `${name}-val`;
+				const propNameRating = `${name}-rat`;
+				plausible.trackEvent(type, { props: { 
+					[propNameValue]: roundToBracket(value, mapMetricToBracket[name]), 
+					[propNameRating]: rating,
+				}});
+			} else {
+				console.warn(`Unknown metric type: ${type}`);
+			}
+		},
+	};
+}
+
 // default plausible tracker
-let tracker: ITrackerContext = Plausible({
+let tracker = createPlausibleTracker({
 	hashMode,
 	trackLocalhost,
 	apiHost,
@@ -31,7 +69,7 @@ DEFAULT_TRACKING_PARAMS.forEach(p => {
 if (params.get(QUERYPARAM_TRACKING_DOMAIN)) {
 	const domain2nd = params.get(QUERYPARAM_TRACKING_DOMAIN);
 	if (domain2nd && domain2nd !== domain) {
-		const plausible2nd = Plausible({
+		const plausible2nd = createPlausibleTracker({
 			hashMode,
 			trackLocalhost,
 			apiHost,
