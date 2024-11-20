@@ -27,6 +27,7 @@ export default defineConfig({
 			input: {
 				appbuilder: resolve(__dirname, "index.html"),
 				example: resolve(__dirname, "example.html"),
+				library: resolve(__dirname, "library.html"),
 			},
 			output: {
 				manualChunks: {
