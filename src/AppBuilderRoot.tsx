@@ -23,43 +23,43 @@ import ViewportOverlayWrapper from "shared/components/shapediver/viewport/Viewpo
 import ViewportIcons from "shared/components/shapediver/viewport/ViewportIcons";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+	document.getElementById("root") as HTMLElement
 );
 
 const components: IComponentContext = {
-	viewportComponent: ViewportComponent,
-	viewportOverlayWrapper: ViewportOverlayWrapper,
-	viewportIcons: ViewportIcons,
+	viewportComponent: { component: ViewportComponent },
+	viewportOverlayWrapper: { component: ViewportOverlayWrapper },
+	viewportIcons: { component: ViewportIcons },
 	parameters: {
-		[PARAMETER_TYPE.INT]: {component: ParameterSliderComponent, extraBottomPadding: true},
-		[PARAMETER_TYPE.FLOAT]: {component: ParameterSliderComponent, extraBottomPadding: true},
-		[PARAMETER_TYPE.EVEN]: {component: ParameterSliderComponent, extraBottomPadding: true},
-		[PARAMETER_TYPE.ODD]: {component: ParameterSliderComponent, extraBottomPadding: true},
-		[PARAMETER_TYPE.BOOL]: {component: ParameterBooleanComponent, extraBottomPadding: false},
-		[PARAMETER_TYPE.STRING]: {component: ParameterStringComponent, extraBottomPadding: false},
-		[PARAMETER_TYPE.STRINGLIST]: {component: ParameterSelectComponent, extraBottomPadding: false},
-		[PARAMETER_TYPE.COLOR]: {component: ParameterColorComponent, extraBottomPadding: false},
-		[PARAMETER_TYPE.FILE]: {component: ParameterFileInputComponent, extraBottomPadding: false},
-		[PARAMETER_TYPE.DRAWING]: {component: ParameterDrawingComponent, extraBottomPadding: true},
+		[PARAMETER_TYPE.INT]: { component: ParameterSliderComponent, extraBottomPadding: true },
+		[PARAMETER_TYPE.FLOAT]: { component: ParameterSliderComponent, extraBottomPadding: true },
+		[PARAMETER_TYPE.EVEN]: { component: ParameterSliderComponent, extraBottomPadding: true },
+		[PARAMETER_TYPE.ODD]: { component: ParameterSliderComponent, extraBottomPadding: true },
+		[PARAMETER_TYPE.BOOL]: { component: ParameterBooleanComponent, extraBottomPadding: false },
+		[PARAMETER_TYPE.STRING]: { component: ParameterStringComponent, extraBottomPadding: false },
+		[PARAMETER_TYPE.STRINGLIST]: { component: ParameterSelectComponent, extraBottomPadding: false },
+		[PARAMETER_TYPE.COLOR]: { component: ParameterColorComponent, extraBottomPadding: false },
+		[PARAMETER_TYPE.FILE]: { component: ParameterFileInputComponent, extraBottomPadding: false },
+		[PARAMETER_TYPE.DRAWING]: { component: ParameterDrawingComponent, extraBottomPadding: true },
 		[PARAMETER_TYPE.INTERACTION]: {
-			"selection": {component: ParameterSelectionComponent, extraBottomPadding: true},
-			"gumball": {component: ParameterGumballComponent, extraBottomPadding: true},
-			"dragging": {component: ParameterDraggingComponent, extraBottomPadding: false},
+			"selection": { component: ParameterSelectionComponent, extraBottomPadding: true },
+			"gumball": { component: ParameterGumballComponent, extraBottomPadding: true },
+			"dragging": { component: ParameterDraggingComponent, extraBottomPadding: false },
 		}
 	},
 	exports: {
-		[EXPORT_TYPE.DOWNLOAD]: ExportButtonComponent,
-		[EXPORT_TYPE.EMAIL]: ExportButtonComponent,
+		[EXPORT_TYPE.DOWNLOAD]: { component: ExportButtonComponent },
+		[EXPORT_TYPE.EMAIL]: { component: ExportButtonComponent },
 	}
 };
 
 root.render(
-	<RootComponent 
+	<RootComponent
 		useStrictMode={false}
 		tracker={PlausibleTracker}
 		componentContext={components}
 	>
-		<AppBuilderBase/>
+		<AppBuilderBase />
 	</RootComponent>
 );
 
