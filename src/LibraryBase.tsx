@@ -3,7 +3,8 @@ import "@mantine/notifications/styles.css";
 import "@mantine/charts/styles.css";
 import { Center, MantineProvider } from "@mantine/core";
 import React, { useEffect, useMemo } from "react";
-import * as ShapeDiverViewer from "@shapediver/viewer";
+import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
+import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
 import LibraryPage from "shared/pages/platform/LibraryPage";
 import classes from "./LibraryBase.module.css";
@@ -18,7 +19,7 @@ console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 
 declare global {
 	interface Window {
-		SDV: typeof ShapeDiverViewer,
+		SDV: typeof ShapeDiverViewerSession & typeof ShapeDiverViewerViewport;
 	}
 }
 
@@ -27,7 +28,7 @@ const modelViewBaseUrl = `${window.location.origin}${window.location.pathname.sp
 export default function LibraryBase() {
 
 	useEffect(() => {
-		window.SDV = ShapeDiverViewer;
+		window.SDV = Object.assign({}, ShapeDiverViewerSession, ShapeDiverViewerViewport);
 	}, []);
 
 	const parameters = useMemo<URLSearchParams>(() => new URLSearchParams(window.location.search), []);
