@@ -46,10 +46,12 @@ export default defineConfig({
 						"@shapediver/sdk.platform-api-sdk-v1",
 					],
 					shapediverViewer: [
-						"@shapediver/viewer",
+						"@shapediver/viewer.session",
+						"@shapediver/viewer.viewport",
 					],
 					shapediverViewerMisc: [
 						"@shapediver/viewer.utils.mime-type",
+						"@shapediver/viewer.features.drawing-tools",
 						"@shapediver/viewer.features.gumball",
 						"@shapediver/viewer.features.interaction"
 					],
