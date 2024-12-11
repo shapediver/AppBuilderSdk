@@ -1,0 +1,82 @@
+{
+    "version": "1.0",
+    "sessions": [
+        {
+            "id": "default",
+            "ticket": "f447479a164edd5eaff704f15bc181404f35b949d399e4428c3328846b26a3649bb846228eeda0d93dcd4395232c6af56fcbb48c576cfddcdbc8c5137c71e0a26f776309a0f539a6cfa2efbc2851f953f0abf283365ade3afbb907dadda0b8b147e3579d012fac-fdc1e8ec7c10b9bdaf652491cf5524c5",
+            "modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
+            "acceptRejectMode": false
+        }
+    ],
+    "appBuilderOverride": {
+        "version": "1.0",
+        "containers": [
+            {
+                "name": "right",
+                "widgets": [
+                    {
+                        "type": "accordion",
+                        "props": {
+                            "parameters": [
+                                {
+                                    "name": "Image to project",
+                                    "acceptRejectMode": false,
+                                    "overrides": {
+                                        "tooltip": "Select an image to project onto the mesh"
+                                    }
+                                },
+                                {
+                                    "name": "Cubes",
+                                    "overrides": {
+                                        "displayname": "Grid size",
+                                        "tooltip": "Choose the grid size for generated cubes"
+                                    }
+                                },
+                                {
+                                    "name": "Cube density",
+                                    "overrides": {
+                                        "tooltip": "How many cubes to generate"
+                                    }
+                                }
+                            ],
+                            "exports": []
+                        }
+                    },
+                    {
+                        "type": "actions",
+                        "props": {
+                            "actions": [
+                                {
+                                    "type": "addToCart",
+                                    "props": {
+                                        "description": "Line item description",
+                                        "tooltip": "Add item to cart"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "top",
+                "tabs": [],
+                "widgets": [
+                    {
+                        "type": "image",
+                        "props": {
+                            "href": "https://assets.shapediver.com/icon/transparent/sd_icon_128x128.webp",
+                            "anchor": "https://shapediver.com"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "props": {
+                            "markdown": "AR cube"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
