@@ -1,34 +1,34 @@
 {
-    "version": "1.0",
-    "themeOverrides": {
-        "components": {
-            "AppBuilderAppShellTemplatePage": {
-                "defaultProps": {
-                    "headerHeight": {
-                        "base": "4em",
-                        "md": "4em"
-                    },
-                    "navbarBreakpoint": "md",
-                    "navbarWidth": {
-                        "md": 250,
-                        "lg": 300
-                    },
-                    "columns": {
-                        "base": 2,
-                        "lg": 3
-                    },
-                    "rows": {
-                        "base": 3,
-                        "lg": 2
-                    },
-                    "rightColumns": 1,
-                    "bottomRows": 1,
-                    "bottomFullWidth": {
-                        "base": true,
-                        "lg": false
-                    }
-                }
-            }
+  "version": "1.0",
+  "themeOverrides": {
+    "components": {
+      "AppBuilderAppShellTemplatePage": {
+        "defaultProps": {
+          "headerHeight": {
+            "base": "4em",
+            "md": "4em"
+          },
+          "navbarBreakpoint": "md",
+          "navbarWidth": {
+            "md": 250,
+            "lg": 300
+          },
+          "columns": {
+            "base": 2,
+            "lg": 3
+          },
+          "rows": {
+            "base": 3,
+            "lg": 2
+          },
+          "rightColumns": 1,
+          "bottomRows": 1,
+          "bottomFullWidth": {
+            "base": true,
+            "lg": false
+          }
         }
+      }
     }
+  }
 }
