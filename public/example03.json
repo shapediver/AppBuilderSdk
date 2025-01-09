@@ -1,158 +1,160 @@
 {
-    "version": "1.0",
-    "sessions": [
-        {
-            "id": "default",
-            "_description": "Bookshelf app builder example",
-            "_slug": "bookshelf-exportable-appbuilder",
-            "ticket": "e69e848d9e066201dd7fe1e3e8acb0db3aac1f69344a582a0f1a01f360e82aff0e64e871fc13e31e11f9cf39c40876f82f125fe479e0eacaa07a3ce0445a4576cd103441797ee11b88c7f8c87906814e0e028d590550949f4973f8b0b07e1c4cecad4cd54de86e-2ae502dea11cfaf407e19382b55f9324",
-            "modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
-            "initialParameterValues": {
-                "Spacing horizontal": "500"
-            }
-        }
-    ],
-    "appBuilderOverride": {
-        "version": "1.0",
-        "containers": [
-            {
-                "name": "right",
-                "tabs": [
-                    {
-                        "name": "Spacing",
-                        "icon": "adjustments",
-                        "widgets": [
-                            {
-                                "type": "accordion",
-                                "props": {
-                                    "parameters": [
-                                        {
-                                            "name": "Spacing horizontal",
-                                            "acceptRejectMode": true,
-                                            "overrides": {
-                                                "displayname": "Horizontal spacing",
-                                                "tooltip": "What an extremely lengthy tooltip this is! Couldn't you have made it shorter? Maybe we should render it differently?"
-                                            }
-                                        },
-                                        {
-                                            "name": "Spacing vertical",
-                                            "acceptRejectMode": true,
-                                            "overrides": {
-                                                "displayname": "Vertical spacing",
-                                                "tooltip": "This is a short tooltip"
-                                            }
-                                        },
-                                        {
-                                            "name": "Side board",
-                                            "acceptRejectMode": false,
-                                            "overrides": {
-                                                "displayname": "Width of side board"
-                                            }
-                                        },
-                                        {
-                                            "name": "Top board",
-                                            "acceptRejectMode": false,
-                                            "overrides": {
-                                                "displayname": "Width of top board"
-                                            }
-                                        }
-                                    ],
-                                    "exports": [{
-                                        "name": "Download 3D",
-                                        "overrides": {
-                                            "displayname": "Download 3D model",
-                                            "group": {
-                                                "id": "7094b726-d2d0-4d3e-8570-6a4371cb4083",
-                                                "name": "Geometry"
-                                            },
-                                            "order": 100,
-                                            "tooltip": "Click to export and download the 3D model"
-                                        }
-                                    }]
-                                }
-                            },
-                            {
-                                "type": "text",
-                                "props": {
-                                    "text": "Here you can change the spacing between boards"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Count",
-                        "icon": "adjustments-horizontal",
-                        "widgets": [
-                            {
-                                "type": "accordion",
-                                "props": {
-                                    "parameters": [
-                                        {
-                                            "name": "Count horizontal",
-                                            "acceptRejectMode": false,
-                                            "overrides": {
-                                                "displayname": "Horizontal count"
-                                            }
-                                        },
-                                        {
-                                            "name": "Count vertical",
-                                            "acceptRejectMode": false,
-                                            "overrides": {
-                                                "displayname": "Vertical count"
-                                            }
-                                        }
-                                    ],
-                                    "exports": []
-                                }
-                            },
-                            {
-                                "type": "text",
-                                "props": {
-                                    "markdown": "Here you can change the **number of shelves**"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                "widgets": [
-                    {
-                        "type": "text",
-                        "props": {
-                            "text": "Spacing horizontal: 447\nSpacing vertical: 330\nCount horizontal: 3\nCount vertical: 2"
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "props": {
-                            "markdown": "**Spacing** horizontal: 447\n\n**Spacing** vertical: 330\n\n**Count** horizontal: 3\n\n**Count** vertical: 2"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "bottom",
-                "tabs": [],
-                "widgets": [
-                    {
-                        "type": "image",
-                        "props": {
-                            "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural.jpg"
-                        }
-                    },
-                    {
-                        "type": "image",
-                        "props": {
-                            "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural-Rough.jpg"
-                        }
-                    },
-                    {
-                        "type": "image",
-                        "props": {
-                            "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural-Normal.jpg"
-                        }
-                    }
-                ]
-            }
-        ]
+  "version": "1.0",
+  "sessions": [
+    {
+      "id": "default",
+      "_description": "Bookshelf app builder example",
+      "_slug": "bookshelf-exportable-appbuilder",
+      "ticket": "e69e848d9e066201dd7fe1e3e8acb0db3aac1f69344a582a0f1a01f360e82aff0e64e871fc13e31e11f9cf39c40876f82f125fe479e0eacaa07a3ce0445a4576cd103441797ee11b88c7f8c87906814e0e028d590550949f4973f8b0b07e1c4cecad4cd54de86e-2ae502dea11cfaf407e19382b55f9324",
+      "modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
+      "initialParameterValues": {
+        "Spacing horizontal": "500"
+      }
     }
+  ],
+  "appBuilderOverride": {
+    "version": "1.0",
+    "containers": [
+      {
+        "name": "right",
+        "tabs": [
+          {
+            "name": "Spacing",
+            "icon": "adjustments",
+            "widgets": [
+              {
+                "type": "accordion",
+                "props": {
+                  "parameters": [
+                    {
+                      "name": "Spacing horizontal",
+                      "acceptRejectMode": true,
+                      "overrides": {
+                        "displayname": "Horizontal spacing",
+                        "tooltip": "What an extremely lengthy tooltip this is! Couldn't you have made it shorter? Maybe we should render it differently?"
+                      }
+                    },
+                    {
+                      "name": "Spacing vertical",
+                      "acceptRejectMode": true,
+                      "overrides": {
+                        "displayname": "Vertical spacing",
+                        "tooltip": "This is a short tooltip"
+                      }
+                    },
+                    {
+                      "name": "Side board",
+                      "acceptRejectMode": false,
+                      "overrides": {
+                        "displayname": "Width of side board"
+                      }
+                    },
+                    {
+                      "name": "Top board",
+                      "acceptRejectMode": false,
+                      "overrides": {
+                        "displayname": "Width of top board"
+                      }
+                    }
+                  ],
+                  "exports": [
+                    {
+                      "name": "Download 3D",
+                      "overrides": {
+                        "displayname": "Download 3D model",
+                        "group": {
+                          "id": "7094b726-d2d0-4d3e-8570-6a4371cb4083",
+                          "name": "Geometry"
+                        },
+                        "order": 100,
+                        "tooltip": "Click to export and download the 3D model"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "text": "Here you can change the spacing between boards"
+                }
+              }
+            ]
+          },
+          {
+            "name": "Count",
+            "icon": "adjustments-horizontal",
+            "widgets": [
+              {
+                "type": "accordion",
+                "props": {
+                  "parameters": [
+                    {
+                      "name": "Count horizontal",
+                      "acceptRejectMode": false,
+                      "overrides": {
+                        "displayname": "Horizontal count"
+                      }
+                    },
+                    {
+                      "name": "Count vertical",
+                      "acceptRejectMode": false,
+                      "overrides": {
+                        "displayname": "Vertical count"
+                      }
+                    }
+                  ],
+                  "exports": []
+                }
+              },
+              {
+                "type": "text",
+                "props": {
+                  "markdown": "Here you can change the **number of shelves**"
+                }
+              }
+            ]
+          }
+        ],
+        "widgets": [
+          {
+            "type": "text",
+            "props": {
+              "text": "Spacing horizontal: 447\nSpacing vertical: 330\nCount horizontal: 3\nCount vertical: 2"
+            }
+          },
+          {
+            "type": "text",
+            "props": {
+              "markdown": "**Spacing** horizontal: 447\n\n**Spacing** vertical: 330\n\n**Count** horizontal: 3\n\n**Count** vertical: 2"
+            }
+          }
+        ]
+      },
+      {
+        "name": "bottom",
+        "tabs": [],
+        "widgets": [
+          {
+            "type": "image",
+            "props": {
+              "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural.jpg"
+            }
+          },
+          {
+            "type": "image",
+            "props": {
+              "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural-Rough.jpg"
+            }
+          },
+          {
+            "type": "image",
+            "props": {
+              "href": "https://textures.shapediver.com/ARRS/Hickory/Hickory-Natural-Normal.jpg"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -3,7 +3,7 @@ import useAsync from "shared/hooks/misc/useAsync";
 import { IModelLibraryTabProps } from "shared/pages/platform/LibraryPage";
 import { useShapeDiverStorePlatform } from "shared/store/useShapeDiverStorePlatform";
 import { ModelCacheKeyEnum } from "shared/types/store/shapediverStorePlatformModels";
-import { roleAdminOrAbove, roleManagerOrAbove, roleUserOrAbove } from "shared/utils/platform/organization";
+import {  roleUserOrAbove } from "shared/utils/platform/organization";
 
 interface Props {
 	/** 
