@@ -1,6 +1,6 @@
 import Plausible from "plausible-tracker";
 import { PlausibleInitOptions } from "plausible-tracker/build/main/lib/tracker";
-import { combineTrackers, setDefaultTrackerProps } from "shared/context/TrackerContext";
+import { combineTrackers, DelayedTrackerPropsAwaiter, setDefaultTrackerProps } from "shared/context/TrackerContext";
 import { ITrackerContext } from "shared/types/context/trackercontext";
 import { DEFAULT_TRACKING_PARAMS, QUERYPARAM_TRACKING_DOMAIN } from "shared/types/shapediver/queryparams";
 import { roundToBracket } from "shared/utils/numerics";
@@ -23,6 +23,7 @@ const mapMetricToBracket = {
 
 function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext {
 	const plausible = Plausible(options);
+	const delayedPropsAwaiter = new DelayedTrackerPropsAwaiter();
 	
 	return {
 		trackPageview: function (eventData, options) {
@@ -45,6 +46,7 @@ function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext 
 				console.warn(`Unknown metric type: ${type}`);
 			}
 		},
+		delayedPropsAwaiter,
 	};
 }
 
