@@ -14,6 +14,8 @@ import ParameterSelectionComponent from "shared/components/shapediver/parameter/
 import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
 import ViewportOverlayWrapper from "shared/components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "shared/components/shapediver/viewport/ViewportIcons";
+import { isAttributeVisualizationWidget } from "shared/types/shapediver/appbuilder";
+import AppBuilderAttributeVisualizationWidgetComponent from "shared/components/shapediver/appbuilder/widgets/AppBuilderAttributeVisualizationWidgetComponent";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -29,6 +31,12 @@ const components: IComponentContext = {
 			"selection": { component: ParameterSelectionComponent, extraBottomPadding: true },
 			"gumball": { component: ParameterGumballComponent, extraBottomPadding: true },
 			"dragging": { component: ParameterDraggingComponent, extraBottomPadding: false },
+		}
+	},
+	widgets: {
+		"attributeVisualization": {
+			isComponent: isAttributeVisualizationWidget,
+			component: AppBuilderAttributeVisualizationWidgetComponent
 		}
 	}
 };

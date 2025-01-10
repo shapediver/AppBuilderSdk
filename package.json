@@ -15,11 +15,12 @@
     "@shapediver/api.geometry-api-dto-v2": "^1.24.0",
     "@shapediver/sdk.geometry-api-sdk-v2": "^1.12.2",
     "@shapediver/sdk.platform-api-sdk-v1": "^2.27.1",
-    "@shapediver/viewer.session": "3.7.0",
-    "@shapediver/viewer.viewport": "3.7.0",
-    "@shapediver/viewer.features.drawing-tools": "3.7.0",
-    "@shapediver/viewer.features.gumball": "3.7.0",
-    "@shapediver/viewer.features.interaction": "3.7.0",
+    "@shapediver/viewer.session": "3.7.2",
+    "@shapediver/viewer.viewport": "3.7.2",
+    "@shapediver/viewer.features.attribute-visualization": "3.7.2",
+    "@shapediver/viewer.features.drawing-tools": "3.7.2",
+    "@shapediver/viewer.features.gumball": "3.7.2",
+    "@shapediver/viewer.features.interaction": "3.7.2",
     "@shapediver/viewer.utils.mime-type": "~1.1.0",
     "@tabler/icons-react": "^3.17.0",
     "gl-matrix": "^3.4.3",
@@ -51,7 +52,8 @@
     "publish-appbuilder-latest": "scripts/build-appbuilder.sh latest 1",
     "build-appbuilder-platform": "scripts/build-appbuilder-platform.sh $npm_package_version",
     "publish-appbuilder-platform": "scripts/build-appbuilder-platform.sh $npm_package_version 1",
-    "publish-appbuilder-platform-latest": "scripts/build-appbuilder-platform.sh latest 1"
+    "publish-appbuilder-platform-latest": "scripts/build-appbuilder-platform.sh latest 1",
+    "publish-all": "npm run publish-appbuilder && npm run publish-appbuilder-platform"
   },
   "eslintConfig": {
     "extends": [
