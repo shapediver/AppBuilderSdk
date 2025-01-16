@@ -114,11 +114,11 @@ In case you want to extend App Builder by new widgets, these are your options:
 
 Install dependencies: 
 
-```npm i```
+```pnpm i```
 
 Start local development server: 
 
-```npm run start```
+```pnpm start```
 
 This runs the app in development mode. Open [http://127.0.0.1:3000](http://127.0.0.1:3000) to view it in the browser. 
 The page will re-render when you make edits. You will also see potential errors in the console. 
@@ -135,7 +135,7 @@ The code works using [node.js](https://nodejs.dev/en/about/releases/) 18 and 20.
 
 ### Further available scripts
 
-```npm run build```
+```pnpm build```
 
 Builds the app for production to the `dist` folder.
 
