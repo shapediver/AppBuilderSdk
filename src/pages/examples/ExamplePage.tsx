@@ -1,7 +1,7 @@
 import React from "react";
-import NavigationBar from "shared/components/ui/NavigationBar";
-import HeaderBar from "shared/components/ui/HeaderBar";
-import AppBuilderAppShellTemplatePage from "shared/pages/templates/AppBuilderAppShellTemplatePage";
+import NavigationBar from "@AppBuilderShared/components/ui/NavigationBar";
+import HeaderBar from "@AppBuilderShared/components/ui/HeaderBar";
+import AppBuilderAppShellTemplatePage from "@AppBuilderShared/pages/templates/AppBuilderAppShellTemplatePage";
 
 /**
  * Template for example pages.

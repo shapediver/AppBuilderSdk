@@ -1,16 +1,16 @@
-import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
-import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ExamplePage from "pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "../../shared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "../../shared/components/shapediver/viewport/ViewportIcons";
-import { useSessionWithCustomUi } from "shared/hooks/shapediver/useSessionWithCustomUi";
-import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import TabsComponent, { ITabsComponentProps } from "shared/components/ui/TabsComponent";
-import { IconTypeEnum } from "shared/types/shapediver/icons";
-import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
-import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import ExamplePage from "~/pages/examples/ExamplePage";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import { useSessionWithCustomUi } from "@AppBuilderShared/hooks/shapediver/useSessionWithCustomUi";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
+import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import TabsComponent, { ITabsComponentProps } from "@AppBuilderShared/components/ui/TabsComponent";
+import { IconTypeEnum } from "@AppBuilderShared/types/shapediver/icons";
+import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
+import { IAppBuilderSettingsSession } from "@AppBuilderShared/types/shapediver/appbuilder";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */

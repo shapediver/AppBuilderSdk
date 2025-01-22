@@ -1,22 +1,22 @@
 import { IMaterialStandardDataProperties, MATERIAL_TYPE, PARAMETER_TYPE } from "@shapediver/viewer.session";
 import { MaterialEngine } from "@shapediver/viewer.viewport";
-import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import React, { useCallback, useEffect, useState } from "react";
-import { useSession } from "shared/hooks/shapediver/useSession";
-import ViewportOverlayWrapper from "../../shared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "../../shared/components/shapediver/viewport/ViewportIcons";
-import { IGenericParameterDefinition, IGenericParameterExecutor } from "shared/types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "shared/hooks/shapediver/parameters/useDefineGenericParameters";
-import { useOutputMaterial } from "shared/hooks/shapediver/viewer/useOutputMaterial";
-import AppBuilderImage from "../../shared/components/shapediver/appbuilder/AppBuilderImage";
-import ParametersAndExportsAccordionComponent from "../../shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "../../shared/hooks/shapediver/parameters/useSessionPropsParameter";
-import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
-import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
-import AppBuilderTextWidgetComponent from "shared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
-import AppBuilderTemplateSelector from "shared/pages/templates/AppBuilderTemplateSelector";
+import { useSession } from "@AppBuilderShared/hooks/shapediver/useSession";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import { IGenericParameterDefinition, IGenericParameterExecutor } from "@AppBuilderShared/types/store/shapediverStoreParameters";
+import { useDefineGenericParameters } from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
+import { useOutputMaterial } from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import AppBuilderImage from "@AppBuilderShared/components/shapediver/appbuilder/AppBuilderImage";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
+import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import { IAppBuilderSettingsSession } from "@AppBuilderShared/types/shapediver/appbuilder";
+import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
+import AppBuilderTextWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
+import AppBuilderTemplateSelector from "@AppBuilderShared/pages/templates/AppBuilderTemplateSelector";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
@@ -234,7 +234,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 
 			right={{node: parameterTabs}}
 
-			bottom={{node: 
+			bottom={{node:
 				<AppBuilderImage
 					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
 				/>

@@ -5,14 +5,14 @@ import { Center, MantineProvider } from "@mantine/core";
 import React, { useEffect, useMemo } from "react";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
-import { useCustomTheme } from "shared/hooks/ui/useCustomTheme";
-import LibraryPage from "shared/pages/platform/LibraryPage";
-import classes from "./LibraryBase.module.css";
+import { useCustomTheme } from "@AppBuilderShared/hooks/ui/useCustomTheme";
+import LibraryPage from "@AppBuilderShared/pages/platform/LibraryPage";
+import classes from "~/LibraryBase.module.css";
 import useLibraryTabConfig from "hooks/useLibraryTabConfig";
-import LoaderPage from "shared/pages/misc/LoaderPage";
-import AppBuilderPage from "shared/pages/appbuilder/AppBuilderPage";
+import LoaderPage from "@AppBuilderShared/pages/misc/LoaderPage";
+import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
 import { Notifications } from "@mantine/notifications";
-import NotificationWrapper from "shared/components/ui/NotificationWrapper";
+import NotificationWrapper from "@AppBuilderShared/components/ui/NotificationWrapper";
 import packagejson from "../package.json";
 
 console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
@@ -39,10 +39,10 @@ export default function LibraryBase() {
 	const { theme, resolver } = useCustomTheme();
 
 	return (
-		<MantineProvider 
-			defaultColorScheme="auto" 
-			forceColorScheme={theme.other?.forceColorScheme} 
-			theme={theme} 
+		<MantineProvider
+			defaultColorScheme="auto"
+			forceColorScheme={theme.other?.forceColorScheme}
+			theme={theme}
 			cssVariablesResolver={resolver}
 		>
 			<Notifications />

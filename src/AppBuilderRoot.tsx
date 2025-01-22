@@ -1,21 +1,21 @@
 import "instruments/sentry";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import AppBuilderBase from "AppBuilderBase";
-import RootComponent from "shared/components/RootComponent";
-import { PlausibleTracker } from "instruments/plausible";
-import { setupWebVitalsTracking } from "instruments/webvitals";
-import { IComponentContext } from "shared/types/context/componentcontext";
+import AppBuilderBase from "~/AppBuilderBase";
+import RootComponent from "@AppBuilderShared/components/RootComponent";
+import { PlausibleTracker } from "~/instruments/plausible";
+import { setupWebVitalsTracking } from "~/instruments/webvitals";
+import { IComponentContext } from "@AppBuilderShared/types/context/componentcontext";
 import { PARAMETER_TYPE } from "@shapediver/viewer.session";
-import ParameterDraggingComponent from "shared/components/shapediver/parameter/ParameterDraggingComponent";
-import ParameterDrawingComponent from "shared/components/shapediver/parameter/ParameterDrawingComponent";
-import ParameterGumballComponent from "shared/components/shapediver/parameter/ParameterGumballComponent";
-import ParameterSelectionComponent from "shared/components/shapediver/parameter/ParameterSelectionComponent";
-import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
-import ViewportOverlayWrapper from "shared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "shared/components/shapediver/viewport/ViewportIcons";
-import { isAttributeVisualizationWidget } from "shared/types/shapediver/appbuilder";
-import AppBuilderAttributeVisualizationWidgetComponent from "shared/components/shapediver/appbuilder/widgets/AppBuilderAttributeVisualizationWidgetComponent";
+import ParameterDraggingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDraggingComponent";
+import ParameterDrawingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDrawingComponent";
+import ParameterGumballComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterGumballComponent";
+import ParameterSelectionComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterSelectionComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import { isAttributeVisualizationWidget } from "@AppBuilderShared/types/shapediver/appbuilder";
+import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderAttributeVisualizationWidgetComponent";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement

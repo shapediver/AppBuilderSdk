@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import useAsync from "shared/hooks/misc/useAsync";
-import { IModelLibraryTabProps } from "shared/pages/platform/LibraryPage";
-import { useShapeDiverStorePlatform } from "shared/store/useShapeDiverStorePlatform";
-import { ModelCacheKeyEnum } from "shared/types/store/shapediverStorePlatformModels";
-import { roleAdminOrAbove, roleManagerOrAbove, roleUserOrAbove } from "shared/utils/platform/organization";
+import useAsync from "@AppBuilderShared/hooks/misc/useAsync";
+import { IModelLibraryTabProps } from "@AppBuilderShared/pages/platform/LibraryPage";
+import { useShapeDiverStorePlatform } from "@AppBuilderShared/store/useShapeDiverStorePlatform";
+import { ModelCacheKeyEnum } from "@AppBuilderShared/types/store/shapediverStorePlatformModels";
+import { roleUserOrAbove } from "@AppBuilderShared/utils/platform/organization";
 
 interface Props {
-	/** 
+	/**
 	 * Base URL for model view pages
 	 */
 	modelViewBaseUrl: string,
@@ -19,7 +19,7 @@ const filterDefault = {
 
 /**
  * Get configuration of tabs for the model library, depending on the user's role and organization.
- * @returns 
+ * @returns
  */
 export default function useLibraryTabConfig(props: Props) {
 
@@ -55,15 +55,15 @@ export default function useLibraryTabConfig(props: Props) {
 					filterByUser: true,
 					cacheKey: ModelCacheKeyEnum.MyModels,
 					modelViewBaseUrl,
-					modelCardProps: { 
-						showUser: false, 
-						showBookmark: true 
+					modelCardProps: {
+						showUser: false,
+						showBookmark: true
 					},
 				});
 			}
-	
+
 			/**
-			 * "consumer" and "user" users with a team will only see their team's models. 
+			 * "consumer" and "user" users with a team will only see their team's models.
 			 * This restriction will not apply for "manager" users and above.
 			 */
 			tabs.push({
@@ -78,7 +78,7 @@ export default function useLibraryTabConfig(props: Props) {
 				filterByOrganization: true,
 				cacheKey: ModelCacheKeyEnum.OrganizationConfirmedModels,
 				modelViewBaseUrl,
-				modelCardProps: { 
+				modelCardProps: {
 					showBookmark: true,
 				},
 			});
@@ -87,7 +87,7 @@ export default function useLibraryTabConfig(props: Props) {
 				name: "Bookmarked",
 				tooltip: "Models you bookmarked",
 				queryParams: {
-					filters: { 
+					filters: {
 						...filterDefault,
 						bookmarked: true,
 					}
@@ -95,8 +95,8 @@ export default function useLibraryTabConfig(props: Props) {
 				filterByOrganization: true,
 				cacheKey: [ModelCacheKeyEnum.BookmarkedModels, ModelCacheKeyEnum.OrganizationConfirmedModels],
 				modelViewBaseUrl,
-				modelCardProps: { 
-					showBookmark: true 
+				modelCardProps: {
+					showBookmark: true
 				},
 			});
 		}
@@ -111,7 +111,7 @@ export default function useLibraryTabConfig(props: Props) {
 				},
 				cacheKey: ModelCacheKeyEnum.AllModels,
 				modelViewBaseUrl,
-				modelCardProps: { 
+				modelCardProps: {
 					showBookmark: true,
 				},
 			});
@@ -126,28 +126,28 @@ export default function useLibraryTabConfig(props: Props) {
 				filterByUser: true,
 				cacheKey: ModelCacheKeyEnum.MyModels,
 				modelViewBaseUrl,
-				modelCardProps: { 
-					showUser: false, 
-					showBookmark: true 
+				modelCardProps: {
+					showUser: false,
+					showBookmark: true
 				},
 			});
 			tabs.push({
 				name: "Bookmarked",
 				tooltip: "Models you bookmarked",
 				queryParams: {
-					filters: { 
+					filters: {
 						...filterDefault,
-						bookmarked: true 
+						bookmarked: true
 					}
 				},
 				cacheKey: ModelCacheKeyEnum.BookmarkedModels,
 				modelViewBaseUrl,
-				modelCardProps: { 
+				modelCardProps: {
 					showBookmark: true,
 				},
 			});
 		}
-		
+
 
 		setTabs(tabs);
 

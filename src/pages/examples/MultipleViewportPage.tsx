@@ -1,16 +1,16 @@
 import { SESSION_SETTINGS_MODE } from "@shapediver/viewer.session";
-import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import React, { useMemo } from "react";
-import { IUseSessionDto, useSession } from "shared/hooks/shapediver/useSession";
-import ExamplePage from "pages/examples/ExamplePage";
+import { IUseSessionDto, useSession } from "@AppBuilderShared/hooks/shapediver/useSession";
+import ExamplePage from "~/pages/examples/ExamplePage";
 import { Grid } from "@mantine/core";
-import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "shared/hooks/shapediver/parameters/useSessionPropsParameter";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSessionPropsParameter } from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
 import { ExampleModels } from "tickets";
 import classes from "./MultipleViewportPage.module.css";
-import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
-import TabsComponent, { ITabsComponentProps } from "shared/components/ui/TabsComponent";
-import { IconTypeEnum } from "shared/types/shapediver/icons";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
+import TabsComponent, { ITabsComponentProps } from "@AppBuilderShared/components/ui/TabsComponent";
+import { IconTypeEnum } from "@AppBuilderShared/types/shapediver/icons";
 
 /**
  * Function that creates the view page.
@@ -47,7 +47,7 @@ export default function MultipleViewportPage() {
 
 	const parameterBenchProps = useSessionPropsParameter(sessionsCreateDto[sessionSideboardKey].id);
 	const parameterBookshelfProps = useSessionPropsParameter(sessionsCreateDto[sessionBookshelfKey].id);
-	
+
 	const viewports = [
 		...([sessionSideboardKey, sessionSideboardKey] as Array<keyof typeof sessionsCreateDto>).map((sessionName, i) => {
 			const sessionCreateDto = sessionsCreateDto[sessionName];

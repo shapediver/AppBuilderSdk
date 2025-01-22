@@ -1,23 +1,23 @@
 import { IMaterialStandardDataProperties, MATERIAL_TYPE, PARAMETER_TYPE } from "@shapediver/viewer.session";
 import { MaterialEngine } from "@shapediver/viewer.viewport";
-import ViewportComponent from "shared/components/shapediver/viewport/ViewportComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import ParametersAndExportsAccordionComponent from "shared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSession } from "shared/hooks/shapediver/useSession";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import { useSession } from "@AppBuilderShared/hooks/shapediver/useSession";
 import ExamplePage from "pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "../../shared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "../../shared/components/shapediver/viewport/ViewportIcons";
-import { useSessionPropsParameter } from "shared/hooks/shapediver/parameters/useSessionPropsParameter";
-import { useSessionPropsExport } from "shared/hooks/shapediver/parameters/useSessionPropsExport";
-import { IGenericParameterDefinition, IGenericParameterExecutor } from "shared/types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "shared/hooks/shapediver/parameters/useDefineGenericParameters";
-import { useOutputMaterial } from "shared/hooks/shapediver/viewer/useOutputMaterial";
-import AcceptRejectButtons from "../../shared/components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "shared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import TabsComponent, { ITabsComponentProps } from "shared/components/ui/TabsComponent";
-import { IconTypeEnum } from "shared/types/shapediver/icons";
-import { IAppBuilderSettingsSession } from "shared/types/shapediver/appbuilder";
-import useDefaultSessionDto from "shared/hooks/shapediver/useDefaultSessionDto";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import { useSessionPropsParameter } from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import { useSessionPropsExport } from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsExport";
+import { IGenericParameterDefinition, IGenericParameterExecutor } from "@AppBuilderShared/types/store/shapediverStoreParameters";
+import { useDefineGenericParameters } from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
+import { useOutputMaterial } from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
+import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import TabsComponent, { ITabsComponentProps } from "@AppBuilderShared/components/ui/TabsComponent";
+import { IconTypeEnum } from "@AppBuilderShared/types/shapediver/icons";
+import { IAppBuilderSettingsSession } from "@AppBuilderShared/types/shapediver/appbuilder";
+import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
@@ -185,7 +185,7 @@ export default function ViewPage(props: Partial<Props>) {
 	// END - Example on how to apply a custom material to an output
 	/////
 
-	const tabProps: ITabsComponentProps = useMemo(() => { 
+	const tabProps: ITabsComponentProps = useMemo(() => {
 		return {
 			defaultValue: "Parameters",
 			tabs: [

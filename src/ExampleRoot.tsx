@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "ExampleBase";
+import App from "~/ExampleBase";
 import reportWebVitals from "reportWebVitals";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-/** 
+/**
  * Note: Activate strict mode during development to detect potential bugs.
  * @see https://react.dev/reference/react/StrictMode
  */

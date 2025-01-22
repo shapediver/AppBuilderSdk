@@ -1,10 +1,10 @@
 import Plausible from "plausible-tracker";
 import { PlausibleInitOptions } from "plausible-tracker/build/main/lib/tracker";
-import { combineTrackers, DelayedTrackerPropsAwaiter, setDefaultTrackerProps } from "shared/context/TrackerContext";
-import { ITrackerContext } from "shared/types/context/trackercontext";
-import { DEFAULT_TRACKING_PARAMS, QUERYPARAM_TRACKING_DOMAIN } from "shared/types/shapediver/queryparams";
-import { roundToBracket } from "shared/utils/numerics";
-import { isRunningInPlatform } from "shared/utils/platform/environment";
+import { combineTrackers, DelayedTrackerPropsAwaiter, setDefaultTrackerProps } from "@AppBuilderShared/context/TrackerContext";
+import { ITrackerContext } from "@AppBuilderShared/types/context/trackercontext";
+import { DEFAULT_TRACKING_PARAMS, QUERYPARAM_TRACKING_DOMAIN } from "@AppBuilderShared/types/shapediver/queryparams";
+import { roundToBracket } from "@AppBuilderShared/utils/numerics";
+import { isRunningInPlatform } from "@AppBuilderShared/utils/platform/environment";
 
 // default tracking domain
 const domain = isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com";
@@ -24,7 +24,7 @@ const mapMetricToBracket = {
 function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext {
 	const plausible = Plausible(options);
 	const delayedPropsAwaiter = new DelayedTrackerPropsAwaiter();
-	
+
 	return {
 		trackPageview: function (eventData, options) {
 			plausible.trackPageview(eventData, options);
@@ -38,8 +38,8 @@ function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext 
 				const name = metricName as "CLS" | "FCP" | "FID" | "INP" | "LCP" | "TTFB";
 				const propNameValue = `${name}-val`;
 				const propNameRating = `${name}-rat`;
-				plausible.trackEvent(type, { props: { 
-					[propNameValue]: roundToBracket(value, mapMetricToBracket[name]), 
+				plausible.trackEvent(type, { props: {
+					[propNameValue]: roundToBracket(value, mapMetricToBracket[name]),
 					[propNameRating]: rating,
 				}});
 			} else {
