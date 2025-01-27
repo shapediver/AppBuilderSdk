@@ -1,27 +1,40 @@
 import Plausible from "plausible-tracker";
-import { PlausibleInitOptions } from "plausible-tracker/build/main/lib/tracker";
-import { combineTrackers, DelayedTrackerPropsAwaiter, setDefaultTrackerProps } from "@AppBuilderShared/context/TrackerContext";
-import { ITrackerContext } from "@AppBuilderShared/types/context/trackercontext";
-import { DEFAULT_TRACKING_PARAMS, QUERYPARAM_TRACKING_DOMAIN } from "@AppBuilderShared/types/shapediver/queryparams";
-import { roundToBracket } from "@AppBuilderShared/utils/numerics";
-import { isRunningInPlatform } from "@AppBuilderShared/utils/platform/environment";
+import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
+import {
+	combineTrackers,
+	DelayedTrackerPropsAwaiter,
+	setDefaultTrackerProps,
+} from "@AppBuilderShared/context/TrackerContext";
+import {ITrackerContext} from "@AppBuilderShared/types/context/trackercontext";
+import {
+	DEFAULT_TRACKING_PARAMS,
+	QUERYPARAM_TRACKING_DOMAIN,
+} from "@AppBuilderShared/types/shapediver/queryparams";
+import {roundToBracket} from "@AppBuilderShared/utils/numerics";
+import {isRunningInPlatform} from "@AppBuilderShared/utils/platform/environment";
 
 // default tracking domain
-const domain = isRunningInPlatform() ? "appbuilder.platform" : "appbuilder.shapediver.com";
-const apiHost = isRunningInPlatform() ? window.location.origin : "https://appbuilder.shapediver.com";
+const domain = isRunningInPlatform()
+	? "appbuilder.platform"
+	: "appbuilder.shapediver.com";
+const apiHost = isRunningInPlatform()
+	? window.location.origin
+	: "https://appbuilder.shapediver.com";
 const hashMode = false;
 const trackLocalhost = false;
 
 const mapMetricToBracket = {
-	"CLS": 0.1,
-	"FCP": 250,
-	"FID": 50,
-	"INP": 50,
-	"LCP": 250,
-	"TTFB": 100
+	CLS: 0.1,
+	FCP: 250,
+	FID: 50,
+	INP: 50,
+	LCP: 250,
+	TTFB: 100,
 };
 
-function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext {
+function createPlausibleTracker(
+	options: PlausibleInitOptions,
+): ITrackerContext {
 	const plausible = Plausible(options);
 	const delayedPropsAwaiter = new DelayedTrackerPropsAwaiter();
 
@@ -29,19 +42,30 @@ function createPlausibleTracker(options: PlausibleInitOptions): ITrackerContext 
 		trackPageview: function (eventData, options) {
 			plausible.trackPageview(eventData, options);
 		},
-		trackEvent: function(eventName, options) {
+		trackEvent: function (eventName, options) {
 			plausible.trackEvent(eventName, options);
 		},
 		trackMetric(type, metricName, value, options) {
-			const { rating } = options?.props ?? {};
-			if ( type === "Web vitals" ) {
-				const name = metricName as "CLS" | "FCP" | "FID" | "INP" | "LCP" | "TTFB";
+			const {rating} = options?.props ?? {};
+			if (type === "Web vitals") {
+				const name = metricName as
+					| "CLS"
+					| "FCP"
+					| "FID"
+					| "INP"
+					| "LCP"
+					| "TTFB";
 				const propNameValue = `${name}-val`;
 				const propNameRating = `${name}-rat`;
-				plausible.trackEvent(type, { props: {
-					[propNameValue]: roundToBracket(value, mapMetricToBracket[name]),
-					[propNameRating]: rating,
-				}});
+				plausible.trackEvent(type, {
+					props: {
+						[propNameValue]: roundToBracket(
+							value,
+							mapMetricToBracket[name],
+						),
+						[propNameRating]: rating,
+					},
+				});
 			} else {
 				console.warn(`Unknown metric type: ${type}`);
 			}
@@ -61,7 +85,7 @@ let tracker = createPlausibleTracker({
 // default properties to be tracked
 const defaultProps: {[key: string]: any} = {};
 const params = new URLSearchParams(window.location.search);
-DEFAULT_TRACKING_PARAMS.forEach(p => {
+DEFAULT_TRACKING_PARAMS.forEach((p) => {
 	if (params.get(p)) {
 		defaultProps[p] = params.get(p);
 	}
@@ -82,4 +106,7 @@ if (params.get(QUERYPARAM_TRACKING_DOMAIN)) {
 }
 
 // assign default properties to tracker
-export const PlausibleTracker: ITrackerContext = setDefaultTrackerProps(tracker, defaultProps);
+export const PlausibleTracker: ITrackerContext = setDefaultTrackerProps(
+	tracker,
+	defaultProps,
+);

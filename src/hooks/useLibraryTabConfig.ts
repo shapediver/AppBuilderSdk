@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import useAsync from "@AppBuilderShared/hooks/misc/useAsync";
-import { IModelLibraryTabProps } from "@AppBuilderShared/pages/platform/LibraryPage";
-import { useShapeDiverStorePlatform } from "@AppBuilderShared/store/useShapeDiverStorePlatform";
-import { ModelCacheKeyEnum } from "@AppBuilderShared/types/store/shapediverStorePlatformModels";
-import { roleUserOrAbove } from "@AppBuilderShared/utils/platform/organization";
+import {IModelLibraryTabProps} from "@AppBuilderShared/pages/platform/LibraryPage";
+import {useShapeDiverStorePlatform} from "@AppBuilderShared/store/useShapeDiverStorePlatform";
+import {ModelCacheKeyEnum} from "@AppBuilderShared/types/store/shapediverStorePlatformModels";
+import {roleUserOrAbove} from "@AppBuilderShared/utils/platform/organization";
 
 interface Props {
 	/**
 	 * Base URL for model view pages
 	 */
-	modelViewBaseUrl: string,
+	modelViewBaseUrl: string;
 }
 
 const filterDefault = {
 	"deleted_at[?]": null,
-	status: "done"
+	status: "done",
 };
 
 /**
@@ -22,20 +22,22 @@ const filterDefault = {
  * @returns
  */
 export default function useLibraryTabConfig(props: Props) {
+	const {modelViewBaseUrl} = props;
+	const getUser = useShapeDiverStorePlatform((state) => state.getUser);
+	const [tabs, setTabs] = useState<IModelLibraryTabProps[]>([]);
 
-	const { modelViewBaseUrl } = props;
-	const getUser = useShapeDiverStorePlatform(state => state.getUser);
-	const [ tabs, setTabs ] = useState<IModelLibraryTabProps[]>([]);
-
-	const { loading, error, value: user } = useAsync(async () => {
+	const {
+		loading,
+		error,
+		value: user,
+	} = useAsync(async () => {
 		const user = await getUser();
 
 		return user;
 	}, []);
 
 	useEffect(() => {
-		if (!user)
-			return;
+		if (!user) return;
 
 		const tabs: IModelLibraryTabProps[] = [];
 
@@ -50,14 +52,14 @@ export default function useLibraryTabConfig(props: Props) {
 					queryParams: {
 						filters: {
 							...filterDefault,
-						}
+						},
 					},
 					filterByUser: true,
 					cacheKey: ModelCacheKeyEnum.MyModels,
 					modelViewBaseUrl,
 					modelCardProps: {
 						showUser: false,
-						showBookmark: true
+						showBookmark: true,
 					},
 				});
 			}
@@ -73,7 +75,7 @@ export default function useLibraryTabConfig(props: Props) {
 					filters: {
 						...filterDefault,
 						"visibility[=]": "organization",
-					}
+					},
 				},
 				filterByOrganization: true,
 				cacheKey: ModelCacheKeyEnum.OrganizationConfirmedModels,
@@ -90,24 +92,26 @@ export default function useLibraryTabConfig(props: Props) {
 					filters: {
 						...filterDefault,
 						bookmarked: true,
-					}
+					},
 				},
 				filterByOrganization: true,
-				cacheKey: [ModelCacheKeyEnum.BookmarkedModels, ModelCacheKeyEnum.OrganizationConfirmedModels],
+				cacheKey: [
+					ModelCacheKeyEnum.BookmarkedModels,
+					ModelCacheKeyEnum.OrganizationConfirmedModels,
+				],
 				modelViewBaseUrl,
 				modelCardProps: {
-					showBookmark: true
+					showBookmark: true,
 				},
 			});
-		}
-		else {
+		} else {
 			tabs.push({
 				name: "All models",
 				tooltip: "All models you have access to",
 				queryParams: {
 					filters: {
 						...filterDefault,
-					}
+					},
 				},
 				cacheKey: ModelCacheKeyEnum.AllModels,
 				modelViewBaseUrl,
@@ -121,14 +125,14 @@ export default function useLibraryTabConfig(props: Props) {
 				queryParams: {
 					filters: {
 						...filterDefault,
-					}
+					},
 				},
 				filterByUser: true,
 				cacheKey: ModelCacheKeyEnum.MyModels,
 				modelViewBaseUrl,
 				modelCardProps: {
 					showUser: false,
-					showBookmark: true
+					showBookmark: true,
 				},
 			});
 			tabs.push({
@@ -137,8 +141,8 @@ export default function useLibraryTabConfig(props: Props) {
 				queryParams: {
 					filters: {
 						...filterDefault,
-						bookmarked: true
-					}
+						bookmarked: true,
+					},
 				},
 				cacheKey: ModelCacheKeyEnum.BookmarkedModels,
 				modelViewBaseUrl,
@@ -148,14 +152,12 @@ export default function useLibraryTabConfig(props: Props) {
 			});
 		}
 
-
 		setTabs(tabs);
-
 	}, [user]);
 
 	return {
 		tabs,
 		loading,
-		error
+		error,
 	};
 }

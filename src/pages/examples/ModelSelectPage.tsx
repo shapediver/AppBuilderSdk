@@ -4,7 +4,7 @@ import React from "react";
 import ExamplePage from "~/pages/examples/ExamplePage";
 import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import { ExampleModels } from "tickets";
+import {ExampleModels} from "tickets";
 
 /**
  * Function that creates the model select page.
@@ -14,18 +14,13 @@ import { ExampleModels } from "tickets";
  * @returns
  */
 export default function ModelSelectPage() {
-
 	const viewportId = "viewport_2";
 
 	return (
-		<ExamplePage aside={<ModelSelect exampleModels={ExampleModels}/>}>
-			<ViewportComponent
-				id={viewportId}
-			>
+		<ExamplePage aside={<ModelSelect exampleModels={ExampleModels} />}>
+			<ViewportComponent id={viewportId}>
 				<ViewportOverlayWrapper>
-					<ViewportIcons
-						viewportId={viewportId}
-					/>
+					<ViewportIcons viewportId={viewportId} />
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</ExamplePage>

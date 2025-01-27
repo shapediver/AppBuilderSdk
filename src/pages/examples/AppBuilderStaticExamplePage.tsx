@@ -1,19 +1,26 @@
-import { IMaterialStandardDataProperties, MATERIAL_TYPE, PARAMETER_TYPE } from "@shapediver/viewer.session";
-import { MaterialEngine } from "@shapediver/viewer.viewport";
+import {
+	IMaterialStandardDataProperties,
+	MATERIAL_TYPE,
+	PARAMETER_TYPE,
+} from "@shapediver/viewer.session";
+import {MaterialEngine} from "@shapediver/viewer.viewport";
 import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import React, { useCallback, useEffect, useState } from "react";
-import { useSession } from "@AppBuilderShared/hooks/shapediver/useSession";
+import React, {useCallback, useEffect, useState} from "react";
+import {useSession} from "@AppBuilderShared/hooks/shapediver/useSession";
 import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import { IGenericParameterDefinition, IGenericParameterExecutor } from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import { useDefineGenericParameters } from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
-import { useOutputMaterial } from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import {
+	IGenericParameterDefinition,
+	IGenericParameterExecutor,
+} from "@AppBuilderShared/types/store/shapediverStoreParameters";
+import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
+import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
 import AppBuilderImage from "@AppBuilderShared/components/shapediver/appbuilder/AppBuilderImage";
 import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import { useSessionPropsParameter } from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
 import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
 import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import { IAppBuilderSettingsSession } from "@AppBuilderShared/types/shapediver/appbuilder";
+import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
 import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
 import AppBuilderTextWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
 import AppBuilderTemplateSelector from "@AppBuilderShared/pages/templates/AppBuilderTemplateSelector";
@@ -29,7 +36,7 @@ const enum PARAMETER_NAMES {
 	MAP = "map",
 	ROUGHNESS = "roughness",
 	APPLY_TO_SHELF = "applyToShelf",
-	APPLY_TO_PLANE = "applyToPlane"
+	APPLY_TO_PLANE = "applyToPlane",
 }
 
 // define parameters for the custom material
@@ -40,8 +47,8 @@ const materialDefinitions: IGenericParameterDefinition[] = [
 			name: "Custom color",
 			defval: "0x0d44f0ff",
 			type: PARAMETER_TYPE.COLOR,
-			hidden: false
-		}
+			hidden: false,
+		},
 	},
 	{
 		definition: {
@@ -49,8 +56,8 @@ const materialDefinitions: IGenericParameterDefinition[] = [
 			name: "Custom map",
 			defval: "",
 			type: PARAMETER_TYPE.STRING,
-			hidden: false
-		}
+			hidden: false,
+		},
 	},
 	{
 		definition: {
@@ -61,8 +68,8 @@ const materialDefinitions: IGenericParameterDefinition[] = [
 			min: 0,
 			max: 1,
 			decimalplaces: 4,
-			hidden: false
-		}
+			hidden: false,
+		},
 	},
 	{
 		definition: {
@@ -70,8 +77,8 @@ const materialDefinitions: IGenericParameterDefinition[] = [
 			name: "Apply to shelf",
 			defval: "false",
 			type: PARAMETER_TYPE.BOOL,
-			hidden: false
-		}
+			hidden: false,
+		},
 	},
 	{
 		definition: {
@@ -79,9 +86,9 @@ const materialDefinitions: IGenericParameterDefinition[] = [
 			name: "Apply to plane",
 			defval: "false",
 			type: PARAMETER_TYPE.BOOL,
-			hidden: false
-		}
-	}
+			hidden: false,
+		},
+	},
 ];
 
 /**
@@ -92,33 +99,40 @@ const materialDefinitions: IGenericParameterDefinition[] = [
  * @returns
  */
 export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
-
-	const { defaultSessionDto } = useDefaultSessionDto(props);
-	const { settings } = useAppBuilderSettings(defaultSessionDto);
+	const {defaultSessionDto} = useDefaultSessionDto(props);
+	const {settings} = useAppBuilderSettings(defaultSessionDto);
 	const sessionDto = settings ? settings.sessions[0] : undefined;
 	const sessionId = sessionDto?.id ?? "";
 
 	// use a session with a ShapeDiver model and register its parameters
-	const { sessionApi } = useSession(sessionDto);
+	const {sessionApi} = useSession(sessionDto);
 
 	useEffect(() => {
 		if (sessionApi)
-			console.debug(`Available output names: ${Object.values(sessionApi.outputs).map(o => o.name)}`);
+			console.debug(
+				`Available output names: ${Object.values(sessionApi.outputs).map((o) => o.name)}`,
+			);
 	}, [sessionApi]);
 
 	/////
 	// START - Example on how to apply a custom material to an output
 	/////
 
-	const [materialParameters] = useState<IGenericParameterDefinition[]>(materialDefinitions);
+	const [materialParameters] =
+		useState<IGenericParameterDefinition[]>(materialDefinitions);
 
 	// state for the custom material properties
-	const [materialProperties, setMaterialProperties] = useState<IMaterialStandardDataProperties>({
-		type: MATERIAL_TYPE.STANDARD,
-		color: materialParameters.find(d => d.definition.id === PARAMETER_NAMES.COLOR)!.definition.defval,
-		map: undefined,
-		roughness: +materialParameters.find(d => d.definition.id === PARAMETER_NAMES.ROUGHNESS)!.definition.defval
-	});
+	const [materialProperties, setMaterialProperties] =
+		useState<IMaterialStandardDataProperties>({
+			type: MATERIAL_TYPE.STANDARD,
+			color: materialParameters.find(
+				(d) => d.definition.id === PARAMETER_NAMES.COLOR,
+			)!.definition.defval,
+			map: undefined,
+			roughness: +materialParameters.find(
+				(d) => d.definition.id === PARAMETER_NAMES.ROUGHNESS,
+			)!.definition.defval,
+		});
 
 	// state for the custom material application
 	const [outputNameShelf, setOutputNameShelf] = useState<string>("");
@@ -127,10 +141,16 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 	// executor function for changes of custom material parameters
 	const executor = useCallback<IGenericParameterExecutor>(async (values) => {
 		if (PARAMETER_NAMES.COLOR in values)
-			setMaterialProperties(p => ({ ...p, color: values[PARAMETER_NAMES.COLOR] }));
+			setMaterialProperties((p) => ({
+				...p,
+				color: values[PARAMETER_NAMES.COLOR],
+			}));
 
 		if (PARAMETER_NAMES.ROUGHNESS in values)
-			setMaterialProperties(p => ({ ...p, roughness: values[PARAMETER_NAMES.ROUGHNESS] }));
+			setMaterialProperties((p) => ({
+				...p,
+				roughness: values[PARAMETER_NAMES.ROUGHNESS],
+			}));
 
 		// due to the asynchronous nature of loading a map, we need to wait for the map to be loaded before we can set the material properties
 		// this also means that we resolve the promise only after the map has been loaded or if no map is specified
@@ -140,32 +160,42 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 				try {
 					const map = await MaterialEngine.instance.loadMap(mapParam);
 					if (map) {
-						setMaterialProperties(p => ({ ...p, map: map }));
+						setMaterialProperties((p) => ({...p, map: map}));
 					} else {
-						setMaterialProperties(p => ({ ...p, map: undefined }));
+						setMaterialProperties((p) => ({...p, map: undefined}));
 						console.warn(`Could not load map ${mapParam}`);
 					}
 				} catch (e) {
-					setMaterialProperties(p => ({ ...p, map: undefined }));
+					setMaterialProperties((p) => ({...p, map: undefined}));
 					console.warn(`Could not load map ${mapParam}: ${e}`);
 				}
 			} else {
-				setMaterialProperties(p => ({ ...p, map: undefined }));
+				setMaterialProperties((p) => ({...p, map: undefined}));
 			}
 		}
 
 		if (PARAMETER_NAMES.APPLY_TO_SHELF in values)
-			setOutputNameShelf(""+values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true" ? "Shelf" : "");
+			setOutputNameShelf(
+				"" + values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true"
+					? "Shelf"
+					: "",
+			);
 
 		if (PARAMETER_NAMES.APPLY_TO_PLANE in values)
-			setOutputNamePlane(""+values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true" ? "Image Plane" : "");
+			setOutputNamePlane(
+				"" + values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true"
+					? "Image Plane"
+					: "",
+			);
 
 		return values;
 	}, []);
 
 	// define the custom material parameters and a handler for the parameter changes
 	const customNamespace = "mysession";
-	useDefineGenericParameters(customNamespace, false /* acceptRejectMode */,
+	useDefineGenericParameters(
+		customNamespace,
+		false /* acceptRejectMode */,
 		materialParameters,
 		executor,
 	);
@@ -204,46 +234,49 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 `;
 
 	// get parameters that don't have a group or whose group name includes "export"
-	const parameterProps = useSessionPropsParameter(sessionId, param => !param.group || !param.group.name.toLowerCase().includes("export"))
-		.concat(myParameterProps);
+	const parameterProps = useSessionPropsParameter(
+		sessionId,
+		(param) =>
+			!param.group || !param.group.name.toLowerCase().includes("export"),
+	).concat(myParameterProps);
 
-	const parameterTabs = <ParametersAndExportsAccordionComponent
-		parameters={parameterProps.length > 0 ? parameterProps : []	}
-		defaultGroupName="Custom material"
-		topSection={<AcceptRejectButtons parameters={parameterProps}/>}
-	/>;
+	const parameterTabs = (
+		<ParametersAndExportsAccordionComponent
+			parameters={parameterProps.length > 0 ? parameterProps : []}
+			defaultGroupName="Custom material"
+			topSection={<AcceptRejectButtons parameters={parameterProps} />}
+		/>
+	);
 
 	return (
 		<AppBuilderTemplateSelector
-
-			top={{node: <>
-				<AppBuilderTextWidgetComponent text="Top secret" />
-				<AppBuilderImage
-					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
-				/>
-				<AppBuilderTextWidgetComponent text="Top secret" />
-			</>
+			top={{
+				node: (
+					<>
+						<AppBuilderTextWidgetComponent text="Top secret" />
+						<AppBuilderImage src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png" />
+						<AppBuilderTextWidgetComponent text="Top secret" />
+					</>
+				),
 			}}
-
-			left={{node: <>
-				<AppBuilderTextWidgetComponent markdown={markdown} />
-				<AppBuilderImage
-					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
-				/>
-			</>}}
-
+			left={{
+				node: (
+					<>
+						<AppBuilderTextWidgetComponent markdown={markdown} />
+						<AppBuilderImage src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png" />
+					</>
+				),
+			}}
 			right={{node: parameterTabs}}
-
-			bottom={{node:
-				<AppBuilderImage
-					src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png"
-				/>
+			bottom={{
+				node: (
+					<AppBuilderImage src="https://img2.storyblok.com/1536x0/filters:format(webp)/f/92524/712x699/7a500f3a9a/sync-your-favorite-design-software-with-shapediver.png" />
+				),
 			}}
 		>
-
 			<ViewportComponent>
 				<ViewportOverlayWrapper>
-					<ViewportIcons/>
+					<ViewportIcons />
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</AppBuilderTemplateSelector>

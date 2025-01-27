@@ -17,15 +17,14 @@ interface Props {
 	aside?: React.ReactNode;
 }
 
-export default function ExamplePage({ children = <></>, aside = <></>}: Props) {
-
+export default function ExamplePage({children = <></>, aside = <></>}: Props) {
 	return (
 		<AppBuilderAppShellTemplatePage
 			top={{node: <HeaderBar />}}
 			left={{node: <NavigationBar />}}
 			right={{node: aside}}
 		>
-			{ children }
+			{children}
 		</AppBuilderAppShellTemplatePage>
 	);
 }
