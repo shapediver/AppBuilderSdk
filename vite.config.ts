@@ -63,6 +63,7 @@ export default defineConfig({
 						"remark-gfm",
 						"unist-util-visit",
 					],
+					agent: ["openai", "langfuse"],
 					icons: ["@tabler/icons-react"],
 				}
 			}
