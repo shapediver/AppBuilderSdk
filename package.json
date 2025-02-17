@@ -54,7 +54,8 @@
     "build-appbuilder-platform": "scripts/build-appbuilder-platform.sh $npm_package_version",
     "publish-appbuilder-platform": "scripts/build-appbuilder-platform.sh $npm_package_version 1",
     "publish-appbuilder-platform-latest": "scripts/build-appbuilder-platform.sh latest 1",
-    "publish-all": "npm run publish-appbuilder && npm run publish-appbuilder-platform && npm run publish-appbuilder-latest && npm run publish-appbuilder-platform-latest"
+    "publish-version": "npm run publish-appbuilder && npm run publish-appbuilder-platform",
+    "publish-latest": "npm run publish-appbuilder-latest && npm run publish-appbuilder-platform-latest"
   },
   "eslintConfig": {
     "extends": [
