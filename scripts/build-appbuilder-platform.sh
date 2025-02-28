@@ -39,7 +39,7 @@ if [ -f "sentryconfig.local.ts" -a ! -z "${deploy}" ]; then
     sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/" sentryconfig.local.ts > sentryconfig.ts
 fi
 
-prefix=app/builder/v1/main
+prefix=app/builder/v1/agent
 
 vite build --base=$prefix/$version/
 if [ $? -ne 0 ]; then
