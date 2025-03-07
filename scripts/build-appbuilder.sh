@@ -39,7 +39,7 @@ if [ -f "sentryconfig.local.ts" -a ! -z "${deploy}" ]; then
     sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/" sentryconfig.local.ts > sentryconfig.ts
 fi
 
-prefix=v1/agent
+prefix=v1/main
 
 echo "Building AppBuilder version $version with prefix $prefix"
 vite build --base=$prefix/$version/
