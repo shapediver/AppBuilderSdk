@@ -1,29 +1,29 @@
+import AppBuilderImage from "@AppBuilderShared/components/shapediver/appbuilder/AppBuilderImage";
+import AppBuilderTextWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
+import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
+import {useSession} from "@AppBuilderShared/hooks/shapediver/useSession";
+import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import AppBuilderTemplateSelector from "@AppBuilderShared/pages/templates/AppBuilderTemplateSelector";
+import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+import {
+	IGenericParameterDefinition,
+	IGenericParameterExecutor,
+} from "@AppBuilderShared/types/store/shapediverStoreParameters";
 import {
 	IMaterialStandardDataProperties,
 	MATERIAL_TYPE,
 	PARAMETER_TYPE,
 } from "@shapediver/viewer.session";
 import {MaterialEngine} from "@shapediver/viewer.viewport";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import React, {useCallback, useEffect, useState} from "react";
-import {useSession} from "@AppBuilderShared/hooks/shapediver/useSession";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import {
-	IGenericParameterDefinition,
-	IGenericParameterExecutor,
-} from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
-import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
-import AppBuilderImage from "@AppBuilderShared/components/shapediver/appbuilder/AppBuilderImage";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
-import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
-import AppBuilderTextWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
-import AppBuilderTemplateSelector from "@AppBuilderShared/pages/templates/AppBuilderTemplateSelector";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
@@ -135,8 +135,8 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 		});
 
 	// state for the custom material application
-	const [outputNameShelf, setOutputNameShelf] = useState<string>("");
-	const [outputNamePlane, setOutputNamePlane] = useState<string>("");
+	const [outputIdShelf, setOutputIdShelf] = useState<string>("");
+	const [outputIdPlane, setOutputIdPlane] = useState<string>("");
 
 	// executor function for changes of custom material parameters
 	const executor = useCallback<IGenericParameterExecutor>(async (values) => {
@@ -175,16 +175,22 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 		}
 
 		if (PARAMETER_NAMES.APPLY_TO_SHELF in values)
-			setOutputNameShelf(
-				"" + values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true"
-					? "Shelf"
+			setOutputIdShelf(
+				values[PARAMETER_NAMES.APPLY_TO_SHELF]
+					? (sessionApi
+							?.getOutputByName("Shelf")
+							.find((o) => !o.format.includes("material"))?.id ??
+							"")
 					: "",
 			);
 
 		if (PARAMETER_NAMES.APPLY_TO_PLANE in values)
-			setOutputNamePlane(
-				"" + values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true"
-					? "Image Plane"
+			setOutputIdPlane(
+				values[PARAMETER_NAMES.APPLY_TO_PLANE]
+					? (sessionApi
+							?.getOutputByName("Image Plane")
+							.find((o) => !o.format.includes("material"))?.id ??
+							"")
 					: "",
 			);
 
@@ -202,8 +208,8 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 	const myParameterProps = useSessionPropsParameter(customNamespace);
 
 	// apply the custom material
-	useOutputMaterial(sessionId, outputNameShelf, materialProperties);
-	useOutputMaterial(sessionId, outputNamePlane, materialProperties);
+	useOutputMaterial(sessionId, outputIdShelf, materialProperties);
+	useOutputMaterial(sessionId, outputIdPlane, materialProperties);
 
 	/////
 	// END - Example on how to apply a custom material to an output

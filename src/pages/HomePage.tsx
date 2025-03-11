@@ -1,16 +1,16 @@
-import {
-	Image,
-	Container,
-	Card,
-	Group,
-	Text,
-	Blockquote,
-	Center,
-} from "@mantine/core";
-import React from "react";
-import {IconInfoCircle} from "@tabler/icons-react";
-import classes from "~/pages/HomePage.module.css";
 import ModelCard from "@AppBuilderShared/components/ui/ModelCard";
+import {
+	Blockquote,
+	Card,
+	Center,
+	Container,
+	Group,
+	Image,
+	Text,
+} from "@mantine/core";
+import {IconInfoCircle} from "@tabler/icons-react";
+import React from "react";
+import classes from "~/pages/HomePage.module.css";
 
 const modelCards = [
 	{

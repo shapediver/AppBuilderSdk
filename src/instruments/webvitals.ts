@@ -1,5 +1,5 @@
-import reportWebVitals from "reportWebVitals";
 import {ITrackerContext} from "@AppBuilderShared/types/context/trackercontext";
+import reportWebVitals from "reportWebVitals";
 
 export const setupWebVitalsTracking = (tracker: ITrackerContext) => {
 	reportWebVitals((r) => {

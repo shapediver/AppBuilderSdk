@@ -1,21 +1,21 @@
-import "instruments/sentry";
-import React from "react";
-import ReactDOM from "react-dom/client";
-import AppBuilderBase from "~/AppBuilderBase";
 import RootComponent from "@AppBuilderShared/components/RootComponent";
-import {PlausibleTracker} from "~/instruments/plausible";
-import {setupWebVitalsTracking} from "~/instruments/webvitals";
-import {IComponentContext} from "@AppBuilderShared/types/context/componentcontext";
-import {PARAMETER_TYPE} from "@shapediver/viewer.session";
+import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderAttributeVisualizationWidgetComponent";
 import ParameterDraggingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDraggingComponent";
 import ParameterDrawingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDrawingComponent";
 import ParameterGumballComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterGumballComponent";
 import ParameterSelectionComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterSelectionComponent";
 import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
 import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import {IComponentContext} from "@AppBuilderShared/types/context/componentcontext";
 import {isAttributeVisualizationWidget} from "@AppBuilderShared/types/shapediver/appbuilder";
-import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderAttributeVisualizationWidgetComponent";
+import {PARAMETER_TYPE} from "@shapediver/viewer.session";
+import "instruments/sentry";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import AppBuilderBase from "~/AppBuilderBase";
+import {PlausibleTracker} from "~/instruments/plausible";
+import {setupWebVitalsTracking} from "~/instruments/webvitals";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,

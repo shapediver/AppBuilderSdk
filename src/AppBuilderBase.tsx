@@ -1,16 +1,16 @@
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
+import NotificationWrapper from "@AppBuilderShared/components/ui/NotificationWrapper";
+import {useCustomTheme} from "@AppBuilderShared/hooks/ui/useCustomTheme";
+import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
 import "@mantine/charts/styles.css";
 import {MantineProvider} from "@mantine/core";
-import React, {useEffect} from "react";
+import "@mantine/core/styles.css";
+import {Notifications} from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
-import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
-import {useCustomTheme} from "@AppBuilderShared/hooks/ui/useCustomTheme";
-import packagejson from "../package.json";
-import {Notifications} from "@mantine/notifications";
 import "AppBuilderBase.css";
-import NotificationWrapper from "@AppBuilderShared/components/ui/NotificationWrapper";
+import React, {useEffect} from "react";
+import packagejson from "../package.json";
 
 console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 

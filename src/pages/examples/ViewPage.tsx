@@ -1,32 +1,32 @@
-import {
-	IMaterialStandardDataProperties,
-	MATERIAL_TYPE,
-	PARAMETER_TYPE,
-} from "@shapediver/viewer.session";
-import {MaterialEngine} from "@shapediver/viewer.viewport";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
 import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import {useSession} from "@AppBuilderShared/hooks/shapediver/useSession";
-import ExamplePage from "pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import TabsComponent, {
+	ITabsComponentProps,
+} from "@AppBuilderShared/components/ui/TabsComponent";
+import {useSessionWithAppBuilder} from "@AppBuilderShared/hooks/shapediver/appbuilder/useSessionWithAppBuilder";
+import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
 import {useSessionPropsExport} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsExport";
+import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
 } from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
-import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import TabsComponent, {
-	ITabsComponentProps,
-} from "@AppBuilderShared/components/ui/TabsComponent";
-import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
-import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
+import {
+	IMaterialStandardDataProperties,
+	MATERIAL_TYPE,
+	PARAMETER_TYPE,
+	SESSION_SETTINGS_MODE,
+} from "@shapediver/viewer.session";
+import {MaterialEngine} from "@shapediver/viewer.viewport";
+import ExamplePage from "pages/examples/ExamplePage";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
+import {ExampleModels} from "~/tickets";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
@@ -102,13 +102,16 @@ const materialDefinitions: IGenericParameterDefinition[] = [
  * @returns
  */
 export default function ViewPage(props: Partial<Props>) {
-	const {defaultSessionDto} = useDefaultSessionDto(props);
-	const {settings} = useAppBuilderSettings(defaultSessionDto);
-	const sessionCreateDto = settings ? settings.sessions[0] : undefined;
+	const sessionSideboardKey = "Sideboard";
+	const sessionCreateDto = {
+		id: "default",
+		ticket: ExampleModels[sessionSideboardKey].ticket,
+		modelViewUrl: ExampleModels[sessionSideboardKey].modelViewUrl,
+	};
 	const sessionId = sessionCreateDto?.id ?? "";
 
 	// use a session with a ShapeDiver model and register its parameters
-	const {sessionApi} = useSession(sessionCreateDto);
+	const {sessionApi} = useSessionWithAppBuilder(sessionCreateDto);
 	useEffect(() => {
 		if (sessionApi)
 			console.debug(
@@ -150,8 +153,8 @@ export default function ViewPage(props: Partial<Props>) {
 		});
 
 	// state for the custom material application
-	const [outputNameShelf, setOutputNameShelf] = useState<string>("");
-	const [outputNamePlane, setOutputNamePlane] = useState<string>("");
+	const [outputIdShelf, setOutputIdShelf] = useState<string>("");
+	const [outputIdPlane, setOutputIdPlane] = useState<string>("");
 
 	// executor function for changes of custom material parameters
 	const executor = useCallback<IGenericParameterExecutor>(async (values) => {
@@ -190,16 +193,22 @@ export default function ViewPage(props: Partial<Props>) {
 		}
 
 		if (PARAMETER_NAMES.APPLY_TO_SHELF in values)
-			setOutputNameShelf(
-				"" + values[PARAMETER_NAMES.APPLY_TO_SHELF] === "true"
-					? "Shelf"
+			setOutputIdShelf(
+				values[PARAMETER_NAMES.APPLY_TO_SHELF]
+					? (sessionApi
+							?.getOutputByName("Shelf")
+							.find((o) => !o.format.includes("material"))?.id ??
+							"")
 					: "",
 			);
 
 		if (PARAMETER_NAMES.APPLY_TO_PLANE in values)
-			setOutputNamePlane(
-				"" + values[PARAMETER_NAMES.APPLY_TO_PLANE] === "true"
-					? "Image Plane"
+			setOutputIdPlane(
+				values[PARAMETER_NAMES.APPLY_TO_PLANE]
+					? (sessionApi
+							?.getOutputByName("Image Plane")
+							.find((o) => !o.format.includes("material"))?.id ??
+							"")
 					: "",
 			);
 
@@ -217,8 +226,8 @@ export default function ViewPage(props: Partial<Props>) {
 	const myParameterProps = useSessionPropsParameter(customNamespace);
 
 	// apply the custom material
-	useOutputMaterial(sessionId, outputNameShelf, materialProperties);
-	useOutputMaterial(sessionId, outputNamePlane, materialProperties);
+	useOutputMaterial(sessionId, outputIdShelf, materialProperties);
+	useOutputMaterial(sessionId, outputIdPlane, materialProperties);
 
 	/////
 	// END - Example on how to apply a custom material to an output
@@ -274,7 +283,10 @@ export default function ViewPage(props: Partial<Props>) {
 	return (
 		<>
 			<ExamplePage aside={parameterTabs}>
-				<ViewportComponent>
+				<ViewportComponent
+					sessionSettingsMode={SESSION_SETTINGS_MODE.MANUAL}
+					sessionSettingsId={sessionId}
+				>
 					<ViewportOverlayWrapper>
 						<ViewportIcons />
 					</ViewportOverlayWrapper>

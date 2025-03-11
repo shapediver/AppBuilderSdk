@@ -1,10 +1,10 @@
 import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
 import ModelSelect from "@AppBuilderShared/components/ui/ModelSelect";
 import React from "react";
-import ExamplePage from "~/pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
 import {ExampleModels} from "tickets";
+import ExamplePage from "~/pages/examples/ExamplePage";
 
 /**
  * Function that creates the model select page.

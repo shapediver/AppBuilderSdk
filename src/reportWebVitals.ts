@@ -1,4 +1,4 @@
-import {onCLS, onINP, onFCP, onLCP, onTTFB, MetricType} from "web-vitals";
+import {MetricType, onCLS, onFCP, onINP, onLCP, onTTFB} from "web-vitals";
 
 type ReportHandler = (metric: MetricType) => void;
 

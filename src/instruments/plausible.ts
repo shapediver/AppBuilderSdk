@@ -1,5 +1,3 @@
-import Plausible from "plausible-tracker";
-import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
 import {
 	combineTrackers,
 	DelayedTrackerPropsAwaiter,
@@ -12,6 +10,8 @@ import {
 } from "@AppBuilderShared/types/shapediver/queryparams";
 import {roundToBracket} from "@AppBuilderShared/utils/numerics";
 import {isRunningInPlatform} from "@AppBuilderShared/utils/platform/environment";
+import Plausible from "plausible-tracker";
+import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
 
 // default tracking domain
 const domain = isRunningInPlatform()

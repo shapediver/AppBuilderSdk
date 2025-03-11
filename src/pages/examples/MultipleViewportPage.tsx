@@ -1,21 +1,21 @@
-import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
+import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
 import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import React, {useMemo} from "react";
+import TabsComponent, {
+	ITabsComponentProps,
+} from "@AppBuilderShared/components/ui/TabsComponent";
+import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
 import {
 	IUseSessionDto,
 	useSession,
 } from "@AppBuilderShared/hooks/shapediver/useSession";
-import ExamplePage from "~/pages/examples/ExamplePage";
-import {Grid} from "@mantine/core";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
-import {ExampleModels} from "tickets";
-import classes from "./MultipleViewportPage.module.css";
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import TabsComponent, {
-	ITabsComponentProps,
-} from "@AppBuilderShared/components/ui/TabsComponent";
 import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
+import {Grid} from "@mantine/core";
+import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
+import React, {useMemo} from "react";
+import {ExampleModels} from "tickets";
+import ExamplePage from "~/pages/examples/ExamplePage";
+import classes from "./MultipleViewportPage.module.css";
 
 /**
  * Function that creates the view page.

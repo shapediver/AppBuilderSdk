@@ -1,22 +1,22 @@
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
+import NotificationWrapper from "@AppBuilderShared/components/ui/NotificationWrapper";
+import {useCustomTheme} from "@AppBuilderShared/hooks/ui/useCustomTheme";
+import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
+import NoMatchPage from "@AppBuilderShared/pages/misc/NoMatchPage";
 import "@mantine/charts/styles.css";
 import {MantineProvider} from "@mantine/core";
+import "@mantine/core/styles.css";
+import {Notifications} from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
+import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
+import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import React, {useEffect} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import HomePage from "~/pages/HomePage";
-import ModelSelectPage from "~/pages/examples/ModelSelectPage";
-import NoMatchPage from "@AppBuilderShared/pages/misc/NoMatchPage";
-import ViewPage from "~/pages/examples/ViewPage";
-import MultipleViewportPage from "~/pages/examples/MultipleViewportPage";
-import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
-import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
-import CustomUiPage from "~/pages/examples/CustomUiPage";
 import AppBuilderStaticExamplePage from "~/pages/examples/AppBuilderStaticExamplePage";
-import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
-import {useCustomTheme} from "@AppBuilderShared/hooks/ui/useCustomTheme";
-import {Notifications} from "@mantine/notifications";
-import NotificationWrapper from "@AppBuilderShared/components/ui/NotificationWrapper";
+import CustomUiPage from "~/pages/examples/CustomUiPage";
+import ModelSelectPage from "~/pages/examples/ModelSelectPage";
+import MultipleViewportPage from "~/pages/examples/MultipleViewportPage";
+import ViewPage from "~/pages/examples/ViewPage";
 
 declare global {
 	interface Window {

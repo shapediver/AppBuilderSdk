@@ -1,18 +1,18 @@
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import React, {useMemo} from "react";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ExamplePage from "~/pages/examples/ExamplePage";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import {useSessionWithCustomUi} from "@AppBuilderShared/hooks/shapediver/useSessionWithCustomUi";
 import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
+import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
 import TabsComponent, {
 	ITabsComponentProps,
 } from "@AppBuilderShared/components/ui/TabsComponent";
-import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
+import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
 import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
+import {useSessionWithCustomUi} from "@AppBuilderShared/hooks/shapediver/useSessionWithCustomUi";
 import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
+import React, {useMemo} from "react";
+import ExamplePage from "~/pages/examples/ExamplePage";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
