@@ -1,0 +1,117 @@
+{
+    "version": "1.0",
+    "sessions": [
+        {
+            "id": "default",
+            "ticket": "aeb34c624ff75099dda49670f13df76a4b9d3347258629cbc3e3373fb5e5bd04b2cb7c7c861982b5f81abf6aff38a8358411159926cb1d2114f9e7a08de7e81407f2e658c409c004df266d8fb8b1e30ced636e61e5590d4634de141859aa1d14edacc2b5e7ceeb-1dcebb5e8b7c42d0d368b0a8b1a03ae2",
+            "modelViewUrl": "https://sdr8euc1.eu-central-1.shapediver.com"
+        }
+    ],
+    "themeOverrides": {
+        "components": {
+            "ParameterSelectComponent": {
+                "defaultProps": {
+                    "componentSettings": {
+                        "ButtonFlex": {
+                            "type": "buttonflex",
+                            "itemData": {
+                                "Due": {
+                                    "displayname": "Two",
+                                    "tooltip": "Due, Zwei, Zwa, Deux",
+                                    "color": "green"
+                                }
+                            }
+                        },
+                        "ButtonGroup": {
+                            "type": "buttongroup"
+                        },
+                        "ButtonChipGroup": {
+                            "type": "chipgroup"
+                        },
+                        "Color": {
+                            "type": "color",
+                            "itemData": {
+                                "Red": {
+                                    "color": "red",
+                                    "tooltip": "A warm red"
+                                },
+                                "Blue": {
+                                    "color": "blue"
+                                },
+                                "Green": {
+                                    "color": "green"
+                                },
+                                "Yellow": {
+                                    "color": "yellow"
+                                },
+                                "Orange": {
+                                    "color": "orange"
+                                },
+                                "Purple": {
+                                    "color": "purple"
+                                },
+                                "Pink": {
+                                    "color": "pink"
+                                },
+                                "Brown": {
+                                    "color": "brown"
+                                },
+                                "Black": {
+                                    "color": "black"
+                                },
+                                "White": {
+                                    "color": "white"
+                                },
+                                "Gray": {
+                                    "color": "gray"
+                                },
+                                "Cyan": {
+                                    "color": "cyan"
+                                },
+                                "Magenta": {
+                                    "color": "magenta"
+                                },
+                                "Teal": {
+                                    "color": "teal"
+                                },
+                                "Gold": {
+                                    "color": "gold"
+                                },
+                                "Silver": {
+                                    "color": "silver"
+                                }
+                            }
+                        },
+                        "ImageDropDown": {
+                            "type": "imagedropdown",
+                            "itemData": {
+                                "Option 1": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+1",
+                                    "description": "Choice 1"
+                                },
+                                "Option 2": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+2"
+                                },
+                                "Option 3": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+3",
+                                    "description": "A longish choice 3"
+                                },
+                                "Option 4": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+4",
+                                    "description": "An even much much much longer choice 4"
+                                },
+                                "Option 5": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+5",
+                                    "description": "I am having a hard time coming up with a longer choice that will surely break the layout"
+                                },
+                                "Option 6": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+6"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
