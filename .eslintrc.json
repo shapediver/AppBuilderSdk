@@ -7,6 +7,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended",
+        "plugin:prettier/recommended", 
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -16,13 +17,11 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "react"
+        "react",
+        "eslint-plugin-prettier"
     ],
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
+        "prettier/prettier": "error",
         "linebreak-style": [
             "error",
             "windows"
@@ -36,7 +35,6 @@
             "always"
         ],
         "@typescript-eslint/no-explicit-any": 0,
-        "newline-before-return": "error",
         "no-debugger": 0
     },
     "settings": {
