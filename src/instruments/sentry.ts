@@ -1,3 +1,4 @@
+import {IErrorReportingContext} from "@AppBuilderShared/types/context/errorreportingcontext";
 import {
 	getEnvironmentIdentifier,
 	isRunningInPlatform,
@@ -15,3 +16,12 @@ if (CONFIG.SENTRY_DSN && isRunningInPlatform()) {
 		release: SENTRY_RELEASE,
 	});
 }
+
+export const SentryErrorReportingContext: IErrorReportingContext = {
+	captureException: function (exception: any): string {
+		return Sentry.captureException(exception);
+	},
+	captureMessage: function (msg: string): string {
+		return Sentry.captureMessage(msg);
+	},
+};
