@@ -1,0 +1,243 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "scale": 1.0,
+        "spacing": {
+            "xs": "0.4rem",
+            "sm": "0.75rem",
+            "md": "1rem",
+            "lg": "1.25rem",
+            "xl": "2rem"
+        },
+        "primaryColor": "CustomRedShades",
+        "colors": {
+            "CustomRed": [
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a",
+                "#d2232a"
+            ],
+            "CustomRedShades": [
+                "#ffebec",
+                "#fbd5d7",
+                "#f1aaad",
+                "#e87b7f",
+                "#e05459",
+                "#dc3b41",
+                "#db2e34",
+                "#c32027",
+                "#ae1921",
+                "#990d1a"
+            ],
+            "CustomPurple": [
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c",
+                "#444c5c"
+            ],
+            "CustomPurpleShades": [
+                "#f3f4f6",
+                "#e6e6e6",
+                "#cacbcd",
+                "#aaaeb4",
+                "#90959f",
+                "#7f8593",
+                "#767e8e",
+                "#646c7b",
+                "#58606f",
+                "#4a5264"
+            ],
+            "CustomYellow": [
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829",
+                "#fbb829"
+            ],
+            "CustomYellowShades": [
+                "#fff8e0",
+                "#ffefcb",
+                "#fede9b",
+                "#fdcd66",
+                "#fbbd39",
+                "#fbb41c",
+                "#fbaf08",
+                "#df9900",
+                "#c78700",
+                "#ad7400"
+            ],
+            "CustomPink": [
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f",
+                "#eb4a5f"
+            ],
+            "CustomPinkShades": [
+                "#ffe9ed",
+                "#ffd2d8",
+                "#f8a4af",
+                "#f17384",
+                "#eb4a5f",
+                "#e82f47",
+                "#e71f3b",
+                "#ce102d",
+                "#b80727",
+                "#a20020"
+            ],
+            "CustomGreen": [
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b",
+                "#55806b"
+            ],
+            "CustomGreenShades": [
+                "#eef8f3",
+                "#e2ece7",
+                "#c6d7ce",
+                "#a6c0b3",
+                "#8bad9c",
+                "#7aa28e",
+                "#6f9c86",
+                "#5d8873",
+                "#507965",
+                "#406956"
+            ],
+            "CustomGrey": [
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598",
+                "#939598"
+            ],
+            "CustomGreyShades": [
+                "#eef5ff",
+                "#e4e8ed",
+                "#cbcdd1",
+                "#afb1b5",
+                "#989a9d",
+                "#898b8e",
+                "#808488",
+                "#6d7177",
+                "#60656c",
+                "#4f5762"
+            ],
+            "gray": [
+                "#eef5ff",
+                "#e4e8ed",
+                "#cbcdd1",
+                "#afb1b5",
+                "#989a9d",
+                "#898b8e",
+                "#808488",
+                "#6d7177",
+                "#60656c",
+                "#4f5762"
+            ]
+        },
+        "defaultRadius": "xs",
+        "fontFamily": "\"ITC Avant Garde Gothic\", sans-serif",
+        "headings": {
+            "fontWeight": 700
+        },
+        "white": "#FFFFFF",
+        "black": "#000000",
+        "other": {
+            "defaultFontWeightThin": "100",
+            "defaultFontWeightLight": "300",
+            "defaultFontWeight": "400",
+            "defaultFontWeightMedium": "500",
+            "defaultFontWeightBold": "700",
+            "forceColorScheme": "light"
+        },
+        "components": {
+            "Accordion": {
+                "defaultProps": {}
+            },
+            "AppBuilderAppShellTemplatePage": {
+                "defaultProps": {
+                    "bottomFullWidth": false,
+                    "rightBorder": true,
+                    "keepBottomInGrid": true
+                }
+            },
+            "AppBuilderImage": {
+                "defaultProps": {
+                    "withBorder": false
+                }
+            },
+            "Button": {
+                "defaultProps": {
+                    "color": "CustomPurpleShades",
+                    "variant": "filled"
+                }
+            },
+            "ExportLabelComponent": {
+                "defaultProps": {}
+            },
+            "Icon": {
+                "defaultProps": {}
+            },
+            "MarkdownWidgetComponent": {
+                "defaultProps": {}
+            },
+            "Paper": {
+                "defaultProps": {
+                    "withBorder": true
+                }
+            },
+            "ParameterLabelComponent": {
+                "defaultProps": {}
+            },
+            "Switch": {
+                "defaultProps": {
+                    "color": "CustomYellowShades"
+                }
+            },
+            "Text": {
+                "defaultProps": {}
+            },
+            "ViewportIcons": {
+                "defaultProps": {
+                    "enableArBtn": true,
+                    "enableCamerasBtn": false,
+                    "enableFullscreenBtn": true,
+                    "enableZoomBtn": true
+                }
+            }
+        }
+    }
+}

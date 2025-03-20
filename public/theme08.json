@@ -1,0 +1,180 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "primaryColor": "Primary",
+        "colors": {
+            "Primary": [
+                "#f9e7ea",
+                "#eeced2",
+                "#d299a8",
+                "#b36687",
+                "#953a61",
+                "#852448",
+                "#7b1d3f",
+                "#671932",
+                "#5b162a",
+                "#8a2432"
+            ],
+            "gray": [
+                "#f8f6f1",
+                "#f1ede3",
+                "#ebe5d8",
+                "#cdc09d",
+                "#b9a87b",
+                "#a99162",
+                "#9e8652",
+                "#8a7545",
+                "#7e6a3e",
+                "#715f37"
+            ]
+        },
+        "defaultRadius": "0",
+        "fontFamily": "'Montserrat', sans-serif",
+        "headings": {
+            "fontFamily": "'Montserrat', sans-serif",
+            "fontWeight": 400
+        },
+        "white": "#FFFFFF",
+        "black": "#670000",
+        "other": {
+            "defaultFontWeight": "400",
+            "forceColorScheme": "light"
+        },
+        "components": {
+            "AppBuilderContainerWrapper": {
+                "defaultProps": {
+                    "containerThemeOverrides": {
+                        "appshell": {
+                            "bottom": {
+                                "components": {
+                                    "AppBuilderHorizontalContainer": {
+                                        "defaultProps": {
+                                            "pt": 0,
+                                            "pb": 0,
+                                            "styles": {
+                                                "root": {
+                                                    "grid-template-columns": "1fr auto auto",
+                                                    "display": "grid",
+                                                    "align-content": "start",
+                                                    "align-items": "start",
+                                                    "overflow": "hidden",
+                                                    "text-align": "center"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "AppBuilderTextWidgetComponent": {
+                                        "defaultProps": {
+                                            "styles": {
+                                                "root": {
+                                                    "overflow": "clip"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "AppBuilderTemplateSelector": {
+                "defaultProps": {
+                    "template": "appshell"
+                }
+            },
+            "AppBuilderAppShellTemplatePage": {
+                "defaultProps": {
+                    "rows": {
+                        "base": 10,
+                        "xs": 10,
+                        "sm": 10,
+                        "md": 19,
+                        "lg": 19,
+                        "xl": 19
+                    },
+                    "bottomFullWidth": true,
+                    "rightBorder": false,
+                    "keepBottomInGrid": true
+                }
+            },
+            "Accordion": {
+                "defaultProps": {
+                    "styles": {
+                        "label": {
+                            "fontWeight": "400"
+                        }
+                    }
+                }
+            },
+            "Button": {
+                "defaultProps": {
+                    "fw": "400",
+                    "mt": "10px",
+                    "fz": {
+                        "base": "0px",
+                        "xs": "0px",
+                        "sm": "0px",
+                        "md": "14px",
+                        "lg": "14px",
+                        "xl": "14px"
+                    },
+                    "h": {
+                        "base": "25px",
+                        "xs": "25px",
+                        "sm": "25px",
+                        "md": "36px",
+                        "lg": "36px",
+                        "xl": "36px"
+                    }
+                }
+            },
+            "ExportLabelComponent": {
+                "defaultProps": {
+                    "fontWeight": "400"
+                }
+            },
+            "Icon": {
+                "defaultProps": {
+                    "size": "20px"
+                }
+            },
+            "MarkdownWidgetComponent": {
+                "defaultProps": {
+                    "boldFontWeight": "400",
+                    "strongFontWeight": "400"
+                }
+            },
+            "Paper": {
+                "defaultProps": {
+                    "withBorder": false
+                }
+            },
+            "ParameterLabelComponent": {
+                "defaultProps": {
+                    "fontWeight": "400"
+                }
+            },
+            "Text": {
+                "defaultProps": {
+                    "fw": "300",
+                    "size": "sm"
+                }
+            },
+            "ViewportIcons": {
+                "defaultProps": {
+                    "color": "#670000",
+                    "enableArBtn": true,
+                    "enableCamerasBtn": false,
+                    "enableFullscreenBtn": false,
+                    "enableZoomBtn": true
+                }
+            },
+            "AppBuilderImage": {
+                "defaultProps": {
+                    "withBorder": false
+                }
+            }
+        }
+    }
+}
