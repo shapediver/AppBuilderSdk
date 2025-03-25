@@ -55,7 +55,7 @@
     "build-appbuilder-platform": "scripts/build-appbuilder.sh 0 app/builder/v1/main",
     "publish-appbuilder": "scripts/build-appbuilder.sh 1 v1/main",
     "publish-appbuilder-platform": "scripts/build-appbuilder.sh 1 app/builder/v1/main",
-    "publish": "npm run publish-appbuilder && npm run publish-appbuilder-platform"
+    "publish": "scripts/build-appbuilder.sh 1"
   },
   "eslintConfig": {
     "extends": [
