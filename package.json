@@ -51,12 +51,11 @@
     "eslint": "eslint .",
     "prettier": "prettier --write ./src/",
     "test": "jest",
-    "build-appbuilder": "scripts/build-appbuilder.sh $npm_package_version 0 v1/main",
-    "publish-appbuilder": "scripts/build-appbuilder.sh $npm_package_version 1 v1/main",
-    "publish-appbuilder-latest": "scripts/build-appbuilder.sh latest 1 v1/main",
-    "build-appbuilder-platform": "scripts/build-appbuilder.sh $npm_package_version 0 app/builder/v1/main",
-    "publish-appbuilder-platform": "scripts/build-appbuilder.sh $npm_package_version 1 app/builder/v1/main",
-    "publish-appbuilder-platform-latest": "scripts/build-appbuilder.sh latest 1 app/builder/v1/main"
+    "build-appbuilder": "scripts/build-appbuilder.sh 0 v1/main",
+    "build-appbuilder-platform": "scripts/build-appbuilder.sh 0 app/builder/v1/main",
+    "publish-appbuilder": "scripts/build-appbuilder.sh 1 v1/main",
+    "publish-appbuilder-platform": "scripts/build-appbuilder.sh 1 app/builder/v1/main",
+    "publish": "npm run publish-appbuilder && npm run publish-appbuilder-platform"
   },
   "eslintConfig": {
     "extends": [

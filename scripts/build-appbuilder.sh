@@ -11,25 +11,19 @@ fi
 # trap exceptions and restore sentryconfig.ts
 trap 'if [ -f "sentryconfig.ts.bak" ]; then mv sentryconfig.ts.bak sentryconfig.ts; fi' EXIT
 
-version=$1
-if [ -z "$version" ]; then
-    echo "Usage: $0 <version>"
-    exit 1
-fi
-
 # should we deploy, or just build?
-deploy=$2
+deploy=$1
 
 # where should we deploy?
-prefix=$3
+prefix=$2
 
 # only allow specific prefixes
 if [ -z "$prefix" ]; then
     echo "Prefix is not set."
     exit 1
-else if [ $prefix == "app/builder/v1/main" ]; then
+elif [ $prefix == "app/builder/v1/main" ]; then
     echo "Building for app builder."
-else if [ $prefix == "v1/main" ]; then
+elif [ $prefix == "v1/main" ]; then
     echo "Building for app builder platform."
 else
     echo "Unknown prefix."
@@ -45,6 +39,70 @@ if [ ! -z "$deploy" ]; then
         echo "Could not find sentry-cli."
         exit 1
     fi
+fi
+
+# If we are deploying, check for git changes
+if [ ! -z "$deploy" ]; then
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "There are uncommitted changes."
+        exit 1
+    fi
+fi
+
+# Get the current branch
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+# npm version
+npm_version=$(node -p "require('./package.json').version")
+echo "Current npm version: $npm_version"
+
+deploying_branch=1
+
+# If the branch is "development", "staging" or starts with "task/", we use the branch name as the version
+if [ "$branch" == "development" ] || [ "$branch" == "staging" ]; then
+    deploying_branch=1
+    version=$branch
+elif [[ $branch == task/* ]]; then
+    deploying_branch=1
+    # In this case we have to remove the "task/" prefix
+    version=${branch#task/}
+elif [[ $branch == "latest" ]]; then
+    # Ask if we want to deploy to "latest" or a specific version
+    echo "Do you want to deploy to 'latest' or do you want to increase the version?"
+    read -p "Enter 'latest' or 'version': " version_type
+    if [ "$version_type" == "latest" ]; then
+        version=$branch
+        deploying_branch=1
+    elif [ $version_type == "version" ]; then
+        # Ask if we should increase the "major", "minor" or "patch" version
+        echo "Do you want to increase the major, minor or patch version?" 
+        read -p "Enter 'major', 'minor' or 'patch': " version_type
+        if [ "$version_type" == "major" ] || [ "$version_type" == "minor" ] || [ "$version_type" == "patch" ]; then
+            npm version $version_type
+            version=$(node -p "require('./package.json').version")
+            deploying_branch=0
+
+            echo "New npm version: $version"
+
+            # As the package.json has changed, we need to commit the changes
+            git add package.json
+            git commit -m "Release of version $version"
+            git push
+
+            # And we create a new tag with the name "AppBuilder@X.Y.Z"
+            git tag -a "AppBuilder@$version" -m "Release of version $version"
+            git push origin "AppBuilder@$version"
+        else
+            echo "Unsupported version type."
+            exit 1
+        fi
+    else
+        echo "Unsupported input."
+        exit 1
+    fi
+else 
+    echo "Unsupported branch name."
+    exit 1
 fi
 
 # Check if sentryconfig.local.ts exists, copy it to sentryconfig.ts if it does
@@ -73,9 +131,12 @@ if [ -z "$APPBUILDER_BUCKET" ]; then
 fi
 
 cachecontrol="public, max-age=31536000, immutable"
-if [ $version == "latest" ]; then
+# if we are deploying a branch, we need to change the cache control, compared to a version
+if [ $deploying_branch -eq 1 ]; then
     cachecontrol="public, max-age=0, s-maxage=86400"
 fi
+
+echo "Deploying to version $version with prefix $prefix to bucket $APPBUILDER_BUCKET"
 
 # depending on the prefix, we need to deploy to different locations
 if [ $prefix == "v1/main" ]; then
