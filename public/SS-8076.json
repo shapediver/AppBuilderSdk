@@ -126,7 +126,7 @@
                             }
                         },
                         "SevenCards": {
-                            "type": "fullwidthcards",
+                            "type": "carousel",
                             "itemData": {
                                 "Option 1": {
                                     "imageUrl": "https://i.pinimg.com/1200x/4a/de/37/4ade3729109e48e14e0e3126f49df099.jpg",
@@ -138,7 +138,8 @@
                                     "imageUrl": "https://i.pinimg.com/1200x/c7/20/21/c72021298e76cefc0ce786d715d92fbd.jpg",
                                     "description": "Naturally sweet and potassium-rich fruit",
                                     "displayname": "Bananas",
-                                    "color": "yellow"
+                                    "color": "yellow",
+                                    "tooltip": "What a banana republic is this?"
                                 },
                                 "Option 3": {
                                     "imageUrl": "https://imgs.search.brave.com/Xj0vK3rmVj78-Wfd-sKVYYjRsmoNqADIxVlZ-uGZLLU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNi8w/Ni8xMS8xNS8zMy9i/cm9jY29saS0xNDUw/Mjc0XzY0MC5wbmc",
@@ -157,8 +158,48 @@
                                 }
                             },
                             "settings": {
-                                "width": 120
+                                "carouselProps": {
+                                    "_withIndicators": true
+                                },
+                                "imageProps": {
+                                    "_fit": "contain"
+                                },
+                                "_showLabel": false
                             }
+                        },
+                        "TenCards": {
+                            "type": "fullwidthcards",
+                            "itemData": {
+                                "Option 1": {
+                                    "imageUrl": "https://i.pinimg.com/1200x/4a/de/37/4ade3729109e48e14e0e3126f49df099.jpg",
+                                    "description": "Crisp and refreshing fruit",
+                                    "displayname": "Apples",
+                                    "color": "green"
+                                },
+                                "Option 2": {
+                                    "imageUrl": "https://i.pinimg.com/1200x/c7/20/21/c72021298e76cefc0ce786d715d92fbd.jpg",
+                                    "description": "Naturally sweet and potassium-rich fruit",
+                                    "displayname": "Bananas",
+                                    "color": "yellow",
+                                    "tooltip": "What a banana republic is this?"
+                                },
+                                "Option 3": {
+                                    "imageUrl": "https://imgs.search.brave.com/Xj0vK3rmVj78-Wfd-sKVYYjRsmoNqADIxVlZ-uGZLLU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNi8w/Ni8xMS8xNS8zMy9i/cm9jY29saS0xNDUw/Mjc0XzY0MC5wbmc",
+                                    "description": "Nutrient-packed green vegetable"
+                                },
+                                "Option 4": {
+                                    "imageUrl": "https://i.pinimg.com/1200x/72/e1/33/72e133c68ddb78b44d0ef12b1dc3425e.jpg",
+                                    "description": "Crunchy and vitamin-rich root vegetable"
+                                },
+                                "Option 5": {
+                                    "imageUrl": "https://imgs.search.brave.com/qZ5jdNFtOR9tshG5YwIWKQccE_rvoeMe1g8KgTf5Y0w/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvY2hvY29sYXRl/LXBuZy0wc2Yzdjls/em1vZDlqbGg2LnBu/Zw",
+                                    "description": "Indulgent and decadent treat"
+                                },
+                                "Option 6": {
+                                    "imageUrl": "https://placehold.co/100x70/blue?text=Option+1"
+                                }
+                            },
+                            "settings": {}
                         }
                     }
                 }
