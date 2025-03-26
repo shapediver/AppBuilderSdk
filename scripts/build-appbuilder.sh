@@ -55,12 +55,15 @@ build_and_deploy() {
         aws s3 cp empty s3://$APPBUILDER_BUCKET/appbuilder/$prefix/$version --region us-east-1 \
             --website-redirect https://appbuilder.shapediver.com/$prefix/$version/ --cache-control "$cachecontrol"
         rm empty
-    else
+    elif [ $prefix == "app/builder/v1/$MAIN_TARGET" ]; then
         aws s3 sync ./dist s3://$APPBUILDER_BUCKET/$prefix/$version/ --region us-east-1 --cache-control "$cachecontrol"
         touch empty
         aws s3 cp empty s3://$APPBUILDER_BUCKET/$prefix/$version --region us-east-1 \
             --website-redirect https://www.shapediver.com/$prefix/$version/ --cache-control "$cachecontrol"
         rm empty
+    else
+        echo "Unsupported prefix for deployment."
+        exit 1
     fi
 
     # Create a sentry release
