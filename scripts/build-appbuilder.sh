@@ -2,10 +2,11 @@
 SENTRY_CLI="node_modules/.bin/sentry-cli"
 SENTRY_ORG="shapediver"
 SENTRY_PROJECT="app-builder"
+MAIN_TARGET="main"
 
 # Function to build and deploy the app
 # $1: deploy - should we deploy the build?
-# $2: prefix - the prefix for the deployment, either "v1/main" or "app/builder/v1/main"
+# $2: prefix - the prefix for the deployment, either "v1/$MAIN_TARGET" or "app/builder/v1/$MAIN_TARGET"
 # $3: version - the version of the deployment (branch name or npm version)
 # $4: deploying_branch - 1 if we are deploying a branch, 0 if we are deploying a version
 build_and_deploy() {
@@ -48,7 +49,7 @@ build_and_deploy() {
     echo "Deploying to version $version with prefix $prefix to bucket $APPBUILDER_BUCKET"
 
     # depending on the prefix, we need to deploy to different locations
-    if [ $prefix == "v1/main" ]; then
+    if [ $prefix == "v1/$MAIN_TARGET" ]; then
         aws s3 sync ./dist s3://$APPBUILDER_BUCKET/appbuilder/$prefix/$version/ --region us-east-1 --cache-control "$cachecontrol"
         touch empty
         aws s3 cp empty s3://$APPBUILDER_BUCKET/appbuilder/$prefix/$version --region us-east-1 \
@@ -93,9 +94,9 @@ deploy=$1
 prefix=$2
 
 # only allow specific prefixes
-if [ "$prefix" == "app/builder/v1/main" ]; then
+if [ "$prefix" == "app/builder/v1/$MAIN_TARGET" ]; then
     echo "Building for app builder."
-elif [ "$prefix" == "v1/main" ]; then
+elif [ "$prefix" == "v1/$MAIN_TARGET" ]; then
     echo "Building for app builder platform."
 else
     echo "No prefix specified, deploying to both app builder and app builder platform."
@@ -180,6 +181,6 @@ fi
 if [ -z "$prefix" ]; then
     build_and_deploy $deploy $prefix $version $deploying_branch
 else
-    build_and_deploy $deploy "v1/main" $version $deploying_branch
-    build_and_deploy $deploy "app/builder/v1/main" $version $deploying_branch
+    build_and_deploy $deploy "v1/$MAIN_TARGET" $version $deploying_branch
+    build_and_deploy $deploy "app/builder/v1/$MAIN_TARGET" $version $deploying_branch
 fi
