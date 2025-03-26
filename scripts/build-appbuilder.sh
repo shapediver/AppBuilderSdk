@@ -141,12 +141,12 @@ elif [[ $branch == task/* ]]; then
     deploying_branch=1
     # In this case we have to remove the "task/" prefix
     version=${branch#task/}
-elif [[ $branch == "latest" ]]; then
+elif [[ $branch == "master" ]]; then
     # Ask if we want to deploy to "latest" or a specific version
     echo "Do you want to deploy to 'latest' or do you want to increase the version?"
     read -p "Enter 'latest' or 'version': " version_type
     if [ "$version_type" == "latest" ]; then
-        version=$branch
+        version="latest"
         deploying_branch=1
     elif [ $version_type == "version" ]; then
         # Ask if we should increase the "major", "minor" or "patch" version
