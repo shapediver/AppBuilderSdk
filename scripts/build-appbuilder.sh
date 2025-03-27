@@ -182,8 +182,8 @@ fi
 
 # check if a prefix was specified, then only deploy to that prefix
 if [ -z "$prefix" ]; then
-    build_and_deploy $deploy $prefix $version $deploying_branch
-else
     build_and_deploy $deploy "v1/$MAIN_TARGET" $version $deploying_branch
     build_and_deploy $deploy "app/builder/v1/$MAIN_TARGET" $version $deploying_branch
+else
+    build_and_deploy $deploy $prefix $version $deploying_branch
 fi
