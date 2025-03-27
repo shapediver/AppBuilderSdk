@@ -155,7 +155,7 @@ elif [[ $branch == "master" ]]; then
         echo "Do you want to increase the major, minor or patch version?" 
         read -p "Enter 'major', 'minor' or 'patch': " version_type
         if [ "$version_type" == "major" ] || [ "$version_type" == "minor" ] || [ "$version_type" == "patch" ]; then
-            npm version $version_type
+            npm version $version_type --no-git-tag-version --ignore-scripts
             version=$(node -p "require('./package.json').version")
             deploying_branch=0
 
