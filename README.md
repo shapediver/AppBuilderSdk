@@ -139,6 +139,17 @@ The code works using [node.js](https://nodejs.dev/en/about/releases/) 18 and 20.
 
 Builds the app for production to the `dist` folder.
 
+```pnpm run publish```
+
+Publishes the app according to the branch that you are currently on:
+
+- `task/XYZ`: If you are on a task branch, you can only deploy to that task number. Example: `task/SS-9999` deploys to `SS-9999`
+- `development`: If you are on the `development` branch, the script will automatically deploy to that branch.
+- `staging`: If you are on the `staging` branch, the script will automatically deploy to that branch.
+- `master`: If you are on the `master` branch, you will receive a prompt that let's you choose where to deploy to.
+  - `version`: here you can choose which part of the version you want to increase (`major`, `minor`, `patch`)
+  - `latest`: If you choose this option, it will deploy to the `latest` tag.
+
 ### Developer tools
 
 When developing using Chrome, the following browser extensions are useful: 
