@@ -80,6 +80,8 @@ build_and_deploy() {
         echo "Failed to associate commits with the Sentry release."
         exit 1
     fi
+
+    [ -f "sentryconfig.ts.bak" ] && mv sentryconfig.ts.bak sentryconfig.ts
 }
 
 # load environment variables from .env file
