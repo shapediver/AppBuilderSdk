@@ -13,7 +13,6 @@ import React, {useEffect} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import HomePage from "~/pages/HomePage";
 import AppBuilderStaticExamplePage from "~/pages/examples/AppBuilderStaticExamplePage";
-import CustomUiPage from "~/pages/examples/CustomUiPage";
 import ModelSelectPage from "~/pages/examples/ModelSelectPage";
 import MultipleViewportPage from "~/pages/examples/MultipleViewportPage";
 import ViewPage from "~/pages/examples/ViewPage";
@@ -69,12 +68,6 @@ export default function App() {
 						<Route
 							path="multipleViewport"
 							element={<MultipleViewportPage />}
-						/>
-						<Route
-							path="customui"
-							element={
-								<CustomUiPage example="CustomUiBookshelf" />
-							}
 						/>
 						<Route path="*" element={<NoMatchPage />} />
 					</Routes>
