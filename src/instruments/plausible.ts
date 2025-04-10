@@ -46,8 +46,8 @@ function createPlausibleTracker(
 			plausible.trackEvent(eventName, options);
 		},
 		trackMetric(type, metricName, value, options) {
-			const {rating} = options?.props ?? {};
-			const {props = {}, callback = undefined} = options ?? {};
+			const {rating, ...props} = options?.props ?? {};
+			const {callback = undefined} = options ?? {};
 			if (type === "Web vitals") {
 				const name = metricName as
 					| "CLS"
