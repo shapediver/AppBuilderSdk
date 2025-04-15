@@ -184,6 +184,9 @@ devDependencies:
   vite:
     specifier: ^6.0.7
     version: 6.2.0(@types/node@20.17.19)
+  vite-bundle-analyzer:
+    specifier: ^0.18.1
+    version: 0.18.1
   vite-plugin-svgr:
     specifier: ^4.3.0
     version: 4.3.0(rollup@2.79.2)(typescript@5.7.3)(vite@6.2.0)
@@ -14577,6 +14580,11 @@ packages:
       d3-time: 3.1.0
       d3-timer: 3.0.1
     dev: false
+
+  /vite-bundle-analyzer@0.18.1:
+    resolution: {integrity: sha512-VQgrvxRuiZuOhM61p85lGpxzWR3TUbgn1LYtCBL09LUVoKy+yoxPwWTq+ihuPqT5L4tp0Jiiaa/dGYIRF8Guag==}
+    hasBin: true
+    dev: true
 
   /vite-plugin-svgr@4.3.0(rollup@2.79.2)(typescript@5.7.3)(vite@6.2.0):
     resolution: {integrity: sha512-Jy9qLB2/PyWklpYy0xk0UU3TlU0t2UMpJXZvf+hWII1lAmRHrOUKi11Uw8N3rxoNk7atZNYO3pR3vI1f7oi+6w==}
