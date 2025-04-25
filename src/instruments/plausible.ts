@@ -46,7 +46,8 @@ function createPlausibleTracker(
 			plausible.trackEvent(eventName, options);
 		},
 		trackMetric(type, metricName, value, options) {
-			const {rating} = options?.props ?? {};
+			const {rating, ...props} = options?.props ?? {};
+			const {callback = undefined} = options ?? {};
 			if (type === "Web vitals") {
 				const name = metricName as
 					| "CLS"
@@ -59,12 +60,14 @@ function createPlausibleTracker(
 				const propNameRating = `${name}-rat`;
 				plausible.trackEvent(type, {
 					props: {
+						...props,
 						[propNameValue]: roundToBracket(
 							value,
 							mapMetricToBracket[name],
 						),
 						[propNameRating]: rating,
 					},
+					callback,
 				});
 			} else {
 				console.warn(`Unknown metric type: ${type}`);
