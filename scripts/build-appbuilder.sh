@@ -143,6 +143,10 @@ deploying_branch=1
 if [ "$branch" == "development" ] || [ "$branch" == "staging" ]; then
     deploying_branch=1
     version=$branch
+    
+    # And we create a new tag with the name "AppBuilder@branch"
+    git tag -fa "AppBuilder@$branch" -m "Release of branch $branch"
+    git push origin "AppBuilder@$branch" --force
 elif [[ $branch == task/* ]]; then
     deploying_branch=1
     # In this case we have to remove the "task/" prefix
