@@ -282,7 +282,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 		>
 			<ViewportComponent>
 				<ViewportOverlayWrapper>
-					<ViewportIcons />
+					<ViewportIcons namespace={sessionId} />
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</AppBuilderTemplateSelector>
