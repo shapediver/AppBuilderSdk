@@ -50,7 +50,6 @@ export default defineConfig({
 					],
 					mantineCharts: ["@mantine/charts"],
 					shapediver: [
-						"@shapediver/api.geometry-api-dto-v2",
 						"@shapediver/sdk.geometry-api-sdk-v2",
 						"@shapediver/sdk.platform-api-sdk-v1",
 					],
