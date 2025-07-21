@@ -149,7 +149,7 @@ export default function ViewPage(props: Partial<Props>) {
 			map: undefined,
 			roughness: +materialParameters.find(
 				(d) => d.definition.id === PARAMETER_NAMES.ROUGHNESS,
-			)!.definition.defval,
+			)!.definition.defval!,
 		});
 
 	// state for the custom material application
