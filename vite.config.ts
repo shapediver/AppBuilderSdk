@@ -63,6 +63,7 @@ export default defineConfig({
 						"@shapediver/viewer.features.gumball",
 						"@shapediver/viewer.features.interaction",
 					],
+					stargate: ["@shapediver/sdk.stargate-sdk-v1"],
 					utils: ["immer", "zustand", "zod", "uuid", "gl-matrix"],
 					markdown: [
 						"react-markdown",
