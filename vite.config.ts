@@ -50,7 +50,6 @@ export default defineConfig({
 					],
 					mantineCharts: ["@mantine/charts"],
 					shapediver: [
-						"@shapediver/api.geometry-api-dto-v2",
 						"@shapediver/sdk.geometry-api-sdk-v2",
 						"@shapediver/sdk.platform-api-sdk-v1",
 					],
@@ -64,6 +63,7 @@ export default defineConfig({
 						"@shapediver/viewer.features.gumball",
 						"@shapediver/viewer.features.interaction",
 					],
+					stargate: ["@shapediver/sdk.stargate-sdk-v1"],
 					utils: ["immer", "zustand", "zod", "uuid", "gl-matrix"],
 					markdown: [
 						"react-markdown",

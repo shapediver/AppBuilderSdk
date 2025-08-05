@@ -131,7 +131,7 @@ export default function AppBuilderStaticExamplePage(props: Partial<Props>) {
 			map: undefined,
 			roughness: +materialParameters.find(
 				(d) => d.definition.id === PARAMETER_NAMES.ROUGHNESS,
-			)!.definition.defval,
+			)!.definition.defval!,
 		});
 
 	// state for the custom material application
@@ -282,7 +282,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 		>
 			<ViewportComponent>
 				<ViewportOverlayWrapper>
-					<ViewportIcons />
+					<ViewportIcons namespace={sessionId} />
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</AppBuilderTemplateSelector>
