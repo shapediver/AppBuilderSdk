@@ -9,9 +9,9 @@ import {
 	IUseSessionDto,
 	useSession,
 } from "@AppBuilderShared/hooks/shapediver/useSession";
-import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
+import {IconAdjustmentsHorizontal, IconDownload} from "@tabler/icons-react";
 import React, {useMemo} from "react";
 import {ExampleModels} from "tickets";
 import ExamplePage from "~/pages/examples/ExamplePage";
@@ -108,7 +108,7 @@ export default function MultipleViewportPage() {
 			tabs: [
 				{
 					name: "Bench",
-					icon: IconTypeEnum.AdjustmentsHorizontal,
+					icon: IconAdjustmentsHorizontal,
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
@@ -124,7 +124,7 @@ export default function MultipleViewportPage() {
 				},
 				{
 					name: "Bookshelf",
-					icon: IconTypeEnum.Download,
+					icon: IconDownload,
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}

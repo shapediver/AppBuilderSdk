@@ -12,7 +12,6 @@ import {useSessionPropsExport} from "@AppBuilderShared/hooks/shapediver/paramete
 import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
 import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
 import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
-import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
@@ -24,6 +23,7 @@ import {
 	SESSION_SETTINGS_MODE,
 } from "@shapediver/viewer.session";
 import {MaterialEngine} from "@shapediver/viewer.viewport";
+import {IconAdjustmentsHorizontal, IconDownload} from "@tabler/icons-react";
 import ExamplePage from "pages/examples/ExamplePage";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {ExampleModels} from "~/tickets";
@@ -239,7 +239,7 @@ export default function ViewPage(props: Partial<Props>) {
 			tabs: [
 				{
 					name: "Parameters",
-					icon: IconTypeEnum.AdjustmentsHorizontal,
+					icon: IconAdjustmentsHorizontal,
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
@@ -259,7 +259,7 @@ export default function ViewPage(props: Partial<Props>) {
 				},
 				{
 					name: "Exports",
-					icon: IconTypeEnum.Download,
+					icon: IconDownload,
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
