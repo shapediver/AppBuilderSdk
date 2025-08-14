@@ -23,7 +23,6 @@ import {
 	SESSION_SETTINGS_MODE,
 } from "@shapediver/viewer.session";
 import {MaterialEngine} from "@shapediver/viewer.viewport";
-import {IconAdjustmentsHorizontal, IconDownload} from "@tabler/icons-react";
 import ExamplePage from "pages/examples/ExamplePage";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {ExampleModels} from "~/tickets";
@@ -239,7 +238,7 @@ export default function ViewPage(props: Partial<Props>) {
 			tabs: [
 				{
 					name: "Parameters",
-					icon: IconAdjustmentsHorizontal,
+					icon: "tabler:adjustments-horizontal",
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
@@ -259,7 +258,7 @@ export default function ViewPage(props: Partial<Props>) {
 				},
 				{
 					name: "Exports",
-					icon: IconDownload,
+					icon: "tabler:download",
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}

@@ -1,3 +1,4 @@
+import Icon from "@AppBuilderShared/components/ui/Icon";
 import ModelCard from "@AppBuilderShared/components/ui/ModelCard";
 import {
 	Blockquote,
@@ -8,7 +9,6 @@ import {
 	Image,
 	Text,
 } from "@mantine/core";
-import {IconInfoCircle} from "@tabler/icons-react";
 import React from "react";
 import classes from "~/pages/HomePage.module.css";
 
@@ -107,7 +107,7 @@ export default function HomePage() {
 						<Center w="100%">
 							<Blockquote
 								color="blue"
-								icon={<IconInfoCircle />}
+								icon={<Icon iconType={"tabler:info-circle"} />}
 								mt="xl"
 							>
 								Check out the source code for this example{" "}

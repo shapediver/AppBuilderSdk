@@ -11,7 +11,6 @@ import {
 } from "@AppBuilderShared/hooks/shapediver/useSession";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
-import {IconAdjustmentsHorizontal, IconDownload} from "@tabler/icons-react";
 import React, {useMemo} from "react";
 import {ExampleModels} from "tickets";
 import ExamplePage from "~/pages/examples/ExamplePage";
@@ -108,7 +107,7 @@ export default function MultipleViewportPage() {
 			tabs: [
 				{
 					name: "Bench",
-					icon: IconAdjustmentsHorizontal,
+					icon: "tabler:adjustments-horizontal",
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
@@ -124,7 +123,7 @@ export default function MultipleViewportPage() {
 				},
 				{
 					name: "Bookshelf",
-					icon: IconDownload,
+					icon: "tabler:download",
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
