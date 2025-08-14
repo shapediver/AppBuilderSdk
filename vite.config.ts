@@ -30,9 +30,6 @@ export default defineConfig({
 		open: true,
 		port: 3000,
 	},
-	optimizeDeps: {
-		include: ["@tabler/icons-react"],
-	},
 	build: {
 		rollupOptions: {
 			input: {

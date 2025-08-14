@@ -12,7 +12,6 @@ import {useSessionPropsExport} from "@AppBuilderShared/hooks/shapediver/paramete
 import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
 import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
 import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
-import {IconTypeEnum} from "@AppBuilderShared/types/shapediver/icons";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
@@ -239,7 +238,7 @@ export default function ViewPage(props: Partial<Props>) {
 			tabs: [
 				{
 					name: "Parameters",
-					icon: IconTypeEnum.AdjustmentsHorizontal,
+					icon: "tabler:adjustments-horizontal",
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}
@@ -259,7 +258,7 @@ export default function ViewPage(props: Partial<Props>) {
 				},
 				{
 					name: "Exports",
-					icon: IconTypeEnum.Download,
+					icon: "tabler:download",
 					children: [
 						<ParametersAndExportsAccordionComponent
 							key={0}

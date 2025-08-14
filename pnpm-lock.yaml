@@ -8,6 +8,12 @@ dependencies:
   '@emotion/react':
     specifier: ^11.13.3
     version: 11.14.0(@types/react@18.3.18)(react@18.3.1)
+  '@iconify-json/tabler':
+    specifier: ^1.2.22
+    version: 1.2.22
+  '@iconify/react':
+    specifier: ^6.0.0
+    version: 6.0.0(react@18.3.1)
   '@mantine/carousel':
     specifier: ^8.1.3
     version: 8.1.3(@mantine/core@8.1.3)(@mantine/hooks@8.1.3)(embla-carousel-react@8.5.2)(embla-carousel@8.5.2)(react-dom@18.3.1)(react@18.3.1)
@@ -59,9 +65,6 @@ dependencies:
   '@shapediver/viewer.viewport':
     specifier: 3.12.11
     version: 3.12.11
-  '@tabler/icons-react':
-    specifier: 3.17.0
-    version: 3.17.0(react@18.3.1)
   gl-matrix:
     specifier: ^3.4.3
     version: 3.4.3
@@ -2241,6 +2244,25 @@ packages:
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
 
+  /@iconify-json/tabler@1.2.22:
+    resolution: {integrity: sha512-KmCtTzZyz7dtszdQGJ5wbWqko6exhI38e4aCQqWZE1Z2wGUqBsMXrRWawXkAp6/XNBebt54h0lcxFCaTYBwFJg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify/react@6.0.0(react@18.3.1):
+    resolution: {integrity: sha512-eqNscABVZS8eCpZLU/L5F5UokMS9mnCf56iS1nM9YYHdH8ZxqZL9zyjSwW60IOQFsXZkilbBiv+1paMXBhSQnw==}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      '@iconify/types': 2.0.0
+      react: 18.3.1
+    dev: false
+
+  /@iconify/types@2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+    dev: false
+
   /@isaacs/cliui@8.0.2:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -4277,19 +4299,6 @@ packages:
       loader-utils: 2.0.4
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /@tabler/icons-react@3.17.0(react@18.3.1):
-    resolution: {integrity: sha512-Ndm9Htv7KpIU1PYYrzs5EMhyA3aZGcgaxUp9Q1XOxcRZ+I0X+Ub2WS5f4bkRyDdL1s0++k2T9XRgmg2pG113sw==}
-    peerDependencies:
-      react: '>= 16'
-    dependencies:
-      '@tabler/icons': 3.17.0
-      react: 18.3.1
-    dev: false
-
-  /@tabler/icons@3.17.0:
-    resolution: {integrity: sha512-sCSfAQ0w93KSnSL7tS08n73CdIKpuHP8foeLMWgDKiZaCs8ZE//N3ytazCk651ZtruTtByI3b+ZDj7nRf+hHvA==}
     dev: false
 
   /@testing-library/dom@10.4.0:
