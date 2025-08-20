@@ -42,26 +42,26 @@ dependencies:
     specifier: ^1.6.1
     version: 1.6.1
   '@shapediver/viewer.features.attribute-visualization':
-    specifier: 3.12.13
-    version: 3.12.13
+    specifier: 3.12.15
+    version: 3.12.15
   '@shapediver/viewer.features.drawing-tools':
-    specifier: 3.12.13
-    version: 3.12.13
+    specifier: 3.12.15
+    version: 3.12.15
   '@shapediver/viewer.features.gumball':
-    specifier: 3.12.13
-    version: 3.12.13
+    specifier: 3.12.15
+    version: 3.12.15
   '@shapediver/viewer.features.interaction':
-    specifier: 3.12.13
-    version: 3.12.13
+    specifier: 3.12.15
+    version: 3.12.15
   '@shapediver/viewer.session':
-    specifier: 3.12.13
-    version: 3.12.13
+    specifier: 3.12.15
+    version: 3.12.15
   '@shapediver/viewer.utils.mime-type':
     specifier: ~1.1.0
     version: 1.1.0
   '@shapediver/viewer.viewport':
-    specifier: 3.12.13
-    version: 3.12.13
+    specifier: 3.12.15
+    version: 3.12.15
   gl-matrix:
     specifier: ^3.4.3
     version: 3.4.3
@@ -3501,251 +3501,251 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@shapediver/viewer.api.general@3.12.13:
-    resolution: {integrity: sha512-iBY+vUq+8q759a25Q2w0HSNijPiGk9XLJxsbATtxm+NGfX8HEjQVyk2+qS/MGRo7/wkwLr6GZSas1+crsiZ2nw==}
+  /@shapediver/viewer.api.general@3.12.15:
+    resolution: {integrity: sha512-exxWB2XafIvPm4aCW0DLM2Lp0leL7SG/eyxsHowe29XjrmL/PICwkPoasCsdpeCb3W8VXTZQndf4SPavKWTfiQ==}
     dependencies:
-      '@shapediver/viewer.data-engine.geometry-engine': 3.12.13
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
+      '@shapediver/viewer.data-engine.geometry-engine': 3.12.15
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.creation-control-center.session@3.12.13:
-    resolution: {integrity: sha512-pr2MwTCnE2ZHRIuc8DcHQnMEwjyWLZor7xDS4VanmHPoW3n+8aB/LqVde75kRmzLbShDDGodrYeXw0rKPBTbXw==}
+  /@shapediver/viewer.creation-control-center.session@3.12.15:
+    resolution: {integrity: sha512-5FSi92w11Lj4mvb/3Prls3j0f/bFtBX175fky6Hjr/a/xuWMiojXAh84zzCRFosI7tkIZruIUKjgZBHUe8wZhQ==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.session-engine.session-engine': 3.12.13
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.session-engine.session-engine': 3.12.15
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.creation-control-center.viewport@3.12.13:
-    resolution: {integrity: sha512-SLlAQEITWSLd5Ev7RdtzhDYaV/5IUQdhUgLiqf1t6n+VzOKRP+5OaMyt0xK2BfI/Ev3ami2St3v/XFP6+wQYVA==}
+  /@shapediver/viewer.creation-control-center.viewport@3.12.15:
+    resolution: {integrity: sha512-kS1PU6M8VbSoGiW6qpkf6RHwooO1JAlIwVkA9X1GIp8Tz4PABEzjnSp9MELMt5P+Fo66nm9c+mS3fNGbDc7biw==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.13
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.15
       '@shapediver/viewer.settings': 1.2.1
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.data-engine@3.12.13:
-    resolution: {integrity: sha512-7PcE9ZhFE0FQiAvVyFN7SS7KwaLOTmmE8vmRiO3787lcOnz4rHh+GcPQgco9KBo6JUjfWvaAEET4IqbjFxZJrA==}
+  /@shapediver/viewer.data-engine.data-engine@3.12.15:
+    resolution: {integrity: sha512-m0M+PKbllPws3ynCPJVruMXkFd1/osHppyv6mpdw8H9GBgPFIlFHcKI/oUJ7NcA7JdNJA8uBNtLbVpWM4sF34g==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.geometry-engine': 3.12.13
-      '@shapediver/viewer.data-engine.html-element-anchor-engine': 3.12.13
-      '@shapediver/viewer.data-engine.material-engine': 3.12.13
-      '@shapediver/viewer.data-engine.sdtf-engine': 3.12.13
-      '@shapediver/viewer.data-engine.tag3d-engine': 3.12.13
-      '@shapediver/viewer.shared.global-access-objects': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.geometry-engine': 3.12.15
+      '@shapediver/viewer.data-engine.html-element-anchor-engine': 3.12.15
+      '@shapediver/viewer.data-engine.material-engine': 3.12.15
+      '@shapediver/viewer.data-engine.sdtf-engine': 3.12.15
+      '@shapediver/viewer.data-engine.tag3d-engine': 3.12.15
+      '@shapediver/viewer.shared.global-access-objects': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.geometry-engine@3.12.13:
-    resolution: {integrity: sha512-1NPZVk/VKeow7NfDAbpzMVbNs0CTcdbkwBcE7QSvcdnARBg8f/twP7HllUqJKkYKfWGlgV+HaiRj+CjpWfI1hg==}
+  /@shapediver/viewer.data-engine.geometry-engine@3.12.15:
+    resolution: {integrity: sha512-nJ23GQSEtO/m0B7eh7hm6FzcpaVHkDgEEOzh4zGEhLfIrhFTgGjjPKxsZ4FQ/LcHY0tDEm2m7u6ZkAVcXNphgQ==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.material-engine': 3.12.13
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.light-engine': 3.12.13
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.material-engine': 3.12.15
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.light-engine': 3.12.15
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.gltf-converter@3.12.13:
-    resolution: {integrity: sha512-mG/BqoSmDQ2SRq6JRIvQYaUH+wkheZPhufOwL2Sv1ExMnn2BaLsLD0tZc6E1u7c+QjiswcQNMUdbtcMRfaUSdw==}
+  /@shapediver/viewer.data-engine.gltf-converter@3.12.15:
+    resolution: {integrity: sha512-+hJMfspK9U3N6dHQc5ngMKzQlzrdfEsra2ZjJvLQysUMMlfPMafR/fnqfHs9rEVdbCOAjiDJFYhu2dLpYHrmsA==}
     dependencies:
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.global-access-objects': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.global-access-objects': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.html-element-anchor-engine@3.12.13:
-    resolution: {integrity: sha512-4ODR15CIbz+66tD1AzQ3KGcc2lnt23wrRFDUkBP71L0UagQ6WnN4lRR2Upj+Su3754/68Lc7j0jVTov8PII41A==}
-    dependencies:
-      '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
-      gl-matrix: 3.3.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /@shapediver/viewer.data-engine.material-engine@3.12.13:
-    resolution: {integrity: sha512-J+pCeB87LlRuOT8WQqDDj4judoJHTg5ib4eeeSRB2sV0zCJowC/r+1fW8pN6F5aFLRWLPsyWmUoicWiQYGyCsA==}
+  /@shapediver/viewer.data-engine.html-element-anchor-engine@3.12.15:
+    resolution: {integrity: sha512-Y3rFZAaIuqwFYhfGIny8/e2SRPv+zG1kDZOogBOYiR6luMHzv2DrXYhmp7nT1B2xt89S/5kK9X+rY1/YCIusAA==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.sdtf-engine@3.12.13:
-    resolution: {integrity: sha512-tV5eyOdAkCt8MjRHACjSyTfHni5UsF0fttkCqDrWC6qll9Qzsd/u5W3s4WUa4fylSy6g0x2ybAY5+78OgQM4YA==}
+  /@shapediver/viewer.data-engine.material-engine@3.12.15:
+    resolution: {integrity: sha512-UZ73JHhueAsjiDtaOhHoUYnGhPwREShyoFkF3luph64jNUL9ouWHpa5p0yigLR3PZ2/fe3jv03ABKW5F3/pbMA==}
+    dependencies:
+      '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
+      gl-matrix: 3.3.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@shapediver/viewer.data-engine.sdtf-engine@3.12.15:
+    resolution: {integrity: sha512-FE53vI6IcmbuNRgHzvcHmjH7QpuN8OtFLS9CBSno7Tq5kCnym5aO06cKonnSaKfmHvHEC7h8hWhQwJHb6qT+ew==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
       '@shapediver/sdk.sdtf-v1': 1.6.0
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.shared-types@3.12.13:
-    resolution: {integrity: sha512-P+k0qmbiIFhm99+5/kGbarykeeMqwM9+90j4z2mbBxYrVKEsMjjss8roa9bHfAK5vN109/14aiE8Ebyyfv0khQ==}
+  /@shapediver/viewer.data-engine.shared-types@3.12.15:
+    resolution: {integrity: sha512-7bTxyHm8KzvYdkHttOMIe/MEuCS1DQr9SNhw1wsUthjFXtWi8Dyiws0dtgwng1eM+bPgFWCJavhqL0fjq44BDA==}
     dependencies:
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.data-engine.tag3d-engine@3.12.13:
-    resolution: {integrity: sha512-bYCrf4omA0x0u7WfROZE6ZaKHQALqVI+y4goLAtkf/7yqaHrccTaGitVCT8heKmOlLw2Kb8P/x/YmnfKPniFnw==}
+  /@shapediver/viewer.data-engine.tag3d-engine@3.12.15:
+    resolution: {integrity: sha512-hyazyzx3OvEAITxQ9X4WbL9cezffVvnFgz0/gMPYREG03L1DU6dN8nK5IVXZL0uQwe9YPzTDwvkdYzvXFpTuiw==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.geometry-engine': 3.12.13
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.shared.global-access-objects': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.geometry-engine': 3.12.15
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.shared.global-access-objects': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.features.attribute-visualization@3.12.13:
-    resolution: {integrity: sha512-vsJLe3KL0BYWmCbqEBvo73lglyNdkZsBnpACkuYAmOefMKqBvjrCrb1fSGV0rjSe0XJod3JN/FWtk03kARW3Hw==}
+  /@shapediver/viewer.features.attribute-visualization@3.12.15:
+    resolution: {integrity: sha512-IxzTfb1g96CHSw3cdkASOCx9RQ8l56txBljGZnbAFvRirkXagy5r90j8uWD8ru2MIqvIzrqpmER2DEJySt6ljw==}
     dependencies:
-      '@shapediver/viewer': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       detect-it: 4.0.1
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.features.drawing-tools@3.12.13:
-    resolution: {integrity: sha512-dtFwsM9yIwQl6qVsMQJ6Ezioz+H5FNB/t+/O659IXlUWwl04ApGnPojOFqvdwAnvanSMO5Vjy9+HEX1Z1RD/HA==}
+  /@shapediver/viewer.features.drawing-tools@3.12.15:
+    resolution: {integrity: sha512-zc8QfDXrD2UlIBd9uQ4b75b4Itk6Uv+DIM0ew/1RMqcSaI0+I7APIY5hTagQqJiyjyrlf78mn8J4owszY/0Kpw==}
     dependencies:
-      '@shapediver/viewer': 3.12.13
-      '@shapediver/viewer.features.interaction': 3.12.13
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer': 3.12.15
+      '@shapediver/viewer.features.interaction': 3.12.15
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@types/three': 0.162.0
       three: 0.162.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.features.gumball@3.12.13:
-    resolution: {integrity: sha512-fA5LJHfOjt5ovukznb+ULtZfeZRIRiBtXkD8inQ2ZZastq7ybU4GzbWOA0OvXdbkoe0CuarbshcaUgka3WpjqQ==}
+  /@shapediver/viewer.features.gumball@3.12.15:
+    resolution: {integrity: sha512-wB9snSMF/gLQuwCLcq9ppvry3+JJOreIhMxayz7MdFTwTDI1eOZXyoZnFJfm2clwkLyBlwnAgsfPT2TBj4ygcg==}
     dependencies:
-      '@shapediver/viewer': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@types/three': 0.162.0
       three: 0.162.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.features.interaction@3.12.13:
-    resolution: {integrity: sha512-33CgD+G+LKSYwiIzfI4Itp51kHduQWbP2+L3kb7vzImaIAZiPMFqm3liplx8VYwVzPkYxadKFVLewKCOH8pCsw==}
+  /@shapediver/viewer.features.interaction@3.12.15:
+    resolution: {integrity: sha512-VNnKjxDluub6+3u8va/GrEisP8Qbf0IiMjXRUbDXzUk0SKSRcrTwHBun1oxZtu1QxweYsH3vVZZtdyN55AaqWg==}
     dependencies:
-      '@shapediver/viewer': 3.12.13
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer': 3.12.15
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       detect-it: 4.0.1
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.animation-engine@3.12.13:
-    resolution: {integrity: sha512-tKs+6Qyc1gP8Xd8/OOyR0D60PNshqhdZWjZansYjhGjKJS3WZKpQgQjh2PvFhKkFsMxOUOJKgfqH4RCOJBmthw==}
+  /@shapediver/viewer.rendering-engine.animation-engine@3.12.15:
+    resolution: {integrity: sha512-xmb2yRCA+yZ6NdZccMAcmpy0YZjydBJs5587hIFfEmyfa4O2FwhC7QlQ41N3oqiT0cAGMOa8RzkBaIenIC9wJQ==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@tweenjs/tween.js': 18.6.4
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.animation-frame-engine@3.12.13:
-    resolution: {integrity: sha512-dHmnwkDZCMuheQoR9ZopeCxRwNY8KauTj63NDiDlFhBEXjK16XaTkonqPjydPXPY9y6UtMJOstMADddokPmeLg==}
+  /@shapediver/viewer.rendering-engine.animation-frame-engine@3.12.15:
+    resolution: {integrity: sha512-BYiSSiwfLXgy33i+jEAnxPJZoMzceVZpZ2Vfqs0IkZuO6eYvi1sk9CwahE7pNgV2p66OvASQSgHdBiziu9jmgQ==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
       '@tweenjs/tween.js': 18.6.4
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.camera-engine@3.12.13:
-    resolution: {integrity: sha512-oO8RImqtGJ43lEC3XWHZtVN9nyiNW1MjTbuZSjwaII2XIFEy8LElh34VW2PufSY9t98YwM1XHn0HEy0I+c5tpQ==}
+  /@shapediver/viewer.rendering-engine.camera-engine@3.12.15:
+    resolution: {integrity: sha512-2vqBLwQ07c4m69kwcflYw2Y7u069+nZqVcX64/cH/TKeeg+hEFHn3sOUayArAgl6vH0X0VUp8xxRmRHVhbq/Xw==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
       '@shapediver/viewer.settings': 1.2.1
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@tweenjs/tween.js': 18.6.4
       detect-it: 4.0.1
       gl-matrix: 3.3.0
@@ -3753,24 +3753,24 @@ packages:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.canvas-engine@3.12.13:
-    resolution: {integrity: sha512-BluBm7ykqVmkhophHQTsK69NpNq3NKe9AluZPg06vwc1yNano6NyeMYlW8XcCStl5cLvM6yxEDSojkMx/EVE2w==}
+  /@shapediver/viewer.rendering-engine.canvas-engine@3.12.15:
+    resolution: {integrity: sha512-OEVDfZkc+AXTrEbUAGCK8JSyO8FfnXZG8TsT0REroD/OrnOdj2kLmMhL4pfxVxClhRMGKm/WX8GUgypfxvRtgw==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.intersection-engine@3.12.13:
-    resolution: {integrity: sha512-IUe9c+LLHwzXKI8kHQQyv6PwRFmOWKxmKSdDNXOSRDoqVbQOSGeQyZwCgfB+IxJs5iTqpuMOnC65WFsHyAB7uw==}
+  /@shapediver/viewer.rendering-engine.intersection-engine@3.12.15:
+    resolution: {integrity: sha512-YIEEWcT/IAA3Up/K1NvwxbvTbRQYKEg+YrlSeKd88Do0d9ONLA9gA0Nl2NOEc3tJQ0HRaTPo0pNZPuU4jmkbvg==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@types/three': 0.162.0
       detect-it: 4.0.1
       gl-matrix: 3.3.0
@@ -3779,16 +3779,16 @@ packages:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.12.13:
-    resolution: {integrity: sha512-KR+iXxqUGs6Em9qsaaHy/yAT3NKx56WoVzXJXvroOeBRDlLgCmtKYkBRh/syaMi+vSQjWPof3rjzackWl7Q+EA==}
+  /@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.12.15:
+    resolution: {integrity: sha512-Y0jl176FWig5bYBtgmr9PiHON/RSs41oPtOCCYgSyXGcOJ2TrtnZboD+Pqw/qoWIN/OZvrrRKh3j5ttNtDFIbw==}
     dependencies:
-      '@shapediver/viewer': 3.12.13
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer': 3.12.15
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@types/three': 0.162.0
       gl-matrix: 3.3.0
       three: 0.162.0
@@ -3796,37 +3796,37 @@ packages:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.light-engine@3.12.13:
-    resolution: {integrity: sha512-Yzf+M6YzKKPyDK+rZgne5k/z4/ocxtKZYxrpTGcGY2cquIlgCdZRHr7JPxUHzS/xWKxoG512oebUH+jbuDtIOA==}
+  /@shapediver/viewer.rendering-engine.light-engine@3.12.15:
+    resolution: {integrity: sha512-svXv6LdlB1T2P0UAIbDrAWYp6yjFSZeDjShd3sIgIMSs89uW95gsjb5/asQW3crmDhP4M7ibXCTylYefHYOT2g==}
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
       '@shapediver/viewer.settings': 1.2.1
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.12.13:
-    resolution: {integrity: sha512-9UqIGLr+d+CH5WMSw21t1M4haKRvkQIj3pODaCI+NNVVMFbsz+qPYh9Iz8DaNcL9+iCZAWqO9FkQjRtVkJjRnQ==}
+  /@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.12.15:
+    resolution: {integrity: sha512-oTsPNiu3lXfw48ptTNvQ3DIaEm9nS+FGYUDRA07g7aTgzV92cYwmApcUcw/ZQxoRnj5fgDIDXLS7hDpiC93lqQ==}
     dependencies:
-      '@shapediver/viewer.data-engine.gltf-converter': 3.12.13
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.data-engine.tag3d-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.animation-frame-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.canvas-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.light-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.shared.global-access-objects': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.data-engine.gltf-converter': 3.12.15
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.data-engine.tag3d-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.animation-frame-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.canvas-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.light-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.shared.global-access-objects': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@tweenjs/tween.js': 18.6.4
       '@types/stats.js': 0.17.3
       '@types/three': 0.162.0
@@ -3838,48 +3838,48 @@ packages:
       - debug
     dev: false
 
-  /@shapediver/viewer.rendering-engine.rendering-engine@3.12.13:
-    resolution: {integrity: sha512-jVtvb8UIUFJhalAN6tEiiOTYiRp7wma+D43xiAlweJOKRl9HaY/+P/WOH6IwlyoTgJT2v8zYE25jg61LWemeww==}
+  /@shapediver/viewer.rendering-engine.rendering-engine@3.12.15:
+    resolution: {integrity: sha512-/Hh58RhB9jmC9flQlWurmaEOyZTqB9G10LstgAwY5QMUOt67zURyD6yK1FOIGwTCHWDsvrcejV1YiaxMdPO2Bw==}
     dependencies:
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.session-engine.session-engine@3.12.13:
-    resolution: {integrity: sha512-uosUJtUOZJRXhLaYMNbBlOmpdKNjfhJ79xFTeCv5OOFWPIfWzZ5WPfppFKr6r8nZX09mhYaYfjcFJaGjyCoaRg==}
+  /@shapediver/viewer.session-engine.session-engine@3.12.15:
+    resolution: {integrity: sha512-WsPLSskNjVGL2W1WrS9uU6P4ItIu8p6KfBx+JFHKzQEbDofLB9kjfRlsvi+n0cX6i3s4L9E4fM1Q1f3rSNpI6A==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
       '@shapediver/viewer.settings': 1.2.1
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.global-access-objects': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.global-access-objects': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@shapediver/viewer.utils.mime-type': 1.1.0
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.session@3.12.13:
-    resolution: {integrity: sha512-V1FDBHS9J9VPrApMQEWBrBSl/aujI6nX/uztIwT3pik/qZJnug+1gjv/+kGB0xjQ/r//YL0ACOXDyGBLLH+NNw==}
+  /@shapediver/viewer.session@3.12.15:
+    resolution: {integrity: sha512-v4SonxfU60BQeX9HVWbp2pYQnKAsQ0oTWHHw1hwnPOlVobBUmg8Ro3m6tDGkEG3tuxQjQ+y8mrKOP8gMz9lNgg==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.api.general': 3.12.13
-      '@shapediver/viewer.creation-control-center.session': 3.12.13
-      '@shapediver/viewer.data-engine.gltf-converter': 3.12.13
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.session-engine.session-engine': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.api.general': 3.12.15
+      '@shapediver/viewer.creation-control-center.session': 3.12.15
+      '@shapediver/viewer.data-engine.gltf-converter': 3.12.15
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.session-engine.session-engine': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
     transitivePeerDependencies:
       - debug
     dev: false
@@ -3891,46 +3891,46 @@ packages:
       zod: 3.24.2
     dev: false
 
-  /@shapediver/viewer.shared.build-data@3.12.13:
-    resolution: {integrity: sha512-slOO/foNqO/cL+MxIEmBAeOyDdUYVj5jggCHGAE0r+TxceqgRhCBw30C1V/5N0NdJu2ILE7IIbHCyBmmfnY9rg==}
+  /@shapediver/viewer.shared.build-data@3.12.15:
+    resolution: {integrity: sha512-jGbTXa3o7xdwZOLZYKVXUbOddC2ZCFb+LYOa59C7uD4Kh3KyV4+rr190vl3gvj1Yc110kRlLqx7cewne7xAHuw==}
     dev: false
 
-  /@shapediver/viewer.shared.global-access-objects@3.12.13:
-    resolution: {integrity: sha512-NiXg0djhqpviZ3WxrgNHmLplPidHOwiml4C5kCEjNZ0PLl1gZPGPp8K6FwFakTgcZ0g0799KkJnRIEx5gg/MWQ==}
+  /@shapediver/viewer.shared.global-access-objects@3.12.15:
+    resolution: {integrity: sha512-b+uow/eebE1WD9bl+3ODqjJCpomwogJE+/MbkmTTUu0cPP6NBcbtmgntM27vg8r1sc4XJP571tZfqZkUT+UV8Q==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.shared.math@3.12.13:
-    resolution: {integrity: sha512-t4TtW1+CgzDp+Ltg7qMcI/A/jqRLZlu9NxjbFLjnJ6yq2B/aJnXOYaw+7vIcGhb0S8HcMTCtMnSKxWZUrWwCAw==}
+  /@shapediver/viewer.shared.math@3.12.15:
+    resolution: {integrity: sha512-DPbHyt+/wdzSFsy76eBeCQegLD8TSG/NMmj38yZZotVwOvjmtwAmvTKc9JDn5CAA13+NA95+eZ1GjPjnGOZYqg==}
     dependencies:
-      '@shapediver/viewer.shared.services': 3.12.13
+      '@shapediver/viewer.shared.services': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.shared.node-tree@3.12.13:
-    resolution: {integrity: sha512-TZ+v0GUL2h2I6bwl4GFDXaw3balVe9PIKnVzXIeOiKT7OWPt/pH1LpRyqmkbm7GPtdS4rP1hDgj706ssVPw0DA==}
+  /@shapediver/viewer.shared.node-tree@3.12.15:
+    resolution: {integrity: sha512-rnhw0E2jCgYIH78TZ0oOLIRbQ1jsgqzTRYqWZOO/TO6pZt9XWBVqMElOJd8Jl870y17RPActKLWwLLFNPHHsWQ==}
     dependencies:
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
       gl-matrix: 3.3.0
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/viewer.shared.services@3.12.13:
-    resolution: {integrity: sha512-R9KlQLbNlPtBcKjNASq2CZgTA1tpC002d0t04m/ainz6TwYlTlSaOtS42hPqr0JrIKHBjN51EmdF62K2XNvv5A==}
+  /@shapediver/viewer.shared.services@3.12.15:
+    resolution: {integrity: sha512-GJTV5Ppu+6aTVju6NpZhiTNhBO+uSYmzdmZDpPKJPmEfzRb0g//xdTbgZlho0+uvVx7Af1Zz3Zg+rrN+IVDyLw==}
     dependencies:
       '@ctrl/tinycolor': 3.6.1
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
       '@shapediver/viewer.settings': 1.2.1
-      '@shapediver/viewer.shared.build-data': 3.12.13
+      '@shapediver/viewer.shared.build-data': 3.12.15
       '@types/ua-parser-js': 0.7.39
       '@types/uuid': 9.0.8
       dompurify: 3.2.6
@@ -3941,14 +3941,14 @@ packages:
       - debug
     dev: false
 
-  /@shapediver/viewer.shared.types@3.12.13:
-    resolution: {integrity: sha512-2y1d1NV/k8yKAoKj/9uJKLoNpK++cOdqt8Hc4xhgZp9eYHtTOWMMBo5Os1XMQuy5dCfjja8zkrQ5kNuMLkYzdA==}
+  /@shapediver/viewer.shared.types@3.12.15:
+    resolution: {integrity: sha512-EPcT0JkZ+G09crki38eWPCOGx4j4tSQDEajFFYQear7ckfAQdIm32MnIXTjGe2ia3/CPADa4gkxo2eFnS0OKEg==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
       '@shapediver/sdk.sdtf-v1': 1.6.0
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
       gl-matrix: 3.3.0
       zod: 3.23.8
     transitivePeerDependencies:
@@ -3959,28 +3959,28 @@ packages:
     resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==}
     dev: false
 
-  /@shapediver/viewer.viewport@3.12.13:
-    resolution: {integrity: sha512-HRKRMvZvi13h7Qs0Rn1Tj6c51voQ+N+qQ2B/qPSS0WSGgkQT18fAncCCp46N6FF0hzR7hxDdEkOxYy+c32G7Ag==}
+  /@shapediver/viewer.viewport@3.12.15:
+    resolution: {integrity: sha512-PLZtcCPS67DJiqJBcLJZzXmJzRKEBrLGPivQZxmu641O8h4I1B4VxnNLEhTWB/T21vHvjv68ohAoeG8ekrjEpw==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.api.general': 3.12.13
-      '@shapediver/viewer.creation-control-center.viewport': 3.12.13
-      '@shapediver/viewer.data-engine.data-engine': 3.12.13
-      '@shapediver/viewer.data-engine.geometry-engine': 3.12.13
-      '@shapediver/viewer.data-engine.gltf-converter': 3.12.13
-      '@shapediver/viewer.data-engine.material-engine': 3.12.13
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.light-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.13
+      '@shapediver/viewer.api.general': 3.12.15
+      '@shapediver/viewer.creation-control-center.viewport': 3.12.15
+      '@shapediver/viewer.data-engine.data-engine': 3.12.15
+      '@shapediver/viewer.data-engine.geometry-engine': 3.12.15
+      '@shapediver/viewer.data-engine.gltf-converter': 3.12.15
+      '@shapediver/viewer.data-engine.material-engine': 3.12.15
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.light-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.15
       '@shapediver/viewer.settings': 1.2.1
-      '@shapediver/viewer.shared.build-data': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
+      '@shapediver/viewer.shared.build-data': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
       '@types/qrcode': 1.5.5
       '@types/three': 0.162.0
       gl-matrix: 3.3.0
@@ -3990,28 +3990,28 @@ packages:
       - debug
     dev: false
 
-  /@shapediver/viewer@3.12.13:
-    resolution: {integrity: sha512-EsKvzDXOcQ66heIlNCFu9n5pZpp+r3BCn5L/b1YikGJijgA3fw2OFc4rsN3oeFfaqdIV40MfIFiS+1Oi0bEQiA==}
+  /@shapediver/viewer@3.12.15:
+    resolution: {integrity: sha512-raYeyVc+ze2dFNciptQXjFvaN8j2hO/nZlQiYbU+XVmf/RNGQpmCcPO1aba4KLmQzC5HD1iKuoh1uMF90PGgbQ==}
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 2.9.0
-      '@shapediver/viewer.api.general': 3.12.13
-      '@shapediver/viewer.creation-control-center.session': 3.12.13
-      '@shapediver/viewer.creation-control-center.viewport': 3.12.13
-      '@shapediver/viewer.data-engine.data-engine': 3.12.13
-      '@shapediver/viewer.data-engine.geometry-engine': 3.12.13
-      '@shapediver/viewer.data-engine.material-engine': 3.12.13
-      '@shapediver/viewer.data-engine.shared-types': 3.12.13
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.light-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.13
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.13
-      '@shapediver/viewer.session': 3.12.13
-      '@shapediver/viewer.session-engine.session-engine': 3.12.13
-      '@shapediver/viewer.shared.math': 3.12.13
-      '@shapediver/viewer.shared.node-tree': 3.12.13
-      '@shapediver/viewer.shared.services': 3.12.13
-      '@shapediver/viewer.shared.types': 3.12.13
-      '@shapediver/viewer.viewport': 3.12.13
+      '@shapediver/viewer.api.general': 3.12.15
+      '@shapediver/viewer.creation-control-center.session': 3.12.15
+      '@shapediver/viewer.creation-control-center.viewport': 3.12.15
+      '@shapediver/viewer.data-engine.data-engine': 3.12.15
+      '@shapediver/viewer.data-engine.geometry-engine': 3.12.15
+      '@shapediver/viewer.data-engine.material-engine': 3.12.15
+      '@shapediver/viewer.data-engine.shared-types': 3.12.15
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.light-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.12.15
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.12.15
+      '@shapediver/viewer.session': 3.12.15
+      '@shapediver/viewer.session-engine.session-engine': 3.12.15
+      '@shapediver/viewer.shared.math': 3.12.15
+      '@shapediver/viewer.shared.node-tree': 3.12.15
+      '@shapediver/viewer.shared.services': 3.12.15
+      '@shapediver/viewer.shared.types': 3.12.15
+      '@shapediver/viewer.viewport': 3.12.15
     transitivePeerDependencies:
       - debug
     dev: false
