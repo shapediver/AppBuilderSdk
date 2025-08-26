@@ -54,6 +54,19 @@
 								}
 							},
 							{
+								"type": "controls",
+								"props": {
+									"controls": [
+										{
+											"type": "parameter",
+											"props": {
+												"name": "Cubes"
+											}
+										}
+									]
+								}
+							},
+							{
 								"type": "text",
 								"props": {
 									"markdown": "Another text widget"
@@ -61,6 +74,7 @@
 							}
 						]
 					},
+
 					{
 						"name": "Tab 02",
 						"icon": "adjustments-horizontal",
@@ -143,6 +157,118 @@
 								{
 									"type": "closeConfigurator",
 									"props": {}
+								},
+								{
+									"type": "setParameterValues",
+									"props": {
+										"message": "Test message",
+										"parameterValues": [
+											{
+												"parameter": {"name": "Cubes"},
+												"value": "12"
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Cubes"
+									}
+								},
+                                {
+                                  "type": "parameter",
+                                  "props": {
+                                    "name": "Cube density"
+                                  }
+                                },
+								{
+									"type": "action",
+									"props": {
+										"definition": {
+											"type": "addToCart",
+											"props": {
+												"description": "Line item description",
+												"tooltip": "Add item to cart"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "accordionUi",
+						"props": {
+							"items": [
+								{
+									"name": "accordionUi",
+									"widgets": [
+										{
+											"type": "controls",
+											"props": {
+												"controls": [
+													{
+														"type": "parameter",
+														"props": {
+															"name": "Cubes"
+														}
+													},
+													{
+														"type": "action",
+														"props": {
+															"definition": {
+																"type": "addToCart",
+																"props": {
+																	"description": "Line item description",
+																	"tooltip": "Add item to cart"
+																}
+															}
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "actions",
+											"props": {
+												"actions": [
+													{
+														"type": "addToCart",
+														"props": {
+															"description": "Line item description",
+															"tooltip": "Add item to cart"
+														}
+													},
+													{
+														"type": "closeConfigurator",
+														"props": {}
+													},
+													{
+														"type": "setParameterValues",
+														"props": {
+															"message": "Test message",
+															"parameterValues": [
+																{
+																	"parameter": {
+																		"name": "Cubes"
+																	},
+																	"value": "12"
+																}
+															]
+														}
+													}
+												]
+											}
+										}
+									]
 								}
 							]
 						}
