@@ -1,0 +1,386 @@
+{
+	"version": "1.0",
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "9095de51f0839bc1dad6b93d347a19aad197488d074cfabc95be12c4f77d87cb1855d5856faa32e5f49b8bd8510dc44be4e844e18da291544c695adfdfe5cd3704e24fe85f91b067b6405e965439863a03311e3d1d8a7ed7b710505d009fdf65fa0e7a06367ee3-c51a4c34717482c64a2e02fd89424b5d",
+			"modelViewUrl": "https://sdr8euc1.eu-central-1.shapediver.com",
+			"acceptRejectMode": false
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "right",
+				"tabs": [
+					{
+						"name": "Tab 01",
+						"icon": "adjustments",
+						"tooltip": "Some parameters and text widgets",
+						"widgets": [
+							{
+								"type": "accordion",
+								"props": {
+									"parameters": [
+										{
+											"name": "Compartment width",
+											"acceptRejectMode": false,
+											"overrides": {
+												"tooltip": "The width of an individual compartment"
+											}
+										},
+										{
+											"name": "Compartment height",
+											"overrides": {
+												"displayname": "Comp. height",
+												"tooltip": "The height of an individual compartment"
+											}
+										},
+										{
+											"name": "Compartments horizontal",
+											"overrides": {
+												"tooltip": "Number of horizontal compartments"
+											}
+										},
+										{
+											"name": "Compartments vertical",
+											"overrides": {
+												"tooltip": "Number of vertical compartments"
+											}
+										}
+									],
+									"exports": []
+								}
+							},
+							{
+								"type": "text",
+								"props": {
+									"markdown": "A text widget"
+								}
+							},
+							{
+								"type": "controls",
+								"props": {
+									"controls": [
+										{
+											"type": "parameter",
+											"props": {
+												"name": "Board depth"
+											}
+										},
+										{
+											"type": "parameter",
+											"props": {
+												"name": "Side board width"
+											}
+										},
+										{
+											"type": "parameter",
+											"props": {
+												"name": "Top board height"
+											}
+										},
+										{
+											"type": "parameter",
+											"props": {
+												"name": "DOES NOT EXIST"
+											}
+										}
+									]
+								}
+							},
+							{
+								"type": "text",
+								"props": {
+									"markdown": "Another text widget"
+								}
+							}
+						]
+					},
+					{
+						"name": "Tab 02",
+						"icon": "adjustments-horizontal",
+						"tooltip": "More text widgets",
+						"widgets": [
+							{
+								"type": "text",
+								"props": {
+									"markdown": "Yet another text widget"
+								}
+							},
+							{
+								"type": "text",
+								"props": {
+									"markdown": "One more text widget"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"name": "bottom",
+				"tabs": [
+					{
+						"name": "Tab 01",
+						"icon": "user",
+						"widgets": [
+							{
+								"type": "image",
+								"props": {
+									"href": "https://dummyimage.com/400x200/0000ff/ffffff&text=Sample+image"
+								}
+							}
+						]
+					},
+					{
+						"name": "Tab 02",
+						"icon": "shopping-cart-plus",
+						"tooltip": "One more image in here",
+						"widgets": [
+							{
+								"type": "image",
+								"props": {
+									"href": "https://dummyimage.com/400x200/00ff00/ffffff&text=Sample+image"
+								}
+							}
+						]
+					}
+				],
+				"widgets": []
+			},
+			{
+				"name": "left",
+				"tabs": [],
+				"widgets": [
+					{
+						"type": "image",
+						"props": {
+							"href": "https://dummyimage.com/300x200/ff0000/ffffff&text=Sample+image"
+						}
+					},
+					{
+						"type": "text",
+						"props": {
+							"markdown": "A text widget"
+						}
+					},
+					{
+						"type": "actions",
+						"props": {
+							"actions": [
+								{
+									"type": "addToCart",
+									"props": {
+										"description": "Line item description",
+										"tooltip": "Add item to cart"
+									}
+								},
+								{
+									"type": "closeConfigurator",
+									"props": {}
+								},
+								{
+									"type": "setParameterValues",
+									"props": {
+										"label": "Set comp. height to 200",
+										"parameterValues": [
+											{
+												"parameter": {
+													"name": "Compartment height"
+												},
+												"value": "200"
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Compartment height"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Compartment width"
+									}
+								},
+								{
+									"type": "action",
+									"props": {
+										"definition": {
+											"type": "addToCart",
+											"props": {
+												"description": "Line item description",
+												"tooltip": "Add item to cart"
+											}
+										}
+									}
+								},
+								{
+									"type": "export",
+									"props": {
+										"name": "Download 3D",
+										"overrides": {
+											"displayname": "3D model download",
+											"tooltip": "Download the 3D model as OBJ file"
+										}
+									}
+								},
+								{
+									"type": "export",
+									"props": {
+										"name": "DOES NOT EXIST"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "accordionUi",
+						"props": {
+							"items": [
+								{
+									"name": "accordionUi",
+									"widgets": [
+										{
+											"type": "controls",
+											"props": {
+												"controls": [
+													{
+														"type": "parameter",
+														"props": {
+															"name": "Compartment height"
+														}
+													},
+													{
+														"type": "action",
+														"props": {
+															"definition": {
+																"type": "addToCart",
+																"props": {
+																	"description": "Line item description",
+																	"tooltip": "Add item to cart"
+																}
+															}
+														}
+													},
+													{
+														"type": "action",
+														"props": {
+															"label": "Set some parameters",
+															"tooltip": "Set board depth to 250 and side board width to 180",
+															"definition": {
+																"type": "setParameterValues",
+																"props": {
+																	"parameterValues": [
+																		{
+																			"parameter": {
+																				"name": "Board depth"
+																			},
+																			"value": "250"
+																		},
+																		{
+																			"parameter": {
+																				"name": "Side board width"
+																			},
+																			"value": "180"
+																		},
+																		{
+																			"parameter": {
+																				"name": "DOES NOT EXIST"
+																			},
+																			"value": "0"
+																		}
+																	]
+																}
+															}
+														}
+													}
+												]
+											}
+										},
+										{
+											"type": "actions",
+											"props": {
+												"actions": [
+													{
+														"type": "addToCart",
+														"props": {
+															"description": "Line item description",
+															"tooltip": "Add item to cart"
+														}
+													},
+													{
+														"type": "closeConfigurator",
+														"props": {}
+													},
+													{
+														"type": "setParameterValues",
+														"props": {
+															"label": "Set board depth to 150",
+															"parameterValues": [
+																{
+																	"parameter": {
+																		"name": "Board depth"
+																	},
+																	"value": "150"
+																}
+															]
+														}
+													},
+													{
+														"type": "setParameterValues",
+														"props": {
+															"label": "Set board depth to 250",
+															"parameterValues": [
+																{
+																	"parameter": {
+																		"name": "Board depth"
+																	},
+																	"value": "250"
+																}
+															]
+														}
+													}
+												]
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "top",
+				"tabs": [],
+				"widgets": [
+					{
+						"type": "image",
+						"props": {
+							"href": "https://assets.shapediver.com/icon/transparent/sd_icon_128x128.webp",
+							"anchor": "https://shapediver.com"
+						}
+					},
+					{
+						"type": "text",
+						"props": {
+							"markdown": "Header bar"
+						}
+					}
+				]
+			}
+		]
+	}
+}
