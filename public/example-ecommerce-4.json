@@ -248,9 +248,13 @@
 					{
 						"type": "accordionUi",
 						"props": {
+							"multiple": false,
+							"defaultValue": "Controls",
 							"items": [
 								{
-									"name": "accordionUi",
+									"name": "Controls",
+									"tooltip": "Controls for some parameters and actions",
+									"icon": "ad-circle",
 									"widgets": [
 										{
 											"type": "controls",
@@ -350,6 +354,32 @@
 																	"value": "250"
 																}
 															]
+														}
+													}
+												]
+											}
+										}
+									]
+								},
+								{
+									"name": "Parameters",
+									"tooltip": "Controls for some parameters",
+									"icon": "access-point",
+									"widgets": [
+										{
+											"type": "controls",
+											"props": {
+												"controls": [
+													{
+														"type": "parameter",
+														"props": {
+															"name": "Compartments horizontal"
+														}
+													},
+													{
+														"type": "parameter",
+														"props": {
+															"name": "Compartments vertical"
 														}
 													}
 												]
