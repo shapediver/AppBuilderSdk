@@ -3,6 +3,18 @@ SENTRY_CLI="node_modules/.bin/sentry-cli"
 SENTRY_ORG="shapediver"
 SENTRY_PROJECT="app-builder"
 MAIN_TARGET="main"
+SKIP_UNCOMMITTED_CHECK=false
+
+# Parse args
+for arg in "$@"; do
+    echo "arg is $arg"
+
+  case $arg in
+    --uncommitted)
+      SKIP_UNCOMMITTED_CHECK=true
+      shift
+  esac
+done
 
 # Function to build and deploy the app
 # $1: deploy - should we deploy the build?
@@ -18,6 +30,12 @@ build_and_deploy() {
     # Check if sentryconfig.local.ts exists, copy it to sentryconfig.ts if it does
     build_timestamp=$(date +'%Y-%m-%d_%H:%M')
     if [ -f "sentryconfig.local.ts" -a ! -z "${deploy}" ]; then
+        dsn=$(grep 'SENTRY_DSN' sentryconfig.ts | sed -E 's/.*SENTRY_DSN:\s*"([^"]*)".*/\1/')
+        dsn_local=$(grep 'SENTRY_DSN' sentryconfig.local.ts | sed -E 's/.*SENTRY_DSN:\s*"([^"]*)".*/\1/')
+        if [ -z "$dsn" ] && [ -z "$dsn_local" ]; then
+          echo "❌ Error: SENTRY_DSN is empty in sentryconfig.ts and sentryconfig.local.ts"
+          exit 1
+        fi
         echo "Configuring sentry for build timestamp: ${build_timestamp}"
         mv sentryconfig.ts sentryconfig.ts.bak
         sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/" sentryconfig.local.ts > sentryconfig.ts
@@ -124,10 +142,14 @@ fi
 
 # If we are deploying, check for git changes
 if [ ! -z "$deploy" ]; then
+  if [ "$SKIP_UNCOMMITTED_CHECK" = false ]; then
     if [[ -n $(git status --porcelain) ]]; then
         echo "There are uncommitted changes."
         exit 1
     fi
+  else
+    echo "⚠️ Skipping uncommitted changes check (--uncommitted provided)"
+  fi
 fi
 
 # Get the current branch
