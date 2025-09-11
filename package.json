@@ -49,7 +49,7 @@
     "optimize": "tsc && vite optimize --force",
     "preview": "vite preview",
     "eslint": "eslint .",
-    "prettier": "prettier --write ./src/",
+    "prettier": "prettier --write ./src/ ./*.ts",
     "test": "jest",
     "build-appbuilder": "scripts/build-appbuilder.sh 0 v1/main",
     "build-appbuilder-platform": "scripts/build-appbuilder.sh 0 app/builder/v1/main",
