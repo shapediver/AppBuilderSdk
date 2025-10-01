@@ -88,6 +88,13 @@ build_and_deploy() {
     [ -f "sentryconfig.ts.bak" ] && mv sentryconfig.ts.bak sentryconfig.ts
 }
 
+# run tsc command and exit if it fails
+tsc
+if [ $? -ne 0 ]; then
+    echo "TypeScript compilation failed."
+    exit 1
+fi
+
 # load environment variables from .env file
 if [ -f .env ]; then
   export $(grep -v '^#' .env | sed 's/#.*//' | sed 's/^ *//;s/ *$//' | xargs)

@@ -9,6 +9,7 @@ import {
 	IUseSessionDto,
 	useSession,
 } from "@AppBuilderShared/hooks/shapediver/useSession";
+import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
 import React, {useMemo} from "react";
@@ -26,7 +27,9 @@ export default function MultipleViewportPage() {
 	const sessionSideboardKey = "Sideboard";
 	const sessionBookshelfKey = "Bookshelf";
 
-	const sessionsCreateDto: {[key: string]: IUseSessionDto} = {
+	const sessionsCreateDto: {
+		[key: string]: IUseSessionDto & IAppBuilderSettingsSession;
+	} = {
 		[sessionSideboardKey]: {
 			id: ExampleModels[sessionSideboardKey].slug,
 			ticket: ExampleModels[sessionSideboardKey].ticket,
