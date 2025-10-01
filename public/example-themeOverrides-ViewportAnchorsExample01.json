@@ -1,0 +1,35 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "components": {
+            "ViewportAnchor2d": {
+                "defaultProps": {
+                    "previewIconProps": {
+                        "actionIconProps": {
+                            "style": {
+                                "backgroundColor": "var(--ai-bg, var(--mantine-primary-color-filled))"
+                            }
+                        },
+                        "iconProps": {
+                            "color": "blue"
+                        }
+                    }
+                }
+            },
+            "ViewportAnchor3d": {
+                "defaultProps": {
+                    "previewIconProps": {
+                        "actionIconProps": {
+                            "style": {
+                                "backgroundColor": "green"
+                            }
+                        },
+                        "iconProps": {
+                            "color": "red"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
