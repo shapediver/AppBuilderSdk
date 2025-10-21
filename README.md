@@ -12,13 +12,15 @@ This repository contains the code of the single page application (SPA) which ser
 > Specific versions of the App Builder can be accessed by replacing `latest` with a version string.  
 >
 > Example:
->   * [https://appbuilder.shapediver.com/v1/main/0.3.0-beta.31/](https://appbuilder.shapediver.com/v1/main/0.3.0-beta.31/)
+>   * [https://appbuilder.shapediver.com/v1/main/1.5.0/](https://appbuilder.shapediver.com/v1/main/1.5.0/)
 
 ## What is App Builder ?
 
-Read about ShapeDiver App Builder in our [help center](https://help.shapediver.com/doc/shapediver-app-builder). This repository contains the [App Builder Open-Source SDK](https://help.shapediver.com/doc/app-builder-open-source-sdk). Building this code results in the single page application that renders the skeleton consisting of containers, tabs, widgets, and elements as explained [here](https://help.shapediver.com/doc/build-apps-in-grasshopper). 
+The App Builder features of the ShapeDiver plugin and platform allow users to create flexible, customizable single-page 3D web applications using only Grasshopper.
+This repository contains the [App Builder Open-Source SDK](https://help.shapediver.com/doc/app-builder-open-source-sdk). Building this code results in the single page application that renders the skeleton consisting of containers, tabs, widgets, and elements as explained [here](https://help.shapediver.com/doc/build-apps-in-grasshopper). 
+Read more about ShapeDiver App Builder in our [help center](https://help.shapediver.com/doc/shapediver-app-builder). 
 
-Highlights of the App Builder SDK: 
+Highlights of the open source App Builder SDK: 
 
   * Extensive support for styling using themes
   * Easy to be extended by further types of widgets etc
