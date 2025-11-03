@@ -78,6 +78,9 @@ export default defineConfig({
 		alias: {
 			"@AppBuilderShared": path.resolve(__dirname, "./src/shared"),
 			"~": path.resolve(__dirname, "./src"),
+			"@modelstorage": isDev
+				? path.resolve(__dirname, "./modelstorage.local.ts")
+				: path.resolve(__dirname, "./modelstorage.ts"),
 		},
 	},
 });

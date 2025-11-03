@@ -1,5 +1,6 @@
 import {
 	SdPlatformModelGetEmbeddableFields,
+	SdPlatformResponseModelPublic,
 	create as createSdk,
 } from "@shapediver/sdk.platform-api-sdk-v1";
 
@@ -8,6 +9,34 @@ import {writeFileSync} from "fs";
 
 import {SLUGS} from "../modelstorage.slugs.ts";
 
+/**
+ * This is a utility script that can be used in local development to
+ * retrieve a platform access token and model definitions for a set of slugs,
+ * and save them to a local file (modelstorage.local.ts) that can be imported
+ * in the app builder SDK.
+ * With this, you can work with slugs on localhost without having to manually
+ * search for the ticket and modelViewUrl ;)
+ *
+ * In order to use this script, create a .env.platform-access file in the root
+ * of the project with the following variables:
+ * - PLATFORM_ACCESS_TOKEN_KEY
+ * - PLATFORM_ACCESS_TOKEN_SECRET
+ * - PLATFORM_CLIENT_ID
+ * - PLATFORM_URL
+ *
+ * The PLATFORM_ACCESS_TOKEN_KEY and PLATFORM_ACCESS_TOKEN_SECRET can be
+ * generated in the platform under "Settings" -> "Developers" -> "PLATFORM BACKEND API ACCESS KEYS".
+ * You need the Models -> Read permission for this script to work.
+ *
+ * The PLATFORM_CLIENT_ID is 827bcbdc-8a5c-481a-b09a-e498074d91ca
+ * and the PLATFORM_URL is https://app.shapediver.com for the production platform.
+ *
+ * You can add the slugs you want to retrieve model definitions for in the modelstorage.slugs.ts file.
+ *
+ * Once the setup is done, you can run this script using `npm run convertSlugData`.
+ * After running, a modelstorage.local.ts file will be created/updated in the project root
+ * that can be imported in the app builder SDK.
+ */
 async function getPlatformAccessToken() {
 	try {
 		const platformAccessTokenKey = process.env.PLATFORM_ACCESS_TOKEN_KEY;
@@ -30,7 +59,7 @@ async function getPlatformAccessToken() {
 			console.log(`Writing empty access token to ${OUTPUT_FILE}`);
 			writeFileSync(
 				OUTPUT_FILE,
-				"export const MODEL_STORAGE = { ACCESS_TOKEN: '', };",
+				"export const MODELS = { ACCESS_TOKEN: '', };",
 			);
 			return;
 		}
@@ -39,7 +68,7 @@ async function getPlatformAccessToken() {
 			console.error("PLATFORM_CLIENT_ID not found in .env.local");
 			writeFileSync(
 				OUTPUT_FILE,
-				"export const MODEL_STORAGE = { ACCESS_TOKEN: '', };",
+				"export const MODELS = { ACCESS_TOKEN: '', };",
 			);
 			return;
 		}
@@ -61,31 +90,21 @@ async function getPlatformAccessToken() {
 
 		// loop through slugs from modelstorage.slugs.ts and add them to the MODELS object
 		const modelDefinitions: {
-			[key: string]: {
-				ticket: string;
-				modelViewUrl: string;
-			};
+			[key: string]: SdPlatformResponseModelPublic;
 		} = {};
 
 		const promises = [];
 
 		for (const slug of slugs) {
 			console.log(`Retrieving model definition for slug: ${slug}`);
-			const modelDef = client.models
-				.get(slug, [
-					SdPlatformModelGetEmbeddableFields.BackendSystem,
-					SdPlatformModelGetEmbeddableFields.Tags,
-					SdPlatformModelGetEmbeddableFields.Ticket,
-					SdPlatformModelGetEmbeddableFields.TokenExportFallback,
-					SdPlatformModelGetEmbeddableFields.User,
-				])
-				.then((response) => {
-					const data = response?.data;
-					return {
-						ticket: data!.ticket!.ticket!,
-						modelViewUrl: data!.backend_system!.model_view_url,
-					};
-				});
+
+			const modelDef = client.models.get(slug, [
+				SdPlatformModelGetEmbeddableFields.BackendSystem,
+				SdPlatformModelGetEmbeddableFields.Tags,
+				SdPlatformModelGetEmbeddableFields.Ticket,
+				SdPlatformModelGetEmbeddableFields.TokenExportFallback,
+				SdPlatformModelGetEmbeddableFields.User,
+			]);
 
 			promises.push(modelDef);
 		}
@@ -93,14 +112,14 @@ async function getPlatformAccessToken() {
 		const modelDefs = await Promise.all(promises);
 
 		slugs.forEach((slug, index) => {
-			modelDefinitions[slug] = modelDefs[index];
+			modelDefinitions[slug] = modelDefs[index].data;
 		});
 
-		const config = `export const MODEL_STORAGE = { ACCESS_TOKEN: '${result.access_token}', MODELS: ${JSON.stringify(
+		const config = `export const MODELS = ${JSON.stringify(
 			modelDefinitions,
 			null,
 			4,
-		)}, };`;
+		)};`;
 
 		writeFileSync(OUTPUT_FILE, config);
 
@@ -110,10 +129,7 @@ async function getPlatformAccessToken() {
 	} catch (error) {
 		console.error("Failed to get platform access token:", error);
 		console.log(`Writing empty access token to ${OUTPUT_FILE}`);
-		writeFileSync(
-			OUTPUT_FILE,
-			"export const MODEL_STORAGE = { ACCESS_TOKEN: '', MODELS: {}, };",
-		);
+		writeFileSync(OUTPUT_FILE, "export const MODELS = {};");
 		process.exit(1);
 	}
 }
