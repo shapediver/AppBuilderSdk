@@ -54,7 +54,7 @@ async function getPlatformAccessToken() {
 
 		if (!platformAccessTokenKey || !platformAccessTokenSecret) {
 			console.log(
-				"PLATFORM_ACCESS_TOKEN_KEY and/or PLATFORM_ACCESS_TOKEN_SECRET not found in .env.local",
+				"PLATFORM_ACCESS_TOKEN_KEY and/or PLATFORM_ACCESS_TOKEN_SECRET not found in .env.platform-access",
 			);
 			console.log(`Writing empty access token to ${OUTPUT_FILE}`);
 			writeFileSync(
@@ -65,7 +65,9 @@ async function getPlatformAccessToken() {
 		}
 
 		if (!clientId) {
-			console.error("PLATFORM_CLIENT_ID not found in .env.local");
+			console.error(
+				"PLATFORM_CLIENT_ID not found in .env.platform-access",
+			);
 			writeFileSync(
 				OUTPUT_FILE,
 				"export const MODELS = { ACCESS_TOKEN: '', };",
@@ -73,7 +75,9 @@ async function getPlatformAccessToken() {
 			return;
 		}
 
-		console.log("Found platform access token key and secret in .env.local");
+		console.log(
+			"Found platform access token key and secret in .env.platform-access",
+		);
 		console.log("Connecting to the platform...");
 
 		const client = createSdk({
