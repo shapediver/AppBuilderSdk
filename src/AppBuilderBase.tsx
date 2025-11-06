@@ -12,6 +12,8 @@ import "AppBuilderBase.css";
 import React, {useEffect} from "react";
 import packagejson from "../package.json";
 
+// log the SDK version directly to the console
+// this is independent of the logger settings within the app
 console.log(`ShapeDiver App Builder SDK v${packagejson.version}`);
 
 declare global {
