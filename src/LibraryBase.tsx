@@ -3,6 +3,10 @@ import {useCustomTheme} from "@AppBuilderShared/hooks/ui/useCustomTheme";
 import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
 import LoaderPage from "@AppBuilderShared/pages/misc/LoaderPage";
 import LibraryPage from "@AppBuilderShared/pages/platform/LibraryPage";
+import {
+	QUERYPARAM_SETTINGSURL,
+	QUERYPARAM_SLUG,
+} from "@AppBuilderShared/types/shapediver/queryparams";
 import "@mantine/charts/styles.css";
 import {Center, MantineProvider} from "@mantine/core";
 import "@mantine/core/styles.css";
@@ -41,7 +45,9 @@ export default function LibraryBase() {
 		[],
 	);
 	const hasSlug = useMemo(
-		() => parameters.has("slug") || parameters.has("g"),
+		() =>
+			parameters.has(QUERYPARAM_SLUG) ||
+			parameters.has(QUERYPARAM_SETTINGSURL),
 		[parameters],
 	);
 
