@@ -1,5 +1,6 @@
 import {sentryVitePlugin} from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react";
+import fs from "fs";
 import path, {resolve} from "path";
 import {defineConfig} from "vite";
 import {analyzer} from "vite-bundle-analyzer";
@@ -22,6 +23,16 @@ if (CONFIG.SENTRY_ORG && CONFIG.SENTRY_PROJECT) {
 if (isDev) {
 	plugins.push(analyzer());
 }
+
+// Check if local modelstorage file exists
+const localModelStoragePath = path.resolve(
+	__dirname,
+	"./modelstorage.local.ts",
+);
+const modelStoragePath =
+	isDev && fs.existsSync(localModelStoragePath)
+		? localModelStoragePath
+		: path.resolve(__dirname, "./modelstorage.ts");
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -78,6 +89,7 @@ export default defineConfig({
 		alias: {
 			"@AppBuilderShared": path.resolve(__dirname, "./src/shared"),
 			"~": path.resolve(__dirname, "./src"),
+			"@modelstorage": modelStoragePath,
 		},
 	},
 });
