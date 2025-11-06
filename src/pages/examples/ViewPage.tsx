@@ -16,6 +16,7 @@ import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
 } from "@AppBuilderShared/types/store/shapediverStoreParameters";
+import {Logger} from "@AppBuilderShared/utils/logger";
 import {
 	IMaterialStandardDataProperties,
 	MATERIAL_TYPE,
@@ -113,7 +114,7 @@ export default function ViewPage(props: Partial<Props>) {
 	const {sessionApi} = useSessionWithAppBuilder(sessionCreateDto);
 	useEffect(() => {
 		if (sessionApi)
-			console.debug(
+			Logger.debug(
 				`Available output names: ${Object.values(sessionApi.outputs).map((o) => o.name)}`,
 			);
 	}, [sessionApi]);
@@ -180,11 +181,11 @@ export default function ViewPage(props: Partial<Props>) {
 						setMaterialProperties((p) => ({...p, map: map}));
 					} else {
 						setMaterialProperties((p) => ({...p, map: undefined}));
-						console.warn(`Could not load map ${mapParam}`);
+						Logger.warn(`Could not load map ${mapParam}`);
 					}
 				} catch (e) {
 					setMaterialProperties((p) => ({...p, map: undefined}));
-					console.warn(`Could not load map ${mapParam}: ${e}`);
+					Logger.warn(`Could not load map ${mapParam}: ${e}`);
 				}
 			} else {
 				setMaterialProperties((p) => ({...p, map: undefined}));
