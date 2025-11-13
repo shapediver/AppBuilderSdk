@@ -1,3 +1,4 @@
+import {Logger} from "@AppBuilderShared/utils/logger";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "reportWebVitals";
@@ -24,6 +25,6 @@ root.render(
 );
 
 // If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
+// to log results (for example: reportWebVitals(Logger.info))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals((r) => console.debug("reportWebVitals", r));
+reportWebVitals((r) => Logger.debug("reportWebVitals", r));
