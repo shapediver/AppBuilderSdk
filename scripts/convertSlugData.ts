@@ -86,54 +86,65 @@ async function getPlatformAccessToken() {
 
 		// for each platform URL, get the slugs
 		for (const [platform, slugs] of Object.entries(slugsPerPlatform)) {
-			const platformUrl =
-				platformUrls[platform as keyof typeof platformUrls];
-			const client = createSdk({
-				clientId,
-				baseUrl: platformUrl,
-			});
+			try {
+				const platformUrl =
+					platformUrls[platform as keyof typeof platformUrls];
+				const client = createSdk({
+					clientId,
+					baseUrl: platformUrl,
+				});
 
-			console.log("Requesting platform access token...");
+				console.log("Requesting platform access token...");
 
-			const platformPrefix = platform.toUpperCase();
+				const platformPrefix = platform.toUpperCase();
 
-			const platformAccessTokenKey =
-				process.env[`${platformPrefix}_PLATFORM_ACCESS_TOKEN_KEY`];
-			const platformAccessTokenSecret =
-				process.env[`${platformPrefix}_PLATFORM_ACCESS_TOKEN_SECRET`];
-			if (!platformAccessTokenKey || !platformAccessTokenSecret) {
-				console.log(
-					`${platformPrefix}_PLATFORM_ACCESS_TOKEN_KEY and/or ${platformPrefix}_PLATFORM_ACCESS_TOKEN_SECRET not found in .env.platform-access`,
+				const platformAccessTokenKey =
+					process.env[`${platformPrefix}_PLATFORM_ACCESS_TOKEN_KEY`];
+				const platformAccessTokenSecret =
+					process.env[
+						`${platformPrefix}_PLATFORM_ACCESS_TOKEN_SECRET`
+					];
+				if (!platformAccessTokenKey || !platformAccessTokenSecret) {
+					console.log(
+						`${platformPrefix}_PLATFORM_ACCESS_TOKEN_KEY and/or ${platformPrefix}_PLATFORM_ACCESS_TOKEN_SECRET not found in .env.platform-access`,
+					);
+					continue;
+				}
+
+				const result = await client.authorization.passwordGrant(
+					platformAccessTokenKey,
+					platformAccessTokenSecret,
 				);
-				continue;
+
+				const promises = [];
+
+				for (const slug of slugs) {
+					console.log(
+						`Retrieving model definition for slug: ${slug}`,
+					);
+
+					const modelDef = client.models.get(slug, [
+						SdPlatformModelGetEmbeddableFields.BackendSystem,
+						SdPlatformModelGetEmbeddableFields.Tags,
+						SdPlatformModelGetEmbeddableFields.Ticket,
+						SdPlatformModelGetEmbeddableFields.TokenExportFallback,
+						SdPlatformModelGetEmbeddableFields.User,
+					]);
+
+					promises.push(modelDef);
+				}
+
+				const modelDefs = await Promise.all(promises);
+
+				slugs.forEach((slug, index) => {
+					modelDefinitions[slug] = modelDefs[index].data;
+				});
+			} catch (error) {
+				console.error(
+					`Failed to retrieve model definitions for platform ${platform}:`,
+					error,
+				);
 			}
-
-			const result = await client.authorization.passwordGrant(
-				platformAccessTokenKey,
-				platformAccessTokenSecret,
-			);
-
-			const promises = [];
-
-			for (const slug of slugs) {
-				console.log(`Retrieving model definition for slug: ${slug}`);
-
-				const modelDef = client.models.get(slug, [
-					SdPlatformModelGetEmbeddableFields.BackendSystem,
-					SdPlatformModelGetEmbeddableFields.Tags,
-					SdPlatformModelGetEmbeddableFields.Ticket,
-					SdPlatformModelGetEmbeddableFields.TokenExportFallback,
-					SdPlatformModelGetEmbeddableFields.User,
-				]);
-
-				promises.push(modelDef);
-			}
-
-			const modelDefs = await Promise.all(promises);
-
-			slugs.forEach((slug, index) => {
-				modelDefinitions[slug] = modelDefs[index].data;
-			});
 		}
 
 		const config = `export const MODELS = ${JSON.stringify(
