@@ -8,6 +8,7 @@ import {
 	DEFAULT_TRACKING_PARAMS,
 	QUERYPARAM_TRACKING_DOMAIN,
 } from "@AppBuilderShared/types/shapediver/queryparams";
+import {Logger} from "@AppBuilderShared/utils/logger";
 import {roundToBracket} from "@AppBuilderShared/utils/numerics";
 import {isRunningInPlatform} from "@AppBuilderShared/utils/platform/environment";
 import Plausible from "plausible-tracker";
@@ -70,7 +71,7 @@ function createPlausibleTracker(
 					callback,
 				});
 			} else {
-				console.warn(`Unknown metric type: ${type}`);
+				Logger.warn(`Unknown metric type: ${type}`);
 			}
 		},
 		delayedPropsAwaiter,
