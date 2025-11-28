@@ -1,0 +1,43 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "components": {
+            "ViewportAnchor2d": {
+                "defaultProps": {
+                    "previewIconProps": {
+                        "paperStyleProps": {
+                            "border": "none",
+                            "backgroundColor": "transparent"
+                        },
+                        "paperProps": {
+                            "px": 0,
+                            "py": 1,
+                            "shadow": "none"
+                        },
+                        "iconProps": {
+                            "color": "blue"
+                        }
+                    }
+                }
+            },
+            "ViewportAnchor3d": {
+                "defaultProps": {
+                    "previewIconProps": {
+                        "paperStyleProps": {
+                            "border": "none",
+                            "backgroundColor": "green"
+                        },
+                        "paperProps": {
+                            "px": 0,
+                            "py": 1,
+                            "shadow": "none"
+                        },
+                        "iconProps": {
+                            "color": "red"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
