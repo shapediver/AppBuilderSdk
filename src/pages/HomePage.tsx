@@ -1,4 +1,3 @@
-import Icon from "@AppBuilderShared/components/ui/Icon";
 import ModelCard from "@AppBuilderShared/components/ui/ModelCard";
 import {
 	Blockquote,
@@ -11,6 +10,7 @@ import {
 } from "@mantine/core";
 import React from "react";
 import classes from "~/pages/HomePage.module.css";
+import {Icon} from "~/shared/shared/ui/Icon";
 
 const modelCards = [
 	{
