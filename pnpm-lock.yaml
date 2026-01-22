@@ -33,11 +33,11 @@ dependencies:
     specifier: ^2.23.0
     version: 2.23.0
   '@shapediver/sdk.geometry-api-sdk-v2':
-    specifier: 2.10.0
-    version: 2.10.0
+    specifier: 3.0.0
+    version: 3.0.0
   '@shapediver/sdk.platform-api-sdk-v1':
-    specifier: 2.28.9
-    version: 2.28.9
+    specifier: 2.29.4
+    version: 2.29.4
   '@shapediver/sdk.stargate-sdk-v1':
     specifier: 1.6.1
     version: 1.6.1
@@ -3641,25 +3641,33 @@ packages:
       - supports-color
     dev: false
 
-  /@shapediver/api.platform-api-dto-v1@2.28.9:
-    resolution: {integrity: sha512-epAKEUMcV0rL6+GCZ9+l6Bxq/0Y3/5fA9xdRU5PwUS8vrgXOnXjiwRi90romiV/95I7P2u07go//rwK5a3JxuA==}
+  /@shapediver/api.platform-api-dto-v1@2.29.4:
+    resolution: {integrity: sha512-xGGMVHkxxC7O8zDXlEjMox4BUsCC62v4EHMOoCiFVW+LypklFm1hXmEjp+y4Sxii4GdohCSbdR0ufSKRhbMyMg==, tarball: https://registry.npmjs.org/@shapediver/api.platform-api-dto-v1/-/api.platform-api-dto-v1-2.29.4.tgz}
     dependencies:
       '@types/q': 1.5.8
-      chargebee-typescript: 2.16.0
+      chargebee-typescript: 2.53.0
     dev: false
 
   /@shapediver/sdk.geometry-api-sdk-v2@2.10.0:
-    resolution: {integrity: sha512-D0aJ2UPura8IsQNkLTGZ6ME1HkGMVnuJQy9XvL+G1cT2JfAY0rWy+zkBdxeUFzDOqgoGjTGmsp8k7CtzrsAxbQ==}
+    resolution: {integrity: sha512-D0aJ2UPura8IsQNkLTGZ6ME1HkGMVnuJQy9XvL+G1cT2JfAY0rWy+zkBdxeUFzDOqgoGjTGmsp8k7CtzrsAxbQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.geometry-api-sdk-v2/-/sdk.geometry-api-sdk-v2-2.10.0.tgz}
     dependencies:
       axios: 1.13.2
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@shapediver/sdk.platform-api-sdk-v1@2.28.9:
-    resolution: {integrity: sha512-8WnAnsjtPdd/lkQa+tvfwcgDlrj00KXmcOReIuY1X4sepYbDAx+G5CNUu8TFpcT+GecV/1T51gm1dtmxWMcFqQ==}
+  /@shapediver/sdk.geometry-api-sdk-v2@3.0.0:
+    resolution: {integrity: sha512-9J5tBm79vjv0Pz+6fqHhYMSQR/kM7MB2pyEUqPByk5q4T4ZxKiG/yigVF6rkrELQc0iRSt7oUpQpv+IovteuGw==, tarball: https://registry.npmjs.org/@shapediver/sdk.geometry-api-sdk-v2/-/sdk.geometry-api-sdk-v2-3.0.0.tgz}
     dependencies:
-      '@shapediver/api.platform-api-dto-v1': 2.28.9
+      axios: 1.13.2
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@shapediver/sdk.platform-api-sdk-v1@2.29.4:
+    resolution: {integrity: sha512-TI6g9wQK3SImtampgQLoirjh8W16llGiLrq22I9aiD0bK3aIJCZGsnT+OilfO0vhrIj3+KSEIHBPFNqF1CZ5QQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.platform-api-sdk-v1/-/sdk.platform-api-sdk-v1-2.29.4.tgz}
+    dependencies:
+      '@shapediver/api.platform-api-dto-v1': 2.29.4
       '@shapediver/sdk.geometry-api-sdk-v2': 2.10.0
       axios: 1.13.2
       jwt-decode: 3.1.2
@@ -6261,8 +6269,8 @@ packages:
     resolution: {integrity: sha512-iBZ4F4wRbyORVsu0jPV7gXkOsGYjGHPmAyv+HiHG8gi5PtC9KI2j1+v8/tlibRvjoWX027ypmG/n0HtO5t7unw==}
     dev: false
 
-  /chargebee-typescript@2.16.0:
-    resolution: {integrity: sha512-w0xFnZ3GjMeHlne99tb/EXEEGDyORlMtdS1z7Hmz0g+emsANGI8zWrOXp1q5zqW2FWU+XdeguDgj3OCkmraOAA==}
+  /chargebee-typescript@2.53.0:
+    resolution: {integrity: sha512-xPxkQvgAdBaBU6kYTxvV7t1XTCto8TxO1kqTG5CL+AobV0mkccOKr+/o0P9WcsHOaJK/HROPgaLdzMNAaU52Ew==}
     engines: {node: '>=8.0.0'}
     dependencies:
       q: 1.5.1
