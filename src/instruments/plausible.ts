@@ -10,9 +10,9 @@ import {
 } from "@AppBuilderShared/types/shapediver/queryparams";
 import {Logger} from "@AppBuilderShared/utils/logger";
 import {roundToBracket} from "@AppBuilderShared/utils/numerics";
-import {isRunningInPlatform} from "@AppBuilderShared/utils/platform/environment";
 import Plausible from "plausible-tracker";
 import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
+import {isRunningInPlatform} from "~/shared/shared/lib/platform";
 
 // default tracking domain
 const domain = isRunningInPlatform()
