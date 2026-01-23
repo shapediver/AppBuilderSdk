@@ -37,7 +37,17 @@
 	"overrides": [
 		{
 			"files": ["src/shared/**/*"],
-			"extends": ["@feature-sliced"]
+			"extends": [
+				"eslint:recommended",
+				"plugin:@typescript-eslint/recommended",
+				"plugin:react/recommended",
+				"@feature-sliced",
+				"plugin:prettier/recommended",
+				"prettier"
+			],
+			"rules": {
+				"import/order": 0
+			}
 		}
 	]
 }

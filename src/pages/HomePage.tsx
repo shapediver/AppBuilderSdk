@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import React from "react";
 import classes from "~/pages/HomePage.module.css";
-import {Icon} from "~/shared/shared/ui/Icon";
+import {Icon} from "~/shared/shared/ui/icon";
 
 const modelCards = [
 	{
