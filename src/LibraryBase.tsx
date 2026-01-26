@@ -6,7 +6,7 @@ import LibraryPage from "@AppBuilderShared/pages/platform/LibraryPage";
 import {
 	QUERYPARAM_SETTINGSURL,
 	QUERYPARAM_SLUG,
-} from "@AppBuilderShared/types/shapediver/queryparams";
+} from "@AppBuilderLib/shared/config/queryparams";
 import "@mantine/charts/styles.css";
 import {Center, MantineProvider} from "@mantine/core";
 import "@mantine/core/styles.css";

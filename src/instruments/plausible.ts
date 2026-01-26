@@ -7,7 +7,7 @@ import {ITrackerContext} from "@AppBuilderShared/types/context/trackercontext";
 import {
 	DEFAULT_TRACKING_PARAMS,
 	QUERYPARAM_TRACKING_DOMAIN,
-} from "@AppBuilderShared/types/shapediver/queryparams";
+} from "@AppBuilderLib/shared/config/queryparams";
 import {Logger} from "@AppBuilderShared/utils/logger";
 import {roundToBracket} from "@AppBuilderShared/utils/numerics";
 import Plausible from "plausible-tracker";
