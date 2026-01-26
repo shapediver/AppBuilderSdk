@@ -7,13 +7,10 @@
 			"vite-plugin-svgr/client"
 		],
 		"paths": {
-			"@AppBuilderShared/*": [
-				"./shared/*"
-			],
-			"~/*": [
-				"./*"
-			],
-            "@modelstorage": ["../modelstorage.ts"]
+			"@AppBuilderShared/*": ["./shared/*"],
+			"@AppBuilderLib/*": ["./shared/*"],
+			"~/*": ["./*"],
+			"@modelstorage": ["../modelstorage.ts"]
 		},
 		"lib": [
 			"dom",
