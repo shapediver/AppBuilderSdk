@@ -1,9 +1,9 @@
+import {roleUserOrAbove} from "@AppBuilderLib/shared/lib/platform";
 import useAsync from "@AppBuilderShared/hooks/misc/useAsync";
 import {IModelLibraryTabProps} from "@AppBuilderShared/pages/platform/LibraryPage";
 import {useShapeDiverStorePlatform} from "@AppBuilderShared/store/useShapeDiverStorePlatform";
 import {ModelCacheKeyEnum} from "@AppBuilderShared/types/store/shapediverStorePlatformModels";
 import {useEffect, useState} from "react";
-import {roleUserOrAbove} from "~/shared/shared/lib/platform";
 
 interface Props {
 	/**

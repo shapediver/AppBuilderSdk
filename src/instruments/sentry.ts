@@ -1,9 +1,9 @@
-import {IErrorReportingContext} from "@AppBuilderShared/types/context/errorreportingcontext";
-import * as Sentry from "@sentry/react";
 import {
 	getEnvironmentIdentifier,
 	isRunningInPlatform,
-} from "~/shared/shared/lib/platform";
+} from "@AppBuilderLib/shared/lib/platform";
+import {IErrorReportingContext} from "@AppBuilderShared/types/context/errorreportingcontext";
+import * as Sentry from "@sentry/react";
 import packagejson from "../../package.json";
 import {CONFIG} from "../../sentryconfig";
 
