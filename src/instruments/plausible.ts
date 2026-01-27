@@ -7,8 +7,8 @@ import {
 	combineTrackers,
 	DelayedTrackerPropsAwaiter,
 	setDefaultTrackerProps,
-} from "@AppBuilderShared/context/TrackerContext";
-import {ITrackerContext} from "@AppBuilderShared/types/context/trackercontext";
+} from "@AppBuilderLib/shared/lib/TrackerContext";
+import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
 import {Logger} from "@AppBuilderShared/utils/logger";
 import {roundToBracket} from "@AppBuilderShared/utils/numerics";
 import Plausible from "plausible-tracker";

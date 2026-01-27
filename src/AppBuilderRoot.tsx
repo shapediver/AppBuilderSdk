@@ -25,7 +25,7 @@ import ZoomButton from "@AppBuilderShared/components/shapediver/viewport/buttons
 import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import {IComponentContext} from "@AppBuilderShared/types/context/componentcontext";
+import {IComponentContext} from "@AppBuilderLib/shared/lib/ComponentContext.types";
 import {
 	AppBuilderContainerNameType,
 	isAttributeVisualizationWidget,
