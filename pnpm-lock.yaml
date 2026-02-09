@@ -23,6 +23,9 @@ importers:
       '@mantine/core':
         specifier: ^8.1.3
         version: 8.3.13(@mantine/hooks@8.3.13(react@18.3.1))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mantine/form':
+        specifier: ^8.3.13
+        version: 8.3.14(react@18.3.1)
       '@mantine/hooks':
         specifier: ^8.1.3
         version: 8.3.13(react@18.3.1)
@@ -1491,6 +1494,11 @@ packages:
       react: ^18.x || ^19.x
       react-dom: ^18.x || ^19.x
 
+  '@mantine/form@8.3.14':
+    resolution: {integrity: sha512-LJUeab+oF+YzATrm/K03Z/QoVVYlaolWqLUZZj7XexNA4hS2/ycKyWT07YhGkdHTLXkf3DUtrg1sS77K7Oje8A==}
+    peerDependencies:
+      react: ^18.x || ^19.x
+
   '@mantine/hooks@8.3.13':
     resolution: {integrity: sha512-7YMbMW/tR9E8m/9DbBW01+3RNApm2mE/JbRKXf9s9+KxgbjQvq0FYGWV8Y4+Sjz48AO4vtWk2qBriUTgBMKAyg==}
     peerDependencies:
@@ -1643,79 +1651,66 @@ packages:
     resolution: {integrity: sha512-eyrr5W08Ms9uM0mLcKfM/Uzx7hjhz2bcjv8P2uynfj0yU8GGPdz8iYrBPhiLOZqahoAMB8ZiolRZPbbU2MAi6Q==}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.57.0':
     resolution: {integrity: sha512-Xds90ITXJCNyX9pDhqf85MKWUI4lqjiPAipJ8OLp8xqI2Ehk+TCVhF9rvOoN8xTbcafow3QOThkNnrM33uCFQA==}
     cpu: [arm]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.57.0':
     resolution: {integrity: sha512-Xws2KA4CLvZmXjy46SQaXSejuKPhwVdaNinldoYfqruZBaJHqVo6hnRa8SDo9z7PBW5x84SH64+izmldCgbezw==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.57.0':
     resolution: {integrity: sha512-hrKXKbX5FdaRJj7lTMusmvKbhMJSGWJ+w++4KmjiDhpTgNlhYobMvKfDoIWecy4O60K6yA4SnztGuNTQF+Lplw==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-loong64-gnu@4.57.0':
     resolution: {integrity: sha512-6A+nccfSDGKsPm00d3xKcrsBcbqzCTAukjwWK6rbuAnB2bHaL3r9720HBVZ/no7+FhZLz/U3GwwZZEh6tOSI8Q==}
     cpu: [loong64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-loong64-musl@4.57.0':
     resolution: {integrity: sha512-4P1VyYUe6XAJtQH1Hh99THxr0GKMMwIXsRNOceLrJnaHTDgk1FTcTimDgneRJPvB3LqDQxUmroBclQ1S0cIJwQ==}
     cpu: [loong64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-ppc64-gnu@4.57.0':
     resolution: {integrity: sha512-8Vv6pLuIZCMcgXre6c3nOPhE0gjz1+nZP6T+hwWjr7sVH8k0jRkH+XnfjjOTglyMBdSKBPPz54/y1gToSKwrSQ==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-ppc64-musl@4.57.0':
     resolution: {integrity: sha512-r1te1M0Sm2TBVD/RxBPC6RZVwNqUTwJTA7w+C/IW5v9Ssu6xmxWEi+iJQlpBhtUiT1raJ5b48pI8tBvEjEFnFA==}
     cpu: [ppc64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-riscv64-gnu@4.57.0':
     resolution: {integrity: sha512-say0uMU/RaPm3CDQLxUUTF2oNWL8ysvHkAjcCzV2znxBr23kFfaxocS9qJm+NdkRhF8wtdEEAJuYcLPhSPbjuQ==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-musl@4.57.0':
     resolution: {integrity: sha512-/MU7/HizQGsnBREtRpcSbSV1zfkoxSTR7wLsRmBPQ8FwUj5sykrP1MyJTvsxP5KBq9SyE6kH8UQQQwa0ASeoQQ==}
     cpu: [riscv64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-s390x-gnu@4.57.0':
     resolution: {integrity: sha512-Q9eh+gUGILIHEaJf66aF6a414jQbDnn29zeu0eX3dHMuysnhTvsUvZTCAyZ6tJhUjnvzBKE4FtuaYxutxRZpOg==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.57.0':
     resolution: {integrity: sha512-OR5p5yG5OKSxHReWmwvM0P+VTPMwoBS45PXTMYaskKQqybkS3Kmugq1W+YbNWArF8/s7jQScgzXUhArzEQ7x0A==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.57.0':
     resolution: {integrity: sha512-XeatKzo4lHDsVEbm1XDHZlhYZZSQYym6dg2X/Ko0kSFgio+KXLsxwJQprnR48GvdIKDOpqWqssC3iBCjoMcMpw==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-openbsd-x64@4.57.0':
     resolution: {integrity: sha512-Lu71y78F5qOfYmubYLHPcJm74GZLU6UJ4THkf/a1K7Tz2ycwC2VUbsqbJAXaR6Bx70SRdlVrt2+n5l7F0agTUw==}
@@ -1894,146 +1889,146 @@ packages:
     engines: {node: '>= 14'}
 
   '@shapediver/api.platform-api-dto-v1@2.29.4':
-    resolution: {integrity: sha512-xGGMVHkxxC7O8zDXlEjMox4BUsCC62v4EHMOoCiFVW+LypklFm1hXmEjp+y4Sxii4GdohCSbdR0ufSKRhbMyMg==, tarball: https://registry.npmjs.org/@shapediver/api.platform-api-dto-v1/-/api.platform-api-dto-v1-2.29.4.tgz}
+    resolution: {integrity: sha512-xGGMVHkxxC7O8zDXlEjMox4BUsCC62v4EHMOoCiFVW+LypklFm1hXmEjp+y4Sxii4GdohCSbdR0ufSKRhbMyMg==}
 
   '@shapediver/sdk.geometry-api-sdk-v2@2.10.0':
-    resolution: {integrity: sha512-D0aJ2UPura8IsQNkLTGZ6ME1HkGMVnuJQy9XvL+G1cT2JfAY0rWy+zkBdxeUFzDOqgoGjTGmsp8k7CtzrsAxbQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.geometry-api-sdk-v2/-/sdk.geometry-api-sdk-v2-2.10.0.tgz}
+    resolution: {integrity: sha512-D0aJ2UPura8IsQNkLTGZ6ME1HkGMVnuJQy9XvL+G1cT2JfAY0rWy+zkBdxeUFzDOqgoGjTGmsp8k7CtzrsAxbQ==}
 
   '@shapediver/sdk.geometry-api-sdk-v2@3.0.0':
-    resolution: {integrity: sha512-9J5tBm79vjv0Pz+6fqHhYMSQR/kM7MB2pyEUqPByk5q4T4ZxKiG/yigVF6rkrELQc0iRSt7oUpQpv+IovteuGw==, tarball: https://registry.npmjs.org/@shapediver/sdk.geometry-api-sdk-v2/-/sdk.geometry-api-sdk-v2-3.0.0.tgz}
+    resolution: {integrity: sha512-9J5tBm79vjv0Pz+6fqHhYMSQR/kM7MB2pyEUqPByk5q4T4ZxKiG/yigVF6rkrELQc0iRSt7oUpQpv+IovteuGw==}
 
   '@shapediver/sdk.platform-api-sdk-v1@2.29.4':
-    resolution: {integrity: sha512-TI6g9wQK3SImtampgQLoirjh8W16llGiLrq22I9aiD0bK3aIJCZGsnT+OilfO0vhrIj3+KSEIHBPFNqF1CZ5QQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.platform-api-sdk-v1/-/sdk.platform-api-sdk-v1-2.29.4.tgz}
+    resolution: {integrity: sha512-TI6g9wQK3SImtampgQLoirjh8W16llGiLrq22I9aiD0bK3aIJCZGsnT+OilfO0vhrIj3+KSEIHBPFNqF1CZ5QQ==}
 
   '@shapediver/sdk.sdtf-core@1.6.1':
-    resolution: {integrity: sha512-sj/6HCTBbj1QtQeoaYZlFWbRaQJiYSQRq0L43nwjk8H3zEKujEmZclST22T6VmTK1UOzSEfa4BoyLKLbt4aJ8A==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-core/-/sdk.sdtf-core-1.6.1.tgz}
+    resolution: {integrity: sha512-sj/6HCTBbj1QtQeoaYZlFWbRaQJiYSQRq0L43nwjk8H3zEKujEmZclST22T6VmTK1UOzSEfa4BoyLKLbt4aJ8A==}
 
   '@shapediver/sdk.sdtf-geometry@1.6.1':
-    resolution: {integrity: sha512-Zp89WGCVuM98HiJ2jhKxXvoqEQs5DlxPK+FsFnpi9IqAIAlpBhj30+vaGPzzZxq0+HN09rbtyWN8gD4JeERe5w==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-geometry/-/sdk.sdtf-geometry-1.6.1.tgz}
+    resolution: {integrity: sha512-Zp89WGCVuM98HiJ2jhKxXvoqEQs5DlxPK+FsFnpi9IqAIAlpBhj30+vaGPzzZxq0+HN09rbtyWN8gD4JeERe5w==}
 
   '@shapediver/sdk.sdtf-primitives@1.6.1':
-    resolution: {integrity: sha512-V+gdKHsJkczfWJaVzb44RXFCrXjpLw735J+WbG+Mm+lrD6nWg1P+d5kueV+RJAKoJRCkG8WTPuomvGJpTaJWJQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-primitives/-/sdk.sdtf-primitives-1.6.1.tgz}
+    resolution: {integrity: sha512-V+gdKHsJkczfWJaVzb44RXFCrXjpLw735J+WbG+Mm+lrD6nWg1P+d5kueV+RJAKoJRCkG8WTPuomvGJpTaJWJQ==}
 
   '@shapediver/sdk.sdtf-v1@1.6.1':
-    resolution: {integrity: sha512-juR9L9ZZlNIvAXul4Szh/EvRfkwSy8z6EFrq+WWnxulOg/ps8ASqtChrGmC3x1rtBHv58vH82WPQ8EfQcovKlw==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-v1/-/sdk.sdtf-v1-1.6.1.tgz}
+    resolution: {integrity: sha512-juR9L9ZZlNIvAXul4Szh/EvRfkwSy8z6EFrq+WWnxulOg/ps8ASqtChrGmC3x1rtBHv58vH82WPQ8EfQcovKlw==}
     hasBin: true
 
   '@shapediver/sdk.stargate-sdk-core@1.3.2':
-    resolution: {integrity: sha512-fLES9vARdHllbC0DFHaJFmK/Xr2cUJ5zbO7liLMB+D0m+buEzeaAxN9pELgUW6EUvfZ/eTivLIGI6JXpHTP9nQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.stargate-sdk-core/-/sdk.stargate-sdk-core-1.3.2.tgz}
+    resolution: {integrity: sha512-fLES9vARdHllbC0DFHaJFmK/Xr2cUJ5zbO7liLMB+D0m+buEzeaAxN9pELgUW6EUvfZ/eTivLIGI6JXpHTP9nQ==}
 
   '@shapediver/sdk.stargate-sdk-v1@1.6.1':
-    resolution: {integrity: sha512-qM/kOWmLcXrK6uirZH78D41bbNkh1EYtKvkvSM+z/fIsGKZ9fzINw3R5C62IAlDEeM/m5at5S3SrYv+u4DHKrg==, tarball: https://registry.npmjs.org/@shapediver/sdk.stargate-sdk-v1/-/sdk.stargate-sdk-v1-1.6.1.tgz}
+    resolution: {integrity: sha512-qM/kOWmLcXrK6uirZH78D41bbNkh1EYtKvkvSM+z/fIsGKZ9fzINw3R5C62IAlDEeM/m5at5S3SrYv+u4DHKrg==}
 
   '@shapediver/viewer.api.general@3.15.2':
-    resolution: {integrity: sha512-t6p3QnSDNbJlEloX7xCrk7v7rfLEgV+jCSTBYuHGxffW5ClDUYyseHAfmfI69JoUgRYbCPwubn9IhUoKbeM3aA==, tarball: https://registry.npmjs.org/@shapediver/viewer.api.general/-/viewer.api.general-3.15.2.tgz}
+    resolution: {integrity: sha512-t6p3QnSDNbJlEloX7xCrk7v7rfLEgV+jCSTBYuHGxffW5ClDUYyseHAfmfI69JoUgRYbCPwubn9IhUoKbeM3aA==}
 
   '@shapediver/viewer.creation-control-center.session@3.15.2':
-    resolution: {integrity: sha512-TKdSbQlaaNHFPvHbtKPf0nnFRGLduJ0FOJ2pYcjEW1JDRkwhvQBUonxR8Y9ffjABQ42yKhn+Fwda4MuRFMSAJQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.creation-control-center.session/-/viewer.creation-control-center.session-3.15.2.tgz}
+    resolution: {integrity: sha512-TKdSbQlaaNHFPvHbtKPf0nnFRGLduJ0FOJ2pYcjEW1JDRkwhvQBUonxR8Y9ffjABQ42yKhn+Fwda4MuRFMSAJQ==}
 
   '@shapediver/viewer.creation-control-center.viewport@3.15.2':
-    resolution: {integrity: sha512-zpSty1B21V0V/C61XLHooyA9+QjbxyfxguYBA37nw/mYijFw8dCU5J4NUx7CIs7g9pQ6yR3AJ/p+csm49ikv2g==, tarball: https://registry.npmjs.org/@shapediver/viewer.creation-control-center.viewport/-/viewer.creation-control-center.viewport-3.15.2.tgz}
+    resolution: {integrity: sha512-zpSty1B21V0V/C61XLHooyA9+QjbxyfxguYBA37nw/mYijFw8dCU5J4NUx7CIs7g9pQ6yR3AJ/p+csm49ikv2g==}
 
   '@shapediver/viewer.data-engine.data-engine@3.15.2':
-    resolution: {integrity: sha512-jqIrUxpVgdbQaOAJpKMst29AH7r8NQuNzZ4TC/jJ1RdhQkBcw7e1+tjFzKmvcf2GW0TglH6cCdgeQwsBo3Hn/Q==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.data-engine/-/viewer.data-engine.data-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-jqIrUxpVgdbQaOAJpKMst29AH7r8NQuNzZ4TC/jJ1RdhQkBcw7e1+tjFzKmvcf2GW0TglH6cCdgeQwsBo3Hn/Q==}
 
   '@shapediver/viewer.data-engine.geometry-engine@3.15.2':
-    resolution: {integrity: sha512-vyh5NPEnNAK8gTct7tY5wAb2/d3gmX5Wv3WLytoYuI7MrtsaYfNZKf2S1/yMPjp5+65ZGzvakVJam4sZrGFODA==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.geometry-engine/-/viewer.data-engine.geometry-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-vyh5NPEnNAK8gTct7tY5wAb2/d3gmX5Wv3WLytoYuI7MrtsaYfNZKf2S1/yMPjp5+65ZGzvakVJam4sZrGFODA==}
 
   '@shapediver/viewer.data-engine.gltf-converter@3.15.2':
-    resolution: {integrity: sha512-g6EKw+FUNTPoxxfa4SJlGl3uRuQavSSzOOwpJUkNp4ozAzfE/ckRM9LmIYnp1mzWN2gWVdBf9t1qZs8qk/v+fw==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.gltf-converter/-/viewer.data-engine.gltf-converter-3.15.2.tgz}
+    resolution: {integrity: sha512-g6EKw+FUNTPoxxfa4SJlGl3uRuQavSSzOOwpJUkNp4ozAzfE/ckRM9LmIYnp1mzWN2gWVdBf9t1qZs8qk/v+fw==}
 
   '@shapediver/viewer.data-engine.html-element-anchor-engine@3.15.2':
-    resolution: {integrity: sha512-FyDK5YhFtml1Jdn7FGhU1eb1KyHMDlBoRm31YVr8iwwT8/1GxiwsjeRZeXz0ulZXsfxHXEypkIP6d5MnHgXqbg==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.html-element-anchor-engine/-/viewer.data-engine.html-element-anchor-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-FyDK5YhFtml1Jdn7FGhU1eb1KyHMDlBoRm31YVr8iwwT8/1GxiwsjeRZeXz0ulZXsfxHXEypkIP6d5MnHgXqbg==}
 
   '@shapediver/viewer.data-engine.material-database-engine@3.15.2':
-    resolution: {integrity: sha512-2/Gbio1zveJXPkJyleOJgKaiVa1x+XU7yJ3IdFq+MjhXQWDx/ILI4jy6Y7n82KcAGOIaibWC1p9jibnUE3Jbgg==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.material-database-engine/-/viewer.data-engine.material-database-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-2/Gbio1zveJXPkJyleOJgKaiVa1x+XU7yJ3IdFq+MjhXQWDx/ILI4jy6Y7n82KcAGOIaibWC1p9jibnUE3Jbgg==}
 
   '@shapediver/viewer.data-engine.material-engine@3.15.2':
-    resolution: {integrity: sha512-FK2CnTU05i8pRPm7TgEOHpWp83H6m+g4bQJP8SJsGM6OYF2SYUld2cuQGx+ylYVHSQ0X+r/o6zGjHHTa0PcKWg==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.material-engine/-/viewer.data-engine.material-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-FK2CnTU05i8pRPm7TgEOHpWp83H6m+g4bQJP8SJsGM6OYF2SYUld2cuQGx+ylYVHSQ0X+r/o6zGjHHTa0PcKWg==}
 
   '@shapediver/viewer.data-engine.sdtf-engine@3.15.2':
-    resolution: {integrity: sha512-pAN5YUYSuYAmHG79NBhLfoAyfV09c56CleL+rwAEOgqSi+gNIKySbfbEVAYFZFy6+6sBQi7p8lYwtDOhpwQkSw==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.sdtf-engine/-/viewer.data-engine.sdtf-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-pAN5YUYSuYAmHG79NBhLfoAyfV09c56CleL+rwAEOgqSi+gNIKySbfbEVAYFZFy6+6sBQi7p8lYwtDOhpwQkSw==}
 
   '@shapediver/viewer.data-engine.shared-types@3.15.2':
-    resolution: {integrity: sha512-hKgtdDk7HknVPn1HvQRJc1rTh6oWgyWUajPvgRRpgcFkhSN7QQfAZLULcb3yMAgiHXyR6vtsTq0R0/qvTI+0aA==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.shared-types/-/viewer.data-engine.shared-types-3.15.2.tgz}
+    resolution: {integrity: sha512-hKgtdDk7HknVPn1HvQRJc1rTh6oWgyWUajPvgRRpgcFkhSN7QQfAZLULcb3yMAgiHXyR6vtsTq0R0/qvTI+0aA==}
 
   '@shapediver/viewer.data-engine.tag3d-engine@3.15.2':
-    resolution: {integrity: sha512-wAPu3p+54ca0vsvnvh/OzXygLMXSFjEIJZEcVBIhcQNdLECqNA7BJzahZRXR5VbdDvoPx8+6pltMWw/AaaYp4Q==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.tag3d-engine/-/viewer.data-engine.tag3d-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-wAPu3p+54ca0vsvnvh/OzXygLMXSFjEIJZEcVBIhcQNdLECqNA7BJzahZRXR5VbdDvoPx8+6pltMWw/AaaYp4Q==}
 
   '@shapediver/viewer.features.attribute-visualization@3.15.2':
-    resolution: {integrity: sha512-Jkvrp7IFhjzxO4159SQ662KQcZGYR+v/IqXecRQV0Wr8oKCvuq+AJk/FQ/zIjZpJn2Su60K6MdAr/JuP3scT7g==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.attribute-visualization/-/viewer.features.attribute-visualization-3.15.2.tgz}
+    resolution: {integrity: sha512-Jkvrp7IFhjzxO4159SQ662KQcZGYR+v/IqXecRQV0Wr8oKCvuq+AJk/FQ/zIjZpJn2Su60K6MdAr/JuP3scT7g==}
 
   '@shapediver/viewer.features.drawing-tools@3.15.2':
-    resolution: {integrity: sha512-b5Usrfc8ocTv8sHyUSuRKyf5M5bZV5WZBd3j9M4i2FsqX8GxRE9tB/zX1eLsP2O8Z3PX3og2WsSOk52YHut7oQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.drawing-tools/-/viewer.features.drawing-tools-3.15.2.tgz}
+    resolution: {integrity: sha512-b5Usrfc8ocTv8sHyUSuRKyf5M5bZV5WZBd3j9M4i2FsqX8GxRE9tB/zX1eLsP2O8Z3PX3og2WsSOk52YHut7oQ==}
 
   '@shapediver/viewer.features.gumball@3.15.2':
-    resolution: {integrity: sha512-lljZj60/IGF0fU9vOVuOAFMfsRnZ3aOMFg+8PLJcZGhONfY8HXoDtJPPzIG9M0/+P3GJ2dqupdYl1fFSdEQHfA==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.gumball/-/viewer.features.gumball-3.15.2.tgz}
+    resolution: {integrity: sha512-lljZj60/IGF0fU9vOVuOAFMfsRnZ3aOMFg+8PLJcZGhONfY8HXoDtJPPzIG9M0/+P3GJ2dqupdYl1fFSdEQHfA==}
 
   '@shapediver/viewer.features.interaction@3.15.2':
-    resolution: {integrity: sha512-QOnOhavdLbCWkyLOm82JvYo2Sh9tvPdXCilwwEBbx5ATW5Q5lsKap4pAWJTEva2jy8PSKI6wiBGjq7wj2rzAeA==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.interaction/-/viewer.features.interaction-3.15.2.tgz}
+    resolution: {integrity: sha512-QOnOhavdLbCWkyLOm82JvYo2Sh9tvPdXCilwwEBbx5ATW5Q5lsKap4pAWJTEva2jy8PSKI6wiBGjq7wj2rzAeA==}
 
   '@shapediver/viewer.rendering-engine.animation-engine@3.15.2':
-    resolution: {integrity: sha512-elfV+CSiy1oQWWlGBu+cyIizXFiBwiRx4UoJSBLDZNuaC6e3Bo5QdHYEu79s967UC6DaL7ZjPOAJHZuulLvTRw==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.animation-engine/-/viewer.rendering-engine.animation-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-elfV+CSiy1oQWWlGBu+cyIizXFiBwiRx4UoJSBLDZNuaC6e3Bo5QdHYEu79s967UC6DaL7ZjPOAJHZuulLvTRw==}
 
   '@shapediver/viewer.rendering-engine.animation-frame-engine@3.15.2':
-    resolution: {integrity: sha512-cPbI5+EWlcKC3KT6s3p90i2jm56Ei833QLy3lSs3a2UwfBDZVM/FUSJzYYEfg8ifr5eOH3YTJbvOcozJfQgb7w==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.animation-frame-engine/-/viewer.rendering-engine.animation-frame-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-cPbI5+EWlcKC3KT6s3p90i2jm56Ei833QLy3lSs3a2UwfBDZVM/FUSJzYYEfg8ifr5eOH3YTJbvOcozJfQgb7w==}
 
   '@shapediver/viewer.rendering-engine.camera-engine@3.15.2':
-    resolution: {integrity: sha512-HxvMarj/X4UsTUJ8aDBySFzI7PN+J7ZgCcHzzeufkxKmeyXcI63f2MyqXeoz1BEbStD1iBPogUXVEZoTG9cmLg==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.camera-engine/-/viewer.rendering-engine.camera-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-HxvMarj/X4UsTUJ8aDBySFzI7PN+J7ZgCcHzzeufkxKmeyXcI63f2MyqXeoz1BEbStD1iBPogUXVEZoTG9cmLg==}
 
   '@shapediver/viewer.rendering-engine.canvas-engine@3.15.2':
-    resolution: {integrity: sha512-DhYSp+WAcC+q5yiXNaRD2MYEjVq4kRmJRk/+ir2asJn2ezykDTp+ZFTMfmtqA7TeGOp3Ew42LjB6hmT3LPu0DQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.canvas-engine/-/viewer.rendering-engine.canvas-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-DhYSp+WAcC+q5yiXNaRD2MYEjVq4kRmJRk/+ir2asJn2ezykDTp+ZFTMfmtqA7TeGOp3Ew42LjB6hmT3LPu0DQ==}
 
   '@shapediver/viewer.rendering-engine.intersection-engine@3.15.2':
-    resolution: {integrity: sha512-4MQdMWMA0o2c3+M5aQreZIaZgxyG/dmjy4LLXkmW5VABXB5PHtM//ikVB1Zkc0f/O8Br51cmWZ9kOVC93Ew3NA==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.intersection-engine/-/viewer.rendering-engine.intersection-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-4MQdMWMA0o2c3+M5aQreZIaZgxyG/dmjy4LLXkmW5VABXB5PHtM//ikVB1Zkc0f/O8Br51cmWZ9kOVC93Ew3NA==}
 
   '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.15.2':
-    resolution: {integrity: sha512-RKQE7UHJQMf/+ewCYfsRXfc9MQYxjuHYLcPESm/L2cSw58vIpKxV4MiUlVxgcaWE8TRvpzmy742p4T+Cm3Tagg==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.intersection-restriction-engine/-/viewer.rendering-engine.intersection-restriction-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-RKQE7UHJQMf/+ewCYfsRXfc9MQYxjuHYLcPESm/L2cSw58vIpKxV4MiUlVxgcaWE8TRvpzmy742p4T+Cm3Tagg==}
 
   '@shapediver/viewer.rendering-engine.light-engine@3.15.2':
-    resolution: {integrity: sha512-HO1bd/FdP0+5yqUGC06LYbfuIQZf5n5vd4HR2rOAA/ZMp0IKiHOtaP5JPhFAm0iaJKUQU8CwUSPo/FyuqmpVLQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.light-engine/-/viewer.rendering-engine.light-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-HO1bd/FdP0+5yqUGC06LYbfuIQZf5n5vd4HR2rOAA/ZMp0IKiHOtaP5JPhFAm0iaJKUQU8CwUSPo/FyuqmpVLQ==}
 
   '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.15.2':
-    resolution: {integrity: sha512-O2zSbFRIh3HzNAPi/ppGIbX9mKZlrku/W/A89jV/32h9e+NpfwLuz3T80vBTbZzT7O73+67UNxsu3TnkHraBzA==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.rendering-engine-threejs/-/viewer.rendering-engine.rendering-engine-threejs-3.15.2.tgz}
+    resolution: {integrity: sha512-O2zSbFRIh3HzNAPi/ppGIbX9mKZlrku/W/A89jV/32h9e+NpfwLuz3T80vBTbZzT7O73+67UNxsu3TnkHraBzA==}
 
   '@shapediver/viewer.rendering-engine.rendering-engine@3.15.2':
-    resolution: {integrity: sha512-eU4cFK2WY6hnd9v/ZmL90bTcWr4DuXFlPwZoEJQfIGbj9KvZzNYe2GFr3JZ5WwlAIdfimnxK0lKRM0o7+HOo2A==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.rendering-engine/-/viewer.rendering-engine.rendering-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-eU4cFK2WY6hnd9v/ZmL90bTcWr4DuXFlPwZoEJQfIGbj9KvZzNYe2GFr3JZ5WwlAIdfimnxK0lKRM0o7+HOo2A==}
 
   '@shapediver/viewer.session-engine.session-engine@3.15.2':
-    resolution: {integrity: sha512-y6MMdzcjKrbc8cJ1aBXb/PAuBQYFB2XcM51IE5Tkc5RUJmFBfrY1x0GBib0CtoBwbXhanlzA1yk3bGmbkK4H8g==, tarball: https://registry.npmjs.org/@shapediver/viewer.session-engine.session-engine/-/viewer.session-engine.session-engine-3.15.2.tgz}
+    resolution: {integrity: sha512-y6MMdzcjKrbc8cJ1aBXb/PAuBQYFB2XcM51IE5Tkc5RUJmFBfrY1x0GBib0CtoBwbXhanlzA1yk3bGmbkK4H8g==}
 
   '@shapediver/viewer.session@3.15.2':
-    resolution: {integrity: sha512-aPCk7KEBpUhucLnzTuia3zCniOuPFvZCJekyqewiV0VZ4yaBFGxEXXn65lrfKvX+HIonOqMgX9gtAbBghdxRwQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.session/-/viewer.session-3.15.2.tgz}
+    resolution: {integrity: sha512-aPCk7KEBpUhucLnzTuia3zCniOuPFvZCJekyqewiV0VZ4yaBFGxEXXn65lrfKvX+HIonOqMgX9gtAbBghdxRwQ==}
 
   '@shapediver/viewer.settings@1.2.1':
-    resolution: {integrity: sha512-G6LerHAhlNvPKs6T/pCZw7RJMztAhjoV8CQSoiue5ugqSpbfRpO0VkcIO6GMVDQBJrZMz8+wWruQi5jwjvYxQg==, tarball: https://registry.npmjs.org/@shapediver/viewer.settings/-/viewer.settings-1.2.1.tgz}
+    resolution: {integrity: sha512-G6LerHAhlNvPKs6T/pCZw7RJMztAhjoV8CQSoiue5ugqSpbfRpO0VkcIO6GMVDQBJrZMz8+wWruQi5jwjvYxQg==}
 
   '@shapediver/viewer.shared.build-data@3.15.2':
-    resolution: {integrity: sha512-a6eIcG+ID8pg6WGXDvbCx36uEDWe++IexBAKcqMF9tBjK3YOOKXFwbz9xkrOTtkDnOd9zzOcV+ogk3ePEnBs4w==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.build-data/-/viewer.shared.build-data-3.15.2.tgz}
+    resolution: {integrity: sha512-a6eIcG+ID8pg6WGXDvbCx36uEDWe++IexBAKcqMF9tBjK3YOOKXFwbz9xkrOTtkDnOd9zzOcV+ogk3ePEnBs4w==}
 
   '@shapediver/viewer.shared.global-access-objects@3.15.2':
-    resolution: {integrity: sha512-YK7yzHG4g3yr2eV2sC36IqUMB3MtKfllxs8NYXnH/U1VcWsEqqHUCKwWpRZ+dpsCdfM5BBnovlYThYbKlP/9aw==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.global-access-objects/-/viewer.shared.global-access-objects-3.15.2.tgz}
+    resolution: {integrity: sha512-YK7yzHG4g3yr2eV2sC36IqUMB3MtKfllxs8NYXnH/U1VcWsEqqHUCKwWpRZ+dpsCdfM5BBnovlYThYbKlP/9aw==}
 
   '@shapediver/viewer.shared.math@3.15.2':
-    resolution: {integrity: sha512-4MCBGn3THHDYXlACV6qS6o5YnUD5ZtK3SydtTPahjL2d6T3p/fo5Kk6ydG9zcSEEcxXRceFWcjmRZ6eCr6Pv4w==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.math/-/viewer.shared.math-3.15.2.tgz}
+    resolution: {integrity: sha512-4MCBGn3THHDYXlACV6qS6o5YnUD5ZtK3SydtTPahjL2d6T3p/fo5Kk6ydG9zcSEEcxXRceFWcjmRZ6eCr6Pv4w==}
 
   '@shapediver/viewer.shared.node-tree@3.15.2':
-    resolution: {integrity: sha512-f2wkA6QekdG4u8qoJ2zdV6Sd7qgiv1kQ4tqrZpDw1guuf91JRpHdvPZBYFBY83yERZj2vXWKUGMaazg4DxEI5A==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.node-tree/-/viewer.shared.node-tree-3.15.2.tgz}
+    resolution: {integrity: sha512-f2wkA6QekdG4u8qoJ2zdV6Sd7qgiv1kQ4tqrZpDw1guuf91JRpHdvPZBYFBY83yERZj2vXWKUGMaazg4DxEI5A==}
 
   '@shapediver/viewer.shared.services@3.15.2':
-    resolution: {integrity: sha512-AlF5kNwB90yOUbXuEFltCHTCD4+hgk8krnjOTczJgqfwc3PA271YYSlPf/ZTOYl4cS71ZSR3mwSj6ERuOtgSgw==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.services/-/viewer.shared.services-3.15.2.tgz}
+    resolution: {integrity: sha512-AlF5kNwB90yOUbXuEFltCHTCD4+hgk8krnjOTczJgqfwc3PA271YYSlPf/ZTOYl4cS71ZSR3mwSj6ERuOtgSgw==}
 
   '@shapediver/viewer.shared.types@3.15.2':
-    resolution: {integrity: sha512-5qMc4JJ0qRdKSibuhYL7HQzb1BTdfYlOMIJLm17GkxWzZP7JtY0aCLD0dbz+PZiEnNW3lWR6aXXC+cHKgsG0uw==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.types/-/viewer.shared.types-3.15.2.tgz}
+    resolution: {integrity: sha512-5qMc4JJ0qRdKSibuhYL7HQzb1BTdfYlOMIJLm17GkxWzZP7JtY0aCLD0dbz+PZiEnNW3lWR6aXXC+cHKgsG0uw==}
 
   '@shapediver/viewer.utils.mime-type@1.1.0':
-    resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==, tarball: https://registry.npmjs.org/@shapediver/viewer.utils.mime-type/-/viewer.utils.mime-type-1.1.0.tgz}
+    resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==}
 
   '@shapediver/viewer.viewport@3.15.2':
-    resolution: {integrity: sha512-SjzEntQe97vEvWU/OskwaPTxoxPVCNFHczOjoDwJe8DlmWZleozQJL+U/s4GVnCWhaVsfx6LpWM/slRboDS7Fw==, tarball: https://registry.npmjs.org/@shapediver/viewer.viewport/-/viewer.viewport-3.15.2.tgz}
+    resolution: {integrity: sha512-SjzEntQe97vEvWU/OskwaPTxoxPVCNFHczOjoDwJe8DlmWZleozQJL+U/s4GVnCWhaVsfx6LpWM/slRboDS7Fw==}
 
   '@shapediver/viewer@3.15.2':
-    resolution: {integrity: sha512-oAgYB1ZGYBSEWLOVvT6CXN+AmTVL3RRG/Qbx3/P6PMwOVcQKCk6z4wwYcgmknATWozgLR9g1BcxkbQ2GOK9WjQ==, tarball: https://registry.npmjs.org/@shapediver/viewer/-/viewer-3.15.2.tgz}
+    resolution: {integrity: sha512-oAgYB1ZGYBSEWLOVvT6CXN+AmTVL3RRG/Qbx3/P6PMwOVcQKCk6z4wwYcgmknATWozgLR9g1BcxkbQ2GOK9WjQ==}
 
   '@sinclair/typebox@0.24.51':
     resolution: {integrity: sha512-1P1OROm/rdubP5aFDSZQILU0vrLCJ4fvHt6EoqHEM+2D/G5MK3bIaymUKLit8Js9gbns5UyJnkP/TZROLw4tUA==}
@@ -9555,6 +9550,12 @@ snapshots:
       type-fest: 4.41.0
     transitivePeerDependencies:
       - '@types/react'
+
+  '@mantine/form@8.3.14(react@18.3.1)':
+    dependencies:
+      fast-deep-equal: 3.1.3
+      klona: 2.0.6
+      react: 18.3.1
 
   '@mantine/hooks@8.3.13(react@18.3.1)':
     dependencies:
