@@ -88,6 +88,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@AppBuilderShared": path.resolve(__dirname, "./src/shared"),
+			"@AppBuilderLib": path.resolve(__dirname, "./src/shared"),
 			"~": path.resolve(__dirname, "./src"),
 			"@modelstorage": modelStoragePath,
 		},
