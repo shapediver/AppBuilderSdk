@@ -7,7 +7,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended",
-        "plugin:prettier/recommended", 
+        "plugin:prettier/recommended",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -15,31 +15,39 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint",
-        "react",
-        "eslint-plugin-prettier"
-    ],
+    "plugins": ["@typescript-eslint", "react", "eslint-plugin-prettier"],
     "rules": {
         "prettier/prettier": "error",
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "linebreak-style": ["error", "windows"],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
         "@typescript-eslint/no-explicit-any": 0,
         "no-debugger": 0
     },
     "settings": {
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true
+            }
+        },
         "react": {
             "version": "detect"
         }
-    }
+    },
+    "overrides": [
+        {
+            "files": ["src/shared/**/*"],
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/recommended",
+                "plugin:react/recommended",
+                "@feature-sliced",
+                "plugin:prettier/recommended",
+                "prettier"
+            ],
+            "rules": {
+                "import/order": 0
+            }
+        }
+    ]
 }
