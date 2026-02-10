@@ -17,6 +17,7 @@ import ViewportAnchor3d, {
 import ArButton from "@AppBuilderShared/components/shapediver/viewport/buttons/ArButton";
 import CamerasButton from "@AppBuilderShared/components/shapediver/viewport/buttons/CamerasButton";
 import FullscreenButton from "@AppBuilderShared/components/shapediver/viewport/buttons/FullscreenButton";
+import FullscreenButton3States from "@AppBuilderShared/components/shapediver/viewport/buttons/FullscreenButton3States";
 import HistoryMenuButton from "@AppBuilderShared/components/shapediver/viewport/buttons/HistoryMenuButton";
 import RedoButton from "@AppBuilderShared/components/shapediver/viewport/buttons/RedoButton";
 import ReloadButton from "@AppBuilderShared/components/shapediver/viewport/buttons/ReloadButton";
@@ -65,6 +66,9 @@ const components: IComponentContext = {
 		[ViewportIconButtonEnum.Zoom]: {component: ZoomButton},
 		[ViewportIconButtonEnum.Cameras]: {component: CamerasButton},
 		[ViewportIconButtonEnum.Fullscreen]: {component: FullscreenButton},
+		[ViewportIconButtonEnum.Fullscreen3States]: {
+			component: FullscreenButton3States,
+		},
 		[ViewportIconButtonEnum.Undo]: {component: UndoButton},
 		[ViewportIconButtonEnum.Redo]: {component: RedoButton},
 		[ViewportIconButtonEnum.Reload]: {component: ReloadButton},
