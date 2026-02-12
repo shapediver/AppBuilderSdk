@@ -1,4 +1,4 @@
-import {ITrackerContext} from "@AppBuilderShared/types/context/trackercontext";
+import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
 import {Logger} from "@AppBuilderShared/utils/logger";
 import reportWebVitals from "reportWebVitals";
 

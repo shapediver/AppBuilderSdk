@@ -1,4 +1,4 @@
-import Icon from "@AppBuilderShared/components/ui/Icon";
+import {Icon} from "@AppBuilderLib/shared/ui/icon";
 import ModelCard from "@AppBuilderShared/components/ui/ModelCard";
 import {
 	Blockquote,
