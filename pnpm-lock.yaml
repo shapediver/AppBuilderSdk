@@ -42,8 +42,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0
       '@shapediver/sdk.platform-api-sdk-v1':
-        specifier: 2.29.4
-        version: 2.29.4
+        specifier: 2.29.5
+        version: 2.29.5
       '@shapediver/sdk.stargate-sdk-v1':
         specifier: 1.6.2
         version: 1.6.2
@@ -1921,8 +1921,8 @@ packages:
     resolution: {integrity: sha512-avtjtIQ019sZW3FklpmNNsQOnYZjCHpnVxgDGElfZb+AaR4AvtHNlxXLJp+iqEfSK+Xok8MJarJqIgCaWcF40Q==}
     engines: {node: '>= 14'}
 
-  '@shapediver/api.platform-api-dto-v1@2.29.4':
-    resolution: {integrity: sha512-xGGMVHkxxC7O8zDXlEjMox4BUsCC62v4EHMOoCiFVW+LypklFm1hXmEjp+y4Sxii4GdohCSbdR0ufSKRhbMyMg==}
+  '@shapediver/api.platform-api-dto-v1@2.29.5':
+    resolution: {integrity: sha512-7xgcZ/cesw+ZUnqHXJQSYP/M1r7c8jR0UqfYD1uQEpag3XX1htWx1o/4ZI+eURWFw154vHrV+Am847m48ZbNgw==}
 
   '@shapediver/sdk.geometry-api-sdk-v2@2.10.0':
     resolution: {integrity: sha512-D0aJ2UPura8IsQNkLTGZ6ME1HkGMVnuJQy9XvL+G1cT2JfAY0rWy+zkBdxeUFzDOqgoGjTGmsp8k7CtzrsAxbQ==}
@@ -1930,8 +1930,8 @@ packages:
   '@shapediver/sdk.geometry-api-sdk-v2@3.1.0':
     resolution: {integrity: sha512-pXawuW9MhD6YEFckFxYA4mbVflLTg6CHoc/ci06PQw+gNjFqPMYRz/0Y6Xscof0pqQfESgJlWJWV4ARuclMRlA==}
 
-  '@shapediver/sdk.platform-api-sdk-v1@2.29.4':
-    resolution: {integrity: sha512-TI6g9wQK3SImtampgQLoirjh8W16llGiLrq22I9aiD0bK3aIJCZGsnT+OilfO0vhrIj3+KSEIHBPFNqF1CZ5QQ==}
+  '@shapediver/sdk.platform-api-sdk-v1@2.29.5':
+    resolution: {integrity: sha512-mFICSFZE7d+ZA9qHr5xjSb08mMZRI+C2mEcwq4eq2vkJqXTDHdQ/6kTZmbq/n5vINWu4tbXrkMGis8crdJgQ0Q==}
 
   '@shapediver/sdk.sdtf-core@1.7.0':
     resolution: {integrity: sha512-jswFhU4lKb7mU4q5Z+cKJWbAAtkRVWtWzP7Ihe8Su4McA0c+b70ofWIDcywHHpLgC6VRSvdbvYxCgaEhl4gF9A==}
@@ -2994,9 +2994,6 @@ packages:
   axe-core@4.11.1:
     resolution: {integrity: sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==}
     engines: {node: '>=4'}
-
-  axios@1.13.2:
-    resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
 
   axios@1.13.5:
     resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
@@ -10098,7 +10095,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@shapediver/api.platform-api-dto-v1@2.29.4':
+  '@shapediver/api.platform-api-dto-v1@2.29.5':
     dependencies:
       '@types/q': 1.5.8
       chargebee-typescript: 2.53.0
@@ -10115,11 +10112,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@shapediver/sdk.platform-api-sdk-v1@2.29.4':
+  '@shapediver/sdk.platform-api-sdk-v1@2.29.5':
     dependencies:
-      '@shapediver/api.platform-api-dto-v1': 2.29.4
+      '@shapediver/api.platform-api-dto-v1': 2.29.5
       '@shapediver/sdk.geometry-api-sdk-v2': 2.10.0
-      axios: 1.13.2
+      axios: 1.13.5
       jwt-decode: 3.1.2
     transitivePeerDependencies:
       - debug
@@ -11675,14 +11672,6 @@ snapshots:
       possible-typed-array-names: 1.1.0
 
   axe-core@4.11.1: {}
-
-  axios@1.13.2:
-    dependencies:
-      follow-redirects: 1.15.11
-      form-data: 4.0.5
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
 
   axios@1.13.5:
     dependencies:
