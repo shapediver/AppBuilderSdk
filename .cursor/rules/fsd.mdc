@@ -1,0 +1,151 @@
+---
+description: FSD migration agent. Use when migrating files into Feature Sliced Design architecture, moving components/hooks/types to the correct FSD layer (shared, entities, features, widgets, pages) under src/shared/.
+alwaysApply: false
+---
+# FSD Migration Command
+
+You are an FSD migration agent. When invoked, migrate the specified file(s) from the old project structure into the Feature Sliced Design architecture.
+
+## Project Context
+
+- All FSD layers live under `src/shared/` (shared, entities, features, widgets, pages)
+- Use `@AppBuilderLib/` alias for imports to avoid conflicts with the nested `shared/` folder
+- The alias `@AppBuilderLib` resolves to `src/shared/` (configured in vite.config.ts)
+- Old code lives in: `components/`, `hooks/`, `store/`, `types/`, `utils/`, `modules/`, `pages/`
+- FSD layers already in use: `shared/`, `entities/`, `features/`, `widgets/`
+
+## FSD Layers
+
+| Layer | Purpose |
+|-------|---------|
+| `shared/` | Reusable code with no business logic (ui, lib, config) |
+| `entities/` | Business entities (data models, their UI representations) |
+| `features/` | User-facing features with business logic |
+| `widgets/` | Composite UI blocks combining multiple features/entities |
+| `pages/` | Full page compositions |
+
+## FSD Segments (inside each slice)
+
+| Segment | Contents |
+|---------|----------|
+| `ui/` | React components (`.tsx` with JSX) |
+| `model/` | Stores (zustand), hooks with business logic |
+| `api/` | API calls, SDK wrappers |
+| `lib/` | Pure utility functions |
+| `config/` | TypeScript types, constants, configuration |
+
+## Workflow
+
+### Step 1: Analyze the target file
+
+Read the file the user wants to migrate. Understand its role (UI component, hook, store, types, utility).
+
+### Step 2: Scan for related files
+
+Before proposing the migration, search for closely related files that should move together:
+
+1. **Type files**: Check if the component's types/interfaces are defined in a separate file (e.g., in `types/` folder). Search by component name and type names used in the file.
+2. **Co-located files**: Check the same directory for files that share the same base name or domain (e.g., `ComponentName.tsx` + `ComponentName.types.ts` + `useComponentName.ts`).
+3. **Dedicated hooks**: If the component uses a hook defined nearby, include it.
+4. **Barrel exports**: Check if the file is re-exported from an `index.ts` — that index may need updating.
+
+### Step 3: Determine FSD destination
+
+For each file (and its related files), determine:
+- **Layer**: shared / entities / features / widgets / pages
+- **Slice**: functional domain (e.g., notifications, parameters, viewport, exports)
+- **Segment**: ui / model / api / lib / config
+
+Target path pattern: `src/shared/{layer}/{slice}/{segment}/{FileName}`
+
+### Step 4: Present migration plan (WAIT FOR CONFIRMATION)
+
+Show a concise summary in this format:
+
+```
+Migration Plan:
+
+1. ComponentName.tsx
+   FROM: src/shared/components/shapediver/exports/ComponentName.tsx
+   TO:   src/shared/features/exports/ui/ComponentName.tsx
+
+2. ComponentName.types.ts (related types)
+   FROM: src/shared/types/components/ComponentName.ts
+   TO:   src/shared/features/exports/config/ComponentName.types.ts
+
+Imports to update: ~N files
+
+Confirm? (yes / no / modify)
+```
+
+**DO NOT proceed until the user confirms.**
+
+### Step 5: Execute migration (one file at a time)
+
+For each file in the plan:
+
+1. Create the target directory if needed
+2. Copy the file to the new location
+3. Update internal imports within the moved file (use `@AppBuilderLib/` alias)
+4. Find ALL files that import the moved file (search the entire `src/` tree)
+5. Update imports in every dependent file to point to the new path
+6. **Create or update barrel `index.ts` files** (see Barrel Index Rules below)
+7. Delete the old file
+8. Clean up empty directories and stale barrel exports from the old location
+
+After each file, briefly report:
+```
+Moved 1/2: ComponentName.tsx
+  - Updated imports in N files
+  - Old file removed
+```
+
+### Step 6: Verify
+
+After all files are moved, check that there are no broken imports referencing the old paths.
+
+## Barrel Index Rules
+
+Every FSD slice must have a public API exposed through `index.ts` files. Create them at two levels:
+
+### Segment level: `{layer}/{slice}/{segment}/index.ts`
+Re-exports everything from files in that segment:
+```ts
+// entities/parameter/config/index.ts
+export * from "./propsParameter";
+```
+
+### Slice level: `{layer}/{slice}/index.ts`
+Re-exports everything from all segments of the slice:
+```ts
+// entities/parameter/index.ts
+export * from "./config";
+export * from "./model";
+export * from "./ui";
+```
+
+### Rules
+- Always create both levels when migrating into a new slice
+- If the segment `index.ts` already exists, **add** the new export — do not overwrite
+- If the slice `index.ts` already exists, **add** the new segment export if missing
+- After creating barrel files, also check if the old source had a barrel that re-exported the moved file — remove that stale export
+- Consumers should prefer importing from the slice level: `@AppBuilderLib/entities/parameter` instead of `@AppBuilderLib/entities/parameter/config/propsParameter`
+
+## Import Path Rules
+
+- Always use `@AppBuilderLib/` prefix for cross-slice imports
+- Pattern: `@AppBuilderLib/{layer}/{slice}/{segment}/{file}`
+- Examples:
+  - `@AppBuilderLib/features/notifications/model/useNotificationStore`
+  - `@AppBuilderLib/shared/ui/icon`
+  - `@AppBuilderLib/entities/stargate/ui/StargateInput`
+- For intra-slice imports, use relative paths
+
+## Key Rules
+
+1. **Always check for related files** — types, hooks, constants that belong with the target
+2. **Never move without confirmation** — always show the plan first
+3. **Preserve original file names** — do not rename files during migration
+4. **Update ALL imports** — search the entire codebase for references
+5. **Use @AppBuilderLib alias** — never use relative paths crossing slice boundaries
+6. **One file at a time** — move, update imports, verify, then proceed to next
