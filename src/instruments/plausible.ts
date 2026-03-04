@@ -9,8 +9,8 @@ import {
 	setDefaultTrackerProps,
 } from "@AppBuilderLib/shared/lib/TrackerContext";
 import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
-import {Logger} from "@AppBuilderShared/utils/logger";
-import {roundToBracket} from "@AppBuilderShared/utils/numerics";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
+import {roundToBracket} from "@AppBuilderLib/shared/lib/numerics";
 import Plausible from "plausible-tracker";
 import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
 

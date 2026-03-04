@@ -6,17 +6,17 @@ import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/Viewport
 import TabsComponent, {
 	ITabsComponentProps,
 } from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
-import {useSessionWithAppBuilder} from "@AppBuilderShared/hooks/shapediver/appbuilder/useSessionWithAppBuilder";
+import {useSessionWithAppBuilder} from "@AppBuilderLib/features/appbuilder/model/useSessionWithAppBuilder";
 import {useDefineGenericParameters} from "@AppBuilderLib/entities/parameter/model/useDefineGenericParameters";
 import {useSessionPropsExport} from "@AppBuilderLib/entities/export/model/useSessionPropsExport";
 import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
-import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+import {useOutputMaterial} from "@AppBuilderLib/entities/output/model/useOutputMaterial";
+import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
-} from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import {Logger} from "@AppBuilderShared/utils/logger";
+} from "@AppBuilderLib/entities/parameter/config/shapediverStoreParameters";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import {
 	IMaterialStandardDataProperties,
 	MATERIAL_TYPE,

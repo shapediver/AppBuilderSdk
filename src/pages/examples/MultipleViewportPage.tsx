@@ -8,8 +8,8 @@ import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/
 import {
 	IUseSessionDto,
 	useSession,
-} from "@AppBuilderShared/hooks/shapediver/useSession";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+} from "@AppBuilderLib/entities/session/model/useSession";
+import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
 import React, {useMemo} from "react";

@@ -1,5 +1,5 @@
 import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
-import {Logger} from "@AppBuilderShared/utils/logger";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import reportWebVitals from "reportWebVitals";
 
 export const setupWebVitalsTracking = (tracker: ITrackerContext) => {

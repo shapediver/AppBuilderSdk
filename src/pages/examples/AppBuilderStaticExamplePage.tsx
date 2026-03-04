@@ -5,19 +5,19 @@ import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbu
 import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
 import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
-import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
+import useAppBuilderSettings from "@AppBuilderLib/features/appbuilder/model/useAppBuilderSettings";
 import {useDefineGenericParameters} from "@AppBuilderLib/entities/parameter/model/useDefineGenericParameters";
 import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
-import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
-import {useSession} from "@AppBuilderShared/hooks/shapediver/useSession";
-import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import useDefaultSessionDto from "@AppBuilderLib/entities/session/model/useDefaultSessionDto";
+import {useSession} from "@AppBuilderLib/entities/session/model/useSession";
+import {useOutputMaterial} from "@AppBuilderLib/entities/output/model/useOutputMaterial";
 import AppBuilderTemplateSelector from "@AppBuilderShared/pages/templates/AppBuilderTemplateSelector";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
-} from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import {Logger} from "@AppBuilderShared/utils/logger";
+} from "@AppBuilderLib/entities/parameter/config/shapediverStoreParameters";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import {
 	IMaterialStandardDataProperties,
 	MATERIAL_TYPE,

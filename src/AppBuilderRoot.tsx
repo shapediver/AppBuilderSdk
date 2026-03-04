@@ -32,8 +32,8 @@ import {
 	isAttributeVisualizationWidget,
 	isCameraAction,
 	isSceneTreeExplorerWidget,
-} from "@AppBuilderShared/types/shapediver/appbuilder";
-import {ViewportIconButtonEnum} from "@AppBuilderShared/types/shapediver/viewportIcons";
+} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
+import {ViewportIconButtonEnum} from "@AppBuilderLib/entities/viewport/config/viewportIcons";
 import {PARAMETER_TYPE} from "@shapediver/viewer.session";
 import "instruments/sentry";
 import React from "react";
