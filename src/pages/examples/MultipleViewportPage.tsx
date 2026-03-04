@@ -1,9 +1,9 @@
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
+import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
 import TabsComponent, {
 	ITabsComponentProps,
-} from "@AppBuilderShared/components/ui/TabsComponent";
+} from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
 import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
 import {
 	IUseSessionDto,

@@ -1,11 +1,11 @@
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
+import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import TabsComponent, {
 	ITabsComponentProps,
-} from "@AppBuilderShared/components/ui/TabsComponent";
+} from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
 import {useSessionWithAppBuilder} from "@AppBuilderShared/hooks/shapediver/appbuilder/useSessionWithAppBuilder";
 import {useDefineGenericParameters} from "@AppBuilderLib/entities/parameter/model/useDefineGenericParameters";
 import {useSessionPropsExport} from "@AppBuilderLib/entities/export/model/useSessionPropsExport";

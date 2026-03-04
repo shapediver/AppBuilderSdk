@@ -1,5 +1,5 @@
-import NotificationWrapper from "@AppBuilderShared/components/ui/NotificationWrapper";
-import {useCustomTheme} from "@AppBuilderShared/hooks/ui/useCustomTheme";
+import NotificationWrapper from "@AppBuilderLib/features/notifications/ui/NotificationWrapper";
+import {useCustomTheme} from "@AppBuilderLib/shared/ui/theme/useCustomTheme";
 import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
 import NoMatchPage from "@AppBuilderShared/pages/misc/NoMatchPage";
 import "@mantine/charts/styles.css";

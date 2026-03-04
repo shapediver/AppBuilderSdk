@@ -1,5 +1,5 @@
 import {roleUserOrAbove} from "@AppBuilderLib/shared/lib/platform";
-import useAsync from "@AppBuilderShared/hooks/misc/useAsync";
+import useAsync from "@AppBuilderLib/shared/lib/useAsync";
 import {IModelLibraryTabProps} from "@AppBuilderShared/pages/platform/LibraryPage";
 import {useShapeDiverStorePlatform} from "@AppBuilderShared/store/useShapeDiverStorePlatform";
 import {ModelCacheKeyEnum} from "@AppBuilderShared/types/store/shapediverStorePlatformModels";

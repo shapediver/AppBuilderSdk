@@ -84,14 +84,18 @@ Confirm? (yes / no / modify)
 
 For each file in the plan:
 
-1. Create the target directory if needed
-2. Copy the file to the new location
+1. Create the target directory if needed (`mkdir -p`)
+2. **Move the file using `git mv`** inside the submodule (`src/shared`):
+   ```bash
+   cd src/shared && git mv old/path/File.tsx new/path/File.tsx
+   ```
+   This preserves git history and shows the move as a rename (`R`) instead of delete+add.
+   **NEVER use `cp` + `delete`** — git won't detect the rename and will show `D` + `A`.
 3. Update internal imports within the moved file (use `@AppBuilderLib/` alias)
 4. Find ALL files that import the moved file (search the entire `src/` tree)
 5. Update imports in every dependent file to point to the new path
 6. **Create or update barrel `index.ts` files** (see Barrel Index Rules below)
-7. Delete the old file
-8. Clean up empty directories and stale barrel exports from the old location
+7. Clean up empty directories and stale barrel exports from the old location
 
 After each file, briefly report:
 ```
