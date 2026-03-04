@@ -4,7 +4,7 @@ import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/
 import TabsComponent, {
 	ITabsComponentProps,
 } from "@AppBuilderShared/components/ui/TabsComponent";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
 import {
 	IUseSessionDto,
 	useSession,

@@ -4,10 +4,10 @@ import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderShared/c
 import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderSceneTreeExplorerWidgetComponent";
 import {NumberAttributeThemeProps} from "@AppBuilderShared/components/shapediver/appbuilder/widgets/attributes/NumberAttribute";
 import {StringAttributeThemeProps} from "@AppBuilderShared/components/shapediver/appbuilder/widgets/attributes/StringAttribute";
-import ParameterDraggingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDraggingComponent";
-import ParameterDrawingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDrawingComponent";
-import ParameterGumballComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterGumballComponent";
-import ParameterSelectionComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterSelectionComponent";
+import ParameterDraggingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDraggingComponent";
+import ParameterDrawingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDrawingComponent";
+import ParameterGumballComponent from "@AppBuilderLib/entities/parameter/ui/ParameterGumballComponent";
+import ParameterSelectionComponent from "@AppBuilderLib/entities/parameter/ui/ParameterSelectionComponent";
 import ViewportAnchor2d, {
 	ViewportAnchor2dThemeProps,
 } from "@AppBuilderShared/components/shapediver/viewport/anchors/ViewportAnchor2d";
@@ -26,7 +26,7 @@ import ZoomButton from "@AppBuilderShared/components/shapediver/viewport/buttons
 import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
 import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import {IComponentContext} from "@AppBuilderLib/shared/lib/ComponentContext.types";
+import {IComponentContext} from "@AppBuilderLib/features/appbuilder/config/ComponentContext.types";
 import {
 	AppBuilderContainerNameType,
 	isAttributeVisualizationWidget,
