@@ -56,6 +56,8 @@ For each file (and its related files), determine:
 - **Slice**: functional domain (e.g., notifications, parameters, viewport, exports)
 - **Segment**: ui / model / api / lib / config
 
+**Analyze consumers**: Search for all files that import the target file. If the file is predominantly imported by a specific FSD slice (e.g., most consumers are in `entities/parameter/`), this is a strong signal that the file belongs in that slice. Consumer distribution should influence the destination more than the file's directory of origin.
+
 Target path pattern: `src/shared/{layer}/{slice}/{segment}/{FileName}`
 
 ### Step 4: Present migration plan (WAIT FOR CONFIRMATION)
