@@ -1,22 +1,22 @@
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
+import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
+import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import TabsComponent, {
 	ITabsComponentProps,
-} from "@AppBuilderShared/components/ui/TabsComponent";
-import {useSessionWithAppBuilder} from "@AppBuilderShared/hooks/shapediver/appbuilder/useSessionWithAppBuilder";
-import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
-import {useSessionPropsExport} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsExport";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
-import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+} from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
+import {useSessionWithAppBuilder} from "@AppBuilderLib/features/appbuilder/model/useSessionWithAppBuilder";
+import {useDefineGenericParameters} from "@AppBuilderLib/entities/parameter/model/useDefineGenericParameters";
+import {useSessionPropsExport} from "@AppBuilderLib/entities/export/model/useSessionPropsExport";
+import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
+import {useOutputMaterial} from "@AppBuilderLib/entities/output/model/useOutputMaterial";
+import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
-} from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import {Logger} from "@AppBuilderShared/utils/logger";
+} from "@AppBuilderLib/entities/parameter/config/shapediverStoreParameters";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import {
 	IMaterialStandardDataProperties,
 	MATERIAL_TYPE,

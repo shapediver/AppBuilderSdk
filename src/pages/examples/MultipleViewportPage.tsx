@@ -1,15 +1,15 @@
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
+import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
 import TabsComponent, {
 	ITabsComponentProps,
-} from "@AppBuilderShared/components/ui/TabsComponent";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
+} from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
+import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
 import {
 	IUseSessionDto,
 	useSession,
-} from "@AppBuilderShared/hooks/shapediver/useSession";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+} from "@AppBuilderLib/entities/session/model/useSession";
+import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
 import React, {useMemo} from "react";

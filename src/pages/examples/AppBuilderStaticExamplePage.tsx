@@ -1,23 +1,23 @@
-import AppBuilderImage from "@AppBuilderShared/components/shapediver/appbuilder/AppBuilderImage";
-import AppBuilderTextWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderTextWidgetComponent";
-import AcceptRejectButtons from "@AppBuilderShared/components/shapediver/ui/AcceptRejectButtons";
-import ParametersAndExportsAccordionComponent from "@AppBuilderShared/components/shapediver/ui/ParametersAndExportsAccordionComponent";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import useAppBuilderSettings from "@AppBuilderShared/hooks/shapediver/appbuilder/useAppBuilderSettings";
-import {useDefineGenericParameters} from "@AppBuilderShared/hooks/shapediver/parameters/useDefineGenericParameters";
-import {useSessionPropsParameter} from "@AppBuilderShared/hooks/shapediver/parameters/useSessionPropsParameter";
-import useDefaultSessionDto from "@AppBuilderShared/hooks/shapediver/useDefaultSessionDto";
-import {useSession} from "@AppBuilderShared/hooks/shapediver/useSession";
-import {useOutputMaterial} from "@AppBuilderShared/hooks/shapediver/viewer/useOutputMaterial";
+import AppBuilderImage from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderImage";
+import AppBuilderTextWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderTextWidgetComponent";
+import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
+import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
+import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
+import useAppBuilderSettings from "@AppBuilderLib/features/appbuilder/model/useAppBuilderSettings";
+import {useDefineGenericParameters} from "@AppBuilderLib/entities/parameter/model/useDefineGenericParameters";
+import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
+import useDefaultSessionDto from "@AppBuilderLib/entities/session/model/useDefaultSessionDto";
+import {useSession} from "@AppBuilderLib/entities/session/model/useSession";
+import {useOutputMaterial} from "@AppBuilderLib/entities/output/model/useOutputMaterial";
 import AppBuilderTemplateSelector from "@AppBuilderShared/pages/templates/AppBuilderTemplateSelector";
-import {IAppBuilderSettingsSession} from "@AppBuilderShared/types/shapediver/appbuilder";
+import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {
 	IGenericParameterDefinition,
 	IGenericParameterExecutor,
-} from "@AppBuilderShared/types/store/shapediverStoreParameters";
-import {Logger} from "@AppBuilderShared/utils/logger";
+} from "@AppBuilderLib/entities/parameter/config/shapediverStoreParameters";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import {
 	IMaterialStandardDataProperties,
 	MATERIAL_TYPE,
