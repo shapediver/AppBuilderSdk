@@ -1,9 +1,3 @@
-import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
-import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
-import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
-import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderSceneTreeExplorerWidgetComponent";
-import {NumberAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/NumberAttribute";
-import {StringAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/StringAttribute";
 import ParameterDraggingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDraggingComponent";
 import ParameterDrawingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDrawingComponent";
 import ParameterGumballComponent from "@AppBuilderLib/entities/parameter/ui/ParameterGumballComponent";
@@ -14,6 +8,7 @@ import ViewportAnchor2d, {
 import ViewportAnchor3d, {
 	ViewportAnchor3dThemeProps,
 } from "@AppBuilderLib/entities/viewport-anchor/ui/ViewportAnchor3d";
+import {ViewportIconButtonEnum} from "@AppBuilderLib/entities/viewport/config/viewportIcons";
 import ArButton from "@AppBuilderLib/entities/viewport/ui/ArButton";
 import CamerasButton from "@AppBuilderLib/entities/viewport/ui/CamerasButton";
 import FullscreenButton from "@AppBuilderLib/entities/viewport/ui/FullscreenButton";
@@ -22,10 +17,10 @@ import HistoryMenuButton from "@AppBuilderLib/entities/viewport/ui/HistoryMenuBu
 import RedoButton from "@AppBuilderLib/entities/viewport/ui/RedoButton";
 import ReloadButton from "@AppBuilderLib/entities/viewport/ui/ReloadButton";
 import UndoButton from "@AppBuilderLib/entities/viewport/ui/UndoButton";
-import ZoomButton from "@AppBuilderLib/entities/viewport/ui/ZoomButton";
 import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
 import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
+import ZoomButton from "@AppBuilderLib/entities/viewport/ui/ZoomButton";
 import {IComponentContext} from "@AppBuilderLib/features/appbuilder/config/ComponentContext.types";
 import {
 	AppBuilderContainerNameType,
@@ -33,7 +28,12 @@ import {
 	isCameraAction,
 	isSceneTreeExplorerWidget,
 } from "@AppBuilderLib/features/appbuilder/config/appbuilder";
-import {ViewportIconButtonEnum} from "@AppBuilderLib/entities/viewport/config/viewportIcons";
+import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
+import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
+import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
+import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderSceneTreeExplorerWidgetComponent";
+import {NumberAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/NumberAttribute";
+import {StringAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/StringAttribute";
 import {PARAMETER_TYPE} from "@shapediver/viewer.session";
 import "instruments/sentry";
 import React from "react";

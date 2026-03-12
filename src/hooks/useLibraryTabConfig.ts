@@ -1,8 +1,8 @@
+import {ModelCacheKeyEnum} from "@AppBuilderLib/entities/model-card/config/shapediverStorePlatformModels";
 import {roleUserOrAbove} from "@AppBuilderLib/shared/lib/platform";
 import useAsync from "@AppBuilderLib/shared/lib/useAsync";
-import {IModelLibraryTabProps} from "@AppBuilderShared/pages/platform/LibraryPage";
 import {useShapeDiverStorePlatform} from "@AppBuilderLib/shared/model/useShapeDiverStorePlatform";
-import {ModelCacheKeyEnum} from "@AppBuilderLib/entities/model-card/config/shapediverStorePlatformModels";
+import {IModelLibraryTabProps} from "@AppBuilderShared/pages/platform/LibraryPage";
 import {useEffect, useState} from "react";
 
 interface Props {

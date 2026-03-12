@@ -1,5 +1,5 @@
-import {Icon} from "@AppBuilderLib/shared/ui/icon";
 import ModelCard from "@AppBuilderLib/shared/ui/card/ExampleModelCard";
+import {Icon} from "@AppBuilderLib/shared/ui/icon";
 import {
 	Blockquote,
 	Card,
