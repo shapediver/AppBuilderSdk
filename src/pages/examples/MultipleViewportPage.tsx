@@ -1,15 +1,15 @@
-import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
-import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
-import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
-import TabsComponent, {
-	ITabsComponentProps,
-} from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
 import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
+import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
 import {
 	IUseSessionDto,
 	useSession,
 } from "@AppBuilderLib/entities/session/model/useSession";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
 import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
+import TabsComponent, {
+	ITabsComponentProps,
+} from "@AppBuilderLib/shared/ui/tabs/TabsComponent";
+import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
 import React, {useMemo} from "react";

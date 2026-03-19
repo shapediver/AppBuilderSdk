@@ -1,12 +1,12 @@
 import NotificationWrapper from "@AppBuilderLib/features/notifications/ui/NotificationWrapper";
-import {useCustomTheme} from "@AppBuilderLib/shared/ui/theme/useCustomTheme";
-import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
-import LoaderPage from "@AppBuilderShared/pages/misc/LoaderPage";
-import LibraryPage from "@AppBuilderShared/pages/platform/LibraryPage";
 import {
 	QUERYPARAM_SETTINGSURL,
 	QUERYPARAM_SLUG,
 } from "@AppBuilderLib/shared/config/queryparams";
+import {useCustomTheme} from "@AppBuilderLib/shared/ui/theme/useCustomTheme";
+import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
+import LoaderPage from "@AppBuilderShared/pages/misc/LoaderPage";
+import LibraryPage from "@AppBuilderShared/pages/platform/LibraryPage";
 import "@mantine/charts/styles.css";
 import {Center, MantineProvider} from "@mantine/core";
 import "@mantine/core/styles.css";

@@ -2,6 +2,8 @@ import {
 	DEFAULT_TRACKING_PARAMS,
 	QUERYPARAM_TRACKING_DOMAIN,
 } from "@AppBuilderLib/shared/config/queryparams";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
+import {roundToBracket} from "@AppBuilderLib/shared/lib/numerics";
 import {isRunningInPlatform} from "@AppBuilderLib/shared/lib/platform";
 import {
 	combineTrackers,
@@ -9,8 +11,6 @@ import {
 	setDefaultTrackerProps,
 } from "@AppBuilderLib/shared/lib/TrackerContext";
 import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
-import {Logger} from "@AppBuilderLib/shared/lib/logger";
-import {roundToBracket} from "@AppBuilderLib/shared/lib/numerics";
 import Plausible from "plausible-tracker";
 import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
 
