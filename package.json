@@ -55,6 +55,7 @@
     "optimize": "tsc && vite optimize --force",
     "preview": "vite preview",
     "eslint": "eslint .",
+    "eslint-fix": "eslint --fix .",
     "prettier": "prettier --write ./src/ ./*.ts",
     "test": "jest",
     "convert-slug-data": "tsx ./scripts/convertSlugData.ts",
