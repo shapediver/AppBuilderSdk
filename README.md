@@ -118,6 +118,11 @@ Install dependencies:
 
 ```pnpm i```
 
+Install submodule:
+
+```git submodule init```
+```git submodule update```
+
 Start local development server: 
 
 ```pnpm start```
