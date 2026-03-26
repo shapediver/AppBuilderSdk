@@ -32,6 +32,9 @@ importers:
       '@mantine/notifications':
         specifier: 8.3.14
         version: 8.3.14(@mantine/core@8.3.14(@mantine/hooks@8.3.14(react@19.2.4))(@types/react@18.3.28)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@mantine/hooks@8.3.14(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@plausible-analytics/tracker':
+        specifier: ^0.4.5
+        version: 0.4.5
       '@sentry/react':
         specifier: 8.55.0
         version: 8.55.0(react@19.2.4)
@@ -95,9 +98,6 @@ importers:
       openai:
         specifier: 4.104.0
         version: 4.104.0(ws@8.19.0)(zod@4.4.3)
-      plausible-tracker:
-        specifier: 0.3.9
-        version: 0.3.9
       post-robot:
         specifier: 8.0.32
         version: 8.0.32
@@ -128,9 +128,6 @@ importers:
       unist-util-visit:
         specifier: 5.1.0
         version: 5.1.0
-      uuid:
-        specifier: 10.0.0
-        version: 10.0.0
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -1600,6 +1597,9 @@ packages:
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
+  '@plausible-analytics/tracker@0.4.5':
+    resolution: {integrity: sha512-6BfAGejXY+YA3Cw6LYT2Zpn4hTxDtPQAawFsYUsQCOg78wIS5C4deAGXTfJffa5VleMWITv5lpJ/EYuQBl1tPA==}
+
   '@playwright/test@1.60.0':
     resolution: {integrity: sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag==}
     engines: {node: '>=18'}
@@ -1936,16 +1936,16 @@ packages:
     resolution: {integrity: sha512-L0M3fGRoxL/uCN2cQyLu0eB1vAQmxrCZkqLEg/oEt8vNUehK8H3YlZkR5vxKZEwNKGX0idy76h2elJ0o9ZjTWQ==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.platform-api-sdk-v1/2.29.11/4fbe9e60d37a9848c1c90929d211ec6b25fd51ed}
 
   '@shapediver/sdk.sdtf-core@1.7.2':
-    resolution: {integrity: sha512-JiPipWDY8CE646hcZEulngvZYuzBe45+J2n+lEof5Du5CHgdzsoDTQv2HuObTdEIKwLq/QGs7kv/CHwWq3sEbg==}
+    resolution: {integrity: sha512-JiPipWDY8CE646hcZEulngvZYuzBe45+J2n+lEof5Du5CHgdzsoDTQv2HuObTdEIKwLq/QGs7kv/CHwWq3sEbg==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-core/1.7.2/d2c24de38f402fa98113e8d689f5ba9b005adba8}
 
   '@shapediver/sdk.sdtf-geometry@1.7.2':
-    resolution: {integrity: sha512-cOiMGF3jLIbStYu1MJyu1+ynoD3ZcLS9z2mynD/sy16a6IBfVqqXKuOrI19qnEXvcBUrqWKFqyvbh3Su4n0olw==}
+    resolution: {integrity: sha512-cOiMGF3jLIbStYu1MJyu1+ynoD3ZcLS9z2mynD/sy16a6IBfVqqXKuOrI19qnEXvcBUrqWKFqyvbh3Su4n0olw==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-geometry/1.7.2/e88632362c810c130d90241e529f3d224e5cf767}
 
   '@shapediver/sdk.sdtf-primitives@1.7.2':
-    resolution: {integrity: sha512-hC17fd6KdByIAk49wr3rhJbGaXLmCk8S4IBX72567wEfkiX+DCySJ7uW9PEUWt6XMBGZAhZ3vYIwbe7Khaz7pA==}
+    resolution: {integrity: sha512-hC17fd6KdByIAk49wr3rhJbGaXLmCk8S4IBX72567wEfkiX+DCySJ7uW9PEUWt6XMBGZAhZ3vYIwbe7Khaz7pA==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-primitives/1.7.2/c38e291166c321689c2963b6824b224c21e941bd}
 
   '@shapediver/sdk.sdtf-v1@1.7.2':
-    resolution: {integrity: sha512-C3IEUooSRDCfK9hrTCtU1A3t4Yk2sva7RaoHzPTLucw0BhHMWPhe+jbZ8//inVb6pkEmNrva6/6igU6w+ZNogQ==}
+    resolution: {integrity: sha512-C3IEUooSRDCfK9hrTCtU1A3t4Yk2sva7RaoHzPTLucw0BhHMWPhe+jbZ8//inVb6pkEmNrva6/6igU6w+ZNogQ==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-v1/1.7.2/522aef077c2206949686687f2b455917eba0dc0e}
     hasBin: true
 
   '@shapediver/sdk.stargate-sdk-core@1.3.2':
@@ -1955,115 +1955,115 @@ packages:
     resolution: {integrity: sha512-iYRkb3J1pkQ5mNjbZ9lnijIJqWX95WXtkjyOrZFLhOO1H64Tq+E3Q9h9uNo4pIPLwzxbi81tudNvIZLroOqXTQ==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.stargate-sdk-v1/1.6.2/294ba856927ce8f818f4c6b2626fb515d81d09aa}
 
   '@shapediver/viewer.api.general@3.17.0':
-    resolution: {integrity: sha512-j8L7GuFuEClr5JsMRiK6EABcIbhFwFghUB2ljvutZr1uy3hOS5T2iDNWEsc1/7SFxEoDC9AiKvdEEbrpz7BgDQ==}
+    resolution: {integrity: sha512-j8L7GuFuEClr5JsMRiK6EABcIbhFwFghUB2ljvutZr1uy3hOS5T2iDNWEsc1/7SFxEoDC9AiKvdEEbrpz7BgDQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.api.general/3.17.0/461a0e986df1a861ca9418f9db9709a10e46f371}
 
   '@shapediver/viewer.creation-control-center.session@3.17.0':
-    resolution: {integrity: sha512-9QK6Z3xSKgU2lRPdVq/+QVYkEb4aO70pkzkoj4V/5gh6fMr9R3yGLNoj0x5eTR0Hh2A01Wng5//fgyQPvbxwEg==}
+    resolution: {integrity: sha512-9QK6Z3xSKgU2lRPdVq/+QVYkEb4aO70pkzkoj4V/5gh6fMr9R3yGLNoj0x5eTR0Hh2A01Wng5//fgyQPvbxwEg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.creation-control-center.session/3.17.0/f3b9314e95dabca17d1f16efaef2110d3b1a9889}
 
   '@shapediver/viewer.creation-control-center.viewport@3.17.0':
-    resolution: {integrity: sha512-o5BUyJURxqt7eS7lHOiVqjXwLbJm+8vhJv0zoA1e/PPtKa3ykytjASg3XYgvdLEbtlOf2a0aCenYgvnxM+5lmA==}
+    resolution: {integrity: sha512-o5BUyJURxqt7eS7lHOiVqjXwLbJm+8vhJv0zoA1e/PPtKa3ykytjASg3XYgvdLEbtlOf2a0aCenYgvnxM+5lmA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.creation-control-center.viewport/3.17.0/9a16c2ccfd4bd333d8b679bdce9dbd3ac6a40d30}
 
   '@shapediver/viewer.data-engine.data-engine@3.17.0':
-    resolution: {integrity: sha512-i4AiKLsgCnf7OOTjvPy8hVAcmcUZdM4V57Cz1Vt31fLL1p1U5I/RlrME+kPbbO4fM0khAZlHs05zxpblxpHOLQ==}
+    resolution: {integrity: sha512-i4AiKLsgCnf7OOTjvPy8hVAcmcUZdM4V57Cz1Vt31fLL1p1U5I/RlrME+kPbbO4fM0khAZlHs05zxpblxpHOLQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.data-engine/3.17.0/7a62a9b071edec8a89f91a5aec122bb5e54b792b}
 
   '@shapediver/viewer.data-engine.geometry-engine@3.17.0':
-    resolution: {integrity: sha512-pcXe4zsNi1u47GJJWxKfbSKGi0chGJMvuGZsLyMoUwStUPtIbHwOj+zvgqlYMFKsUrXDtOLHgAo9IXz3m8lntw==}
+    resolution: {integrity: sha512-pcXe4zsNi1u47GJJWxKfbSKGi0chGJMvuGZsLyMoUwStUPtIbHwOj+zvgqlYMFKsUrXDtOLHgAo9IXz3m8lntw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.geometry-engine/3.17.0/8882aa22e7e9f55609c16af461eb7c0aa24b17e5}
 
   '@shapediver/viewer.data-engine.gltf-converter@3.17.0':
-    resolution: {integrity: sha512-Go/7KIWO9SCN5uILgh8WpzazYs/2iQjgE3RWSi918t6IrRbS0PJy3ckGsmv87t5lkGbJtq5Y3YHju7ccLjgRfQ==}
+    resolution: {integrity: sha512-Go/7KIWO9SCN5uILgh8WpzazYs/2iQjgE3RWSi918t6IrRbS0PJy3ckGsmv87t5lkGbJtq5Y3YHju7ccLjgRfQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.gltf-converter/3.17.0/bf42c932abd19b33e6b5a595c59365939fb5adce}
 
   '@shapediver/viewer.data-engine.html-element-anchor-engine@3.17.0':
-    resolution: {integrity: sha512-HFag7MU0R96o0RCQ2ntC+UCxbG5wlJqiv111dHTr0VUHxrUE1PNquE+fyjLCtxp6VTakC6ommKA/+IN+tx9kRg==}
+    resolution: {integrity: sha512-HFag7MU0R96o0RCQ2ntC+UCxbG5wlJqiv111dHTr0VUHxrUE1PNquE+fyjLCtxp6VTakC6ommKA/+IN+tx9kRg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.html-element-anchor-engine/3.17.0/f9966847489f8cdb6d6de6280a2f9190e441e32c}
 
   '@shapediver/viewer.data-engine.material-database-engine@3.17.0':
-    resolution: {integrity: sha512-X3jUeinOEU5jLPxFoncA6cC8pwtngKOPDIba487EYKVSEflEmL4zfn1OJZXpZ+Q4l2k6JZyEhU8Yfdq8lQmXqQ==}
+    resolution: {integrity: sha512-X3jUeinOEU5jLPxFoncA6cC8pwtngKOPDIba487EYKVSEflEmL4zfn1OJZXpZ+Q4l2k6JZyEhU8Yfdq8lQmXqQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.material-database-engine/3.17.0/cd1808b2265ef7b46a518c17be163373655cf01f}
 
   '@shapediver/viewer.data-engine.material-engine@3.17.0':
-    resolution: {integrity: sha512-roSEuXk5n2a9WgaXhjP/ChCz0GEOTmY4fdiWNA/VtMYVqkF1YWTV+JLQSHT3BFuns+gJvOkcuKpFUtghPErsEA==}
+    resolution: {integrity: sha512-roSEuXk5n2a9WgaXhjP/ChCz0GEOTmY4fdiWNA/VtMYVqkF1YWTV+JLQSHT3BFuns+gJvOkcuKpFUtghPErsEA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.material-engine/3.17.0/b73d308f317195a12a5fe91457743bb82ff56a5a}
 
   '@shapediver/viewer.data-engine.sdtf-engine@3.17.0':
-    resolution: {integrity: sha512-hp2fl1sQf6EDrnE95LpndZ6Aczg8sicr50tW54jeOBOZ+SrIw3dj/6c74SeIM58chd62j4miNQ55pEtC3/c48g==}
+    resolution: {integrity: sha512-hp2fl1sQf6EDrnE95LpndZ6Aczg8sicr50tW54jeOBOZ+SrIw3dj/6c74SeIM58chd62j4miNQ55pEtC3/c48g==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.sdtf-engine/3.17.0/d8041f1e8d109e7f83bf7b502d434d5942395f7d}
 
   '@shapediver/viewer.data-engine.shared-types@3.17.0':
-    resolution: {integrity: sha512-3bLP80/CdnGAFPrThHjvfoi3FYpQBuT33d6zxbsXteesZMtgbBXRFTp6zJMCW/1CwB5YANP1CLc6m1xmCV6MfA==}
+    resolution: {integrity: sha512-3bLP80/CdnGAFPrThHjvfoi3FYpQBuT33d6zxbsXteesZMtgbBXRFTp6zJMCW/1CwB5YANP1CLc6m1xmCV6MfA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.shared-types/3.17.0/0279212a9962695aec50d3dbcd1f02b72931c97c}
 
   '@shapediver/viewer.data-engine.tag3d-engine@3.17.0':
-    resolution: {integrity: sha512-Kt04ApXBC3MsnKJPS2P69Slw2gaTA2PyAALoEbeb2c4ie3F1C7e0QHaGu+YU+1Hs03s9IBCwCxhsSDYHi3Lm4w==}
+    resolution: {integrity: sha512-Kt04ApXBC3MsnKJPS2P69Slw2gaTA2PyAALoEbeb2c4ie3F1C7e0QHaGu+YU+1Hs03s9IBCwCxhsSDYHi3Lm4w==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.tag3d-engine/3.17.0/f344c2beb1415bdc4d5531482328e67ccc78a17c}
 
   '@shapediver/viewer.features.attribute-visualization@3.17.0':
-    resolution: {integrity: sha512-i58kwdzBuhHkJ2jzLI+DLyiOCNXCaL9zUo6YPdG1QyfnVWPIvPXw0OLG7jf2Vlkl8MYid5HYL2B7SRUC5HPKvA==}
+    resolution: {integrity: sha512-i58kwdzBuhHkJ2jzLI+DLyiOCNXCaL9zUo6YPdG1QyfnVWPIvPXw0OLG7jf2Vlkl8MYid5HYL2B7SRUC5HPKvA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.attribute-visualization/3.17.0/9d587127b230887637979e849c33da69111c4a5f}
 
   '@shapediver/viewer.features.drawing-tools@3.17.0':
-    resolution: {integrity: sha512-l7OMStnpeoWTL2bTepXVZL/H07XErYRIhbrinTd8uPWcNovbxr6A2vJAHrsG9J4aPDwR36uETAXiwFdMZp7FkQ==}
+    resolution: {integrity: sha512-l7OMStnpeoWTL2bTepXVZL/H07XErYRIhbrinTd8uPWcNovbxr6A2vJAHrsG9J4aPDwR36uETAXiwFdMZp7FkQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.drawing-tools/3.17.0/6a84b1817f41045b1cd7828296d47f99a539017d}
 
   '@shapediver/viewer.features.interaction@3.17.0':
-    resolution: {integrity: sha512-ZugKhRiYIvr1xzsN/Wf9IbZUdbhZgGzwYus9dGF1l7CM47mt4nrvhrWjDuI87LriVCRURcB+IrBL6JZMDASFdg==}
+    resolution: {integrity: sha512-ZugKhRiYIvr1xzsN/Wf9IbZUdbhZgGzwYus9dGF1l7CM47mt4nrvhrWjDuI87LriVCRURcB+IrBL6JZMDASFdg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.interaction/3.17.0/5048882e679284218dfd15b472df2157bdd47f9e}
 
   '@shapediver/viewer.features.transformation-tools@3.17.0':
-    resolution: {integrity: sha512-EoyiDM472IRguNTbK/zxkzPn+KUgqFYmQux1nxVqgGOqi1KMgSlyU+vzV51smeugJ29h+pV/KBw7+0pUca11Cg==}
+    resolution: {integrity: sha512-EoyiDM472IRguNTbK/zxkzPn+KUgqFYmQux1nxVqgGOqi1KMgSlyU+vzV51smeugJ29h+pV/KBw7+0pUca11Cg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.transformation-tools/3.17.0/d486dac5cc1939d65d021cb06b96127a2bd7d5ad}
 
   '@shapediver/viewer.rendering-engine.animation-engine@3.17.0':
-    resolution: {integrity: sha512-/Vaj5x6LzU6KjUFZcROhXJWgQ2YcJIe4ZTU7ti9dR63IcooV0A8wcPryew8RG8b9lvnwOP51xJ4Ul+e4TaIZOg==}
+    resolution: {integrity: sha512-/Vaj5x6LzU6KjUFZcROhXJWgQ2YcJIe4ZTU7ti9dR63IcooV0A8wcPryew8RG8b9lvnwOP51xJ4Ul+e4TaIZOg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.animation-engine/3.17.0/07812ee5c415513f1a4e54d2b66f97df05ca00e7}
 
   '@shapediver/viewer.rendering-engine.animation-frame-engine@3.17.0':
-    resolution: {integrity: sha512-VHPHKmsIImfg41FBnL/WyuwSyUUK6ci4aYajWSF3+7VtAWKdbxU3wNTD8hXGyi+mAvaPV9AKxTXPsyk+op2GCg==}
+    resolution: {integrity: sha512-VHPHKmsIImfg41FBnL/WyuwSyUUK6ci4aYajWSF3+7VtAWKdbxU3wNTD8hXGyi+mAvaPV9AKxTXPsyk+op2GCg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.animation-frame-engine/3.17.0/689f9f70a2d442d3dcdd3545e610d50367cc4b29}
 
   '@shapediver/viewer.rendering-engine.camera-engine@3.17.0':
-    resolution: {integrity: sha512-ga1oXT6cqWgxeSqVlYYG+A8UTDG3E5g7FAi/tr11dRPzVRJ/fZiQqs1Am47tmBliN+p/hM55JNRqavf6ftAj8A==}
+    resolution: {integrity: sha512-ga1oXT6cqWgxeSqVlYYG+A8UTDG3E5g7FAi/tr11dRPzVRJ/fZiQqs1Am47tmBliN+p/hM55JNRqavf6ftAj8A==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.camera-engine/3.17.0/8713248c6c75552ea22a6d81bda21c6447552ba7}
 
   '@shapediver/viewer.rendering-engine.canvas-engine@3.17.0':
-    resolution: {integrity: sha512-P2J89Cpb0RUzFMn3IcbCgxdCtig5vXsc5Yc7/Jh1ocBbcpcY7ZHypVmtGSuPVx0lu5JA/rA5Xp9oBSlHI6dXfQ==}
+    resolution: {integrity: sha512-P2J89Cpb0RUzFMn3IcbCgxdCtig5vXsc5Yc7/Jh1ocBbcpcY7ZHypVmtGSuPVx0lu5JA/rA5Xp9oBSlHI6dXfQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.canvas-engine/3.17.0/a38a1ae9a612fa645d58a9cf77835f04ad1a34e6}
 
   '@shapediver/viewer.rendering-engine.intersection-engine@3.17.0':
-    resolution: {integrity: sha512-EPhw4UZouuuoy27qDtVU4a3bXdV/CM9aFoZWZ54yPHpzza7PrXzOg+em4/35FK95YUrrrYRJMKPBI4K21Fy54g==}
+    resolution: {integrity: sha512-EPhw4UZouuuoy27qDtVU4a3bXdV/CM9aFoZWZ54yPHpzza7PrXzOg+em4/35FK95YUrrrYRJMKPBI4K21Fy54g==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.intersection-engine/3.17.0/9d18e55d65905309ce4cab71058cff266e3c5dbd}
 
   '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.17.0':
-    resolution: {integrity: sha512-bJ8kbOHXrEPOmzR9dPfx09XLCB4ZYN4pbaFgs5c5cmZNYa675ZPgTQoV95+3QzZLqakegB1VMGxK7jpHMyoJaQ==}
+    resolution: {integrity: sha512-bJ8kbOHXrEPOmzR9dPfx09XLCB4ZYN4pbaFgs5c5cmZNYa675ZPgTQoV95+3QzZLqakegB1VMGxK7jpHMyoJaQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.intersection-restriction-engine/3.17.0/1bd6c79d20b892151ee97051686dc90b049c008f}
 
   '@shapediver/viewer.rendering-engine.light-engine@3.17.0':
-    resolution: {integrity: sha512-NXApoDFIevlfMW0wkPjEjK+Mq5uN1Kx0fDxo7v0gTk9DMc8Ztbx0+p5aUBRQaOS9I/Ug6+UKQvv2V0Qkl9rFGQ==}
+    resolution: {integrity: sha512-NXApoDFIevlfMW0wkPjEjK+Mq5uN1Kx0fDxo7v0gTk9DMc8Ztbx0+p5aUBRQaOS9I/Ug6+UKQvv2V0Qkl9rFGQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.light-engine/3.17.0/9978d1af0a4f55e475fbdbf359d9366215192324}
 
   '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.17.0':
-    resolution: {integrity: sha512-9LBx6wHtgifvcU9agBRsE6WQwOh4x9Wt85TETGARWPUeWv63OpaqK6bz/utnnr7XZasoG4ApMFClc1NqnbVzUQ==}
+    resolution: {integrity: sha512-9LBx6wHtgifvcU9agBRsE6WQwOh4x9Wt85TETGARWPUeWv63OpaqK6bz/utnnr7XZasoG4ApMFClc1NqnbVzUQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.rendering-engine-threejs/3.17.0/7feb21c43b4831ca356b033543eb2f9bb78e2881}
 
   '@shapediver/viewer.rendering-engine.rendering-engine@3.17.0':
-    resolution: {integrity: sha512-7+JRLT4IKMyG9n6X2ftcUgcc5273NpmXkTfSYCFkMwIhdOxWLTqbvhoju8yabUxOavC7aEXbZYIq9E3dN0p0Ig==}
+    resolution: {integrity: sha512-7+JRLT4IKMyG9n6X2ftcUgcc5273NpmXkTfSYCFkMwIhdOxWLTqbvhoju8yabUxOavC7aEXbZYIq9E3dN0p0Ig==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.rendering-engine/3.17.0/1b8ca246be5b0fae9644a2586f9545adf1c71692}
 
   '@shapediver/viewer.session-engine.session-engine@3.17.0':
-    resolution: {integrity: sha512-yyUPxXoGsT8OL4llB4YtrKxGJzz8hkoOFknW1j7O9ZA/X3BrJFwV6pqeT0c9TxA/ZOkZp/3rAhlMDbMFkOw3yg==}
+    resolution: {integrity: sha512-yyUPxXoGsT8OL4llB4YtrKxGJzz8hkoOFknW1j7O9ZA/X3BrJFwV6pqeT0c9TxA/ZOkZp/3rAhlMDbMFkOw3yg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.session-engine.session-engine/3.17.0/53f745cd05a35eb87916da14933f37c0ad49f89c}
 
   '@shapediver/viewer.session@3.17.0':
-    resolution: {integrity: sha512-jheIipI3ys9ZoWt9pS6tmbatJL7nrY5cMpg1gWXRYajntDjKK3JtzoGqfd2T3ymX14dVlt9eb+BhaUJ+C/pfsA==}
+    resolution: {integrity: sha512-jheIipI3ys9ZoWt9pS6tmbatJL7nrY5cMpg1gWXRYajntDjKK3JtzoGqfd2T3ymX14dVlt9eb+BhaUJ+C/pfsA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.session/3.17.0/85747e7d01974a21ca2308945a82c4422995da32}
 
   '@shapediver/viewer.settings@1.2.5':
-    resolution: {integrity: sha512-tFDe2juvL5Vf+mQNhDLukrncSNgyOSObj1wI26LWJ/SICYSYUGrq+6HjqfayXzFlf10DMJwdte6O5drMbXTwnA==}
+    resolution: {integrity: sha512-tFDe2juvL5Vf+mQNhDLukrncSNgyOSObj1wI26LWJ/SICYSYUGrq+6HjqfayXzFlf10DMJwdte6O5drMbXTwnA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.settings/1.2.5/ee27af9519d08191e81768d2a9d26755d2f11149}
 
   '@shapediver/viewer.shared.build-data@3.17.0':
-    resolution: {integrity: sha512-w/PdOb+GCzECIabR/fFOF5Omw5izXGJ1wgpKACutX8m43IfaAEztNwuX0KNYXph7bm4I/53mZMlDWvPFj/JtCg==}
+    resolution: {integrity: sha512-w/PdOb+GCzECIabR/fFOF5Omw5izXGJ1wgpKACutX8m43IfaAEztNwuX0KNYXph7bm4I/53mZMlDWvPFj/JtCg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.build-data/3.17.0/c01aee37a8d021620d04e51ccd4036368e958b67}
 
   '@shapediver/viewer.shared.global-access-objects@3.17.0':
-    resolution: {integrity: sha512-vQmwQ7qKsV5YDfiFfHgHWL2PU+60VQLcsab4o+i33pAIeekip9sd6qaHTPF216oXpSCg7mgI0Xxyl0T/pCgouw==}
+    resolution: {integrity: sha512-vQmwQ7qKsV5YDfiFfHgHWL2PU+60VQLcsab4o+i33pAIeekip9sd6qaHTPF216oXpSCg7mgI0Xxyl0T/pCgouw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.global-access-objects/3.17.0/e96c20f2eb6d19407915480731ed07605cb0894b}
 
   '@shapediver/viewer.shared.math@3.17.0':
-    resolution: {integrity: sha512-0bNTt2w/2I7Yewa8o6hTaDrxdOJVbhWxzj+u9ioySSeejr8K4a+a0Yi1D74VpdBGUmUFWA+bf+g/DRoJyxPw5g==}
+    resolution: {integrity: sha512-0bNTt2w/2I7Yewa8o6hTaDrxdOJVbhWxzj+u9ioySSeejr8K4a+a0Yi1D74VpdBGUmUFWA+bf+g/DRoJyxPw5g==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.math/3.17.0/1ac91492ee4403581819e3d6dcdc18e11fc5c8a0}
 
   '@shapediver/viewer.shared.node-tree@3.17.0':
-    resolution: {integrity: sha512-6gn8zFcz48TsVEd6hR6MjDnEa4e3ycQLIQLBcw/vzqNotF2vyGkFE9rTtTdutmHoJGF98GOqZBX6fHk3/Iaf7w==}
+    resolution: {integrity: sha512-6gn8zFcz48TsVEd6hR6MjDnEa4e3ycQLIQLBcw/vzqNotF2vyGkFE9rTtTdutmHoJGF98GOqZBX6fHk3/Iaf7w==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.node-tree/3.17.0/bbc5a68966ee8b4570cbde26d17cfdfb6ab0ed6e}
 
   '@shapediver/viewer.shared.services@3.17.0':
-    resolution: {integrity: sha512-vSP7ZGtapJvJzVxT8nsO3+703Ea0LKXsp0NHNHRDdrEfPH6kSMIzlsYwkA3XXlFMnD0yZrwypTnf231F4LQiYA==}
+    resolution: {integrity: sha512-vSP7ZGtapJvJzVxT8nsO3+703Ea0LKXsp0NHNHRDdrEfPH6kSMIzlsYwkA3XXlFMnD0yZrwypTnf231F4LQiYA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.services/3.17.0/457269bfb5e75fc3950df5669effb67cc9070f8a}
 
   '@shapediver/viewer.shared.types@3.17.0':
-    resolution: {integrity: sha512-+uTWsWOAuBHkwd4jJe1spaf1NGxLFdtBiweleBrxswdKl09Q2IZFX8SunBSifChlA5/ko+5u4iFU1zKXl8Xu5g==}
+    resolution: {integrity: sha512-+uTWsWOAuBHkwd4jJe1spaf1NGxLFdtBiweleBrxswdKl09Q2IZFX8SunBSifChlA5/ko+5u4iFU1zKXl8Xu5g==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.types/3.17.0/2feb52b060fae7943475d42f3f02783c526de173}
 
   '@shapediver/viewer.utils.mime-type@1.1.0':
     resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.utils.mime-type/1.1.0/9bb9eb82ce3b2c71836a370d50aa570abcc65ec6}
 
   '@shapediver/viewer.viewport@3.17.0':
-    resolution: {integrity: sha512-/nIkn0+jCCltvSMoIBoDDufNojkTbkQEgAnVlZcDvO8/mxzyB3y7zDMVgd2spoWRhyd8QOurCwJM8Onyz/9+5Q==}
+    resolution: {integrity: sha512-/nIkn0+jCCltvSMoIBoDDufNojkTbkQEgAnVlZcDvO8/mxzyB3y7zDMVgd2spoWRhyd8QOurCwJM8Onyz/9+5Q==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.viewport/3.17.0/57901ff85dbd64895aebbd778e482f8addfc70ad}
 
   '@shapediver/viewer@3.17.0':
-    resolution: {integrity: sha512-LzOiebymCdhcAF8FZqGrIGqp62OrSupgDWsOPBf4DzqzyRIdJspiG5+lDuxtbX2xZ+N3TvnM5yQSwpy8g7wrQw==}
+    resolution: {integrity: sha512-LzOiebymCdhcAF8FZqGrIGqp62OrSupgDWsOPBf4DzqzyRIdJspiG5+lDuxtbX2xZ+N3TvnM5yQSwpy8g7wrQw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer/3.17.0/c627bb86b2b0c6fc2868c2835b54d37e24c5cdf9}
 
   '@sinclair/typebox@0.24.51':
     resolution: {integrity: sha512-1P1OROm/rdubP5aFDSZQILU0vrLCJ4fvHt6EoqHEM+2D/G5MK3bIaymUKLit8Js9gbns5UyJnkP/TZROLw4tUA==}
@@ -6092,11 +6092,6 @@ packages:
     resolution: {integrity: sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==}
     engines: {node: '>=8'}
 
-  plausible-tracker@0.3.9:
-    resolution: {integrity: sha512-hMhneYm3GCPyQon88SZrVJx+LlqhM1kZFQbuAgXPoh/Az2YvO1B6bitT9qlhpiTdJlsT5lsr3gPmzoVjb5CDXA==}
-    engines: {node: '>=10'}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-
   playwright-core@1.60.0:
     resolution: {integrity: sha512-9bW6zvX/m0lEbgTKJ6YppOKx8H3VOPBMOCFh2irXFOT4BbHgrx5hPjwJYLT40Lu+4qtD36qKc/Hn56StUW57IA==}
     engines: {node: '>=18'}
@@ -7819,11 +7814,6 @@ packages:
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
-
-  uuid@10.0.0:
-    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
-    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
-    hasBin: true
 
   uuid@11.1.0:
     resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
@@ -9960,6 +9950,8 @@ snapshots:
   '@oxc-project/types@0.127.0': {}
 
   '@pkgr/core@0.2.9': {}
+
+  '@plausible-analytics/tracker@0.4.5': {}
 
   '@playwright/test@1.60.0':
     dependencies:
@@ -15811,8 +15803,6 @@ snapshots:
     dependencies:
       find-up: 3.0.0
 
-  plausible-tracker@0.3.9: {}
-
   playwright-core@1.60.0: {}
 
   playwright@1.60.0:
@@ -17777,8 +17767,6 @@ snapshots:
   utila@0.4.0: {}
 
   utils-merge@1.0.1: {}
-
-  uuid@10.0.0: {}
 
   uuid@11.1.0: {}
 
