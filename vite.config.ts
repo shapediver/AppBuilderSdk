@@ -68,7 +68,7 @@ export default defineConfig({
 					shapediverViewerMisc: [
 						"@shapediver/viewer.utils.mime-type",
 						"@shapediver/viewer.features.drawing-tools",
-						"@shapediver/viewer.features.gumball",
+						"@shapediver/viewer.features.transformation-tools",
 						"@shapediver/viewer.features.interaction",
 					],
 					stargate: ["@shapediver/sdk.stargate-sdk-v1"],
