@@ -1,6 +1,5 @@
 import ParameterDraggingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDraggingComponent";
 import ParameterDrawingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDrawingComponent";
-import ParameterGumballComponent from "@AppBuilderLib/entities/parameter/ui/ParameterGumballComponent";
 import ParameterSelectionComponent from "@AppBuilderLib/entities/parameter/ui/ParameterSelectionComponent";
 import ViewportAnchor2d, {
 	ViewportAnchor2dThemeProps,
@@ -42,6 +41,10 @@ import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import {SentryErrorReportingContext} from "./instruments/sentry";
+import {
+	ParameterGumballComponent,
+	ParameterRectangleTransformComponent,
+} from "./shared/entities/parameter/ui";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,
@@ -91,6 +94,10 @@ const components: IComponentContext = {
 			dragging: {
 				component: ParameterDraggingComponent,
 				extraBottomPadding: false,
+			},
+			rectangleTransform: {
+				component: ParameterRectangleTransformComponent,
+				extraBottomPadding: true,
 			},
 		},
 	},
