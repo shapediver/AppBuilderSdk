@@ -42,11 +42,14 @@ const useLocalViewer =
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => {
-	// The path is intentionally built at runtime to prevent bundlers from
-	// statically resolving (and erroring on) this import during production builds.
-	const viewerLocalPath = [".", "viewer.local.ts"].join("/");
+	// Use an absolute file:// URL so dynamic import resolves correctly even when
+	// Vite moves the compiled config to a temp directory during builds.
+	const {pathToFileURL} = await import("url");
+	const viewerLocalUrl = pathToFileURL(
+		path.resolve(__dirname, "viewer.local.ts"),
+	).href;
 	const viewerAlias: Record<string, string> = useLocalViewer
-		? (await import(viewerLocalPath)).default
+		? (await import(viewerLocalUrl)).default
 		: {};
 
 	return {
