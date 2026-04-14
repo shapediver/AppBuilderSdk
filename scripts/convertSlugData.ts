@@ -123,13 +123,21 @@ async function getPlatformAccessToken() {
 						`Retrieving model definition for slug: ${slug}`,
 					);
 
-					const modelDef = client.models.get(slug, [
-						SdPlatformModelGetEmbeddableFields.BackendSystem,
-						SdPlatformModelGetEmbeddableFields.Tags,
-						SdPlatformModelGetEmbeddableFields.Ticket,
-						SdPlatformModelGetEmbeddableFields.TokenExportFallback,
-						SdPlatformModelGetEmbeddableFields.User,
-					]);
+					const modelDef = client.models
+						.get(slug, [
+							SdPlatformModelGetEmbeddableFields.BackendSystem,
+							SdPlatformModelGetEmbeddableFields.Tags,
+							SdPlatformModelGetEmbeddableFields.Ticket,
+							SdPlatformModelGetEmbeddableFields.TokenExportFallback,
+							SdPlatformModelGetEmbeddableFields.User,
+						])
+						.catch((error) => {
+							console.error(
+								`Failed to retrieve model definition for slug ${slug} on platform ${platform}:`,
+								error,
+							);
+							throw error;
+						});
 
 					promises.push(modelDef);
 				}
