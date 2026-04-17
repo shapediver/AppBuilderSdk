@@ -40,7 +40,7 @@ export default function AppBuilderBase() {
 			theme={theme}
 			cssVariablesResolver={resolver}
 		>
-			<Notifications />
+			<Notifications notificationMaxHeight={1000} />
 			<NotificationWrapper>
 				<AppBuilderPage />
 			</NotificationWrapper>
