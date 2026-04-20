@@ -1,4 +1,4 @@
-import {Logger} from "@AppBuilderShared/utils/logger";
+import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "reportWebVitals";

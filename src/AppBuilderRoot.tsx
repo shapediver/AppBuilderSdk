@@ -1,39 +1,40 @@
-import RootComponent from "@AppBuilderShared/components/RootComponent";
-import AppBuilderActionCameraComponent from "@AppBuilderShared/components/shapediver/appbuilder/actions/AppBuilderActionCameraComponent";
-import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderAttributeVisualizationWidgetComponent";
-import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderShared/components/shapediver/appbuilder/widgets/AppBuilderSceneTreeExplorerWidgetComponent";
-import {NumberAttributeThemeProps} from "@AppBuilderShared/components/shapediver/appbuilder/widgets/attributes/NumberAttribute";
-import {StringAttributeThemeProps} from "@AppBuilderShared/components/shapediver/appbuilder/widgets/attributes/StringAttribute";
-import ParameterDraggingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDraggingComponent";
-import ParameterDrawingComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterDrawingComponent";
-import ParameterGumballComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterGumballComponent";
-import ParameterSelectionComponent from "@AppBuilderShared/components/shapediver/parameter/ParameterSelectionComponent";
+import ParameterDraggingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDraggingComponent";
+import ParameterDrawingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDrawingComponent";
+import ParameterSelectionComponent from "@AppBuilderLib/entities/parameter/ui/ParameterSelectionComponent";
 import ViewportAnchor2d, {
 	ViewportAnchor2dThemeProps,
-} from "@AppBuilderShared/components/shapediver/viewport/anchors/ViewportAnchor2d";
+} from "@AppBuilderLib/entities/viewport-anchor/ui/ViewportAnchor2d";
 import ViewportAnchor3d, {
 	ViewportAnchor3dThemeProps,
-} from "@AppBuilderShared/components/shapediver/viewport/anchors/ViewportAnchor3d";
-import ArButton from "@AppBuilderShared/components/shapediver/viewport/buttons/ArButton";
-import CamerasButton from "@AppBuilderShared/components/shapediver/viewport/buttons/CamerasButton";
-import FullscreenButton from "@AppBuilderShared/components/shapediver/viewport/buttons/FullscreenButton";
-import FullscreenButton3States from "@AppBuilderShared/components/shapediver/viewport/buttons/FullscreenButton3States";
-import HistoryMenuButton from "@AppBuilderShared/components/shapediver/viewport/buttons/HistoryMenuButton";
-import RedoButton from "@AppBuilderShared/components/shapediver/viewport/buttons/RedoButton";
-import ReloadButton from "@AppBuilderShared/components/shapediver/viewport/buttons/ReloadButton";
-import UndoButton from "@AppBuilderShared/components/shapediver/viewport/buttons/UndoButton";
-import ZoomButton from "@AppBuilderShared/components/shapediver/viewport/buttons/ZoomButton";
-import ViewportComponent from "@AppBuilderShared/components/shapediver/viewport/ViewportComponent";
-import ViewportIcons from "@AppBuilderShared/components/shapediver/viewport/ViewportIcons";
-import ViewportOverlayWrapper from "@AppBuilderShared/components/shapediver/viewport/ViewportOverlayWrapper";
-import {IComponentContext} from "@AppBuilderLib/shared/lib/ComponentContext.types";
+} from "@AppBuilderLib/entities/viewport-anchor/ui/ViewportAnchor3d";
+import {ViewportIconButtonEnum} from "@AppBuilderLib/entities/viewport/config/viewportIcons";
+import ArButton from "@AppBuilderLib/entities/viewport/ui/ArButton";
+import CamerasButton from "@AppBuilderLib/entities/viewport/ui/CamerasButton";
+import FullscreenButton from "@AppBuilderLib/entities/viewport/ui/FullscreenButton";
+import FullscreenButton3States from "@AppBuilderLib/entities/viewport/ui/FullscreenButton3States";
+import HistoryMenuButton from "@AppBuilderLib/entities/viewport/ui/HistoryMenuButton";
+import RedoButton from "@AppBuilderLib/entities/viewport/ui/RedoButton";
+import ReloadButton from "@AppBuilderLib/entities/viewport/ui/ReloadButton";
+import UndoButton from "@AppBuilderLib/entities/viewport/ui/UndoButton";
+import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
+import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
+import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
+import ZoomButton from "@AppBuilderLib/entities/viewport/ui/ZoomButton";
+import {IComponentContext} from "@AppBuilderLib/features/appbuilder/config/ComponentContext.types";
 import {
 	AppBuilderContainerNameType,
 	isAttributeVisualizationWidget,
 	isCameraAction,
 	isSceneTreeExplorerWidget,
-} from "@AppBuilderShared/types/shapediver/appbuilder";
-import {ViewportIconButtonEnum} from "@AppBuilderShared/types/shapediver/viewportIcons";
+} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
+import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
+import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
+import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
+import AppBuilderContainerComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderContainerComponent";
+import AppBuilderFallbackContainerComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderFallbackContainerComponent";
+import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderSceneTreeExplorerWidgetComponent";
+import {NumberAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/NumberAttribute";
+import {StringAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/StringAttribute";
 import {PARAMETER_TYPE} from "@shapediver/viewer.session";
 import "instruments/sentry";
 import React from "react";
@@ -42,6 +43,10 @@ import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import {SentryErrorReportingContext} from "./instruments/sentry";
+import {
+	ParameterGumballComponent,
+	ParameterRectangleTransformComponent,
+} from "./shared/entities/parameter/ui";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,
@@ -92,6 +97,10 @@ const components: IComponentContext = {
 				component: ParameterDraggingComponent,
 				extraBottomPadding: false,
 			},
+			rectangleTransform: {
+				component: ParameterRectangleTransformComponent,
+				extraBottomPadding: true,
+			},
 		},
 	},
 	widgets: {
@@ -114,6 +123,8 @@ const components: IComponentContext = {
 			component: AppBuilderActionCameraComponent,
 		},
 	},
+	containerComponent: AppBuilderContainerComponent,
+	fallbackContainerComponent: AppBuilderFallbackContainerComponent,
 };
 
 root.render(
