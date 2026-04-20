@@ -23,7 +23,7 @@ build_and_deploy() {
         sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/" sentryconfig.local.ts > sentryconfig.ts
     fi
 
-    echo "Building AppBuilder version $version with prefix $prefix"
+    echo "Building AppBuilder ${MAIN_TARGET^} version $version with prefix $prefix"
     vite build --base=$prefix/$version/
     if [ $? -ne 0 ]; then
         echo "Build failed."
@@ -150,10 +150,10 @@ deploying_branch=1
 if [ "$branch" == "development" ] || [ "$branch" == "staging" ]; then
     deploying_branch=1
     version=$branch
-    
-    # And we create a new tag with the name "AppBuilder@branch"
-    git tag -fa "AppBuilder@$branch" -m "Release of branch $branch"
-    git push origin "AppBuilder@$branch" --force
+
+    # And we create a new tag with the name "AppBuilder${MAIN_TARGET^}@branch"
+    git tag -fa "AppBuilder${MAIN_TARGET^}@$branch" -m "Release of branch $branch"
+    git push origin "AppBuilder${MAIN_TARGET^}@$branch" --force
 elif [[ $branch == task/* ]]; then
     deploying_branch=1
     # In this case we have to remove the "task/" prefix
@@ -181,9 +181,9 @@ elif [[ $branch == "master" ]]; then
             git commit -m "Release of version $version"
             git push
 
-            # And we create a new tag with the name "AppBuilder@X.Y.Z"
-            git tag -a "AppBuilder@$version" -m "Release of version $version"
-            git push origin "AppBuilder@$version"
+            # And we create a new tag with the name "AppBuilder${MAIN_TARGET^}@X.Y.Z"
+            git tag -a "AppBuilder${MAIN_TARGET^}@$version" -m "Release of version $version"
+            git push origin "AppBuilder${MAIN_TARGET^}@$version"
         else
             echo "Unsupported version type."
             exit 1
