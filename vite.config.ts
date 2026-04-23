@@ -52,6 +52,32 @@ export default defineConfig(async () => {
 		? (await import(viewerLocalUrl)).default
 		: {};
 
+	// When local viewer source is active, watch its source directories and
+	// restart the dev server when files change.
+	if (useLocalViewer && Object.keys(viewerAlias).length > 0) {
+		// viewerAlias values are already absolute paths from path.resolve() in viewer.local.ts
+		const viewerSrcDirs = [
+			...new Set(Object.values(viewerAlias).map((p) => path.dirname(p))),
+		];
+		plugins.push({
+			name: "viewer-source-restart",
+			configureServer(server) {
+				viewerSrcDirs.forEach((dir) => server.watcher.add(dir));
+				// chokidar emits absolute normalized paths; compare directly
+				server.watcher.on("change", (file) => {
+					if (
+						viewerSrcDirs.some(
+							(dir) =>
+								file === dir || file.startsWith(dir + path.sep),
+						)
+					) {
+						server.restart();
+					}
+				});
+			},
+		} as import("vite").Plugin);
+	}
+
 	return {
 		plugins,
 		server: {
