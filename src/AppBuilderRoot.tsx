@@ -1,6 +1,5 @@
 import ParameterDraggingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDraggingComponent";
 import ParameterDrawingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDrawingComponent";
-import ParameterGumballComponent from "@AppBuilderLib/entities/parameter/ui/ParameterGumballComponent";
 import ParameterSelectionComponent from "@AppBuilderLib/entities/parameter/ui/ParameterSelectionComponent";
 import ViewportAnchor2d, {
 	ViewportAnchor2dThemeProps,
@@ -31,6 +30,8 @@ import {
 import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
 import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
 import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
+import AppBuilderContainerComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderContainerComponent";
+import AppBuilderFallbackContainerComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderFallbackContainerComponent";
 import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderSceneTreeExplorerWidgetComponent";
 import {NumberAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/NumberAttribute";
 import {StringAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/StringAttribute";
@@ -42,6 +43,10 @@ import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import {SentryErrorReportingContext} from "./instruments/sentry";
+import {
+	ParameterGumballComponent,
+	ParameterRectangleTransformComponent,
+} from "./shared/entities/parameter/ui";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,
@@ -92,6 +97,10 @@ const components: IComponentContext = {
 				component: ParameterDraggingComponent,
 				extraBottomPadding: false,
 			},
+			rectangleTransform: {
+				component: ParameterRectangleTransformComponent,
+				extraBottomPadding: true,
+			},
 		},
 	},
 	widgets: {
@@ -114,6 +123,8 @@ const components: IComponentContext = {
 			component: AppBuilderActionCameraComponent,
 		},
 	},
+	containerComponent: AppBuilderContainerComponent,
+	fallbackContainerComponent: AppBuilderFallbackContainerComponent,
 };
 
 root.render(

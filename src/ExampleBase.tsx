@@ -40,7 +40,7 @@ export default function App() {
 			theme={theme}
 			cssVariablesResolver={resolver}
 		>
-			<Notifications />
+			<Notifications notificationMaxHeight={1000} />
 			<NotificationWrapper>
 				<HashRouter>
 					<Routes>
