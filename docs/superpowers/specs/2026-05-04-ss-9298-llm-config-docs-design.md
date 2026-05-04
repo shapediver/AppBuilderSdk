@@ -26,6 +26,18 @@ Naming is fixed as above for this iteration.
 
 `typedoc.json` **`blockTags`** must list any custom tags used so TypeDoc preserves them.
 
+### Extending tags over time
+
+As more components are documented, we may need **additional block tags** (e.g. constraints, grouping, deprecation, version hints, or richer semantics than `@default` / `@minimum` / `@maximum`). Treat tag vocabulary as **evolving**, not frozen.
+
+When introducing a new tag:
+
+1. Add it to **`typedoc.json`** → `blockTags` so TypeDoc does not strip it.
+2. Extend **`typedoc-plugin-config-filter`** to read the tag and map it to a stable field in the emitted JSON (declaration-level and/or per-property, as appropriate).
+3. Update this spec (or a short changelog in the same folder) with the new field name and meaning so LLM consumers and authors stay aligned.
+
+Prefer **additive** JSON fields on `doc-flat` entries or property objects rather than breaking renames, unless a migration is intentional.
+
 ## Flat entry schema (`doc-flat.json`)
 
 Root: **JSON array**.
@@ -71,7 +83,7 @@ If two entries share the same `configPath`:
 
 1. Land plugin extension + both files generation.
 2. Keep `AppBuilderAppShellTemplatePage` as the golden sample.
-3. Add `@docAttached` / `@configPath` / `@displayName` and property tags to remaining theme-configurable components incrementally; CI or local script verifies generation succeeds.
+3. Add `@docAttached` / `@configPath` / `@displayName` and property tags to remaining theme-configurable components incrementally; introduce **new tags only when a component needs them**, following the steps under *Extending tags over time*. CI or local script verifies generation succeeds.
 
 ## Non-goals (this iteration)
 
