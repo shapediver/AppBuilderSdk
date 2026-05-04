@@ -98,12 +98,10 @@ import {z} from "zod";
  * Only listed components get deep validation; others stay opaque (Mantine JSON rules).
  */
 export const themeComponentDefaultPropsRegistry = {
-	Icon: z
-		.strictObject({
-			size: z.union([z.string(), z.number()]).optional(),
-			stroke: z.union([z.string(), z.number()]).optional(),
-		})
-		.strict(),
+	Icon: z.strictObject({
+		size: z.union([z.string(), z.number()]).optional(),
+		stroke: z.union([z.string(), z.number()]).optional(),
+	}),
 } as const satisfies Record<string, z.ZodTypeAny>;
 
 export type ThemeComponentDefaultPropsRegistryKey = keyof typeof themeComponentDefaultPropsRegistry;
@@ -298,7 +296,7 @@ git commit -m "SS-9463: test unknown theme component keys skip deep validation"
 | Paths under `themeOverrides.components…` | Task 1 assertions + Task 3 `basePath` |
 | Dedicated config module | Task 2 file |
 | No UI imports in registry | Task 2 (Zod only) |
-| `.strict()` preference | Task 2 `strictObject` + outer `.strict()` |
+| `.strict()` preference | Task 2 `z.strictObject` (Zod 4 — already strict) |
 | FSD `features/appbuilder/config` | All paths under that slice |
 
 **2. Placeholder scan** — none intentional.
