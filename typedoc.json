@@ -1,0 +1,32 @@
+{
+	"entryPoints": ["src"],
+	"entryPointStrategy": "expand",
+	"emit": "none",
+	"plugin": [
+		"./typedoc/typedoc-plugin-config-filter/index.js"
+	],
+	"categorizeByGroup": true,
+	"categoryOrder": ["Layout", "UI", "Core"],
+	"readme": "none",
+	"excludePrivate": true,
+	"excludeProtected": true,
+	"blockTags": [
+		"@docAttached",
+		"@configPath",
+		"@subcategory",
+		"@param",
+		"@returns",
+		"@see",
+		"@property",
+		"@throws",
+		"@example",
+		"@deprecated",
+		"@since",
+		"@author",
+		"@version",
+		"@default",
+		"@minimum",
+		"@maximum",
+		"@displayName"
+	]
+}

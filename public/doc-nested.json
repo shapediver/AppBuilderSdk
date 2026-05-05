@@ -1,0 +1,90 @@
+{
+  "themeOverrides": {
+    "components": {
+      "AppBuilderAppShellTemplatePage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "headerHeight",
+              "description": "y\r\nHeight of the header (responsive)",
+              "type": "AppShellResponsiveSize | AppShellSize",
+              "default": "{base: \"4em\", md: \"4em\"}",
+              "example": "{base: \"4em\", md: \"4em\"}"
+            },
+            {
+              "name": "navbarBreakpoint",
+              "description": "Breakpoint below which to hide the navigation bar",
+              "type": "MantineBreakpoint",
+              "default": "md"
+            },
+            {
+              "name": "navbarWidth",
+              "description": "Width of the navigation bar",
+              "type": "AppShellResponsiveSize | AppShellSize",
+              "default": "{md: 250, lg: 300}",
+              "example": "{md: 250, lg: 300}"
+            },
+            {
+              "name": "columns",
+              "description": "Main area (viewport, bottom, and right container): Number of grid columns",
+              "type": "ResponsiveValueType<number>",
+              "default": "3",
+              "minimum": "1"
+            },
+            {
+              "name": "rows",
+              "description": "Main area (viewport, bottom, and right container): Number of grid rows",
+              "type": "ResponsiveValueType<number>",
+              "default": "3",
+              "minimum": "1"
+            },
+            {
+              "name": "rightColumns",
+              "description": "Main area (viewport, bottom, and right container): Number of columns for right container",
+              "type": "ResponsiveValueType<number>",
+              "default": "1",
+              "minimum": "1"
+            },
+            {
+              "name": "bottomRows",
+              "description": "Main area (viewport, bottom, and right container): Number of rows for bottom container",
+              "type": "ResponsiveValueType<number>",
+              "default": "1",
+              "minimum": "1"
+            },
+            {
+              "name": "bottomFullWidth",
+              "description": "Main area (viewport, bottom, and right container): Shall the bottom container use the full width?",
+              "type": "ResponsiveValueType<boolean>",
+              "default": "false"
+            },
+            {
+              "name": "navbarBorder",
+              "description": "Should the navbar have a border",
+              "type": "boolean",
+              "default": "true"
+            },
+            {
+              "name": "headerBorder",
+              "description": "Should the header have a border",
+              "type": "boolean",
+              "default": "true"
+            },
+            {
+              "name": "rightBorder",
+              "description": "Should the right container area have a border",
+              "type": "boolean",
+              "default": "true"
+            },
+            {
+              "name": "keepBottomInGrid",
+              "description": "Should the bottom container be shown at the bottom of the grid even below the navbarBreakpoint?\r\nIf false, the bottom container is shown as part of the navigation bar area below the navbarBreakpoint.\r\nIn that case, the right container moves to the bottom of the grid layout in portrait mode.",
+              "type": "boolean",
+              "default": "false"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
