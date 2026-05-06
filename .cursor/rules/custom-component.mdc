@@ -9,28 +9,28 @@ alwaysApply: false
 
 # Custom Component Props Pattern
 
-## Описание
+## Overview
 
-Компоненты в проекте используют паттерн с `useProps` хуком от Mantine для получения стилевых настроек из централизованной темы приложения. Это позволяет управлять внешним видом компонентов через конфигурацию темы без изменения кода компонентов.
+Components use Mantine’s `useProps` hook to read style-oriented defaults from the centralized application theme. Visual behavior can be adjusted via theme configuration without changing component code.
 
-## Структура паттерна
+## Pattern structure
 
-### 1. В компоненте
+### 1. Inside the component
 
-Каждый компонент, поддерживающий этот паттерн, должен:
+Every component that follows this pattern should:
 
 ```typescript
 import { useProps } from "@mantine/core";
 
-// Определить дефолтные стилевые props
+// Define default style props
 const defaultStyleProps = {
   buttonProps: { variant: 'contained' as const },
   downloadTooltipProps: { placement: 'top' as const },
-  // ... другие style props
+  // ... other style props
 };
 
 export default function ComponentName(props: ComponentProps) {
-  // Деструктурировать style props через useProps
+  // Resolve style props with useProps
   const {
     buttonProps,
     downloadTooltipProps,
@@ -38,8 +38,8 @@ export default function ComponentName(props: ComponentProps) {
     parameterValues,
     ...rest
   } = useProps("ComponentName", defaultStyleProps, props);
-  
-  // Использовать полученные props в компоненте
+
+  // Use the resolved props in JSX
   return (
     <Tooltip {...downloadTooltipProps}>
       <Button {...buttonProps}>
@@ -50,21 +50,21 @@ export default function ComponentName(props: ComponentProps) {
 }
 ```
 
-**Параметры `useProps`:**
-1. **`"ComponentName"`** - точное название компонента (строка-идентификатор)
-2. **`defaultStyleProps`** - объект с дефолтными значениями стилевых props
-3. **`props`** - входящие props компонента (могут переопределить тему)
+**`useProps` arguments:**
+1. **`"ComponentName"`** — exact component id (string identifier).
+2. **`defaultStyleProps`** — default values for style props.
+3. **`props`** — incoming component props (override theme values).
 
-### 2. В useCustomTheme.ts
+### 2. In `useCustomTheme.ts`
 
-Конфигурация стилей для компонента определяется в `src/shared/hooks/ui/useCustomTheme.ts`:
+Register overrides for the component under `components` in `src/shared/shared/ui/theme/useCustomTheme.ts`:
 
 ```typescript
 export const customTheme: MantineThemeOverride = {
   components: {
     /**
      * ExportButtonComponent
-     * 
+     *
      * Component for export functionality
      */
     ExportButtonComponent: ExportButtonComponentThemeProps({
@@ -81,72 +81,73 @@ export const customTheme: MantineThemeOverride = {
 };
 ```
 
-## Правила создания Custom Components
+## Rules for custom components
 
-### 1. Naming Convention
+### 1. Naming convention
 
-- **Компонент**: `ComponentName` (PascalCase)
-- **Идентификатор в useProps**: точно совпадает с именем компонента
-- **Тип props темы**: `ComponentNameThemeProps` или `ComponentNameThemePropsType`
-- **Функция конфигурации**: `ComponentNameThemeProps()` в useCustomTheme.ts
+- **Component**: `ComponentName` (PascalCase).
+- **`useProps` id**: must match the component name exactly.
+- **Theme props type**: `ComponentNameThemeProps` or `ComponentNameThemePropsType`.
+- **Theme factory**: `ComponentNameThemeProps()` registered in `useCustomTheme.ts`.
 
-### 2. Типизация
+### 2. Typing
 
-Создай TypeScript интерфейс для theme props:
+Define a TypeScript interface (or type) for theme-controlled props:
 
 ```typescript
-// В файле компонента
+// In the component file
 export interface ExportButtonComponentThemePropsType {
   buttonProps?: ButtonProps;
   downloadTooltipProps?: TooltipProps;
   downloadButtonProps?: IconButtonProps;
-  // ... другие style props
+  // ... other style props
 }
 
-export type ExportButtonComponentThemeProps = 
-  Selectors<typeof ExportButtonComponentThemeProps>;
+/** Passed to `ExportButtonComponentThemeProps({ ... })` in useCustomTheme. */
+export type ExportButtonComponentThemePropsInput =
+  Partial<ExportButtonComponentThemePropsType>;
 ```
 
-### 3. Разделение props
+### 3. Splitting props
 
-**Style props (через useProps):**
-- Варианты отображения (variant, color, size)
-- Позиционирование (position, placement)
-- Визуальные настройки (fullWidth, radius, shadow)
-- Props для вложенных UI компонентов (buttonProps, tooltipProps)
+**Style props (via `useProps`):**
+- Visual variants (`variant`, `color`, `size`).
+- Layout (`position`, `placement`).
+- Presentation (`fullWidth`, `radius`, `shadow`).
+- Nested UI props (`buttonProps`, `tooltipProps`).
 
-**Функциональные props (напрямую):**
-- Колбэки (onClick, onExport, onChange)
-- Данные (exportId, value, data)
-- Поведение (disabled, loading)
-- Бизнес-логика (parameterValues, definition)
+**Functional props (directly on the component):**
+- Callbacks (`onClick`, `onExport`, `onChange`).
+- Data (`exportId`, `value`, `data`).
+- Behavior flags (`disabled`, `loading`).
+- Domain logic (`parameterValues`, `definition`).
 
-### 4. Default Values
+### 4. Default values
 
-Всегда предоставляй `defaultStyleProps`:
+Always provide `defaultStyleProps`:
 
 ```typescript
 const defaultStyleProps = {
-  buttonProps: { 
+  buttonProps: {
     variant: 'filled' as const,
-    size: 'md' as const 
+    size: 'md' as const
   },
-  downloadTooltipProps: { 
-    position: 'top' as const 
+  downloadTooltipProps: {
+    position: 'top' as const
   },
 };
 ```
 
-### 5. Документация в useCustomTheme.ts
+### 5. Documentation in `useCustomTheme.ts`
 
-Каждая конфигурация компонента должна содержать:
+Each component entry should include:
 
 ```typescript
 /**
  * ComponentName
- * 
+ *
  * Brief description of component purpose
- * 
+ *
  * Example:
  * ComponentName: ComponentNameThemeProps({
  *   buttonProps: {
@@ -157,17 +158,17 @@ const defaultStyleProps = {
  */
 ```
 
-**Обязательно:**
-- Название компонента
-- Краткое описание назначения
-- Примеры конфигурации (закомментированные)
+**Include:**
+- Component name.
+- Short purpose description.
+- Commented configuration examples.
 
-### 6. Включение в LLM-документацию конфига (`doc-flat.json`)
+### 6. LLM-oriented config docs (`doc-flat.json`)
 
-Чтобы компонент попал в автогенерируемое описание theme props (`pnpm run docs` → `public/doc-flat.json`):
+To include the component in generated theme docs (`pnpm run docs` → `public/doc-flat.json`):
 
-1. Тип стилевых props должен быть **`export`** (иначе TypeDoc его не проиндексирует). Имя типа уникально в пределах barrel-реэкспортов (например `ExportButtonComponentStyleProps`, а не общее `StyleProps`, если оба файла реэкспортируются из одного `index.ts`).
-2. Перед типом добавь блок тегов:
+1. The style props type must be **`export`** (otherwise TypeDoc will not index it). Use a **unique** type name across barrel `export *` (e.g. `ExportButtonComponentStyleProps`, not a generic `StyleProps` reused from multiple modules in the same barrel).
+2. Add a tag block above the type:
 
 ```typescript
 /**
@@ -176,18 +177,20 @@ const defaultStyleProps = {
  * @displayName ComponentName
  */
 export interface ComponentNameStyleProps {
-  // поля с обычным JSDoc; при необходимости @default / @minimum / @maximum / @example
+  // ordinary JSDoc on fields; use @default / @minimum / @maximum / @example when helpful
 }
 ```
 
-`ComponentName` в `@configPath` должен совпадать с ключом в `useProps("ComponentName", …)` и с ключом в `useCustomTheme.ts` → `components`.
+`ComponentName` in `@configPath` must match `useProps("ComponentName", …)` and the key under `useCustomTheme.ts` → `components`.
 
-## Расширенный паттерн: usePropsAppBuilder
+3. **`export type` intersections** (e.g. `ModalProps & { … }`): the TypeDoc plugin walks intersections and inline object types so `doc-flat.json` still gets `properties` for documented members. Members from unresolved external references (only a name in docs, no reflected children) are omitted until TypeDoc can resolve the reference.
 
-Для компонентов AppBuilder используется расширенная версия:
+## Extended pattern: `usePropsAppBuilder`
+
+Some App Builder containers use the extended hook:
 
 ```typescript
-import { usePropsAppBuilder } from "@AppBuilderShared/hooks/ui/usePropsAppBuilder";
+import { usePropsAppBuilder } from "@AppBuilderLib/features/appbuilder";
 
 const { prop1, prop2, ...rest } = usePropsAppBuilder(
   "ComponentName",
@@ -197,40 +200,41 @@ const { prop1, prop2, ...rest } = usePropsAppBuilder(
 );
 ```
 
-Этот хук позволяет переопределять props на уровне контейнера AppBuilder.
+This allows container-level overrides for theme defaults.
 
-## Преимущества паттерна
+## Benefits
 
-1. **Централизация**: Все стилевые настройки в одном месте
-2. **Переопределение**: Props можно переопределить через theme или напрямую
-3. **Типобезопасность**: Полная поддержка TypeScript
-4. **Консистентность**: Единый стиль UI across приложения
-5. **Гибкость**: Легко создавать темы и варианты
-6. **Тестируемость**: Легко тестировать разные визуальные конфигурации
+1. **Centralization** — style defaults live in one theme object.
+2. **Overrides** — theme or direct props can replace defaults.
+3. **Type safety** — full TypeScript support.
+4. **Consistency** — shared UI conventions across the app.
+5. **Flexibility** — themes and variants are easy to compose.
+6. **Testability** — easy to snapshot different visual configurations.
 
-## Порядок приоритета props
+## Prop precedence
 
-1. Props, переданные напрямую в компонент (наивысший приоритет)
-2. Props из контейнера AppBuilder (для usePropsAppBuilder)
-3. Props из useCustomTheme.ts
-4. defaultStyleProps (самый низкий приоритет)
+1. Props passed directly to the component (highest).
+2. Container overrides (`usePropsAppBuilder`).
+3. Values from `useCustomTheme.ts`.
+4. `defaultStyleProps` (lowest).
 
-## Checklist для создания Custom Component
+## Custom component checklist
 
-- [ ] Определить интерфейс `ComponentNameThemePropsType`
-- [ ] Создать `defaultStyleProps` с разумными дефолтами
-- [ ] Использовать `useProps("ComponentName", defaultStyleProps, props)`
-- [ ] Деструктурировать только style props, остальное в `...rest`
-- [ ] Добавить конфигурацию в `useCustomTheme.ts`
-- [ ] Импортировать тип в начало `useCustomTheme.ts`
-- [ ] Создать функцию `ComponentNameThemeProps()` в useCustomTheme.ts
-- [ ] Документировать с примерами в комментариях
-- [ ] При необходимости LLM-дока: `export` типа стилей + `@docAttached` / `@configPath` / `@displayName` (см. §6)
-- [ ] Использовать полученные props в JSX компонента
+- [ ] Define `ComponentNameThemePropsType` (or equivalent style props type).
+- [ ] Provide sensible `defaultStyleProps`.
+- [ ] Call `useProps("ComponentName", defaultStyleProps, props)`.
+- [ ] Destructure only style props; put the rest in `...rest`.
+- [ ] Register the component in `useCustomTheme.ts`.
+- [ ] Import the theme factory/type at the top of `useCustomTheme.ts`.
+- [ ] Add `ComponentNameThemeProps()` in `useCustomTheme.ts`.
+- [ ] Document with commented examples.
+- [ ] For LLM docs: export the style type and add `@docAttached` / `@configPath` / `@displayName` (see §6).
+- [ ] Use resolved props in JSX.
 
-## Примеры из кодовой базы
+## Examples from the codebase
 
 ### ExportButtonComponent
+
 ```typescript
 const {
   buttonProps,
@@ -242,6 +246,7 @@ const {
 ```
 
 ### ViewportIconButton
+
 ```typescript
 const { tooltipWrapperProps, actionIconProps, iconProps } = useProps(
   "ViewportIconButton",
@@ -251,6 +256,7 @@ const { tooltipWrapperProps, actionIconProps, iconProps } = useProps(
 ```
 
 ### TooltipWrapper
+
 ```typescript
 const { color, floating, themeOverride, label, ..._props } = useProps(
   "TooltipWrapper",
@@ -259,38 +265,42 @@ const { color, floating, themeOverride, label, ..._props } = useProps(
 );
 ```
 
-## Анти-паттерны (чего избегать)
+## Anti-patterns (avoid)
 
-❌ **Не смешивай style и функциональные props в useProps**
+❌ **Do not mix functional and style props inside `useProps`**
+
 ```typescript
-// ПЛОХО
+// BAD
 const { onClick, buttonProps, ...rest } = useProps(...);
 ```
 
-❌ **Не используй неуникальные имена компонентов**
+❌ **Do not use ambiguous component ids**
+
 ```typescript
-// ПЛОХО
-useProps("Button", ...) // слишком общее
+// BAD — too generic
+useProps("Button", ...)
 ```
 
-❌ **Не забывай defaultStyleProps**
+❌ **Do not omit meaningful `defaultStyleProps`**
+
 ```typescript
-// ПЛОХО
-const props = useProps("Component", {}, props); // пустой объект
+// BAD — empty defaults unless truly intentional
+const props = useProps("Component", {}, props);
 ```
 
-❌ **Не дублируй конфигурацию в коде**
+❌ **Do not duplicate theme configuration inline**
+
 ```typescript
-// ПЛОХО - хардкод вместо useProps
+// BAD — hard-coded instead of theme/useProps
 <Button variant="light" fullWidth={true}>
 ```
 
-## Связанные файлы
+## Related files
 
-- `src/shared/hooks/ui/useCustomTheme.ts` - централизованная конфигурация тем
-- `src/shared/hooks/ui/usePropsAppBuilder.ts` - расширенный хук для AppBuilder
-- `@mantine/core` - базовый хук useProps от Mantine
+- `src/shared/shared/ui/theme/useCustomTheme.ts` — centralized theme defaults.
+- `src/shared/features/appbuilder/model/usePropsAppBuilder.ts` — container-aware theme hook.
+- `@mantine/core` — base `useProps` hook.
 
-## Дополнительно
+## Additional notes
 
-При создании нового Custom Component всегда проверяй существующие компоненты как reference implementation. Поддерживай консистентность с существующими паттернами в кодовой базе.
+When adding a new custom component, use existing components as reference implementations and stay consistent with patterns already used in the codebase.
