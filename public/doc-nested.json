@@ -85,6 +85,90 @@
           ]
         }
       },
+      "ParameterDraggingComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "draggingColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": "InteractionEffect"
+            }
+          ]
+        }
+      },
+      "ParameterGumballComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectionColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": "InteractionEffect"
+            }
+          ]
+        }
+      },
+      "ParameterRectangleTransformComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectionColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": "InteractionEffect"
+            }
+          ]
+        }
+      },
+      "ParameterSelectionComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectionColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": "InteractionEffect"
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": "InteractionEffect"
+            }
+          ]
+        }
+      },
       "MultiSelectCheckboxes": {
         "defaultProps": {
           "properties": [
@@ -144,6 +228,54 @@
           ]
         }
       },
+      "ParameterSelectComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "componentSettings",
+              "description": "Defines settings for select components per parameter name.",
+              "type": "Record<string, ISelectComponentOverrides>"
+            }
+          ]
+        }
+      },
+      "ParameterSliderComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "sliderWidth",
+              "description": "",
+              "type": "string | number | undefined"
+            },
+            {
+              "name": "numberWidth",
+              "description": "",
+              "type": "string | number | undefined"
+            }
+          ]
+        }
+      },
+      "ParameterStargateComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "tooltipProps",
+              "description": "",
+              "type": "Partial<TooltipProps>"
+            },
+            {
+              "name": "actionIconProps",
+              "description": "",
+              "type": "Partial<ActionIconProps>"
+            },
+            {
+              "name": "iconProps",
+              "description": "",
+              "type": "IconProps"
+            }
+          ]
+        }
+      },
       "SelectCarouselComponent": {
         "defaultProps": {
           "properties": [
@@ -181,6 +313,77 @@
               "name": "showLabel",
               "description": "",
               "type": "boolean"
+            }
+          ]
+        }
+      },
+      "SelectFullWidthCardsComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "cardProps",
+              "description": "",
+              "type": "SelectCardStyleProps"
+            },
+            {
+              "name": "groupProps",
+              "description": "",
+              "type": "SelectGroupStyleProps"
+            },
+            {
+              "name": "imageProps",
+              "description": "",
+              "type": "SelectImageStyleProps"
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "SelectStackStyleProps"
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": "SelectTextWeightedStyleProps"
+            },
+            {
+              "name": "descriptionProps",
+              "description": "",
+              "type": "SelectTextStyleProps"
+            },
+            {
+              "name": "searchable",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "limit",
+              "description": "",
+              "type": "number"
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "bottomSection",
+              "description": "",
+              "type": "ReactNode"
+            },
+            {
+              "name": "topSection",
+              "description": "",
+              "type": "ReactNode"
+            },
+            {
+              "name": "useLocalSearch",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "onSearch",
+              "description": "",
+              "type": "(search: string) => void"
             }
           ]
         }
@@ -256,6 +459,233 @@
           ]
         }
       },
+      "DefaultSession": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "example",
+              "description": "Name of example model",
+              "type": "string"
+            },
+            {
+              "name": "exampleModels",
+              "description": "Available example models",
+              "type": "IShapeDiverExampleModels"
+            },
+            {
+              "name": "slug",
+              "description": "Either slug and platformUrl, or ticket and modelViewUrl must be set.",
+              "type": "string"
+            },
+            {
+              "name": "platformUrl",
+              "description": "Either slug and platformUrl, or ticket and modelViewUrl must be set.",
+              "type": "string"
+            },
+            {
+              "name": "acceptRejectMode",
+              "description": "Set to true to require confirmation of the user to accept or reject changed parameter values.",
+              "type": "boolean"
+            },
+            {
+              "name": "hideAttributeVisualization",
+              "description": "If the attribute visualization should be hidden by default.",
+              "type": "boolean"
+            },
+            {
+              "name": "hideJsonMenu",
+              "description": "If the JSON menu should be hidden by default.",
+              "type": "boolean"
+            },
+            {
+              "name": "hideSavedStates",
+              "description": "If the saved states menu should be hidden by default.",
+              "type": "boolean"
+            },
+            {
+              "name": "hideDesktopClients",
+              "description": "If the desktop clients should be hidden by default.",
+              "type": "boolean"
+            },
+            {
+              "name": "hideExports",
+              "description": "If the exports should be hidden by default.",
+              "type": "boolean"
+            },
+            {
+              "name": "loadPlatformSettingsFromViewer",
+              "description": "In case we cannot connect to the platform, load settings from the viewer, if they were stored there. (default: undefined)",
+              "type": "\"iframe\" | \"platform\""
+            },
+            {
+              "name": "modelStateId",
+              "description": "Optional model state id.",
+              "type": "string"
+            },
+            {
+              "name": "refreshJwtToken",
+              "description": "Optional callback for refreshing the JWT token.",
+              "type": "() => Promise<string>"
+            },
+            {
+              "name": "instance",
+              "description": "Optional boolean to treat this sessions as an instance (default: false).",
+              "type": "boolean"
+            },
+            {
+              "name": "loadOnFirstUse",
+              "description": "If the session is an instance, optional property to delay loading of the instance until the first time it is used. (default: false)",
+              "type": "boolean"
+            },
+            {
+              "name": "keepInStore",
+              "description": "If the session should be kept in the store after the first use (default: false)",
+              "type": "boolean"
+            },
+            {
+              "name": "id",
+              "description": "The unique identifier of the session that was specified or automatically chosen on creation of the session.",
+              "type": "string"
+            },
+            {
+              "name": "ticket",
+              "description": "The ticket for direct embedding of the model represented by the session. This identifies the model on the Geometry Backend. If no ticket was provided, a guid has to be provided instead.",
+              "type": "string"
+            },
+            {
+              "name": "guid",
+              "description": "The geometry backend model id (guid). This identifies the model on the Geometry Backend. A jwtToken is needed for authentication. If no guid was provided, a ticket has to be provided instead.",
+              "type": "string"
+            },
+            {
+              "name": "modelViewUrl",
+              "description": "The modelViewUrl of the https://help.shapediver.com/doc/Geometry-Backend.1863942173.html|ShapeDiver Geometry Backend hosting the model.",
+              "type": "string"
+            },
+            {
+              "name": "jwtToken",
+              "description": "The JWT used for authorizing API calls to the Geometry Backend.",
+              "type": "string"
+            },
+            {
+              "name": "waitForOutputs",
+              "description": "Option to wait for the outputs to be loaded, or return immediately after creation of the session. (default: true)",
+              "type": "boolean"
+            },
+            {
+              "name": "allowOutputLoading",
+              "description": "Option to allow the outputs to be loaded, or to prevent them from being loaded. (default: true)",
+              "type": "boolean"
+            },
+            {
+              "name": "ignoreUnknownParams",
+              "description": "Option to allow relaxed validation of parameter identifiers. When set to `true`, unrecognized parameters will be ignored rather than causing an error.  (default: false)",
+              "type": "boolean"
+            },
+            {
+              "name": "loadOutputs",
+              "description": "Option to load the outputs, or not load them until the first call of ISession.customize. (default: true)",
+              "type": "boolean"
+            },
+            {
+              "name": "loadSdtf",
+              "description": "Option to load the SDTF data. The data is not loaded by default as it can be quite large. (default: false)",
+              "type": "boolean"
+            },
+            {
+              "name": "excludeViewports",
+              "description": "Option to exclude some viewports from the start. Can be accessed via ISession.excludeViewports.",
+              "type": "string[]"
+            },
+            {
+              "name": "initialParameterValues",
+              "description": "The initial set of parameter values to use. Map from parameter id to parameter value. The default value will be used for any parameter not specified.",
+              "type": "{ [key: string]: string }"
+            },
+            {
+              "name": "modelStateValidationMode",
+              "description": "The optional model state validation mode to use for the session. If not provided, the default validation mode of the Geometry SDK will be used.",
+              "type": "string"
+            },
+            {
+              "name": "throwOnCustomizationError",
+              "description": "Option to throw an error if parts of a customization failed. (default: false)",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "DesktopClientPanel": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "iconStatusProps",
+              "description": "",
+              "type": "ActionIconProps"
+            },
+            {
+              "name": "alertProps",
+              "description": "",
+              "type": "AlertProps"
+            },
+            {
+              "name": "alertTextProps",
+              "description": "",
+              "type": "TextProps"
+            },
+            {
+              "name": "paperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "StackProps"
+            },
+            {
+              "name": "groupTopProps",
+              "description": "",
+              "type": "GroupProps"
+            },
+            {
+              "name": "textProps",
+              "description": "",
+              "type": "TextProps"
+            },
+            {
+              "name": "selectProps",
+              "description": "",
+              "type": "SelectProps"
+            },
+            {
+              "name": "actionIconRefreshProps",
+              "description": "",
+              "type": "ActionIconProps"
+            },
+            {
+              "name": "iconRefreshProps",
+              "description": "",
+              "type": "IconProps"
+            },
+            {
+              "name": "groupBottomProps",
+              "description": "",
+              "type": "GroupProps"
+            },
+            {
+              "name": "loaderProps",
+              "description": "",
+              "type": "LoaderProps"
+            },
+            {
+              "name": "statusIconProps",
+              "description": "",
+              "type": "Partial<IconProps>"
+            }
+          ]
+        }
+      },
       "StargateInput": {
         "defaultProps": {
           "properties": [
@@ -278,6 +708,17 @@
               "name": "loaderProps",
               "description": "",
               "type": "LoaderProps"
+            }
+          ]
+        }
+      },
+      "StargateShared": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stargateColorProps",
+              "description": "",
+              "type": "StargateStatusColorProps"
             }
           ]
         }
@@ -511,6 +952,27 @@
           "properties": []
         }
       },
+      "CreateModelStateHook": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "parameterNamesToInclude",
+              "description": "",
+              "type": "string[]"
+            },
+            {
+              "name": "parameterNamesToExclude",
+              "description": "",
+              "type": "string[]"
+            },
+            {
+              "name": "parameterNamesToAlwaysExclude",
+              "description": "",
+              "type": "string[]"
+            }
+          ]
+        }
+      },
       "NotificationWrapper": {
         "defaultProps": {
           "properties": [
@@ -638,6 +1100,22 @@
               "description": "Should the bottom container be shown at the bottom of the grid even below the navbarBreakpoint?\r\nIf false, the bottom container is shown as part of the navigation bar area below the navbarBreakpoint.\r\nIn that case, the right container moves to the bottom of the grid layout in portrait mode.",
               "type": "boolean",
               "default": "false"
+            }
+          ]
+        }
+      },
+      "AppBuilderContainer": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
+      "AppBuilderContainerWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "containerThemeOverrides",
+              "description": "Theme overrides per container",
+              "type": "ThemeOverridePerContainerType"
             }
           ]
         }
@@ -3307,14 +3785,386 @@
           ]
         }
       },
+      "AppBuilderAgentWidgetComponent": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
+      "AppBuilderAccordionUiWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "accordionProps",
+              "description": "",
+              "type": "AccordionProps<false>"
+            },
+            {
+              "name": "accordionPaperProps",
+              "description": "Props for the Paper component wrapping each accordion.",
+              "type": "PaperProps"
+            },
+            {
+              "name": "accordionItemProps",
+              "description": "",
+              "type": "Partial<AccordionItemProps>"
+            },
+            {
+              "name": "accordionControlProps",
+              "description": "",
+              "type": "AccordionControlProps"
+            },
+            {
+              "name": "accordionPanelProps",
+              "description": "",
+              "type": "AccordionPanelProps"
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "StackProps"
+            }
+          ]
+        }
+      },
+      "AppBuilderAccordionWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "showAcceptRejectButtons",
+              "description": "",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "AppBuilderAreaChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": "Partial<PaperProps>"
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": "Partial<TitleProps>"
+            },
+            {
+              "name": "areaChartProps",
+              "description": "",
+              "type": "Partial<AreaChartProps>"
+            }
+          ]
+        }
+      },
+      "AppBuilderAttributeVisualizationWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": "Partial<PaperProps>"
+            },
+            {
+              "name": "widgetGroupProps",
+              "description": "",
+              "type": "Partial<GroupProps>"
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": "Partial<TitleProps>"
+            }
+          ]
+        }
+      },
+      "AppBuilderBarChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": "Partial<PaperProps>"
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": "Partial<TitleProps>"
+            },
+            {
+              "name": "barChartProps",
+              "description": "",
+              "type": "Partial<BarChartProps>"
+            }
+          ]
+        }
+      },
+      "AppBuilderControlsWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "StackProps"
+            },
+            {
+              "name": "elementPaperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "outputPaperProps",
+              "description": "",
+              "type": "PaperProps"
+            }
+          ]
+        }
+      },
+      "AppBuilderFormWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "StackProps"
+            },
+            {
+              "name": "formPaperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "elementPaperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "exportPaperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "submitButtonPaperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "messagePaperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "submitButtonProps",
+              "description": "",
+              "type": "ButtonProps"
+            },
+            {
+              "name": "resetButtonProps",
+              "description": "",
+              "type": "ActionIconProps"
+            },
+            {
+              "name": "resetMessage",
+              "description": "",
+              "type": "string"
+            }
+          ]
+        }
+      },
       "AppBuilderImage": {
         "defaultProps": {
           "properties": []
         }
       },
+      "AppBuilderLineChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": "Partial<PaperProps>"
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": "Partial<TitleProps>"
+            },
+            {
+              "name": "lineChartProps",
+              "description": "",
+              "type": "Partial<LineChartProps>"
+            }
+          ]
+        }
+      },
+      "AppBuilderRoundChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": "Partial<PaperProps>"
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": "Partial<TitleProps>"
+            },
+            {
+              "name": "pieChartProps",
+              "description": "",
+              "type": "Partial<PieChartProps>"
+            },
+            {
+              "name": "donutChartProps",
+              "description": "",
+              "type": "Partial<DonutChartProps>"
+            },
+            {
+              "name": "badgeProps",
+              "description": "",
+              "type": "Partial<BadgeProps>"
+            }
+          ]
+        }
+      },
+      "AppBuilderSavedStatesWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectProps",
+              "description": "",
+              "type": "Partial<SelectComponentPropsExt> & { type: SavedStatesVisualization; }"
+            },
+            {
+              "name": "paperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "StackProps"
+            },
+            {
+              "name": "loaderFlexProps",
+              "description": "",
+              "type": "FlexProps"
+            },
+            {
+              "name": "loaderProps",
+              "description": "",
+              "type": "LoaderProps"
+            }
+          ]
+        }
+      },
+      "AppBuilderStackUiWidgetComponent": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
+      "AppBuilderTableWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "tableProps",
+              "description": "",
+              "type": "Partial<TableProps>"
+            },
+            {
+              "name": "searchTextInputProps",
+              "description": "",
+              "type": "Partial<TextInputProps>"
+            },
+            {
+              "name": "searchBarProps",
+              "description": "",
+              "type": "Partial<BoxProps>"
+            }
+          ]
+        }
+      },
       "AppBuilderTextWidgetComponent": {
         "defaultProps": {
           "properties": []
+        }
+      },
+      "ParametersAndExportsAccordionComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "defaultGroupName",
+              "description": "Name of group to use for parameters and exports which are not assigned to a group.\r\nLeave this empty to not display such parameters and exports inside of an accordion.",
+              "type": "string"
+            },
+            {
+              "name": "avoidSingleComponentGroups",
+              "description": "Set this to true to avoid groups containing a single parameter or export component.\r\nIn case this is not set or true, parameters and exports of groups with a single\r\ncomponent will be displayed without using an accordion.",
+              "type": "boolean"
+            },
+            {
+              "name": "mergeAccordions",
+              "description": "Merge accordions of subsequent groups into one.",
+              "type": "boolean"
+            },
+            {
+              "name": "pbSlider",
+              "description": "Bottom padding of Paper component wrapping slider components.",
+              "type": "string"
+            },
+            {
+              "name": "identifyGroupsById",
+              "description": "Set this to true to identify groups by id instead of name. If so,\r\nmultiple groups with the same name will be displayed as separate groups.",
+              "type": "boolean"
+            },
+            {
+              "name": "accordionPaperProps",
+              "description": "Props for the Paper component wrapping each accordion.",
+              "type": "PaperProps"
+            },
+            {
+              "name": "elementPaperProps",
+              "description": "Props for the Paper component wrapping each element inside the accordion.",
+              "type": "PaperProps"
+            },
+            {
+              "name": "accordionProps",
+              "description": "Props for the Accordion component.",
+              "type": "AccordionProps<false>"
+            },
+            {
+              "name": "accordionItemProps",
+              "description": "Props for the c.Item component.",
+              "type": "AccordionItemProps"
+            },
+            {
+              "name": "accordionControlProps",
+              "description": "Props for the Accordion.Control component.",
+              "type": "AccordionControlProps"
+            },
+            {
+              "name": "accordionPanelProps",
+              "description": "Props for the Accordion.Panel component.",
+              "type": "AccordionPanelProps"
+            },
+            {
+              "name": "wrapperStackProps",
+              "description": "Props for the Stack component wrapping everything.",
+              "type": "StackProps"
+            },
+            {
+              "name": "elementStackProps",
+              "description": "Props for the Stack component wrapping the elements except the topSection.",
+              "type": "StackProps"
+            },
+            {
+              "name": "panelStackProps",
+              "description": "Props for the Stack component wrapping the elements inside accordion panels.",
+              "type": "StackProps"
+            }
+          ]
         }
       },
       "ViewportAcceptRejectButtons": {

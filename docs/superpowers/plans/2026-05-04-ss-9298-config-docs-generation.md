@@ -29,7 +29,7 @@
 | Phase | Status |
 |-------|--------|
 | Tasks 1–3 (plugin, tests, golden sample JSDoc) | Done |
-| Task 4 Rollout (`@docAttached` на custom components из `useCustomTheme`) | In progress |
+| Task 4 Rollout (`@docAttached` на custom components из `useCustomTheme`) | Done |
 
 ### Task 4: Rollout — помечаем theme props для `doc-flat.json`
 
@@ -59,7 +59,7 @@
 - [x] Notifications: NotificationWrapper (`NotificationStyleProps`)
 - [x] Actions / output / parameters (партия 2): AppBuilderActionComponent, OutputChunkLabelComponent, OutputStargateComponent, ParameterLabelComponent, MultiSelectCheckboxes, SelectGridComponent, SelectCarouselComponent
 - [x] Viewport + overlay + accept/reject + stargate input + parameter color + text widget: ViewportComponent, ViewportBranding, ViewportIcons, ViewportIconButton (merged theme type), ViewportIconButtonDropdown (**исправлен `useProps` id**), ViewportOverlayWrapper, ViewportAcceptRejectButtons, StargateInput, ParameterColorComponent, AppBuilderTextWidgetComponent
-- [ ] Остальные ключи из `useCustomTheme` → `components` (формы, accordion widgets, desktop panel, …)
+- [x] Остальные ключи из `useCustomTheme` → `components` (формы, accordion widgets, desktop panel, параметры взаимодействия, контейнеры, agent, charts, session/hooks и т.д.). Динамические ключи (`NumberAttribute`, `StringAttribute`, `ViewportAnchor2d` / `ViewportAnchor3d`, зависящие от `componentContext`) намеренно без отдельной строки в `doc-flat`.
 
 ---
 
