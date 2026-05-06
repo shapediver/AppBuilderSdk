@@ -22,6 +22,7 @@ Naming is fixed as above for this iteration.
 - **`@docAttached`** — include this declaration in generated docs (required for extraction).
 - **`@configPath`** — dot-separated path where this block belongs in config (e.g. `themeOverrides.components.AppBuilderAppShellTemplatePage.defaultProps`). Required for an entry to appear in **`doc-flat.json`** and for placement in **`doc-nested.json`**.
 - **`@displayName`** — optional; overrides display/name field for the entry when present.
+- **`@docLink`** — optional; URL of external documentation when theme props mirror an external type (e.g. Mantine component props) and inlining every property in `doc-flat.json` is undesirable. Emitted as `docLink` on the flat entry and nested leaf alongside `properties`.
 - **Per-property block tags** (optional, parsed when present): `@default`, `@minimum`, `@maximum`, `@example`. Values are normalized (strip code fences / surrounding quotes) as in the current plugin.
 
 `typedoc.json` **`blockTags`** must list any custom tags used so TypeDoc preserves them.
@@ -51,12 +52,13 @@ Each element:
 | `summary` | string | no | Concatenated summary of the `@docAttached` declaration comment. |
 | `source` | string | yes | First source file name from TypeDoc, or `"unknown"`. |
 | `properties` | array | no | Same shape as today: `name`, `description`, `type`, optional `default`, `minimum`, `maximum`, `example` from child reflections and tags. |
+| `docLink` | string | no | From `@docLink`: external URL for full prop documentation when props are not enumerated (e.g. Mantine docs). |
 
 Reflections with `@docAttached` but **without** `@configPath` are **skipped** for both outputs (nested already skips when path missing); optional `console.warn` for visibility.
 
 ## Nested shape (`doc-nested.json`)
 
-Unchanged intent: object nested by splitting `configPath` on `.`; leaf value is an object containing at least `properties` (array), matching current plugin behavior.
+Unchanged intent: object nested by splitting `configPath` on `.`; leaf value is an object containing at least `properties` (array). When `@docLink` is present, the leaf also includes optional string field `docLink`.
 
 ## Plugin behavior
 

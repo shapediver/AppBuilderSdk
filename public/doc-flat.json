@@ -1244,7 +1244,44 @@
     "configPath": "themeOverrides.components.AppBuilderContainer.defaultProps",
     "name": "AppBuilderContainer",
     "summary": "Orientation plus forwarded horizontal / vertical container theme props for AppBuilderContainer.",
-    "source": "src/shared/pages/templates/AppBuilderContainer.tsx"
+    "source": "src/shared/pages/templates/AppBuilderContainer.tsx",
+    "properties": [
+      {
+        "name": "orientation",
+        "description": "",
+        "type": "AppBuilderContainerOrientationType"
+      },
+      {
+        "name": "w",
+        "description": "Group width",
+        "type": "StyleProp<Width<string | number> | undefined>",
+        "default": "100%"
+      },
+      {
+        "name": "h",
+        "description": "Group height",
+        "type": "StyleProp<Width<string | number> | undefined>",
+        "default": "100%"
+      },
+      {
+        "name": "justify",
+        "description": "Flex justify-content",
+        "type": "JustifyContent",
+        "default": "center"
+      },
+      {
+        "name": "wrap",
+        "description": "Flex wrap",
+        "type": "FlexWrap",
+        "default": "nowrap"
+      },
+      {
+        "name": "p",
+        "description": "Padding (Mantine spacing)",
+        "type": "StyleProp<MantineSpacing>",
+        "default": "xs"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.AppBuilderContainerWrapper.defaultProps",
@@ -4355,7 +4392,54 @@
     "configPath": "themeOverrides.components.AppBuilderStackUiWidgetComponent.defaultProps",
     "name": "AppBuilderStackUiWidgetComponent",
     "summary": "Theme props for stack UI (merged content + button surfaces). Consumed via `useProps(\"AppBuilderStackUiWidgetComponent\", …)` in child components.",
-    "source": "src/shared/widgets/appbuilder/ui/AppBuilderStackUiWidget/AppBuilderStackUiWidgetComponent.tsx"
+    "source": "src/shared/widgets/appbuilder/ui/AppBuilderStackUiWidget/AppBuilderStackUiWidgetComponent.tsx",
+    "properties": [
+      {
+        "name": "stackPaperProps",
+        "description": "Props for the Paper component wrapping the stack.",
+        "type": "PaperProps"
+      },
+      {
+        "name": "buttonBackProps",
+        "description": "Props for the back button.",
+        "type": "ButtonProps"
+      },
+      {
+        "name": "iconBackProps",
+        "description": "Props for the icon on the left of the back button.",
+        "type": "IconProps"
+      },
+      {
+        "name": "contentStackProps",
+        "description": "Props for the content Stack.",
+        "type": "StackProps"
+      },
+      {
+        "name": "stackContentProps",
+        "description": "Props for the content Box.",
+        "type": "BoxProps"
+      },
+      {
+        "name": "stackProps",
+        "description": "Props for the Stack component containing buttons.",
+        "type": "StackProps"
+      },
+      {
+        "name": "iconForwardProps",
+        "description": "Props for the icon on the right of the stack buttons.",
+        "type": "IconProps"
+      },
+      {
+        "name": "itemTextProps",
+        "description": "Props for the text of the stack buttons.",
+        "type": "TextProps"
+      },
+      {
+        "name": "buttonForwardProps",
+        "description": "Props for stack buttons.",
+        "type": "ButtonProps"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.AppBuilderTableWidgetComponent.defaultProps",
@@ -4383,170 +4467,9 @@
   {
     "configPath": "themeOverrides.components.AppBuilderTextWidgetComponent.defaultProps",
     "name": "AppBuilderTextWidgetComponent",
-    "summary": "Documented subset of Mantine PaperProps for the text/markdown wrapper.\r\nTheme and props still accept any Paper prop via AppBuilderTextWidgetThemePropsInput.",
+    "summary": "Text / markdown widget wrapped in Mantine `Paper`. Theme `defaultProps` follow `PaperProps`.",
     "source": "src/shared/widgets/appbuilder/ui/AppBuilderTextWidgetComponent.tsx",
-    "properties": [
-      {
-        "name": "p",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "px",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "py",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "pt",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "pb",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "pl",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "pr",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "m",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "mx",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "my",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "mt",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "mb",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "ml",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "mr",
-        "description": "",
-        "type": "StyleProp<MantineSpacing>"
-      },
-      {
-        "name": "shadow",
-        "description": "",
-        "type": "MantineShadow"
-      },
-      {
-        "name": "radius",
-        "description": "",
-        "type": "MantineRadius"
-      },
-      {
-        "name": "withBorder",
-        "description": "",
-        "type": "boolean"
-      },
-      {
-        "name": "styles",
-        "description": "",
-        "type": "Partial<Record<\"root\", CSSProperties>> | ((theme: MantineTheme, props: PaperProps, ctx: unknown) => StylesRecord<Payload[\"stylesNames\"], DataType>)"
-      },
-      {
-        "name": "classNames",
-        "description": "",
-        "type": "Partial<Record<\"root\", string>> | ((theme: MantineTheme, props: PaperProps, ctx: unknown) => StylesRecord<Payload[\"stylesNames\"], DataType>)"
-      },
-      {
-        "name": "style",
-        "description": "",
-        "type": "MantineStyleProp"
-      },
-      {
-        "name": "bg",
-        "description": "",
-        "type": "StyleProp<DefaultMantineColor>"
-      },
-      {
-        "name": "bd",
-        "description": "",
-        "type": "StyleProp<Border<string | number> | undefined>"
-      },
-      {
-        "name": "w",
-        "description": "",
-        "type": "StyleProp<Width<string | number> | undefined>"
-      },
-      {
-        "name": "h",
-        "description": "",
-        "type": "StyleProp<Height<string | number> | undefined>"
-      },
-      {
-        "name": "miw",
-        "description": "",
-        "type": "StyleProp<MinWidth<string | number> | undefined>"
-      },
-      {
-        "name": "mih",
-        "description": "",
-        "type": "StyleProp<MinHeight<string | number> | undefined>"
-      },
-      {
-        "name": "maw",
-        "description": "",
-        "type": "StyleProp<MaxWidth<string | number> | undefined>"
-      },
-      {
-        "name": "mah",
-        "description": "",
-        "type": "StyleProp<MaxHeight<string | number> | undefined>"
-      },
-      {
-        "name": "display",
-        "description": "",
-        "type": "StyleProp<Display | undefined>"
-      },
-      {
-        "name": "hiddenFrom",
-        "description": "",
-        "type": "MantineBreakpoint"
-      },
-      {
-        "name": "visibleFrom",
-        "description": "",
-        "type": "MantineBreakpoint"
-      },
-      {
-        "name": "opacity",
-        "description": "",
-        "type": "StyleProp<Opacity | undefined>"
-      }
-    ]
+    "docLink": "https://mantine.dev/core/paper/?t=props"
   },
   {
     "configPath": "themeOverrides.components.ParametersAndExportsAccordionComponent.defaultProps",

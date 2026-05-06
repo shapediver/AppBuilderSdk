@@ -14,6 +14,7 @@ type DocFlatEntry = {
 		description: string;
 		type: string;
 	}>;
+	docLink?: string;
 };
 
 describe("dedupeFlatEntriesByConfigPath", () => {
@@ -204,5 +205,38 @@ describe("buildNestedDocRoot", () => {
 		expect(leaf.properties).toEqual([
 			{name: "bar", description: "desc", type: "number"},
 		]);
+	});
+
+	it("includes docLink on nested leaf when provided", () => {
+		const entries: DocFlatEntry[] = [
+			{
+				configPath: "themeOverrides.components.Bar.defaultProps",
+				name: "Bar",
+				summary: "",
+				source: "Bar.tsx",
+				properties: [],
+				docLink: "https://example.com/docs",
+			},
+		];
+		const nested = buildNestedDocRoot(entries) as Record<
+			string,
+			unknown
+		>;
+		const leaf = (
+			nested as {
+				themeOverrides: {
+					components: {
+						Bar: {
+							defaultProps: {
+								properties: unknown[];
+								docLink: string;
+							};
+						};
+					};
+				};
+			}
+		).themeOverrides.components.Bar.defaultProps;
+		expect(leaf.properties).toEqual([]);
+		expect(leaf.docLink).toBe("https://example.com/docs");
 	});
 });

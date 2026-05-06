@@ -16,6 +16,7 @@
  * @property {string} summary
  * @property {string} source
  * @property {DocProperty[]} [properties]
+ * @property {string} [docLink] External reference URL when props are not inlined (e.g. Mantine docs).
  */
 
 /**
@@ -63,9 +64,14 @@ export function buildNestedDocRoot(entries) {
 	/** @type {Record<string, unknown>} */
 	const root = {};
 	for (const entry of entries) {
-		setAtPath(root, entry.configPath, {
+		/** @type {Record<string, unknown>} */
+		const leaf = {
 			properties: entry.properties ?? [],
-		});
+		};
+		if (entry.docLink) {
+			leaf.docLink = entry.docLink;
+		}
+		setAtPath(root, entry.configPath, leaf);
 	}
 	return root;
 }

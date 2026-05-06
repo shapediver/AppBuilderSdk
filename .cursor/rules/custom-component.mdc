@@ -185,6 +185,8 @@ export interface ComponentNameStyleProps {
 
 3. **`export type` intersections** (e.g. `ModalProps & { … }`): the TypeDoc plugin walks intersections and inline object types so `doc-flat.json` still gets `properties` for documented members. Members from unresolved external references (only a name in docs, no reflected children) are omitted until TypeDoc can resolve the reference.
 
+4. **External prop surfaces** (e.g. theme equals Mantine `PaperProps`): add **`@docLink`** with the official props URL instead of duplicating dozens of fields. The emitted entry includes `"docLink": "…"` (and typically an empty or omitted `properties` array). Example: `@docLink https://mantine.dev/core/paper/?t=props` ([Mantine Paper props](https://mantine.dev/core/paper/?t=props)).
+
 ## Extended pattern: `usePropsAppBuilder`
 
 Some App Builder containers use the extended hook:
