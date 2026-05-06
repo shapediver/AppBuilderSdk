@@ -3,6 +3,7 @@ import * as path from "path";
 import {Application, Context, Converter} from "typedoc";
 import {
 	buildNestedDocRoot,
+	collectDocFlatProperties,
 	dedupeFlatEntriesByConfigPath,
 } from "./buildArtifacts.js";
 
@@ -59,34 +60,13 @@ export function load(app: Application) {
 					source: reflection.sources?.[0]?.fileName || "unknown",
 				};
 
-				if (reflection.children?.length) {
-					entry.properties = reflection.children.map((child) => {
-						const prop: any = {
-							name: child.name,
-							description: getText(child.comment?.summary),
-							type: child.type?.toString() || "unknown",
-						};
-
-						const childTags = child.comment?.blockTags;
-						if (childTags) {
-							for (const tag of childTags) {
-								const tagName = tag.tag;
-								if (
-									tagName === "@default" ||
-									tagName === "@minimum" ||
-									tagName === "@maximum" ||
-									tagName === "@example"
-								) {
-									const key = tagName.substring(1);
-									prop[key] = processTagValue(
-										getText(tag.content),
-									);
-								}
-							}
-						}
-
-						return prop;
-					});
+				const props = collectDocFlatProperties(
+					reflection,
+					getText,
+					processTagValue,
+				);
+				if (props.length) {
+					entry.properties = props;
 				}
 
 				rawWithPath.push(entry);

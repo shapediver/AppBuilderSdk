@@ -1,5 +1,6 @@
 import {
 	buildNestedDocRoot,
+	collectDocFlatProperties,
 	dedupeFlatEntriesByConfigPath,
 } from "./buildArtifacts.js";
 
@@ -44,6 +45,110 @@ describe("dedupeFlatEntriesByConfigPath", () => {
 		]);
 		expect(out).toHaveLength(1);
 		expect(out[0].name).toBe("Second");
+	});
+});
+
+describe("collectDocFlatProperties", () => {
+	const getText = (arr: {text: string}[] | undefined) =>
+		arr ? arr.map((s) => s.text).join("") : "";
+	const processTagValue = (v: string) => v.trim();
+
+	it("maps declaration children when present", () => {
+		const reflection = {
+			children: [
+				{
+					name: "foo",
+					type: {toString: () => "string"},
+					comment: {summary: [{text: "Foo prop"}]},
+				},
+			],
+		};
+		expect(
+			collectDocFlatProperties(reflection, getText, processTagValue),
+		).toEqual([
+			{name: "foo", description: "Foo prop", type: "string"},
+		]);
+	});
+
+	it("merges properties from intersection of reflection object types", () => {
+		const reflection = {
+			type: {
+				type: "intersection",
+				types: [
+					{
+						type: "reflection",
+						declaration: {
+							children: [
+								{
+									name: "a",
+									type: {toString: () => "string"},
+									comment: {summary: [{text: "first"}]},
+								},
+							],
+						},
+					},
+					{
+						type: "reflection",
+						declaration: {
+							children: [
+								{
+									name: "a",
+									type: {toString: () => "number"},
+									comment: {summary: [{text: "overwritten"}]},
+								},
+								{
+									name: "b",
+									type: {toString: () => "boolean"},
+									comment: {summary: []},
+								},
+							],
+						},
+					},
+				],
+			},
+		};
+		const props = collectDocFlatProperties(
+			reflection,
+			getText,
+			processTagValue,
+		);
+		expect(props).toHaveLength(2);
+		const byName = Object.fromEntries(props.map((p) => [p.name, p]));
+		expect(byName.a).toEqual({
+			name: "a",
+			description: "overwritten",
+			type: "number",
+		});
+		expect(byName.b).toEqual({
+			name: "b",
+			description: "",
+			type: "boolean",
+		});
+	});
+
+	it("includes @default on nested members", () => {
+		const reflection = {
+			type: {
+				type: "reflection",
+				declaration: {
+					children: [
+						{
+							name: "x",
+							type: {toString: () => "number"},
+							comment: {
+								summary: [],
+								blockTags: [
+									{tag: "@default", content: [{text: "1"}]},
+								],
+							},
+						},
+					],
+				},
+			},
+		};
+		expect(
+			collectDocFlatProperties(reflection, getText, processTagValue),
+		).toEqual([{name: "x", description: "", type: "number", default: "1"}]);
 	});
 });
 

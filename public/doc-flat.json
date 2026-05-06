@@ -971,7 +971,24 @@
     "configPath": "themeOverrides.components.ViewportIconButton.defaultProps",
     "name": "ViewportIconButton",
     "summary": "Theme defaults for a single viewport toolbar icon button.",
-    "source": "src/shared/entities/viewport/ui/ViewportIconButton.tsx"
+    "source": "src/shared/entities/viewport/ui/ViewportIconButton.tsx",
+    "properties": [
+      {
+        "name": "actionIconProps",
+        "description": "",
+        "type": "ActionIconProps & { variantDisabled?: string }"
+      },
+      {
+        "name": "iconProps",
+        "description": "",
+        "type": "ViewportIconButtonStyleProps[\"iconProps\"] & Partial<IconProps>"
+      },
+      {
+        "name": "tooltipWrapperProps",
+        "description": "",
+        "type": "Partial<TooltipProps>"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.ViewportIconButtonDropdown.defaultProps",
@@ -995,7 +1012,34 @@
     "configPath": "themeOverrides.components.ViewportOverlayWrapper.defaultProps",
     "name": "ViewportOverlayWrapper",
     "summary": "Theme defaults for viewport overlay positioning (`ViewportOverlayWrapper`).",
-    "source": "src/shared/entities/viewport/ui/ViewportOverlayWrapper.tsx"
+    "source": "src/shared/entities/viewport/ui/ViewportOverlayWrapper.tsx",
+    "properties": [
+      {
+        "name": "position",
+        "description": "",
+        "type": "ResponsiveValueType<OverlayPositionType>"
+      },
+      {
+        "name": "offset",
+        "description": "",
+        "type": "string"
+      },
+      {
+        "name": "offsetX",
+        "description": "",
+        "type": "string"
+      },
+      {
+        "name": "offsetY",
+        "description": "",
+        "type": "string"
+      },
+      {
+        "name": "className",
+        "description": "",
+        "type": "string"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.AppBuilderActionComponent.defaultProps",
@@ -3838,7 +3882,44 @@
     "configPath": "themeOverrides.components.ModalBase.defaultProps",
     "name": "ModalBase",
     "summary": "",
-    "source": "src/shared/shared/ui/modal/ModalBase.tsx"
+    "source": "src/shared/shared/ui/modal/ModalBase.tsx",
+    "properties": [
+      {
+        "name": "size",
+        "description": "Modal size",
+        "type": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+      },
+      {
+        "name": "closeButtonProps",
+        "description": "Close button props for styling",
+        "type": "Record<string, any>"
+      },
+      {
+        "name": "stackGap",
+        "description": "Gap for the main stack container",
+        "type": "string"
+      },
+      {
+        "name": "groupGap",
+        "description": "Gap for button groups (both additional and action buttons)",
+        "type": "string"
+      },
+      {
+        "name": "buttonContainerProps",
+        "description": "Props for the button container group",
+        "type": "{ justify?: string; align?: string }"
+      },
+      {
+        "name": "cancelButtonProps",
+        "description": "Props for the cancel button",
+        "type": "Record<string, any>"
+      },
+      {
+        "name": "confirmButtonProps",
+        "description": "Props for the confirm button",
+        "type": "Record<string, any>"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.TooltipWrapper.defaultProps",
@@ -3868,7 +3949,64 @@
     "configPath": "themeOverrides.components.AppBuilderAgentWidgetComponent.defaultProps",
     "name": "AppBuilderAgentWidgetComponent",
     "summary": "Style and configuration props for the agent widget (theme + `useProps(\"AppBuilderAgentWidgetComponent\", …)`).",
-    "source": "src/shared/widgets/appbuilder/config/appBuilderAgentWidget.ts"
+    "source": "src/shared/widgets/appbuilder/config/appBuilderAgentWidget.ts",
+    "properties": [
+      {
+        "name": "systemPrompt",
+        "description": "The system prompt to use.",
+        "type": "string"
+      },
+      {
+        "name": "parameterNamesToInclude",
+        "description": "If provided, only parameters with these names are included.",
+        "type": "string[]"
+      },
+      {
+        "name": "parameterNamesToExclude",
+        "description": "If provided, parameters with these names are excluded.",
+        "type": "string[]"
+      },
+      {
+        "name": "authorContext",
+        "description": "Allows to override the context given by the author of the Grasshopper model via App Builder.",
+        "type": "string"
+      },
+      {
+        "name": "debug",
+        "description": "Set to true to show and allow to edit system prompt and author context.",
+        "type": "boolean"
+      },
+      {
+        "name": "maxHistory",
+        "description": "Maximum number of messages to keep in the context for the chat completion.",
+        "type": "number"
+      },
+      {
+        "name": "model",
+        "description": "The LLM to use.",
+        "type": "string"
+      },
+      {
+        "name": "openaiApiKey",
+        "description": "Open AI API key.",
+        "type": "string"
+      },
+      {
+        "name": "langfuseSecretKey",
+        "description": "Langfuse secret key.",
+        "type": "string"
+      },
+      {
+        "name": "langfusePublicKey",
+        "description": "Langfuse public key.",
+        "type": "string"
+      },
+      {
+        "name": "langfuseBaseUrl",
+        "description": "Langfuse base URL.",
+        "type": "string"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.AppBuilderAccordionUiWidgetComponent.defaultProps",
@@ -4070,7 +4208,26 @@
     "configPath": "themeOverrides.components.AppBuilderImage.defaultProps",
     "name": "AppBuilderImage",
     "summary": "",
-    "source": "src/shared/widgets/appbuilder/ui/AppBuilderImage.tsx"
+    "source": "src/shared/widgets/appbuilder/ui/AppBuilderImage.tsx",
+    "properties": [
+      {
+        "name": "fit",
+        "description": "Object-fit behavior (see MDN `object-fit`). `scale-down` never upscales past intrinsic size.",
+        "type": "\"contain\" | \"scale-down\"",
+        "default": "contain"
+      },
+      {
+        "name": "withBorder",
+        "description": "When true, applies bordered image styling.",
+        "type": "boolean",
+        "default": "false"
+      },
+      {
+        "name": "isSvg",
+        "description": "When true, render via `Svg` instead of Mantine `Image`.",
+        "type": "boolean"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.AppBuilderLineChartWidgetComponent.defaultProps",
