@@ -58,7 +58,8 @@
 - [x] Shared UI: TooltipWrapper, Hint, Icon, MarkdownWidgetComponent, ModalBase
 - [x] Notifications: NotificationWrapper (`NotificationStyleProps`)
 - [x] Actions / output / parameters (партия 2): AppBuilderActionComponent, OutputChunkLabelComponent, OutputStargateComponent, ParameterLabelComponent, MultiSelectCheckboxes, SelectGridComponent, SelectCarouselComponent
-- [ ] Остальные ключи из `useCustomTheme` → `components` (viewport, stargate desktop, form widgets, …)
+- [x] Viewport + overlay + accept/reject + stargate input + parameter color + text widget: ViewportComponent, ViewportBranding, ViewportIcons, ViewportIconButton (merged theme type), ViewportIconButtonDropdown (**исправлен `useProps` id**), ViewportOverlayWrapper, ViewportAcceptRejectButtons, StargateInput, ParameterColorComponent, AppBuilderTextWidgetComponent
+- [ ] Остальные ключи из `useCustomTheme` → `components` (формы, accordion widgets, desktop panel, …)
 
 ---
 

@@ -116,6 +116,18 @@
           ]
         }
       },
+      "ParameterColorComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "colorFormat",
+              "description": "Color format for ShapeDiver ↔ Mantine conversion.",
+              "type": "ColorFormatType",
+              "default": "rgba"
+            }
+          ]
+        }
+      },
       "ParameterLabelComponent": {
         "defaultProps": {
           "properties": [
@@ -242,6 +254,256 @@
               "type": "(search: string) => void"
             }
           ]
+        }
+      },
+      "StargateInput": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "buttonProps",
+              "description": "",
+              "type": "ButtonProps"
+            },
+            {
+              "name": "loadingButtonProps",
+              "description": "",
+              "type": "ButtonProps"
+            },
+            {
+              "name": "textProps",
+              "description": "",
+              "type": "TextProps"
+            },
+            {
+              "name": "loaderProps",
+              "description": "",
+              "type": "LoaderProps"
+            }
+          ]
+        }
+      },
+      "ViewportComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "children",
+              "description": "",
+              "type": "ReactNode"
+            },
+            {
+              "name": "className",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "showStatistics",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "canvas",
+              "description": "The canvas element in which the viewport should be created, it is encourage to provide one. If none was provided, a canvas will be created.",
+              "type": "HTMLCanvasElement"
+            },
+            {
+              "name": "id",
+              "description": "The unique identifier of the session that was specified or automatically chosen on creation of the viewport.",
+              "type": "string"
+            },
+            {
+              "name": "branding",
+              "description": "The branding options of the viewport.",
+              "type": "{ logo?: string | null; backgroundColor?: string; busyModeSpinner?: string; busyModeDisplay?: BUSY_MODE_DISPLAY; spinnerPositioning?: SPINNER_POSITIONING }"
+            },
+            {
+              "name": "sessionSettingsId",
+              "description": "The id of the session of which the settings should be used. Only works when sessionSettingsMode is set to SESSION_SETTINGS_MODE.SESSION.",
+              "type": "string"
+            },
+            {
+              "name": "sessionSettingsMode",
+              "description": "The mode in which settings should be applied. (default: SESSION_SETTINGS_MODE.FIRST)",
+              "type": "SESSION_SETTINGS_MODE"
+            },
+            {
+              "name": "visibility",
+              "description": "The initial visibility of the viewport. (default: VISIBILITY_MODE.SESSION)",
+              "type": "VISIBILITY_MODE"
+            },
+            {
+              "name": "visibilitySessionIds",
+              "description": "The ids of the sessions that should be displayed in the viewport. This only is considered if the visibility is set to VISIBILITY_MODE.SESSIONS.\r\nIt's recommended that with this workflow, the sessionSettingsMode is set to SESSION_SETTINGS_MODE.SESSION and a sessionSettingsId is provided.",
+              "type": "string[]"
+            },
+            {
+              "name": "flags",
+              "description": "Optional flags that should be initially set on the viewport.\r\nThe key is the token that is used to identify the flag, and the value is the type of the flag.",
+              "type": "{ [key: string]: FLAG_TYPE }"
+            },
+            {
+              "name": "initialAutoAdjust",
+              "description": "If the viewport should automatically adjust the camera to fit the model on creation. (default: false)",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "ViewportBranding": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "dark",
+              "description": "Branding settings for dark scheme",
+              "type": "ViewportBranding"
+            },
+            {
+              "name": "light",
+              "description": "Branding settings for light scheme",
+              "type": "ViewportBranding"
+            }
+          ]
+        }
+      },
+      "ViewportIcons": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "style",
+              "description": "Style properties for the container",
+              "type": "CSSProperties"
+            },
+            {
+              "name": "fullscreenId",
+              "description": "ID of the fullscreen area",
+              "type": "string"
+            },
+            {
+              "name": "enableHistoryButtons",
+              "description": "enable/disable the \"parameter history\" buttons",
+              "type": "boolean"
+            },
+            {
+              "name": "enableModelStateButtons",
+              "description": "enable/disable the \"model state\" buttons",
+              "type": "boolean"
+            },
+            {
+              "name": "enableImportExportButtons",
+              "description": "enable/disable the \"import/export JSON file\" buttons",
+              "type": "boolean"
+            },
+            {
+              "name": "enableResetButton",
+              "description": "enable/disable the \"reset parameter values\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "enableArBtn",
+              "description": "enable/disable the \"AR\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "enableCamerasBtn",
+              "description": "enable/disable the \"cameras\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "enableFullscreenBtn",
+              "description": "enable/disable the \"fullscreen\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "enableFullscreenBtn3States",
+              "description": "enable/disable the \"fullscreen 3 states (normal | fullscreen with inputs | viewer only fullscreen)\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "enableZoomBtn",
+              "description": "enable/disable the \"zoom\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "enableHistoryMenuButton",
+              "description": "enable/disable the \"history menu\" button",
+              "type": "boolean"
+            },
+            {
+              "name": "color",
+              "description": "color of the icons",
+              "type": "string"
+            },
+            {
+              "name": "colorDisabled",
+              "description": "color of the icons when disabled",
+              "type": "string"
+            },
+            {
+              "name": "variant",
+              "description": "variant of the icons",
+              "type": "string"
+            },
+            {
+              "name": "variantDisabled",
+              "description": "variant of the icons when disabled",
+              "type": "string"
+            },
+            {
+              "name": "iconStyle",
+              "description": "style of the icons",
+              "type": "MantineStyleProp"
+            },
+            {
+              "name": "size",
+              "description": "size of the icons",
+              "type": "number"
+            },
+            {
+              "name": "viewportOverlayProps",
+              "description": "viewport overlay props",
+              "type": "ViewportOverlayWrapperProps & Partial<OverlayStyleProps>"
+            },
+            {
+              "name": "paperProps",
+              "description": "paper props",
+              "type": "PaperProps"
+            },
+            {
+              "name": "dividerProps",
+              "description": "divider props",
+              "type": "DividerProps"
+            },
+            {
+              "name": "transitionProps",
+              "description": "transition props",
+              "type": "Partial<TransitionProps>"
+            }
+          ]
+        }
+      },
+      "ViewportIconButton": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
+      "ViewportIconButtonDropdown": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "menuProps",
+              "description": "",
+              "type": "MenuProps"
+            },
+            {
+              "name": "menuDropdownProps",
+              "description": "",
+              "type": "MenuDropdownProps"
+            }
+          ]
+        }
+      },
+      "ViewportOverlayWrapper": {
+        "defaultProps": {
+          "properties": []
         }
       },
       "AppBuilderActionComponent": {
@@ -3048,6 +3310,52 @@
       "AppBuilderImage": {
         "defaultProps": {
           "properties": []
+        }
+      },
+      "AppBuilderTextWidgetComponent": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
+      "ViewportAcceptRejectButtons": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "groupProps",
+              "description": "",
+              "type": "Partial<GroupProps>"
+            },
+            {
+              "name": "buttonProps",
+              "description": "",
+              "type": "Partial<ButtonProps>"
+            },
+            {
+              "name": "acceptButtonProps",
+              "description": "",
+              "type": "Partial<ButtonProps>"
+            },
+            {
+              "name": "rejectButtonProps",
+              "description": "",
+              "type": "Partial<ButtonProps>"
+            },
+            {
+              "name": "iconProps",
+              "description": "",
+              "type": "ViewportAcceptRejectButtonsIconStyleProps"
+            },
+            {
+              "name": "textProps",
+              "description": "",
+              "type": "Partial<TextProps>"
+            },
+            {
+              "name": "showButtons",
+              "description": "Whether to show the buttons or not.\r\nIf false, the buttons will never be rendered.\r\nIf true, the buttons will always be rendered.\r\nIf undefined, the buttons will be rendered if there are changes to accept or reject.",
+              "type": "boolean"
+            }
+          ]
         }
       }
     }
