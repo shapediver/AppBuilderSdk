@@ -1,6 +1,61 @@
 {
   "themeOverrides": {
     "components": {
+      "ExportButtonComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "buttonProps",
+              "description": "Mantine Button props for the main export action",
+              "type": "Partial<ButtonProps>"
+            },
+            {
+              "name": "downloadTooltipProps",
+              "description": "Tooltip wrapping the download button when applicable",
+              "type": "Partial<TooltipProps>"
+            },
+            {
+              "name": "downloadButtonProps",
+              "description": "Mantine Button props for the download control",
+              "type": "Partial<ButtonProps>"
+            },
+            {
+              "name": "buttonLabel",
+              "description": "When provided, hides the label header and uses this text as the button label.",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "ExportLabelComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "fontWeight",
+              "description": "Font weight for the export title text (Mantine `fw` prop).",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "LoaderPage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "type",
+              "description": "Type of the loader",
+              "type": "string",
+              "default": "oval"
+            },
+            {
+              "name": "size",
+              "description": "Size of the loader",
+              "type": "number | MantineSize",
+              "default": "md"
+            }
+          ]
+        }
+      },
       "AppBuilderAppShellTemplatePage": {
         "defaultProps": {
           "properties": [
@@ -83,6 +138,155 @@
               "default": "false"
             }
           ]
+        }
+      },
+      "AppBuilderGridTemplatePage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "bgTop",
+              "description": "Top background color",
+              "type": "string",
+              "default": "transparent"
+            },
+            {
+              "name": "bgLeft",
+              "description": "Left background color",
+              "type": "string",
+              "default": "transparent"
+            },
+            {
+              "name": "bgRight",
+              "description": "Right background color",
+              "type": "string",
+              "default": "transparent"
+            },
+            {
+              "name": "bgBottom",
+              "description": "Bottom background color",
+              "type": "string",
+              "default": "transparent"
+            },
+            {
+              "name": "columns",
+              "description": "Number of grid columns",
+              "type": "number",
+              "default": "4"
+            },
+            {
+              "name": "rows",
+              "description": "Number of grid rows",
+              "type": "number",
+              "default": "4"
+            },
+            {
+              "name": "leftColumns",
+              "description": "Number of columns for left container",
+              "type": "number",
+              "default": "1"
+            },
+            {
+              "name": "rightColumns",
+              "description": "Number of columns for right container",
+              "type": "number",
+              "default": "1"
+            },
+            {
+              "name": "topRows",
+              "description": "Number of rows for top container",
+              "type": "number",
+              "default": "1"
+            },
+            {
+              "name": "bottomRows",
+              "description": "Number of rows for bottom container",
+              "type": "number",
+              "default": "1"
+            },
+            {
+              "name": "topFullWidth",
+              "description": "Shall the top container use the full width?",
+              "type": "boolean",
+              "default": "false"
+            },
+            {
+              "name": "bottomFullWidth",
+              "description": "Shall the bottom container use the full width?",
+              "type": "boolean",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "AppBuilderHorizontalContainer": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "w",
+              "description": "Group width",
+              "type": "StyleProp<Width<string | number> | undefined>",
+              "default": "100%"
+            },
+            {
+              "name": "h",
+              "description": "Group height",
+              "type": "StyleProp<Width<string | number> | undefined>",
+              "default": "100%"
+            },
+            {
+              "name": "justify",
+              "description": "Flex justify-content",
+              "type": "JustifyContent | undefined",
+              "default": "center"
+            },
+            {
+              "name": "wrap",
+              "description": "Flex wrap",
+              "type": "FlexWrap | undefined",
+              "default": "nowrap"
+            },
+            {
+              "name": "p",
+              "description": "Padding (Mantine spacing)",
+              "type": "StyleProp<MantineSpacing>",
+              "default": "xs"
+            }
+          ]
+        }
+      },
+      "AppBuilderTemplateSelector": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "template",
+              "description": "Layout template key to render",
+              "type": "AppBuilderTemplateType",
+              "default": "appshell"
+            },
+            {
+              "name": "showContainerButtons",
+              "description": "Show UI buttons for toggling template containers (top/left/right/bottom)",
+              "type": "boolean",
+              "default": "false"
+            }
+          ]
+        }
+      },
+      "AppBuilderVerticalContainer": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "p",
+              "description": "Stack padding",
+              "type": "StyleProp<MantineSpacing>",
+              "default": "xs"
+            }
+          ]
+        }
+      },
+      "AppBuilderImage": {
+        "defaultProps": {
+          "properties": []
         }
       }
     }
