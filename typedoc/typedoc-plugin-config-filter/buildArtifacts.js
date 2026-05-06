@@ -155,6 +155,10 @@ export function collectDocFlatProperties(reflection, getText, processTagValue) {
 			}
 			return;
 		}
+		if (kind === "optional") {
+			walk(type.elementType, depth + 1);
+			return;
+		}
 		if (kind === "reflection") {
 			mergeChildren(type.declaration?.children);
 			return;

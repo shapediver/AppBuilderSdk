@@ -126,6 +126,29 @@ describe("collectDocFlatProperties", () => {
 		});
 	});
 
+	it("unwraps optional wrapper types", () => {
+		const reflection = {
+			type: {
+				type: "optional",
+				elementType: {
+					type: "reflection",
+					declaration: {
+						children: [
+							{
+								name: "flag",
+								type: {toString: () => "boolean"},
+								comment: {summary: []},
+							},
+						],
+					},
+				},
+			},
+		};
+		expect(
+			collectDocFlatProperties(reflection, getText, processTagValue),
+		).toEqual([{name: "flag", description: "", type: "boolean"}]);
+	});
+
 	it("includes @default on nested members", () => {
 		const reflection = {
 			type: {

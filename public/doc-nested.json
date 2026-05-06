@@ -991,7 +991,39 @@
       },
       "AppBuilderActionComponent": {
         "defaultProps": {
-          "properties": []
+          "properties": [
+            {
+              "name": "variant",
+              "description": "",
+              "type": "string & {} | ButtonVariant",
+              "default": "filled"
+            },
+            {
+              "name": "size",
+              "description": "",
+              "type": "string & {} | MantineSize | \"compact-xs\" | \"compact-sm\" | \"compact-md\" | \"compact-lg\" | \"compact-xl\""
+            },
+            {
+              "name": "color",
+              "description": "",
+              "type": "DefaultMantineColor"
+            },
+            {
+              "name": "radius",
+              "description": "",
+              "type": "MantineRadius"
+            },
+            {
+              "name": "fullWidth",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "justify",
+              "description": "",
+              "type": "JustifyContent"
+            }
+          ]
         }
       },
       "CreateModelStateHook": {

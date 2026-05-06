@@ -1045,7 +1045,40 @@
     "configPath": "themeOverrides.components.AppBuilderActionComponent.defaultProps",
     "name": "AppBuilderActionComponent",
     "summary": "Theme-driven Mantine `Button` defaults for action buttons.",
-    "source": "src/shared/features/appbuilder/ui/AppBuilderActionComponent.tsx"
+    "source": "src/shared/features/appbuilder/ui/AppBuilderActionComponent.tsx",
+    "properties": [
+      {
+        "name": "variant",
+        "description": "",
+        "type": "string & {} | ButtonVariant",
+        "default": "filled"
+      },
+      {
+        "name": "size",
+        "description": "",
+        "type": "string & {} | MantineSize | \"compact-xs\" | \"compact-sm\" | \"compact-md\" | \"compact-lg\" | \"compact-xl\""
+      },
+      {
+        "name": "color",
+        "description": "",
+        "type": "DefaultMantineColor"
+      },
+      {
+        "name": "radius",
+        "description": "",
+        "type": "MantineRadius"
+      },
+      {
+        "name": "fullWidth",
+        "description": "",
+        "type": "boolean"
+      },
+      {
+        "name": "justify",
+        "description": "",
+        "type": "JustifyContent"
+      }
+    ]
   },
   {
     "configPath": "themeOverrides.components.CreateModelStateHook.defaultProps",
