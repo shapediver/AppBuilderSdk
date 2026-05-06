@@ -57,7 +57,8 @@
 - [x] Шаблоны / контейнеры / loader / экспорт / картинка: AppShell, Grid, TemplateSelector, Horizontal, Vertical, LoaderPage, ExportButton, ExportLabel, AppBuilderImage
 - [x] Shared UI: TooltipWrapper, Hint, Icon, MarkdownWidgetComponent, ModalBase
 - [x] Notifications: NotificationWrapper (`NotificationStyleProps`)
-- [ ] Остальные ключи из `useCustomTheme` → `components` (viewport, parameter, widgets, stargate, …)
+- [x] Actions / output / parameters (партия 2): AppBuilderActionComponent, OutputChunkLabelComponent, OutputStargateComponent, ParameterLabelComponent, MultiSelectCheckboxes, SelectGridComponent, SelectCarouselComponent
+- [ ] Остальные ключи из `useCustomTheme` → `components` (viewport, stargate desktop, form widgets, …)
 
 ---
 

@@ -38,6 +38,217 @@
           ]
         }
       },
+      "OutputChunkLabelComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "fontWeight",
+              "description": "Font weight for chunk title (`fw` on label text).",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "OutputStargateComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "StackProps"
+            },
+            {
+              "name": "paperProps",
+              "description": "",
+              "type": "PaperProps"
+            },
+            {
+              "name": "accordionProps",
+              "description": "",
+              "type": "AccordionProps<false>"
+            },
+            {
+              "name": "accordionItemProps",
+              "description": "",
+              "type": "AccordionItemProps"
+            },
+            {
+              "name": "accordionControlProps",
+              "description": "",
+              "type": "AccordionControlProps"
+            },
+            {
+              "name": "accordionPanelProps",
+              "description": "",
+              "type": "AccordionPanelProps"
+            }
+          ]
+        }
+      },
+      "MultiSelectCheckboxes": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "Partial<StackProps>"
+            },
+            {
+              "name": "checkboxProps",
+              "description": "",
+              "type": "Partial<CheckboxProps>"
+            },
+            {
+              "name": "checkboxPropsSelectAll",
+              "description": "",
+              "type": "Partial<CheckboxProps>"
+            },
+            {
+              "name": "labelSelectAll",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "ParameterLabelComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "tooltipProps",
+              "description": "",
+              "type": "Partial<TooltipProps>"
+            },
+            {
+              "name": "fontWeight",
+              "description": "",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "SelectCarouselComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "carouselProps",
+              "description": "",
+              "type": "SelectCarouselStyleProps"
+            },
+            {
+              "name": "cardProps",
+              "description": "",
+              "type": "SelectCardStyleProps"
+            },
+            {
+              "name": "imageProps",
+              "description": "",
+              "type": "SelectImageStyleProps"
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "SelectStackStyleProps"
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": "SelectTextWeightedStyleProps"
+            },
+            {
+              "name": "descriptionProps",
+              "description": "",
+              "type": "SelectTextStyleProps"
+            },
+            {
+              "name": "showLabel",
+              "description": "",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "SelectGridComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "gridProps",
+              "description": "",
+              "type": "SimpleGridProps"
+            },
+            {
+              "name": "cardProps",
+              "description": "",
+              "type": "SelectCardStyleProps"
+            },
+            {
+              "name": "imageProps",
+              "description": "",
+              "type": "SelectImageStyleProps"
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": "SelectStackStyleProps"
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": "SelectTextWeightedStyleProps"
+            },
+            {
+              "name": "descriptionProps",
+              "description": "",
+              "type": "SelectTextStyleProps"
+            },
+            {
+              "name": "showLabel",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "searchable",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "limit",
+              "description": "",
+              "type": "number"
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "bottomSection",
+              "description": "",
+              "type": "ReactNode"
+            },
+            {
+              "name": "topSection",
+              "description": "",
+              "type": "ReactNode"
+            },
+            {
+              "name": "onSearch",
+              "description": "",
+              "type": "(search: string) => void"
+            }
+          ]
+        }
+      },
+      "AppBuilderActionComponent": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
       "NotificationWrapper": {
         "defaultProps": {
           "properties": [

@@ -41,6 +41,230 @@
     ]
   },
   {
+    "configPath": "themeOverrides.components.OutputChunkLabelComponent.defaultProps",
+    "name": "OutputChunkLabelComponent",
+    "summary": "",
+    "source": "src/shared/entities/output/ui/OutputChunkLabelComponent.tsx",
+    "properties": [
+      {
+        "name": "fontWeight",
+        "description": "Font weight for chunk title (`fw` on label text).",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "configPath": "themeOverrides.components.OutputStargateComponent.defaultProps",
+    "name": "OutputStargateComponent",
+    "summary": "",
+    "source": "src/shared/entities/output/ui/OutputStargateComponent.tsx",
+    "properties": [
+      {
+        "name": "stackProps",
+        "description": "",
+        "type": "StackProps"
+      },
+      {
+        "name": "paperProps",
+        "description": "",
+        "type": "PaperProps"
+      },
+      {
+        "name": "accordionProps",
+        "description": "",
+        "type": "AccordionProps<false>"
+      },
+      {
+        "name": "accordionItemProps",
+        "description": "",
+        "type": "AccordionItemProps"
+      },
+      {
+        "name": "accordionControlProps",
+        "description": "",
+        "type": "AccordionControlProps"
+      },
+      {
+        "name": "accordionPanelProps",
+        "description": "",
+        "type": "AccordionPanelProps"
+      }
+    ]
+  },
+  {
+    "configPath": "themeOverrides.components.MultiSelectCheckboxes.defaultProps",
+    "name": "MultiSelectCheckboxes",
+    "summary": "",
+    "source": "src/shared/entities/parameter/ui/multiselect/MultiSelectCheckboxesComponent.tsx",
+    "properties": [
+      {
+        "name": "stackProps",
+        "description": "",
+        "type": "Partial<StackProps>"
+      },
+      {
+        "name": "checkboxProps",
+        "description": "",
+        "type": "Partial<CheckboxProps>"
+      },
+      {
+        "name": "checkboxPropsSelectAll",
+        "description": "",
+        "type": "Partial<CheckboxProps>"
+      },
+      {
+        "name": "labelSelectAll",
+        "description": "",
+        "type": "string"
+      },
+      {
+        "name": "height",
+        "description": "",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "configPath": "themeOverrides.components.ParameterLabelComponent.defaultProps",
+    "name": "ParameterLabelComponent",
+    "summary": "",
+    "source": "src/shared/entities/parameter/ui/ParameterLabelComponent.tsx",
+    "properties": [
+      {
+        "name": "tooltipProps",
+        "description": "",
+        "type": "Partial<TooltipProps>"
+      },
+      {
+        "name": "fontWeight",
+        "description": "",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "configPath": "themeOverrides.components.SelectCarouselComponent.defaultProps",
+    "name": "SelectCarouselComponent",
+    "summary": "",
+    "source": "src/shared/entities/parameter/ui/select/SelectCarouselComponent.tsx",
+    "properties": [
+      {
+        "name": "carouselProps",
+        "description": "",
+        "type": "SelectCarouselStyleProps"
+      },
+      {
+        "name": "cardProps",
+        "description": "",
+        "type": "SelectCardStyleProps"
+      },
+      {
+        "name": "imageProps",
+        "description": "",
+        "type": "SelectImageStyleProps"
+      },
+      {
+        "name": "stackProps",
+        "description": "",
+        "type": "SelectStackStyleProps"
+      },
+      {
+        "name": "labelProps",
+        "description": "",
+        "type": "SelectTextWeightedStyleProps"
+      },
+      {
+        "name": "descriptionProps",
+        "description": "",
+        "type": "SelectTextStyleProps"
+      },
+      {
+        "name": "showLabel",
+        "description": "",
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "configPath": "themeOverrides.components.SelectGridComponent.defaultProps",
+    "name": "SelectGridComponent",
+    "summary": "",
+    "source": "src/shared/entities/parameter/ui/select/SelectGridComponent.tsx",
+    "properties": [
+      {
+        "name": "gridProps",
+        "description": "",
+        "type": "SimpleGridProps"
+      },
+      {
+        "name": "cardProps",
+        "description": "",
+        "type": "SelectCardStyleProps"
+      },
+      {
+        "name": "imageProps",
+        "description": "",
+        "type": "SelectImageStyleProps"
+      },
+      {
+        "name": "stackProps",
+        "description": "",
+        "type": "SelectStackStyleProps"
+      },
+      {
+        "name": "labelProps",
+        "description": "",
+        "type": "SelectTextWeightedStyleProps"
+      },
+      {
+        "name": "descriptionProps",
+        "description": "",
+        "type": "SelectTextStyleProps"
+      },
+      {
+        "name": "showLabel",
+        "description": "",
+        "type": "boolean"
+      },
+      {
+        "name": "searchable",
+        "description": "",
+        "type": "boolean"
+      },
+      {
+        "name": "limit",
+        "description": "",
+        "type": "number"
+      },
+      {
+        "name": "height",
+        "description": "",
+        "type": "string"
+      },
+      {
+        "name": "bottomSection",
+        "description": "",
+        "type": "ReactNode"
+      },
+      {
+        "name": "topSection",
+        "description": "",
+        "type": "ReactNode"
+      },
+      {
+        "name": "onSearch",
+        "description": "",
+        "type": "(search: string) => void"
+      }
+    ]
+  },
+  {
+    "configPath": "themeOverrides.components.AppBuilderActionComponent.defaultProps",
+    "name": "AppBuilderActionComponent",
+    "summary": "Theme-driven Mantine `Button` defaults for action buttons.",
+    "source": "src/shared/features/appbuilder/ui/AppBuilderActionComponent.tsx"
+  },
+  {
     "configPath": "themeOverrides.components.NotificationWrapper.defaultProps",
     "name": "NotificationWrapper",
     "summary": "Global notification styling driven by theme (`NotificationWrapper`).",
