@@ -20,6 +20,44 @@
 | `typedoc/typedoc-plugin-config-filter/index.ts` | Keep in sync with `index.js` (same behavior) for editors/type-checking if present; repository currently duplicates logic here. |
 | `src/shared/pages/templates/AppBuilderAppShellTemplatePage.tsx` | Fix stray `/**y` → `/**` on `StyleProps` so summary parses cleanly. |
 | `typedoc.json` | Already lists custom `blockTags`; no change unless new tags are added. |
+| `.cursor/rules/custom-component.mdc` | §6: правила `@docAttached` / `export` / уникальные имена типов при barrel re-export. |
+
+---
+
+## Implementation status (living)
+
+| Phase | Status |
+|-------|--------|
+| Tasks 1–3 (plugin, tests, golden sample JSDoc) | Done |
+| Task 4 Rollout (`@docAttached` на custom components из `useCustomTheme`) | In progress |
+
+### Task 4: Rollout — помечаем theme props для `doc-flat.json`
+
+**Цель:** каждый настраиваемый через `themeOverrides.components.<Name>.defaultProps` компонент из [`useCustomTheme.ts`](../../src/shared/shared/ui/theme/useCustomTheme.ts) получает экспортируемый тип стилей с блоком:
+
+```text
+@docAttached
+@configPath themeOverrides.components.<ComponentName>.defaultProps
+@displayName <ComponentName>
+```
+
+`<ComponentName>` **обязан** совпадать с строкой в `useProps("<ComponentName>", …)` **и** с ключом в `components` темы.
+
+**Ограничения TypeDoc (обязательные):**
+
+1. Тип с `@docAttached` должен быть **`export`**, иначе символ не попадает в проект и плагин его не видит.
+2. Если несколько модулей реэкспортируются через один `export * from` и оба экспортируют одно имя (например `StyleProps`), сборка падает с **TS2308** — используй уникальные имена (`ExportButtonComponentStyleProps`, …).
+3. Команда генерации: **`pnpm run docs`** (не bare `pnpm docs` — коллизия с npm в этой среде).
+4. После изменений в подмодуле `src/shared`: коммит там → обновить указатель подмодуля в родителе → при необходимости закоммитить обновлённые `public/doc-flat.json` и `public/doc-nested.json`.
+
+**Уже покрыто докой (проверка):** запустить `pnpm run docs`, затем `node -e "console.log(require('./public/doc-flat.json').map(e=>e.name).sort())"`.
+
+**Чеклист rollout** (отмечайте по мере добавления):
+
+- [x] Шаблоны / контейнеры / loader / экспорт / картинка: AppShell, Grid, TemplateSelector, Horizontal, Vertical, LoaderPage, ExportButton, ExportLabel, AppBuilderImage
+- [x] Shared UI: TooltipWrapper, Hint, Icon, MarkdownWidgetComponent, ModalBase
+- [x] Notifications: NotificationWrapper (`NotificationStyleProps`)
+- [ ] Остальные ключи из `useCustomTheme` → `components` (viewport, parameter, widgets, stargate, …)
 
 ---
 
@@ -345,7 +383,7 @@ Apply the same logic and imports (`buildArtifacts.js` from the same directory). 
 Run:
 
 ```bash
-pnpm docs
+pnpm run docs
 ```
 
 Expected: Console shows plugin loading / executing without throwing; **no** unhandled plugin error.
@@ -401,10 +439,4 @@ git commit -m "SS-9298: fix StyleProps JSDoc opener"
 
 ---
 
-**Plan complete and saved to `docs/superpowers/plans/2026-05-04-ss-9298-config-docs-generation.md`. Two execution options:**
-
-**1. Subagent-Driven (recommended)** — dispatch a fresh subagent per task, review between tasks, fast iteration.
-
-**2. Inline Execution** — execute tasks in this session using executing-plans, batch execution with checkpoints.
-
-**Which approach do you want?**
+**Plan file:** `docs/superpowers/plans/2026-05-04-ss-9298-config-docs-generation.md`. Tasks 1–3 выполнены; дальнейшая работа ведётся по **Task 4 (rollout)** выше.

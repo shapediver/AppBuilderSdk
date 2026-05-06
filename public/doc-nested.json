@@ -38,6 +38,35 @@
           ]
         }
       },
+      "NotificationWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "successColor",
+              "description": "Optional color to use for success notifications.",
+              "type": "string"
+            },
+            {
+              "name": "warningColor",
+              "description": "Optional color to use for warning notifications.",
+              "type": "string",
+              "default": "yellow"
+            },
+            {
+              "name": "errorColor",
+              "description": "Optional color to use for error notifications.",
+              "type": "string",
+              "default": "red"
+            },
+            {
+              "name": "autoClose",
+              "description": "Determines whether notification should be closed automatically,\r\nnumber is auto close timeout in ms.",
+              "type": "number | boolean",
+              "default": "20000"
+            }
+          ]
+        }
+      },
       "LoaderPage": {
         "defaultProps": {
           "properties": [
@@ -280,6 +309,2527 @@
               "description": "Stack padding",
               "type": "StyleProp<MantineSpacing>",
               "default": "xs"
+            }
+          ]
+        }
+      },
+      "Hint": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "containerGroupProps",
+              "description": "Container group props",
+              "type": "GroupProps"
+            },
+            {
+              "name": "groupProps",
+              "description": "Group props",
+              "type": "GroupProps"
+            },
+            {
+              "name": "iconProps",
+              "description": "Icon color",
+              "type": "IconProps"
+            },
+            {
+              "name": "textProps",
+              "description": "Text props",
+              "type": "TextProps"
+            },
+            {
+              "name": "buttonProps",
+              "description": "Button props",
+              "type": "ButtonProps & ComponentProp<\"a\"> & Omit<Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, \"ref\">, \"component\"> & { ref?: ((instance: HTMLAnchorElement | null) => void) | RefObject<HTMLAnchorElement> | null; renderRoot?: (props: any) => any }"
+            }
+          ]
+        }
+      },
+      "Icon": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "iconType",
+              "description": "",
+              "type": "IconType"
+            },
+            {
+              "name": "size",
+              "description": "Mantine size token or CSS length.",
+              "type": "string | number",
+              "default": "1.5rem\" (via theme defaultProps)"
+            },
+            {
+              "name": "string",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "id",
+              "description": "Unique identifier for the icon\r\n\r\nUsed as base for generating unique IDs for SVG elements and shapes.\r\nEnsures consistent IDs for server-side rendering and accessibility.",
+              "type": "string"
+            },
+            {
+              "name": "children",
+              "description": "",
+              "type": "ReactNode"
+            },
+            {
+              "name": "style",
+              "description": "",
+              "type": "CSSProperties"
+            },
+            {
+              "name": "clipPath",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "filter",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "mask",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "path",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "ref",
+              "description": "Allows getting a ref to the component instance.\nOnce the component unmounts, React will set `ref.current` to `null`\n(or call the ref with `null` if you passed a callback ref).",
+              "type": "LegacyRef<SVGSVGElement>"
+            },
+            {
+              "name": "key",
+              "description": "",
+              "type": "Key | null"
+            },
+            {
+              "name": "suppressHydrationWarning",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "className",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "lang",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "tabIndex",
+              "description": "",
+              "type": "number"
+            },
+            {
+              "name": "role",
+              "description": "",
+              "type": "AriaRole"
+            },
+            {
+              "name": "color",
+              "description": "Icon color (for monotone icons only)\r\n\r\nOnly affects monotone icons. Icons with hardcoded palettes (like emoji)\r\ncannot be recolored. Accepts any valid CSS color value.",
+              "type": "string"
+            },
+            {
+              "name": "aria-activedescendant",
+              "description": "Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application.",
+              "type": "string"
+            },
+            {
+              "name": "aria-atomic",
+              "description": "Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-autocomplete",
+              "description": "Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be\npresented if they are made.",
+              "type": "\"none\" | \"inline\" | \"list\" | \"both\""
+            },
+            {
+              "name": "aria-braillelabel",
+              "description": "Defines a string value that labels the current element, which is intended to be converted into Braille.",
+              "type": "string"
+            },
+            {
+              "name": "aria-brailleroledescription",
+              "description": "Defines a human-readable, author-localized abbreviated description for the role of an element, which is intended to be converted into Braille.",
+              "type": "string"
+            },
+            {
+              "name": "aria-busy",
+              "description": "",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-checked",
+              "description": "Indicates the current \"checked\" state of checkboxes, radio buttons, and other widgets.",
+              "type": "boolean | \"true\" | \"false\" | \"mixed\""
+            },
+            {
+              "name": "aria-colcount",
+              "description": "Defines the total number of columns in a table, grid, or treegrid.",
+              "type": "number"
+            },
+            {
+              "name": "aria-colindex",
+              "description": "Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.",
+              "type": "number"
+            },
+            {
+              "name": "aria-colindextext",
+              "description": "Defines a human readable text alternative of aria-colindex.",
+              "type": "string"
+            },
+            {
+              "name": "aria-colspan",
+              "description": "Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.",
+              "type": "number"
+            },
+            {
+              "name": "aria-controls",
+              "description": "Identifies the element (or elements) whose contents or presence are controlled by the current element.",
+              "type": "string"
+            },
+            {
+              "name": "aria-current",
+              "description": "Indicates the element that represents the current item within a container or set of related elements.",
+              "type": "boolean | \"time\" | \"location\" | \"true\" | \"false\" | \"page\" | \"step\" | \"date\""
+            },
+            {
+              "name": "aria-describedby",
+              "description": "Identifies the element (or elements) that describes the object.",
+              "type": "string"
+            },
+            {
+              "name": "aria-description",
+              "description": "Defines a string value that describes or annotates the current element.",
+              "type": "string"
+            },
+            {
+              "name": "aria-details",
+              "description": "Identifies the element that provides a detailed, extended description for the object.",
+              "type": "string"
+            },
+            {
+              "name": "aria-disabled",
+              "description": "Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-dropeffect",
+              "description": "Indicates what functions can be performed when a dragged object is released on the drop target.",
+              "type": "\"link\" | \"none\" | \"copy\" | \"execute\" | \"move\" | \"popup\""
+            },
+            {
+              "name": "aria-errormessage",
+              "description": "Identifies the element that provides an error message for the object.",
+              "type": "string"
+            },
+            {
+              "name": "aria-expanded",
+              "description": "Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-flowto",
+              "description": "Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,\nallows assistive technology to override the general default of reading in document source order.",
+              "type": "string"
+            },
+            {
+              "name": "aria-grabbed",
+              "description": "Indicates an element's \"grabbed\" state in a drag-and-drop operation.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-haspopup",
+              "description": "Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.",
+              "type": "boolean | \"dialog\" | \"menu\" | \"true\" | \"grid\" | \"listbox\" | \"tree\" | \"false\""
+            },
+            {
+              "name": "aria-hidden",
+              "description": "Indicates whether the element is exposed to an accessibility API.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-invalid",
+              "description": "Indicates the entered value does not conform to the format expected by the application.",
+              "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\""
+            },
+            {
+              "name": "aria-keyshortcuts",
+              "description": "Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element.",
+              "type": "string"
+            },
+            {
+              "name": "aria-label",
+              "description": "Defines a string value that labels the current element.",
+              "type": "string"
+            },
+            {
+              "name": "aria-labelledby",
+              "description": "Identifies the element (or elements) that labels the current element.",
+              "type": "string"
+            },
+            {
+              "name": "aria-level",
+              "description": "Defines the hierarchical level of an element within a structure.",
+              "type": "number"
+            },
+            {
+              "name": "aria-live",
+              "description": "Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region.",
+              "type": "\"off\" | \"assertive\" | \"polite\""
+            },
+            {
+              "name": "aria-modal",
+              "description": "Indicates whether an element is modal when displayed.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-multiline",
+              "description": "Indicates whether a text box accepts multiple lines of input or only a single line.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-multiselectable",
+              "description": "Indicates that the user may select more than one item from the current selectable descendants.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-orientation",
+              "description": "Indicates whether the element's orientation is horizontal, vertical, or unknown/ambiguous.",
+              "type": "\"horizontal\" | \"vertical\""
+            },
+            {
+              "name": "aria-owns",
+              "description": "Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship\nbetween DOM elements where the DOM hierarchy cannot be used to represent the relationship.",
+              "type": "string"
+            },
+            {
+              "name": "aria-placeholder",
+              "description": "Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.\nA hint could be a sample value or a brief description of the expected format.",
+              "type": "string"
+            },
+            {
+              "name": "aria-posinset",
+              "description": "Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.",
+              "type": "number"
+            },
+            {
+              "name": "aria-pressed",
+              "description": "Indicates the current \"pressed\" state of toggle buttons.",
+              "type": "boolean | \"true\" | \"false\" | \"mixed\""
+            },
+            {
+              "name": "aria-readonly",
+              "description": "Indicates that the element is not editable, but is otherwise operable.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-relevant",
+              "description": "Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.",
+              "type": "\"text\" | \"all\" | \"additions\" | \"additions removals\" | \"additions text\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\""
+            },
+            {
+              "name": "aria-required",
+              "description": "Indicates that user input is required on the element before a form may be submitted.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-roledescription",
+              "description": "Defines a human-readable, author-localized description for the role of an element.",
+              "type": "string"
+            },
+            {
+              "name": "aria-rowcount",
+              "description": "Defines the total number of rows in a table, grid, or treegrid.",
+              "type": "number"
+            },
+            {
+              "name": "aria-rowindex",
+              "description": "Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.",
+              "type": "number"
+            },
+            {
+              "name": "aria-rowindextext",
+              "description": "Defines a human readable text alternative of aria-rowindex.",
+              "type": "string"
+            },
+            {
+              "name": "aria-rowspan",
+              "description": "Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.",
+              "type": "number"
+            },
+            {
+              "name": "aria-selected",
+              "description": "Indicates the current \"selected\" state of various widgets.",
+              "type": "Booleanish"
+            },
+            {
+              "name": "aria-setsize",
+              "description": "Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.",
+              "type": "number"
+            },
+            {
+              "name": "aria-sort",
+              "description": "Indicates if items in a table or grid are sorted in ascending or descending order.",
+              "type": "\"none\" | \"ascending\" | \"descending\" | \"other\""
+            },
+            {
+              "name": "aria-valuemax",
+              "description": "Defines the maximum allowed value for a range widget.",
+              "type": "number"
+            },
+            {
+              "name": "aria-valuemin",
+              "description": "Defines the minimum allowed value for a range widget.",
+              "type": "number"
+            },
+            {
+              "name": "aria-valuenow",
+              "description": "Defines the current value for a range widget.",
+              "type": "number"
+            },
+            {
+              "name": "aria-valuetext",
+              "description": "Defines the human readable text alternative of aria-valuenow for a range widget.",
+              "type": "string"
+            },
+            {
+              "name": "dangerouslySetInnerHTML",
+              "description": "",
+              "type": "{ __html: string | TrustedHTML }"
+            },
+            {
+              "name": "onCopy",
+              "description": "",
+              "type": "ClipboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCopyCapture",
+              "description": "",
+              "type": "ClipboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCut",
+              "description": "",
+              "type": "ClipboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCutCapture",
+              "description": "",
+              "type": "ClipboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPaste",
+              "description": "",
+              "type": "ClipboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPasteCapture",
+              "description": "",
+              "type": "ClipboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCompositionEnd",
+              "description": "",
+              "type": "CompositionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCompositionEndCapture",
+              "description": "",
+              "type": "CompositionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCompositionStart",
+              "description": "",
+              "type": "CompositionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCompositionStartCapture",
+              "description": "",
+              "type": "CompositionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCompositionUpdate",
+              "description": "",
+              "type": "CompositionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCompositionUpdateCapture",
+              "description": "",
+              "type": "CompositionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onFocus",
+              "description": "",
+              "type": "FocusEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onFocusCapture",
+              "description": "",
+              "type": "FocusEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onBlur",
+              "description": "",
+              "type": "FocusEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onBlurCapture",
+              "description": "",
+              "type": "FocusEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onChange",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onChangeCapture",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onBeforeInput",
+              "description": "",
+              "type": "InputEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onBeforeInputCapture",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onInput",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onInputCapture",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onReset",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onResetCapture",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSubmit",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSubmitCapture",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onInvalid",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onInvalidCapture",
+              "description": "",
+              "type": "FormEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoad",
+              "description": "Callback fired when icon data is loaded\r\n\r\nOnly triggered for icons loaded from the Iconify API. Not called\r\nfor icons that are already available or provided as objects.",
+              "type": "ReactEventHandler<SVGSVGElement> & IconifyIconOnLoad"
+            },
+            {
+              "name": "onLoadCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onError",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onErrorCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onKeyDown",
+              "description": "",
+              "type": "KeyboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onKeyDownCapture",
+              "description": "",
+              "type": "KeyboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onKeyPress",
+              "description": "",
+              "type": "KeyboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onKeyPressCapture",
+              "description": "",
+              "type": "KeyboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onKeyUp",
+              "description": "",
+              "type": "KeyboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onKeyUpCapture",
+              "description": "",
+              "type": "KeyboardEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAbort",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAbortCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCanPlay",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCanPlayCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCanPlayThrough",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onCanPlayThroughCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDurationChange",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDurationChangeCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onEmptied",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onEmptiedCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onEncrypted",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onEncryptedCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onEnded",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onEndedCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoadedData",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoadedDataCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoadedMetadata",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoadedMetadataCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoadStart",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLoadStartCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPause",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPauseCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPlay",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPlayCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPlaying",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPlayingCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onProgress",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onProgressCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onRateChange",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onRateChangeCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSeeked",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSeekedCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSeeking",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSeekingCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onStalled",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onStalledCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSuspend",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSuspendCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTimeUpdate",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTimeUpdateCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onVolumeChange",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onVolumeChangeCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onWaiting",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onWaitingCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAuxClick",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAuxClickCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onClick",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onClickCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onContextMenu",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onContextMenuCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDoubleClick",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDoubleClickCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDrag",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragEnd",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragEndCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragEnter",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragEnterCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragExit",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragExitCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragLeave",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragLeaveCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragOver",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragOverCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragStart",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDragStartCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDrop",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onDropCapture",
+              "description": "",
+              "type": "DragEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseDown",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseDownCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseEnter",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseLeave",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseMove",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseMoveCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseOut",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseOutCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseOver",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseOverCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseUp",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onMouseUpCapture",
+              "description": "",
+              "type": "MouseEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSelect",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onSelectCapture",
+              "description": "",
+              "type": "ReactEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchCancel",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchCancelCapture",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchEnd",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchEndCapture",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchMove",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchMoveCapture",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchStart",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTouchStartCapture",
+              "description": "",
+              "type": "TouchEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerDown",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerDownCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerMove",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerMoveCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerUp",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerUpCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerCancel",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerCancelCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerEnter",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerLeave",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerOver",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerOverCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerOut",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onPointerOutCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onGotPointerCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onGotPointerCaptureCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLostPointerCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onLostPointerCaptureCapture",
+              "description": "",
+              "type": "PointerEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onScroll",
+              "description": "",
+              "type": "UIEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onScrollCapture",
+              "description": "",
+              "type": "UIEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onWheel",
+              "description": "",
+              "type": "WheelEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onWheelCapture",
+              "description": "",
+              "type": "WheelEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAnimationStart",
+              "description": "",
+              "type": "AnimationEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAnimationStartCapture",
+              "description": "",
+              "type": "AnimationEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAnimationEnd",
+              "description": "",
+              "type": "AnimationEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAnimationEndCapture",
+              "description": "",
+              "type": "AnimationEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAnimationIteration",
+              "description": "",
+              "type": "AnimationEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onAnimationIterationCapture",
+              "description": "",
+              "type": "AnimationEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTransitionEnd",
+              "description": "",
+              "type": "TransitionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "onTransitionEndCapture",
+              "description": "",
+              "type": "TransitionEventHandler<SVGSVGElement>"
+            },
+            {
+              "name": "radius",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "opacity",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "display",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "type",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "offset",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "name",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "origin",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fill",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "values",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "orientation",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "href",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "max",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "media",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "method",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "min",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "target",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "width",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "crossOrigin",
+              "description": "",
+              "type": "CrossOrigin"
+            },
+            {
+              "name": "accentHeight",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "accumulate",
+              "description": "",
+              "type": "\"none\" | \"sum\""
+            },
+            {
+              "name": "additive",
+              "description": "",
+              "type": "\"replace\" | \"sum\""
+            },
+            {
+              "name": "alignmentBaseline",
+              "description": "",
+              "type": "\"inherit\" | \"auto\" | \"alphabetic\" | \"hanging\" | \"ideographic\" | \"mathematical\" | \"baseline\" | \"before-edge\" | \"text-before-edge\" | \"middle\" | \"central\" | \"after-edge\" | \"text-after-edge\""
+            },
+            {
+              "name": "allowReorder",
+              "description": "",
+              "type": "\"no\" | \"yes\""
+            },
+            {
+              "name": "alphabetic",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "amplitude",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "arabicForm",
+              "description": "",
+              "type": "\"initial\" | \"medial\" | \"terminal\" | \"isolated\""
+            },
+            {
+              "name": "ascent",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "attributeName",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "attributeType",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "autoReverse",
+              "description": "",
+              "type": "Booleanish"
+            },
+            {
+              "name": "azimuth",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "baseFrequency",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "baselineShift",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "baseProfile",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "bbox",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "begin",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "bias",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "by",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "calcMode",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "capHeight",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "clip",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "clipPathUnits",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "clipRule",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "colorInterpolation",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "colorInterpolationFilters",
+              "description": "",
+              "type": "\"inherit\" | \"auto\" | \"sRGB\" | \"linearRGB\""
+            },
+            {
+              "name": "colorProfile",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "colorRendering",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "contentScriptType",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "contentStyleType",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "cursor",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "cx",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "cy",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "d",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "decelerate",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "descent",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "diffuseConstant",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "direction",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "divisor",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "dominantBaseline",
+              "description": "",
+              "type": "\"inherit\" | \"auto\" | \"alphabetic\" | \"hanging\" | \"ideographic\" | \"mathematical\" | \"text-before-edge\" | \"middle\" | \"central\" | \"text-after-edge\" | \"use-script\" | \"no-change\" | \"reset-size\""
+            },
+            {
+              "name": "dur",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "dx",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "dy",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "edgeMode",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "elevation",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "enableBackground",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "end",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "exponent",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "externalResourcesRequired",
+              "description": "",
+              "type": "Booleanish"
+            },
+            {
+              "name": "fillOpacity",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fillRule",
+              "description": "",
+              "type": "\"inherit\" | \"nonzero\" | \"evenodd\""
+            },
+            {
+              "name": "filterRes",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "filterUnits",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "floodColor",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "floodOpacity",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "focusable",
+              "description": "",
+              "type": "\"auto\" | Booleanish"
+            },
+            {
+              "name": "fontFamily",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "fontSize",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fontSizeAdjust",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fontStretch",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fontStyle",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fontVariant",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fontWeight",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "format",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fr",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "from",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fx",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "fy",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "g1",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "g2",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "glyphName",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "glyphOrientationHorizontal",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "glyphOrientationVertical",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "glyphRef",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "gradientTransform",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "gradientUnits",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "hanging",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "horizAdvX",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "horizOriginX",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "ideographic",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "imageRendering",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "in2",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "in",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "intercept",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "k1",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "k2",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "k3",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "k4",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "k",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "kernelMatrix",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "kernelUnitLength",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "kerning",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "keyPoints",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "keySplines",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "keyTimes",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "lengthAdjust",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "letterSpacing",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "lightingColor",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "limitingConeAngle",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "local",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "markerEnd",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "markerHeight",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "markerMid",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "markerStart",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "markerUnits",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "markerWidth",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "maskContentUnits",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "maskUnits",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "mathematical",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "mode",
+              "description": "Rendering mode for the icon",
+              "type": "\"style\" | \"svg\" | \"mask\" | \"bg\""
+            },
+            {
+              "name": "numOctaves",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "operator",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "order",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "orient",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "overflow",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "overlinePosition",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "overlineThickness",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "paintOrder",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "panose1",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "pathLength",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "patternContentUnits",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "patternTransform",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "patternUnits",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "pointerEvents",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "points",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "pointsAtX",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "pointsAtY",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "pointsAtZ",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "preserveAlpha",
+              "description": "",
+              "type": "Booleanish"
+            },
+            {
+              "name": "preserveAspectRatio",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "primitiveUnits",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "r",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "refX",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "refY",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "renderingIntent",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "repeatCount",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "repeatDur",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "requiredExtensions",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "requiredFeatures",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "restart",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "result",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "rotate",
+              "description": "Rotation angle for the icon\r\n\r\nCan be specified as:\r\n- String with units: \"90deg\", \"0.5turn\", \"1.5708rad\"\r\n- Number representing quarter-turns: 0=0°, 1=90°, 2=180°, 3=270°",
+              "type": "number",
+              "example": "x\r\n<Icon icon=\"bi:check2-circle\" /> // No rotation\r\n<Icon icon=\"bi:check2-circle\" rotate=\"90deg\" /> // 90° clockwise\r\n<Icon icon=\"bi:check2-circle\" rotate={2} /> // 180° rotation\r\n<Icon icon=\"bi:check2-circle\" rotate=\"0.5turn\" /> // 180° rotation"
+            },
+            {
+              "name": "rx",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "ry",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "scale",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "seed",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "shapeRendering",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "slope",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "spacing",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "specularConstant",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "specularExponent",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "speed",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "spreadMethod",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "startOffset",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "stdDeviation",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "stemh",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "stemv",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "stitchTiles",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "stopColor",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "stopOpacity",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "strikethroughPosition",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "strikethroughThickness",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "stroke",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "strokeDasharray",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "strokeDashoffset",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "strokeLinecap",
+              "description": "",
+              "type": "\"inherit\" | \"butt\" | \"round\" | \"square\""
+            },
+            {
+              "name": "strokeLinejoin",
+              "description": "",
+              "type": "\"inherit\" | \"round\" | \"miter\" | \"bevel\""
+            },
+            {
+              "name": "strokeMiterlimit",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "strokeOpacity",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "strokeWidth",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "surfaceScale",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "systemLanguage",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "tableValues",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "targetX",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "targetY",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "textAnchor",
+              "description": "",
+              "type": "\"inherit\" | \"end\" | \"middle\" | \"start\""
+            },
+            {
+              "name": "textDecoration",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "textLength",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "textRendering",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "to",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "transform",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "transformOrigin",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "u1",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "u2",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "underlinePosition",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "underlineThickness",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "unicode",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "unicodeBidi",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "unicodeRange",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "unitsPerEm",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vAlphabetic",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vectorEffect",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vertAdvY",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vertOriginX",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vertOriginY",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vHanging",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vIdeographic",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "viewBox",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "viewTarget",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "visibility",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "vMathematical",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "widths",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "wordSpacing",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "writingMode",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "x1",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "x2",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "x",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "xChannelSelector",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xHeight",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "xlinkActuate",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xlinkArcrole",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xlinkHref",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xlinkRole",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xlinkShow",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xlinkTitle",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xlinkType",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xmlBase",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xmlLang",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xmlns",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xmlnsXlink",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "xmlSpace",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "y1",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "y2",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "y",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "yChannelSelector",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "z",
+              "description": "",
+              "type": "string | number"
+            },
+            {
+              "name": "zoomAndPan",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "flip",
+              "description": "Flip transformation shorthand\r\n\r\nConvenient way to flip icons horizontally and/or vertically.",
+              "type": "string",
+              "example": "flip=\"horizontal\"\r\nflip=\"vertical\"\r\nflip=\"horizontal,vertical"
+            },
+            {
+              "name": "ssr",
+              "description": "Server-side rendering mode\r\n\r\nWhen `true`, icon renders immediately without waiting for component\r\nto mount. Useful for server-side rendering to prevent hydration issues.",
+              "type": "boolean"
+            },
+            {
+              "name": "fallback",
+              "description": "Fallback content while icon is loading or failed to load\r\n\r\nDisplayed before the icon is loaded and rendered. If not provided,\r\nan empty span will be rendered as placeholder.",
+              "type": "ReactNode"
+            },
+            {
+              "name": "hFlip",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "vFlip",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "inline",
+              "description": "Display mode for the icon\r\n\r\nWhen `true`, the icon is displayed as an inline element with baseline\r\nvertical alignment. When `false`, it's displayed as a block element\r\nwith middle vertical alignment.",
+              "type": "boolean",
+              "default": "false",
+              "example": "x\r\n<Icon icon=\"mdi:home\" inline /> // Aligns with text baseline\r\n<Icon icon=\"mdi:home\" /> // Centers vertically"
+            }
+          ]
+        }
+      },
+      "MarkdownWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "anchorTarget",
+              "description": "Target for markdown links.",
+              "type": "HTMLAttributeAnchorTarget",
+              "default": "_blank"
+            },
+            {
+              "name": "boldFontWeight",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "strongFontWeight",
+              "description": "",
+              "type": "string"
+            },
+            {
+              "name": "setHeadingFontSize",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "themeOverride",
+              "description": "",
+              "type": "{ focusRing?: \"auto\" | \"always\" | \"never\"; scale?: number; fontSmoothing?: boolean; white?: string; black?: string; colors?: { red?: MantineColorsTuple; yellow?: MantineColorsTuple; dark?: MantineColorsTuple; gray?: MantineColorsTuple; pink?: MantineColorsTuple; grape?: MantineColorsTuple; violet?: MantineColorsTuple; indigo?: MantineColorsTuple; blue?: MantineColorsTuple; cyan?: MantineColorsTuple; green?: MantineColorsTuple; lime?: MantineColorsTuple; orange?: MantineColorsTuple; teal?: MantineColorsTuple; [key: string & {}]: MantineColorsTuple | undefined }; primaryShade?: MantineColorShade | { light?: MantineColorShade | undefined; dark?: MantineColorShade | undefined }; primaryColor?: string; variantColorResolver?: VariantColorsResolver; autoContrast?: boolean; luminanceThreshold?: number; fontFamily?: string; fontFamilyMonospace?: string; headings?: { fontFamily?: string; fontWeight?: string; textWrap?: \"balance\" | \"nowrap\" | \"wrap\" | \"stable\" | \"pretty\"; sizes?: { h1?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h2?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h3?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h4?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h5?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h6?: { fontSize?: string; fontWeight?: string; lineHeight?: string } } }; radius?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; defaultRadius?: MantineRadius; spacing?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: number]: string | undefined; [key: string & {}]: string | undefined }; fontSizes?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; lineHeights?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; breakpoints?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; shadows?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; respectReducedMotion?: boolean; cursorType?: \"default\" | \"pointer\"; defaultGradient?: { from?: string; to?: string; deg?: number }; activeClassName?: string; focusClassName?: string; components?: { [key: string]: { classNames?: any; styles?: any; vars?: any; defaultProps?: any } | undefined }; other?: { [key: string]: any } }"
+            }
+          ]
+        }
+      },
+      "ModalBase": {
+        "defaultProps": {
+          "properties": []
+        }
+      },
+      "TooltipWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "floating",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "themeOverride",
+              "description": "",
+              "type": "{ focusRing?: \"auto\" | \"always\" | \"never\"; scale?: number; fontSmoothing?: boolean; white?: string; black?: string; colors?: { red?: MantineColorsTuple; yellow?: MantineColorsTuple; dark?: MantineColorsTuple; gray?: MantineColorsTuple; pink?: MantineColorsTuple; grape?: MantineColorsTuple; violet?: MantineColorsTuple; indigo?: MantineColorsTuple; blue?: MantineColorsTuple; cyan?: MantineColorsTuple; green?: MantineColorsTuple; lime?: MantineColorsTuple; orange?: MantineColorsTuple; teal?: MantineColorsTuple; [key: string & {}]: MantineColorsTuple | undefined }; primaryShade?: MantineColorShade | { light?: MantineColorShade | undefined; dark?: MantineColorShade | undefined }; primaryColor?: string; variantColorResolver?: VariantColorsResolver; autoContrast?: boolean; luminanceThreshold?: number; fontFamily?: string; fontFamilyMonospace?: string; headings?: { fontFamily?: string; fontWeight?: string; textWrap?: \"balance\" | \"nowrap\" | \"wrap\" | \"stable\" | \"pretty\"; sizes?: { h1?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h2?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h3?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h4?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h5?: { fontSize?: string; fontWeight?: string; lineHeight?: string }; h6?: { fontSize?: string; fontWeight?: string; lineHeight?: string } } }; radius?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; defaultRadius?: MantineRadius; spacing?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: number]: string | undefined; [key: string & {}]: string | undefined }; fontSizes?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; lineHeights?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; breakpoints?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; shadows?: { xs?: string; sm?: string; md?: string; lg?: string; xl?: string; [key: string & {}]: string | undefined }; respectReducedMotion?: boolean; cursorType?: \"default\" | \"pointer\"; defaultGradient?: { from?: string; to?: string; deg?: number }; activeClassName?: string; focusClassName?: string; components?: { [key: string]: { classNames?: any; styles?: any; vars?: any; defaultProps?: any } | undefined }; other?: { [key: string]: any } }"
+            },
+            {
+              "name": "withArrow",
+              "description": "Show tooltip arrow (standard Mantine Tooltip).",
+              "type": "boolean",
+              "default": "true"
             }
           ]
         }
