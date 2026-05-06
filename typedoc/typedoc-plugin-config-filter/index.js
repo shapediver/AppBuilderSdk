@@ -61,6 +61,16 @@ export function load(app) {
 					source: reflection.sources?.[0]?.fileName || "unknown",
 				};
 
+				const docLinkTag = tagMap.get("@docLink");
+				if (docLinkTag) {
+					const link = processTagValue(
+						getText(docLinkTag.content),
+					).trim();
+					if (link) {
+						entry.docLink = link;
+					}
+				}
+
 				const props = collectDocFlatProperties(
 					reflection,
 					getText,
