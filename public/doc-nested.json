@@ -4272,7 +4272,168 @@
       },
       "AppBuilderTextWidgetComponent": {
         "defaultProps": {
-          "properties": []
+          "properties": [
+            {
+              "name": "p",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "px",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "py",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "pt",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "pb",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "pl",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "pr",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "m",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "mx",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "my",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "mt",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "mb",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "ml",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "mr",
+              "description": "",
+              "type": "StyleProp<MantineSpacing>"
+            },
+            {
+              "name": "shadow",
+              "description": "",
+              "type": "MantineShadow"
+            },
+            {
+              "name": "radius",
+              "description": "",
+              "type": "MantineRadius"
+            },
+            {
+              "name": "withBorder",
+              "description": "",
+              "type": "boolean"
+            },
+            {
+              "name": "styles",
+              "description": "",
+              "type": "Partial<Record<\"root\", CSSProperties>> | ((theme: MantineTheme, props: PaperProps, ctx: unknown) => StylesRecord<Payload[\"stylesNames\"], DataType>)"
+            },
+            {
+              "name": "classNames",
+              "description": "",
+              "type": "Partial<Record<\"root\", string>> | ((theme: MantineTheme, props: PaperProps, ctx: unknown) => StylesRecord<Payload[\"stylesNames\"], DataType>)"
+            },
+            {
+              "name": "style",
+              "description": "",
+              "type": "MantineStyleProp"
+            },
+            {
+              "name": "bg",
+              "description": "",
+              "type": "StyleProp<DefaultMantineColor>"
+            },
+            {
+              "name": "bd",
+              "description": "",
+              "type": "StyleProp<Border<string | number> | undefined>"
+            },
+            {
+              "name": "w",
+              "description": "",
+              "type": "StyleProp<Width<string | number> | undefined>"
+            },
+            {
+              "name": "h",
+              "description": "",
+              "type": "StyleProp<Height<string | number> | undefined>"
+            },
+            {
+              "name": "miw",
+              "description": "",
+              "type": "StyleProp<MinWidth<string | number> | undefined>"
+            },
+            {
+              "name": "mih",
+              "description": "",
+              "type": "StyleProp<MinHeight<string | number> | undefined>"
+            },
+            {
+              "name": "maw",
+              "description": "",
+              "type": "StyleProp<MaxWidth<string | number> | undefined>"
+            },
+            {
+              "name": "mah",
+              "description": "",
+              "type": "StyleProp<MaxHeight<string | number> | undefined>"
+            },
+            {
+              "name": "display",
+              "description": "",
+              "type": "StyleProp<Display | undefined>"
+            },
+            {
+              "name": "hiddenFrom",
+              "description": "",
+              "type": "MantineBreakpoint"
+            },
+            {
+              "name": "visibleFrom",
+              "description": "",
+              "type": "MantineBreakpoint"
+            },
+            {
+              "name": "opacity",
+              "description": "",
+              "type": "StyleProp<Opacity | undefined>"
+            }
+          ]
         }
       },
       "ParametersAndExportsAccordionComponent": {
