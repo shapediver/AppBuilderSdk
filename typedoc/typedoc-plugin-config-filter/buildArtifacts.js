@@ -44,16 +44,25 @@ export function dedupeFlatEntriesByConfigPath(entries, onDuplicate) {
  */
 function setAtPath(obj, dotPath, value) {
 	const keys = dotPath.split(".");
+	const isUnsafeKey = (key) =>
+		key === "__proto__" || key === "prototype" || key === "constructor";
 	let current = obj;
 	for (let i = 0; i < keys.length - 1; i++) {
 		const key = keys[i];
+		if (isUnsafeKey(key)) {
+			return;
+		}
 		const next = current[key];
 		if (!next || typeof next !== "object") {
 			current[key] = {};
 		}
 		current = /** @type {Record<string, unknown>} */ (current[key]);
 	}
-	current[keys[keys.length - 1]] = value;
+	const lastKey = keys[keys.length - 1];
+	if (isUnsafeKey(lastKey)) {
+		return;
+	}
+	current[lastKey] = value;
 }
 
 /**
