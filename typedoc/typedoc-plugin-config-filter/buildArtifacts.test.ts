@@ -2,7 +2,7 @@ import {
 	buildNestedDocRoot,
 	collectDocFlatProperties,
 	dedupeFlatEntriesByConfigPath,
-} from "./buildArtifacts.js";
+} from "./buildArtifacts.ts";
 
 type DocFlatEntry = {
 	configPath: string;
@@ -26,9 +26,7 @@ describe("dedupeFlatEntriesByConfigPath", () => {
 				name: "First",
 				summary: "",
 				source: "a.ts",
-				properties: [
-					{name: "n", description: "", type: "string"},
-				],
+				properties: [{name: "n", description: "", type: "string"}],
 			},
 			{
 				configPath: "themeOverrides.components.X.defaultProps",
@@ -66,9 +64,7 @@ describe("collectDocFlatProperties", () => {
 		};
 		expect(
 			collectDocFlatProperties(reflection, getText, processTagValue),
-		).toEqual([
-			{name: "foo", description: "Foo prop", type: "string"},
-		]);
+		).toEqual([{name: "foo", description: "Foo prop", type: "string"}]);
 	});
 
 	it("merges properties from intersection of reflection object types", () => {
@@ -189,15 +185,12 @@ describe("buildNestedDocRoot", () => {
 				],
 			},
 		];
-		const nested = buildNestedDocRoot(entries) as Record<
-			string,
-			unknown
-		>;
+		const nested = buildNestedDocRoot(entries) as Record<string, unknown>;
 		const leaf = (
 			nested as {
 				themeOverrides: {
 					components: {
-						Foo: {"defaultProps": {properties: unknown[]}};
+						Foo: {defaultProps: {properties: unknown[]}};
 					};
 				};
 			}
@@ -218,10 +211,7 @@ describe("buildNestedDocRoot", () => {
 				docLink: "https://example.com/docs",
 			},
 		];
-		const nested = buildNestedDocRoot(entries) as Record<
-			string,
-			unknown
-		>;
+		const nested = buildNestedDocRoot(entries) as Record<string, unknown>;
 		const leaf = (
 			nested as {
 				themeOverrides: {

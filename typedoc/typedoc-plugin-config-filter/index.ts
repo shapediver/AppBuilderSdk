@@ -5,7 +5,7 @@ import {
 	buildNestedDocRoot,
 	collectDocFlatProperties,
 	dedupeFlatEntriesByConfigPath,
-} from "./buildArtifacts.js";
+} from "./buildArtifacts.ts";
 
 export function load(app: Application) {
 	console.log("Plugin loading...");
