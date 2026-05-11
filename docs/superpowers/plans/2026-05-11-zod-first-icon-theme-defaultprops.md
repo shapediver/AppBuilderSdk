@@ -1,10 +1,11 @@
 # Zod-first Icon theme defaultProps Implementation Plan
 
+> **Language:** This plan is **English-only** (including appendices).  
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make `Icon` theme `defaultProps` **Zod-first**: one schema defines JSON validation and TypeScript theme props; `themeComponentDefaultPropsRegistry` imports that schema instead of duplicating fields.
 
-**Architecture:** Colocate in **`Icon.types.ts`** (types + theme Zod in one place; no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps`). `Icon.tsx` imports those symbols from `./Icon.types`; `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` imports `IconThemeDefaultPropsSchema` from `@AppBuilderLib/shared/ui/icon` (barrel re-export from `./Icon.types`) or from `@AppBuilderLib/shared/ui/icon/Icon.types` if needed for FSD/lint. FSD: **features → shared** is allowed; `shared` must not import `features`.
+**Architecture:** Colocate in **`Icon.types.ts`** (types + theme Zod in one place; no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps`). `Icon.tsx` imports those symbols from `./Icon.types`; `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` imports `IconThemeDefaultPropsSchema` from `@AppBuilderLib/shared/ui/icon` (barrel re-export from `./Icon.types`) or from `@AppBuilderLib/shared/ui/icon/Icon.types` if needed for FSD/lint. FSD: **features → shared** is allowed; `shared` must not import `features`. **Broader rule:** do **not** register strict per-component schemas for custom components whose theme props are mostly Mantine bags (`Partial<ButtonProps>`, nested `buttonProps`, etc.); see Appendix B — those stay opaque at the Mantine theme level.
 
 **Tech Stack:** Zod 4, TypeScript, Jest (existing theme validation tests).
 
@@ -57,7 +58,7 @@ export type IconThemePropsType = Partial<IconProps>;
  */
 export const IconThemeDefaultPropsSchema = z.strictObject({
 	size: z.union([z.string(), z.number()]).optional(),
-	stroke: z.union([z.string(), z.number()]).optional(),
+	stroke: z.string().optional(),
 });
 
 export type IconThemeDefaultProps = z.infer<typeof IconThemeDefaultPropsSchema>;
@@ -69,6 +70,8 @@ export const iconThemeDefaultStyleProps: IconThemeDefaultProps =
 		stroke: "1px",
 	});
 ```
+
+(`stroke` stays `string` in Zod to match Iconify / `IconProps` TypeScript types.)
 
 - [ ] **Step 2: Edit `Icon.tsx`**
 
@@ -207,20 +210,20 @@ Plan saved to `docs/superpowers/plans/2026-05-11-zod-first-icon-theme-defaultpro
 **1. Subagent-Driven** — one subagent per task above + reviews.  
 **2. Inline** — implement Tasks 1–2 in order in one session.
 
-After merge, **optional follow-up:** document the same pattern for the next component (e.g. `ExportButtonComponent`) in `custom-component.mdc` or team wiki.
+After merge, **optional follow-up:** document the same pattern for the next **registry-eligible** component in `custom-component.mdc` or team wiki (see Appendix B policy).
 
 ---
 
-## Appendix A — Inventory: `theme.components` keys (custom / themed)
+## Appendix A — Reference: `theme.components` keys (`useCustomTheme` + `useProps`)
 
-**Источник:** ключи в `useCustomTheme.ts` в `components: { … }` (то, что реально можно переопределить в JSON через `themeOverrides.components.<Key>`), плюс сверка с `useProps("…")` в коде.
+**Source:** keys under `components` in `useCustomTheme.ts` (what can be overridden from JSON as `themeOverrides.components.<Key>`), cross-checked with `useProps("…")` in code.
 
-**Важно:** ключ в JSON **должен совпадать** с первым аргументом `useProps` для этого блока стилей. Пример несоответствия имени: компонент `MultiSelectCheckboxesComponent`, а `useProps` — **`"MultiSelectCheckboxes"`**; в теме в `useCustomTheme` ключ — **`MultiSelectCheckboxes`**. В реестре валидатора использовать **именно строку из `useProps`**.
+**JSON key rule:** the key must match the **first argument of `useProps`** for that style bundle. Example: file `MultiSelectCheckboxesComponent.tsx` but `useProps` string is **`"MultiSelectCheckboxes"`**; `useCustomTheme` uses **`MultiSelectCheckboxes`**. The validator registry must use the **`useProps` string** if you ever register that component.
 
-### Список (алфавит, дедуп)
+### Alphabetical list (deduped)
 
-| `useProps` / theme key | Примечание |
-|------------------------|------------|
+| Theme / `useProps` key | Notes |
+|------------------------|-------|
 | `AppBuilderActionComponent` | |
 | `AppBuilderAgentWidgetComponent` | |
 | `AppBuilderAppShellTemplatePage` | |
@@ -237,11 +240,11 @@ After merge, **optional follow-up:** document the same pattern for the next comp
 | `DesktopClientPanel` | |
 | `ExportButtonComponent` | |
 | `ExportLabelComponent` | |
-| `Icon` | уже в реестре (Zod-first в `Icon.types.ts`) |
+| `Icon` | In registry: Zod-first in `Icon.types.ts` |
 | `LoaderPage` | |
 | `MarkdownWidgetComponent` | |
 | `ModalBase` | |
-| `MultiSelectCheckboxes` | не путать с именем файла компонента |
+| `MultiSelectCheckboxes` | Do not confuse with the `.tsx` file name |
 | `NotificationWrapper` | |
 | `OutputChunkLabelComponent` | |
 | `OutputStargateComponent` | |
@@ -257,7 +260,7 @@ After merge, **optional follow-up:** document the same pattern for the next comp
 | `SelectColorComponent` | |
 | `SelectGridComponent` | |
 | `StargateInput` | |
-| `StargateShared` | второй `useProps` внутри `ExportButtonComponent`, не «экспорт» в смысле файла |
+| `StargateShared` | Second `useProps` inside `ExportButtonComponent` |
 | `TooltipWrapper` | |
 | `ViewportBranding` | |
 | `ViewportComponent` | |
@@ -266,46 +269,54 @@ After merge, **optional follow-up:** document the same pattern for the next comp
 | `ViewportIcons` | |
 | `ViewportOverlayWrapper` | |
 
-**Отдельно (theme без отдельного ключа в таблице выше):** `ParameterBooleanComponent` — есть `useProps("ParameterBooleanComponent", …)`; проверить, есть ли он в `useCustomTheme` под тем же ключом (если нет — JSON overrides для него через общий Mantine-путь не попадут в реестр до добавления в тему).
+**Not in the table above:** `ParameterBooleanComponent` has `useProps("ParameterBooleanComponent", …)` but **no matching entry** in `useCustomTheme` today — theme JSON cannot target it via the same central `components` map until a theme entry is added.
 
 ---
 
-## Appendix B — Сложные кейсы валидации
+## Appendix B — Registry validation policy and edge cases
 
-1. **Вложенные Mantine props (`buttonProps`, `tooltipProps`, …)**  
-   Полное отражение `ButtonProps` в Zod тяжёлое и дублирует Mantine. Практика: **узкий strict-слой** только для полей, которые реально кладут в settings JSON, плюс `z.custom` / `passthrough` для редких случаев — или оставить глубину 1–2 уровня с `JsonValue` только для листьев (ослабляет строгость).
+### Policy (Mantine-heavy theme props)
 
-2. **Несколько `useProps` в одном файле**  
-   Пример: `ExportButtonComponent` + **`StargateShared`**. В JSON два ключа: `ExportButtonComponent` и при необходимости переопределения общих стилей старгейта — `StargateShared`. Два независимых Zod-first модуля/схемы, два входа в реестре.
+**Do not** add `themeComponentDefaultPropsRegistry` entries for custom components whose theme `defaultProps` are mostly **Mantine prop bags** (e.g. `Partial<ButtonProps>`, `Partial<TooltipProps>`, nested `buttonProps` / `tooltipProps` trees). Describing each field in Zod duplicates Mantine and yields little value for JSON validation.
 
-3. **Имя компонента ≠ имя файла**  
-   Ошибка в реестре = «тихий» пропуск валидации (политика registry-only). В плане на каждый PR: grep `useProps("` и сверка с ключами реестра.
+Those keys stay covered only by the generic `MantineThemeOverrideSchema` path (opaque JSON / structural checks), not by per-component strict schemas.
 
-4. **`Partial<>` и обязательные theme-поля**  
-   Исторически `downloadTooltipProps` в типе могли требоваться, в theme — partial. Zod-схема для JSON должна отражать **фактически допустимый** JSON (обычно все ключи optional), иначе пустой `{}` в теме станет ошибкой.
+**Do** register Zod-first schemas only for components with a **small, app-owned surface** (primitives, enums, simple records) where JSON mistakes should fail fast — the pilot is **`Icon`**.
 
-5. **Совместимость TS и Zod (Icon / stroke)**  
-   Поля, где Iconify/Mantine TS уже `string`, а JSON хотел `number`, — схему сужать под TS **или** каст при вызове `useProps` (хуже). Предпочтительно согласовать схему с типами листьев.
+If a component mixes both (e.g. a few custom strings plus `buttonProps`), default is: **still skip registry** unless the team explicitly wants partial strictness for the custom slice only (split shape in code + docs).
 
-6. **Кросс-слайс импорт в реестр**  
-   `features/appbuilder` → `shared/.../Icon.types.ts`: предпочтительно **относительный путь** внутри субмодуля, пока корневой Jest не умеет `@AppBuilderLib` (см. текущий `themeComponentDefaultPropsRegistry.ts`).
+### Edge cases (when you *do* extend the registry)
 
-### Подходы к rollout (кратко)
+1. **Nested Mantine props** — if you ever register a Mantine-heavy component anyway, prefer a **thin** strict layer for app-owned keys only; do not model full `ButtonProps` in Zod.
 
-| Подход | Плюс | Минус |
+2. **Multiple `useProps` in one file** — e.g. `ExportButtonComponent` and `StargateShared`: two theme keys ⇒ two optional registry schemas if they become eligible under the policy above.
+
+3. **Component file name ≠ `useProps` id** — wrong registry key ⇒ silent skip (registry-only policy). PR hygiene: grep `useProps("` and align registry keys.
+
+4. **`Partial<>` vs required theme fields** — Zod for JSON should match **what empty `{}` must allow** (usually all keys optional), or `{}` in theme becomes a validation error.
+
+5. **TS vs Zod alignment** — when Iconify/Mantine types narrow a field (e.g. `stroke: string`), keep the Zod schema consistent (avoid `number` in JSON if TS rejects it after merge).
+
+6. **Cross-slice imports into the registry** — from `features/appbuilder/config` into `shared/...`, prefer a **relative path** inside the submodule while root Jest lacks `@AppBuilderLib` mapping (see current `themeComponentDefaultPropsRegistry.ts`).
+
+### Rollout ordering (when adding new eligible components)
+
+| Option | Pros | Cons |
 |--------|------|------|
-| **A. По волнам (shared UI → entities → pages)** | Меньше риска, проще ревью | Дольше до полного покрытия |
-| **B. По частоте JSON / боли** | Быстрая польза | Неровное покрытие |
-| **C. Строго по алфавиту** | Предсказуемо | Может откладывать важные |
+| **A. By layer** (`shared/ui` → `entities` → `pages` / viewport) | Lower risk, easier review | Slower to cover many keys |
+| **B. By real JSON churn / pain** | Fast value | Uneven coverage |
+| **C. Strictly alphabetical** | Predictable | May delay high-impact keys |
 
-**Рекомендация:** **A** или **B** в зависимости от того, что чаще правят в JSON на проде.
+**Recommendation:** **A** or **B** depending on what you actually edit in production JSON.
 
 ---
 
-## Appendix C — Следующие шаги плана (после Icon)
+## Appendix C — Next steps after `Icon` (registry-eligible only)
 
-Для каждого ключа из Appendix A (кроме уже сделанного `Icon`):
+For keys in Appendix A that **meet Appendix B policy** (not Mantine-heavy):
 
-1. Вынести / объявить `*ThemeDefaultPropsSchema` (Zod-first рядом с типами, как для `Icon` в `*.types.ts` или колонке рядом с компонентом по соглашению команды).
-2. Импортировать схему в `themeComponentDefaultPropsRegistry.ts` (относительный импорт из `features/appbuilder/config` при необходимости для Jest).
-3. Добавить минимальный тест на `validateAppBuilderSettingsJson` **опционально** раз на компонент или один parametrized suite — по решению команды (избежать взрыва размера тестов).
+1. Add `*ThemeDefaultPropsSchema` Zod-first next to types (same convention as `Icon` in `*.types.ts`, or team-agreed colocation).
+2. Import the schema into `themeComponentDefaultPropsRegistry.ts` (relative import from `features/appbuilder/config` if required for Jest).
+3. Optionally add a focused `validateAppBuilderSettingsJson` test per component **or** one parametrized suite — team choice (avoid huge test matrices).
+
+**Default for all other Appendix A keys:** no registry work; they remain Mantine-opaque for deep validation.
