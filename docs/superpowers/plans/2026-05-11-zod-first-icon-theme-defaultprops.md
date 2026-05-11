@@ -208,3 +208,104 @@ Plan saved to `docs/superpowers/plans/2026-05-11-zod-first-icon-theme-defaultpro
 **2. Inline** — implement Tasks 1–2 in order in one session.
 
 After merge, **optional follow-up:** document the same pattern for the next component (e.g. `ExportButtonComponent`) in `custom-component.mdc` or team wiki.
+
+---
+
+## Appendix A — Inventory: `theme.components` keys (custom / themed)
+
+**Источник:** ключи в `useCustomTheme.ts` в `components: { … }` (то, что реально можно переопределить в JSON через `themeOverrides.components.<Key>`), плюс сверка с `useProps("…")` в коде.
+
+**Важно:** ключ в JSON **должен совпадать** с первым аргументом `useProps` для этого блока стилей. Пример несоответствия имени: компонент `MultiSelectCheckboxesComponent`, а `useProps` — **`"MultiSelectCheckboxes"`**; в теме в `useCustomTheme` ключ — **`MultiSelectCheckboxes`**. В реестре валидатора использовать **именно строку из `useProps`**.
+
+### Список (алфавит, дедуп)
+
+| `useProps` / theme key | Примечание |
+|------------------------|------------|
+| `AppBuilderActionComponent` | |
+| `AppBuilderAgentWidgetComponent` | |
+| `AppBuilderAppShellTemplatePage` | |
+| `AppBuilderContainer` | |
+| `AppBuilderContainerWrapper` | |
+| `AppBuilderGridTemplatePage` | |
+| `AppBuilderHorizontalContainer` | |
+| `AppBuilderImage` | |
+| `AppBuilderTemplateSelector` | |
+| `AppBuilderTextWidgetComponent` | |
+| `AppBuilderVerticalContainer` | |
+| `CreateModelStateHook` | |
+| `DefaultSession` | |
+| `DesktopClientPanel` | |
+| `ExportButtonComponent` | |
+| `ExportLabelComponent` | |
+| `Icon` | уже в реестре (Zod-first в `Icon.types.ts`) |
+| `LoaderPage` | |
+| `MarkdownWidgetComponent` | |
+| `ModalBase` | |
+| `MultiSelectCheckboxes` | не путать с именем файла компонента |
+| `NotificationWrapper` | |
+| `OutputChunkLabelComponent` | |
+| `OutputStargateComponent` | |
+| `ParameterColorComponent` | |
+| `ParameterDraggingComponent` | |
+| `ParameterGumballComponent` | |
+| `ParameterLabelComponent` | |
+| `ParameterSelectComponent` | |
+| `ParameterSelectionComponent` | |
+| `ParameterSliderComponent` | |
+| `ParameterStargateComponent` | |
+| `SelectCarouselComponent` | |
+| `SelectColorComponent` | |
+| `SelectGridComponent` | |
+| `StargateInput` | |
+| `StargateShared` | второй `useProps` внутри `ExportButtonComponent`, не «экспорт» в смысле файла |
+| `TooltipWrapper` | |
+| `ViewportBranding` | |
+| `ViewportComponent` | |
+| `ViewportIconButton` | |
+| `ViewportIconButtonDropdown` | |
+| `ViewportIcons` | |
+| `ViewportOverlayWrapper` | |
+
+**Отдельно (theme без отдельного ключа в таблице выше):** `ParameterBooleanComponent` — есть `useProps("ParameterBooleanComponent", …)`; проверить, есть ли он в `useCustomTheme` под тем же ключом (если нет — JSON overrides для него через общий Mantine-путь не попадут в реестр до добавления в тему).
+
+---
+
+## Appendix B — Сложные кейсы валидации
+
+1. **Вложенные Mantine props (`buttonProps`, `tooltipProps`, …)**  
+   Полное отражение `ButtonProps` в Zod тяжёлое и дублирует Mantine. Практика: **узкий strict-слой** только для полей, которые реально кладут в settings JSON, плюс `z.custom` / `passthrough` для редких случаев — или оставить глубину 1–2 уровня с `JsonValue` только для листьев (ослабляет строгость).
+
+2. **Несколько `useProps` в одном файле**  
+   Пример: `ExportButtonComponent` + **`StargateShared`**. В JSON два ключа: `ExportButtonComponent` и при необходимости переопределения общих стилей старгейта — `StargateShared`. Два независимых Zod-first модуля/схемы, два входа в реестре.
+
+3. **Имя компонента ≠ имя файла**  
+   Ошибка в реестре = «тихий» пропуск валидации (политика registry-only). В плане на каждый PR: grep `useProps("` и сверка с ключами реестра.
+
+4. **`Partial<>` и обязательные theme-поля**  
+   Исторически `downloadTooltipProps` в типе могли требоваться, в theme — partial. Zod-схема для JSON должна отражать **фактически допустимый** JSON (обычно все ключи optional), иначе пустой `{}` в теме станет ошибкой.
+
+5. **Совместимость TS и Zod (Icon / stroke)**  
+   Поля, где Iconify/Mantine TS уже `string`, а JSON хотел `number`, — схему сужать под TS **или** каст при вызове `useProps` (хуже). Предпочтительно согласовать схему с типами листьев.
+
+6. **Кросс-слайс импорт в реестр**  
+   `features/appbuilder` → `shared/.../Icon.types.ts`: предпочтительно **относительный путь** внутри субмодуля, пока корневой Jest не умеет `@AppBuilderLib` (см. текущий `themeComponentDefaultPropsRegistry.ts`).
+
+### Подходы к rollout (кратко)
+
+| Подход | Плюс | Минус |
+|--------|------|------|
+| **A. По волнам (shared UI → entities → pages)** | Меньше риска, проще ревью | Дольше до полного покрытия |
+| **B. По частоте JSON / боли** | Быстрая польза | Неровное покрытие |
+| **C. Строго по алфавиту** | Предсказуемо | Может откладывать важные |
+
+**Рекомендация:** **A** или **B** в зависимости от того, что чаще правят в JSON на проде.
+
+---
+
+## Appendix C — Следующие шаги плана (после Icon)
+
+Для каждого ключа из Appendix A (кроме уже сделанного `Icon`):
+
+1. Вынести / объявить `*ThemeDefaultPropsSchema` (Zod-first рядом с типами, как для `Icon` в `*.types.ts` или колонке рядом с компонентом по соглашению команды).
+2. Импортировать схему в `themeComponentDefaultPropsRegistry.ts` (относительный импорт из `features/appbuilder/config` при необходимости для Jest).
+3. Добавить минимальный тест на `validateAppBuilderSettingsJson` **опционально** раз на компонент или один parametrized suite — по решению команды (избежать взрыва размера тестов).
