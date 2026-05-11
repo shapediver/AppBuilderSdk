@@ -7,6 +7,8 @@
 
 **Architecture:** Colocate in **`Icon.types.ts`** (types + theme Zod in one place; no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps`). `Icon.tsx` imports those symbols from `./Icon.types`; `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` imports `IconThemeDefaultPropsSchema` from `@AppBuilderLib/shared/ui/icon` (barrel re-export from `./Icon.types`) or from `@AppBuilderLib/shared/ui/icon/Icon.types` if needed for FSD/lint. FSD: **features → shared** is allowed; `shared` must not import `features`. **Broader rule:** do **not** register strict per-component schemas for custom components whose theme props are mostly Mantine bags (`Partial<ButtonProps>`, nested `buttonProps`, etc.); see Appendix B — those stay opaque at the Mantine theme level.
 
+**Rollout (registry-eligible only):** use **Option A — by layer (waves)** for any new per-component registry entries. **Wave 1:** `shared/ui`. **Wave 2:** `entities` and `features` (all FSD slices under those roots, **excluding** `entities/viewport`). **Wave 3:** `pages`, `entities/viewport`, and **`widgets`** when a theme key’s implementation lives only under `widgets`. Ambiguous **`AppBuilder*`** keys default to **Wave 3** with a verification note unless the owning slice is confirmed (see Appendix D). Detailed key lists: Appendix D.
+
 **Tech Stack:** Zod 4, TypeScript, Jest (existing theme validation tests).
 
 **Worktree:** Implement in **git submodule** `src/shared` (AppBuilderShared); then bump submodule pointer in parent repo if you work from the monorepo root.
@@ -210,7 +212,7 @@ Plan saved to `docs/superpowers/plans/2026-05-11-zod-first-icon-theme-defaultpro
 **1. Subagent-Driven** — one subagent per task above + reviews.  
 **2. Inline** — implement Tasks 1–2 in order in one session.
 
-After merge, **optional follow-up:** document the same pattern for the next **registry-eligible** component in `custom-component.mdc` or team wiki (see Appendix B policy).
+After merge, **optional follow-up:** document the same pattern for the next **registry-eligible** component in `custom-component.mdc` or team wiki (see Appendix B policy), following **Appendix D** wave order (Option A).
 
 ---
 
@@ -307,7 +309,7 @@ If a component mixes both (e.g. a few custom strings plus `buttonProps`), defaul
 | **B. By real JSON churn / pain** | Fast value | Uneven coverage |
 | **C. Strictly alphabetical** | Predictable | May delay high-impact keys |
 
-**Recommendation:** **A** or **B** depending on what you actually edit in production JSON.
+**Decision:** **Chosen: A (waves)** — see **Architecture** and **Appendix D** for the three-wave definition (Wave 1 = `shared/ui`, Wave 2 = `entities` + `features` except viewport, Wave 3 = `pages` + `entities/viewport` + widget-only / ambiguous `AppBuilder*` as noted).
 
 ---
 
@@ -320,3 +322,69 @@ For keys in Appendix A that **meet Appendix B policy** (not Mantine-heavy):
 3. Optionally add a focused `validateAppBuilderSettingsJson` test per component **or** one parametrized suite — team choice (avoid huge test matrices).
 
 **Default for all other Appendix A keys:** no registry work; they remain Mantine-opaque for deep validation.
+
+---
+
+## Appendix D — Rollout waves (registry-eligible only, Appendix B policy)
+
+Only components that satisfy the Mantine-heavy **skip** policy in Appendix B may receive Zod-first `themeComponentDefaultPropsRegistry` entries; **most** Appendix A keys should remain **unregistered** and validated only via generic Mantine/theme JSON paths. The lists below assign **Appendix A** `useProps` / theme keys to rollout **waves by primary implementation path** (typical FSD locations). Order within a wave is team preference.
+
+### Wave 1 (`shared/ui`)
+
+- `Icon`
+- `MarkdownWidgetComponent`
+- `ModalBase`
+- `TooltipWrapper`
+
+### Wave 2 (`entities` except `entities/viewport`, plus `features`)
+
+- `DefaultSession`
+- `DesktopClientPanel`
+- `ExportButtonComponent`
+- `ExportLabelComponent`
+- `OutputChunkLabelComponent`
+- `OutputStargateComponent`
+- `ParameterColorComponent`
+- `ParameterDraggingComponent`
+- `ParameterGumballComponent`
+- `ParameterLabelComponent`
+- `ParameterSelectComponent`
+- `ParameterSelectionComponent`
+- `ParameterSliderComponent`
+- `ParameterStargateComponent`
+- `MultiSelectCheckboxes`
+- `SelectCarouselComponent`
+- `SelectColorComponent`
+- `SelectGridComponent`
+- `StargateInput`
+- `StargateShared`
+- `CreateModelStateHook`
+- `NotificationWrapper`
+
+### Wave 3 (`pages`, `entities/viewport`, and `widgets` where applicable)
+
+- `AppBuilderAppShellTemplatePage`
+- `AppBuilderContainer`
+- `AppBuilderContainerWrapper`
+- `AppBuilderGridTemplatePage`
+- `AppBuilderHorizontalContainer`
+- `AppBuilderImage`
+- `AppBuilderTemplateSelector`
+- `AppBuilderTextWidgetComponent`
+- `AppBuilderAgentWidgetComponent`
+- `AppBuilderVerticalContainer`
+- `LoaderPage`
+- `ViewportBranding`
+- `ViewportComponent`
+- `ViewportIconButton`
+- `ViewportIconButtonDropdown`
+- `ViewportIcons`
+- `ViewportOverlayWrapper`
+
+### Wave 3 (verify)
+
+- `AppBuilderActionComponent` — `useCustomTheme` types this key from `@AppBuilderLib/features/appbuilder`, but confirm the live `useProps` implementation slice (`features` vs `widgets`) before treating it as Wave 2 vs Wave 3.
+
+### Unclassified (verify)
+
+- None listed; add keys here if a new Appendix A entry has no clear primary path.
