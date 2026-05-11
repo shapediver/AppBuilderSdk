@@ -245,7 +245,7 @@ After merge, **optional follow-up:** document the same pattern for the next **re
 | `Icon` | In registry: Zod-first in `Icon.types.ts` |
 | `LoaderPage` | |
 | `MarkdownWidgetComponent` | |
-| `ModalBase` | |
+| `ModalBase` | `useCustomTheme` key is `ModalBase`, but `ModalBase.tsx` calls `useProps("UniversalModal", …)` — verify theme override wiring; any registry key must follow the `useProps` string (Appendix A rule). |
 | `MultiSelectCheckboxes` | Do not confuse with the `.tsx` file name |
 | `NotificationWrapper` | |
 | `OutputChunkLabelComponent` | |
@@ -335,6 +335,19 @@ Only components that satisfy the Mantine-heavy **skip** policy in Appendix B may
 - `MarkdownWidgetComponent`
 - `ModalBase`
 - `TooltipWrapper`
+
+#### Wave 1 — execution log (subagent-driven, Appendix B)
+
+Subagents assessed the remaining Wave 1 keys (Icon already shipped). **Registry / Zod-first** only where Appendix B allows; otherwise **SKIP** (stay on generic Mantine JSON validation).
+
+| Theme key (`useCustomTheme.components`) | `useProps(…)` id in code | Registry / Zod-first | Outcome |
+|------------------------------------------|--------------------------|----------------------|---------|
+| `Icon` | `Icon` | **Done** | Zod-first in `Icon.types.ts`; imported in `themeComponentDefaultPropsRegistry.ts`. |
+| `TooltipWrapper` | `TooltipWrapper` | **SKIP** | Theme type is `Partial<TooltipWrapperProps & TooltipProps>` — Mantine-heavy (`TooltipProps` bag). |
+| `MarkdownWidgetComponent` | `MarkdownWidgetComponent` | **SKIP** | App-owned primitives plus optional `MantineThemeOverride`; Appendix B default is skip unless the team adds a **thin** schema for primitives only. |
+| `ModalBase` | **`UniversalModal`** | **SKIP** | `StyleProps` extends `ModalProps` plus `Record<string, any>` button prop bags — Mantine-heavy. **Also:** theme key `ModalBase` vs `useProps("UniversalModal")` — confirm overrides behave as intended before any future registry work. |
+
+**Wave 1 registry conclusion:** no additional `themeComponentDefaultPropsRegistry` entries beyond **`Icon`** unless policy changes or a team-approved thin schema is added later.
 
 ### Wave 2 (`entities` except `entities/viewport`, plus `features`)
 
