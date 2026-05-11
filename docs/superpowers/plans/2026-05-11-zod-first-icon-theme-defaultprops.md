@@ -5,7 +5,7 @@
 
 **Goal:** Make `Icon` theme `defaultProps` **Zod-first**: one schema defines JSON validation and TypeScript theme props; `themeComponentDefaultPropsRegistry` imports that schema instead of duplicating fields.
 
-**Architecture:** Colocate in **`Icon.types.ts`** (types + theme Zod in one place; no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps`). `Icon.tsx` imports those symbols from `./Icon.types`; `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` should import schemas via **`@AppBuilderLib/shared/ui/icon`** (barrel) or **`@AppBuilderLib/shared/ui/icon/Icon.types`**. **Do not** rely on long relative paths such as `../../../shared/ui/...` — they are fragile (directory moves break imports) and obscure FSD intent. If root Jest cannot resolve `@AppBuilderLib`, add **`moduleNameMapper`** in the repo that runs tests (see Appendix B — *Registry import style*). FSD: **features → shared** is allowed; `shared` must not import `features`. **Broader rule:** do **not** register strict per-component schemas for custom components whose theme props are mostly Mantine bags (`Partial<ButtonProps>`, nested `buttonProps`, etc.); see Appendix B — those stay opaque at the Mantine theme level.
+**Architecture:** Colocate in **`Icon.types.ts`** (types + theme Zod in one place; no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps`). `Icon.tsx` imports those symbols from `./Icon.types`; `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` should import the schema via **`@AppBuilderLib/shared/ui/icon/Icon.types`** (preferred for Jest: avoids pulling `Icon.tsx` → `.css`) or another **`@AppBuilderLib/...`** entry that does not transitively import UI/CSS. **Do not** rely on long relative paths such as `../../../shared/ui/...`. If root Jest cannot resolve `@AppBuilderLib`, add **`moduleNameMapper`** in the repo that runs tests (see Appendix B — *Registry import style*). FSD: **features → shared** is allowed; `shared` must not import `features`. **Broader rule:** do **not** register strict per-component schemas for custom components whose theme props are mostly Mantine bags (`Partial<ButtonProps>`, nested `buttonProps`, etc.); see Appendix B — those stay opaque at the Mantine theme level.
 
 **Rollout (registry-eligible only):** use **Option A — by layer (waves)** for any new per-component registry entries. **Wave 1:** `shared/ui`. **Wave 2:** `entities` and `features` (all FSD slices under those roots, **excluding** `entities/viewport`). **Wave 3:** `pages`, `entities/viewport`, and **`widgets`** when a theme key’s implementation lives only under `widgets`. Ambiguous **`AppBuilder*`** keys default to **Wave 3** with a verification note unless the owning slice is confirmed (see Appendix D). Detailed key lists: Appendix D.
 
@@ -22,7 +22,7 @@
 | `src/shared/shared/ui/icon/Icon.types.ts` | **Modify** — Add `import {z} from "zod"`. Remove `defaultStyleProps` and `IconThemePropsType`. Add `IconThemeDefaultPropsSchema`, `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` (after `IconProps` / related types so the file stays readable). Keep `IconProps`, `IconType`, `sizeMap`, `CustomCSSProperties`. |
 | `src/shared/shared/ui/icon/Icon.tsx` | **Modify** — Import `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` from `./Icon.types`; drop `defaultStyleProps` / `IconThemePropsType` imports; `IconThemeProps(props: IconThemeDefaultProps)`; `useIconProps` uses `useProps("Icon", iconThemeDefaultStyleProps, props)`. No `zod` import in `Icon.tsx`. |
 | `src/shared/shared/ui/icon/index.ts` | **Modify** — Re-export `IconThemeDefaultPropsSchema`, `iconThemeDefaultStyleProps`, type `IconThemeDefaultProps` from `./Icon.types`. |
-| `src/shared/features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` | **Modify** — Replace inline `Icon: z.strictObject({…})` with `Icon: IconThemeDefaultPropsSchema` imported via **`@AppBuilderLib/shared/ui/icon`** (or `…/icon/Icon.types`). Avoid `../../../shared/...` (see Appendix B — *Registry import style*). |
+| `src/shared/features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` | **Modify** — `Icon: IconThemeDefaultPropsSchema` via **`@AppBuilderLib/shared/ui/icon/Icon.types`** (avoid `../../../shared/...` and avoid the `shared/ui/icon` barrel in Jest — it pulls `Icon.tsx` + CSS). |
 | `src/shared/features/appbuilder/config/validateAppBuilderSettingsJson.themeComponents.test.ts` | **Unchanged behavior** — run after refactor to confirm green. |
 
 ---
@@ -141,9 +141,11 @@ export type {IconThemeDefaultProps} from "./Icon.types";
 
 Use the **path alias** (preferred). Do **not** commit long `../../../shared/...` relative imports.
 
+Prefer **`@AppBuilderLib/shared/ui/icon/Icon.types`** for the schema so Jest does not load `Icon.tsx` (which imports `.css`). The package barrel `@AppBuilderLib/shared/ui/icon` also re-exports the React component and can break Jest without a CSS mapper.
+
 ```typescript
 import {z} from "zod";
-import {IconThemeDefaultPropsSchema} from "@AppBuilderLib/shared/ui/icon";
+import {IconThemeDefaultPropsSchema} from "@AppBuilderLib/shared/ui/icon/Icon.types";
 ```
 
 If Jest in the monorepo root fails to resolve `@AppBuilderLib`, add `moduleNameMapper` in `package.json` (or `jest.config`) for `@AppBuilderLib/(.*)$` → `src/shared/$1` (adjust to your layout), then keep the alias import above.
@@ -305,7 +307,8 @@ If a component mixes both (e.g. a few custom strings plus `buttonProps`), defaul
 
 | Approach | Verdict |
 |----------|---------|
-| `import { … } from "@AppBuilderLib/shared/ui/icon"` or `…/Icon.types` | **Preferred** — matches the rest of the codebase and ESLint path rules. |
+| `import { … } from "@AppBuilderLib/shared/ui/icon/Icon.types"` (or other `*.types` entry points) | **Preferred** for registry — avoids pulling React modules (and `.css`) into Node/Jest. |
+| `import { … } from "@AppBuilderLib/shared/ui/icon"` (barrel) | **Risky in Jest** — may transitively import `Icon.tsx` → CSS unless you add a CSS `moduleNameMapper` stub. |
 | `import { … } from "../../../shared/ui/icon/Icon.types"` | **Avoid** — works as a short-term test workaround only; treat as **debt** to replace with alias + Jest mapping. |
 
 **Action item:** align `themeComponentDefaultPropsRegistry.ts` with the preferred row and document the Jest change in the same PR when you switch imports.
@@ -351,7 +354,7 @@ Subagents assessed the remaining Wave 1 keys (Icon already shipped). **Registry 
 
 | Theme key (`useCustomTheme.components`) | `useProps(…)` id in code | Registry / Zod-first | Outcome |
 |------------------------------------------|--------------------------|----------------------|---------|
-| `Icon` | `Icon` | **Done** | Zod-first in `Icon.types.ts`; registry import must move from **`../../../shared/ui/icon/Icon.types`** to **`@AppBuilderLib/...`** + Jest `moduleNameMapper` (Appendix B — *Registry import style*). |
+| `Icon` | `Icon` | **Done** | Zod-first in `Icon.types.ts`; registry uses **`@AppBuilderLib/shared/ui/icon/Icon.types`** + root Jest `moduleNameMapper` (Appendix B — *Registry import style*). |
 | `TooltipWrapper` | `TooltipWrapper` | **SKIP** | Theme type is `Partial<TooltipWrapperProps & TooltipProps>` — Mantine-heavy (`TooltipProps` bag). |
 | `MarkdownWidgetComponent` | `MarkdownWidgetComponent` | **SKIP** | App-owned primitives plus optional `MantineThemeOverride`; Appendix B default is skip unless the team adds a **thin** schema for primitives only. |
 | `ModalBase` | **`UniversalModal`** | **SKIP** | `StyleProps` extends `ModalProps` plus `Record<string, any>` button prop bags — Mantine-heavy. **Also:** theme key `ModalBase` vs `useProps("UniversalModal")` — confirm overrides behave as intended before any future registry work. |

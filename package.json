@@ -58,6 +58,7 @@
     "eslint-fix": "eslint --fix .",
     "prettier": "prettier --write ./src/ ./*.ts",
     "test": "jest",
+    "normalize-eol": "node ./scripts/normalize-line-endings.mjs",
     "convert-slug-data": "tsx ./scripts/convertSlugData.ts",
     "build-appbuilder": "scripts/build-appbuilder.sh 0 v1/main",
     "build-appbuilder-platform": "scripts/build-appbuilder.sh 0 app/builder/v1/main",
@@ -106,6 +107,7 @@
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-react": "7.37.5",
     "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
     "prettier": "3.8.1",
     "prettier-plugin-organize-imports": "4.3.0",
     "ts-jest": "29.4.6",
@@ -135,6 +137,10 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",
+      "^@AppBuilderShared/(.*)$": "<rootDir>/src/shared/$1"
+    }
   }
 }
