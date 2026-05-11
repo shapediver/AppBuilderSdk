@@ -4,7 +4,7 @@
 
 **Goal:** Make `Icon` theme `defaultProps` **Zod-first**: one schema defines JSON validation and TypeScript theme props; `themeComponentDefaultPropsRegistry` imports that schema instead of duplicating fields.
 
-**Architecture:** Colocate in **`Icon.tsx`** (no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps` in `Icon.types.ts`). `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` imports `IconThemeDefaultPropsSchema` from `@AppBuilderLib/shared/ui/icon` (barrel re-export from `./Icon`) or from `@AppBuilderLib/shared/ui/icon/Icon` if you prefer a direct path. FSD: **features → shared** is allowed; `shared` must not import `features`.
+**Architecture:** Colocate in **`Icon.types.ts`** (types + theme Zod in one place; no separate schema file): export `IconThemeDefaultPropsSchema`, `type IconThemeDefaultProps = z.infer<typeof …>`, and `iconThemeDefaultStyleProps` via `IconThemeDefaultPropsSchema.parse(…)` (same values as today’s `defaultStyleProps`). `Icon.tsx` imports those symbols from `./Icon.types`; `IconThemeProps` uses `IconThemeDefaultProps`; `useIconProps` passes `iconThemeDefaultStyleProps` into `useProps("Icon", …)`. `features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` imports `IconThemeDefaultPropsSchema` from `@AppBuilderLib/shared/ui/icon` (barrel re-export from `./Icon.types`) or from `@AppBuilderLib/shared/ui/icon/Icon.types` if needed for FSD/lint. FSD: **features → shared** is allowed; `shared` must not import `features`.
 
 **Tech Stack:** Zod 4, TypeScript, Jest (existing theme validation tests).
 
@@ -16,15 +16,15 @@
 
 | File | Action |
 |------|--------|
-| `src/shared/shared/ui/icon/Icon.tsx` | **Modify** — Add `import {z} from "zod"`; define `IconThemeDefaultPropsSchema`, `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` near top (after imports, before preload list); `IconThemeProps(props: IconThemeDefaultProps)`; `useIconProps` uses `useProps("Icon", iconThemeDefaultStyleProps, props)`. Remove any obsolete imports of `defaultStyleProps` / `IconThemePropsType` from `./Icon.types`. |
-| `src/shared/shared/ui/icon/Icon.types.ts` | **Modify** — Remove `defaultStyleProps` and `IconThemePropsType`; keep `IconProps`, `IconType`, `sizeMap`, `CustomCSSProperties`. |
-| `src/shared/shared/ui/icon/index.ts` | **Modify** — Re-export `IconThemeDefaultPropsSchema`, `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` from `./Icon` (named exports live next to default export in `Icon.tsx`). |
-| `src/shared/features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` | **Modify** — Replace inline `Icon: z.strictObject({…})` with `Icon: IconThemeDefaultPropsSchema` imported from `@AppBuilderLib/shared/ui/icon` (or `…/icon/Icon`). |
+| `src/shared/shared/ui/icon/Icon.types.ts` | **Modify** — Add `import {z} from "zod"`. Remove `defaultStyleProps` and `IconThemePropsType`. Add `IconThemeDefaultPropsSchema`, `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` (after `IconProps` / related types so the file stays readable). Keep `IconProps`, `IconType`, `sizeMap`, `CustomCSSProperties`. |
+| `src/shared/shared/ui/icon/Icon.tsx` | **Modify** — Import `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` from `./Icon.types`; drop `defaultStyleProps` / `IconThemePropsType` imports; `IconThemeProps(props: IconThemeDefaultProps)`; `useIconProps` uses `useProps("Icon", iconThemeDefaultStyleProps, props)`. No `zod` import in `Icon.tsx`. |
+| `src/shared/shared/ui/icon/index.ts` | **Modify** — Re-export `IconThemeDefaultPropsSchema`, `iconThemeDefaultStyleProps`, type `IconThemeDefaultProps` from `./Icon.types`. |
+| `src/shared/features/appbuilder/config/themeComponentDefaultPropsRegistry.ts` | **Modify** — Replace inline `Icon: z.strictObject({…})` with `Icon: IconThemeDefaultPropsSchema` imported from `@AppBuilderLib/shared/ui/icon` (or `…/icon/Icon.types`). |
 | `src/shared/features/appbuilder/config/validateAppBuilderSettingsJson.themeComponents.test.ts` | **Unchanged behavior** — run after refactor to confirm green. |
 
 ---
 
-### Task 1: Colocate Zod-first theme in `Icon.tsx` + trim `Icon.types.ts`
+### Task 1: Zod-first theme in `Icon.types.ts` + wire `Icon.tsx`
 
 **Files:**
 - Modify: `src/shared/shared/ui/icon/Icon.types.ts`
@@ -32,7 +32,13 @@
 
 - [ ] **Step 1: Edit `Icon.types.ts`**
 
-Remove:
+1. Add at top (after existing imports, before or after other imports as fits ESLint):
+
+```typescript
+import {z} from "zod";
+```
+
+2. Remove:
 
 ```typescript
 export const defaultStyleProps: Partial<IconProps> = {
@@ -42,17 +48,7 @@ export const defaultStyleProps: Partial<IconProps> = {
 export type IconThemePropsType = Partial<IconProps>;
 ```
 
-Keep `IconProps`, `IconType`, `sizeMap`, `CustomCSSProperties` unchanged.
-
-- [ ] **Step 2: Edit `Icon.tsx`**
-
-1. Add:
-
-```typescript
-import {z} from "zod";
-```
-
-2. After imports from `./Icon.types` (and before `PRELOAD_ICONS` / component logic), add:
+3. After `IconProps` (and related types) are defined, append:
 
 ```typescript
 /**
@@ -74,9 +70,11 @@ export const iconThemeDefaultStyleProps: IconThemeDefaultProps =
 	});
 ```
 
-3. Trim `./Icon.types` imports: drop `defaultStyleProps`, `IconThemePropsType`.
+- [ ] **Step 2: Edit `Icon.tsx`**
 
-4. Replace `IconThemeProps`:
+1. Imports from `./Icon.types` should include `IconThemeDefaultProps`, `iconThemeDefaultStyleProps` and must **not** import `defaultStyleProps` or `IconThemePropsType`.
+
+2. Replace `IconThemeProps`:
 
 ```typescript
 export function IconThemeProps(
@@ -88,7 +86,7 @@ export function IconThemeProps(
 }
 ```
 
-5. Replace `useIconProps`:
+3. Replace `useIconProps`:
 
 ```typescript
 export function useIconProps(props: Partial<IconProps>): Partial<IconProps> {
@@ -109,7 +107,7 @@ Expected: **PASS**
 ```bash
 cd d:/projects/ShapeDiverCreateReactAppExample/src/shared
 git add shared/ui/icon/Icon.types.ts shared/ui/icon/Icon.tsx
-git commit -m "SS-9463: Zod-first Icon theme defaultProps in Icon.tsx"
+git commit -m "SS-9463: Zod-first Icon theme defaultProps in Icon.types.ts"
 ```
 
 ---
@@ -122,17 +120,17 @@ git commit -m "SS-9463: Zod-first Icon theme defaultProps in Icon.tsx"
 
 - [ ] **Step 1: Extend `index.ts`**
 
-Re-export from `./Icon`:
+Re-export from `./Icon.types`:
 
 ```typescript
 export {
 	IconThemeDefaultPropsSchema,
 	iconThemeDefaultStyleProps,
-} from "./Icon";
-export type {IconThemeDefaultProps} from "./Icon";
+} from "./Icon.types";
+export type {IconThemeDefaultProps} from "./Icon.types";
 ```
 
-(If `index.ts` already default-exports `Icon`, keep that line; add the named re-exports alongside.)
+(Keep existing exports; add these alongside.)
 
 - [ ] **Step 2: Slim registry**
 
@@ -145,9 +143,9 @@ export const themeComponentDefaultPropsRegistry = {
 } as const satisfies Record<string, z.ZodTypeAny>;
 ```
 
-Update the registry file comment: **Icon schema is colocated in `shared/ui/icon/Icon.tsx` (Zod-first).**
+Update the registry file comment: **Icon schema lives in `shared/ui/icon/Icon.types.ts` (Zod-first).**
 
-If ESLint FSD rejects the barrel path, use `@AppBuilderLib/shared/ui/icon/Icon` for the schema import (grep the codebase for `@AppBuilderLib/shared/ui/icon` imports).
+If ESLint FSD rejects the barrel path, use `@AppBuilderLib/shared/ui/icon/Icon.types` for the schema import.
 
 - [ ] **Step 3: Tests**
 
@@ -170,7 +168,7 @@ Expected: **PASS**
 ```bash
 cd d:/projects/ShapeDiverCreateReactAppExample/src/shared
 git add shared/ui/icon/index.ts features/appbuilder/config/themeComponentDefaultPropsRegistry.ts
-git commit -m "SS-9463: registry imports Icon schema from shared barrel"
+git commit -m "SS-9463: registry imports Icon schema from Icon.types barrel"
 ```
 
 ---
@@ -182,7 +180,7 @@ git commit -m "SS-9463: registry imports Icon schema from shared barrel"
 ```bash
 cd d:/projects/ShapeDiverCreateReactAppExample
 git add src/shared
-git commit -m "SS-9463: bump shared submodule (Zod-first Icon in Icon.tsx)"
+git commit -m "SS-9463: bump shared submodule (Zod-first Icon in Icon.types.ts)"
 ```
 
 ---
@@ -191,7 +189,7 @@ git commit -m "SS-9463: bump shared submodule (Zod-first Icon in Icon.tsx)"
 
 | Requirement | Task |
 |-------------|------|
-| Schema primary, type `z.infer` | Task 1 (`Icon.tsx`) |
+| Schema primary, type `z.infer` | Task 1 (`Icon.types.ts`) |
 | No separate `Icon.theme.schema.ts` | Architecture + Task 1 |
 | No duplicate field definitions in registry | Task 2 |
 | `useProps("Icon", defaults, …)` unchanged semantically | Task 1 (`parse` same values as old defaults) |
