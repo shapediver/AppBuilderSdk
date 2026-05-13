@@ -45,8 +45,8 @@ importers:
         specifier: 3.4.0
         version: 3.4.0
       '@shapediver/sdk.platform-api-sdk-v1':
-        specifier: 2.29.9
-        version: 2.29.9
+        specifier: 2.29.10
+        version: 2.29.10
       '@shapediver/sdk.stargate-sdk-v1':
         specifier: 1.6.2
         version: 1.6.2
@@ -1933,17 +1933,14 @@ packages:
     resolution: {integrity: sha512-avtjtIQ019sZW3FklpmNNsQOnYZjCHpnVxgDGElfZb+AaR4AvtHNlxXLJp+iqEfSK+Xok8MJarJqIgCaWcF40Q==}
     engines: {node: '>= 14'}
 
-  '@shapediver/api.platform-api-dto-v1@2.29.9':
-    resolution: {integrity: sha512-ZLK4jx6LIHAkSIWwU7Q7IWHUbCjilnqTVoKd1Ka0To/7IEk1FNKiJkhbu/xcEH5SwdLIxBLz7DqK6xab78qjZw==}
-
-  '@shapediver/sdk.geometry-api-sdk-v2@3.3.2':
-    resolution: {integrity: sha512-BNKzRYJzpuLlC4ewbmFVH8sSzatESFRtwWtZK2TgB1Caz4NHj0MspjE+skZcGX2bFNXts1FUowfN0tYZkNimlg==}
+  '@shapediver/api.platform-api-dto-v1@2.29.10':
+    resolution: {integrity: sha512-CIugadj5p9FQ2P1e/E27BtkdlEtbNH5ktrc1OR3WQPVkxBYI6Fgs8DTReDo/uwYgaOIUIiyBUZ1LD9TXiUvBeA==}
 
   '@shapediver/sdk.geometry-api-sdk-v2@3.4.0':
     resolution: {integrity: sha512-ZlvUV4Z2qdUL3FSj83lmb5YV6CAP11aIS3uY3LVg6FwxC0zSVtMoypjEqBkWDRgL1Hty9Z9YlZFeNugMo04sNA==}
 
-  '@shapediver/sdk.platform-api-sdk-v1@2.29.9':
-    resolution: {integrity: sha512-oZ2wQr9yNIZhS1OcnatB77gkKrwanIxR/xBtC7os5nrAEqfaLO8BNF9BCZL024K3q4wgrpG0wiHXRHv83RQsew==}
+  '@shapediver/sdk.platform-api-sdk-v1@2.29.10':
+    resolution: {integrity: sha512-RhZjI6bb83CXTOkzBYzqDOdaV6f54jWPHIED0WOuLtPPh4/lbaJ82y4BTi+LPc6T4+IJOErnnZonC3udgoB1vg==}
 
   '@shapediver/sdk.sdtf-core@1.7.1':
     resolution: {integrity: sha512-BlDmc3l+ijf7s6GrOwCrh95PkOLJzH2RJMt9jrpw0s6BbyPLCeZ4E45AYNwDyQP/lpfGZ3GmdUbYK6TED5dBQQ==}
@@ -10137,16 +10134,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@shapediver/api.platform-api-dto-v1@2.29.9':
+  '@shapediver/api.platform-api-dto-v1@2.29.10':
     dependencies:
       '@types/q': 1.5.8
       chargebee-typescript: 2.53.0
-
-  '@shapediver/sdk.geometry-api-sdk-v2@3.3.2':
-    dependencies:
-      axios: 1.15.2
-    transitivePeerDependencies:
-      - debug
 
   '@shapediver/sdk.geometry-api-sdk-v2@3.4.0':
     dependencies:
@@ -10154,10 +10145,10 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@shapediver/sdk.platform-api-sdk-v1@2.29.9':
+  '@shapediver/sdk.platform-api-sdk-v1@2.29.10':
     dependencies:
-      '@shapediver/api.platform-api-dto-v1': 2.29.9
-      '@shapediver/sdk.geometry-api-sdk-v2': 3.3.2
+      '@shapediver/api.platform-api-dto-v1': 2.29.10
+      '@shapediver/sdk.geometry-api-sdk-v2': 3.4.0
       axios: 1.15.2
       jwt-decode: 3.1.2
     transitivePeerDependencies:
