@@ -1,5 +1,5 @@
 import {ModelCacheKeyEnum} from "@AppBuilderLib/entities/model-card/config/shapediverStorePlatformModels";
-import {roleUserOrAbove} from "@AppBuilderLib/shared/lib/platform";
+import {roleUserOrAbove} from "@AppBuilderLib/shared/lib/platform/organization";
 import useAsync from "@AppBuilderLib/shared/lib/useAsync";
 import {useShapeDiverStorePlatform} from "@AppBuilderLib/shared/model/useShapeDiverStorePlatform";
 import {IModelLibraryTabProps} from "@AppBuilderShared/pages/platform/LibraryPage";
