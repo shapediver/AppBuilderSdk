@@ -1,5 +1,5 @@
 import {expect, test} from "@playwright/test";
-import {exampleConfigBySlug, exampleConfigs} from "../fixtures/exampleActions";
+import {testConfigBySlug, testConfigs} from "../fixtures/testConfigs";
 import {AppLink, fetchAppLinks} from "../helpers/fetchAppLinks";
 import {rewriteToTestBranch} from "../helpers/rewriteUrl";
 import {takeSnapshot} from "../helpers/takeSnapshot";
@@ -44,11 +44,13 @@ async function runSmoke(
 	page: import("@playwright/test").Page,
 	url: string,
 	slug: string,
+	setup?: (page: import("@playwright/test").Page) => Promise<void>,
 ) {
 	const jsErrors: string[] = [];
 	page.on("pageerror", (err) => jsErrors.push(err.message));
 
 	await page.goto(url, {waitUntil: "domcontentloaded"});
+	if (setup) await setup(page);
 	await waitForModelLoaded(page);
 
 	const canvas = page.locator("canvas").first();
@@ -68,16 +70,17 @@ async function runSmoke(
 // One describe block per known example (declared at module-load time so
 // Playwright's test-discovery step sees all tests before any run).
 // ---------------------------------------------------------------------------
-for (const config of exampleConfigs) {
-	const {slug, label, actions} = config;
+for (const config of testConfigs) {
+	const {slug, label, setup, actions} = config;
 
 	test.describe(label, () => {
 		test("smoke: loads without error", async ({page}) => {
-			await runSmoke(page, testUrl(slug), slug);
+			await runSmoke(page, testUrl(slug), slug, setup);
 		});
 
 		test("visual: matches baseline", async ({page}) => {
 			await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
+			if (setup) await setup(page);
 			await waitForModelLoaded(page);
 			await takeSnapshot(page, slug);
 		});
@@ -87,6 +90,7 @@ for (const config of exampleConfigs) {
 				page,
 			}) => {
 				await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
+				if (setup) await setup(page);
 				await waitForModelLoaded(page);
 				await actions(page);
 			});
@@ -101,9 +105,7 @@ for (const config of exampleConfigs) {
 // ---------------------------------------------------------------------------
 test.describe("auto-discovered unlisted examples", () => {
 	test("all unlisted slugs load without error", async ({page}) => {
-		const unlisted = appLinks.filter(
-			(l) => !exampleConfigBySlug.has(l.slug),
-		);
+		const unlisted = appLinks.filter((l) => !testConfigBySlug.has(l.slug));
 
 		if (unlisted.length === 0) {
 			console.log(

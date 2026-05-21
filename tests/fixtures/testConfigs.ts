@@ -1,11 +1,19 @@
 import {Page} from "@playwright/test";
+import * as path from "path";
 
-export interface ExampleConfig {
+export interface TestConfig {
 	slug: string;
 	/**
 	 * Human-readable label used in test names.
 	 */
 	label: string;
+	/**
+	 * Optional pre-load setup steps executed after navigation but BEFORE
+	 * waitForModelLoaded. Use this for anything the model needs to start
+	 * loading at all — e.g. uploading a required input file.
+	 * Runs in every test (smoke, visual, and interaction).
+	 */
+	setup?: (page: Page) => Promise<void>;
 	/**
 	 * Per-example interaction steps executed after the model has fully loaded.
 	 * When defined, an interaction test is generated in addition to the smoke test.
@@ -26,11 +34,28 @@ export interface ExampleConfig {
  *  - After any action that triggers a compute, call waitForModelLoaded(page) again.
  *  - Keep interactions minimal — one meaningful user action per example is enough.
  */
-export const exampleConfigs: ExampleConfig[] = [
+export const testConfigs: TestConfig[] = [
 	// ── 11-AppBuilder ────────────────────────────────────────────────────────
 
 	{slug: "appbuilder-tutorial1-simpleexample", label: "11A – Simple example"},
-	{slug: "appbuilder-tutorial2-contextualui", label: "11B – Contextual UI"},
+	{
+		slug: "appbuilder-tutorial2-contextualui",
+		label: "11B – Contextual UI",
+		setup: async (page) => {
+			// The "Floor Plan" parameter requires a file before the model can load.
+			// Mantine FileInput renders a hidden <input type="file"> inside the
+			// styled button — setInputFiles targets it directly without opening a
+			// native file dialog, which is simpler and avoids filechooser timing issues.
+			await page
+				.locator('input[type="file"]')
+				.setInputFiles(
+					path.join(
+						__dirname,
+						"../fixtures/files/11B-AppBuilder_Tutorial2_ExampleInpute.3dm",
+					),
+				);
+		},
+	},
 	{slug: "appbuilder-tutorial3-imagewidget", label: "11C – Image widget"},
 	{slug: "appbuilder-tutorial4-charts", label: "11D – Charts"},
 	{
@@ -88,6 +113,6 @@ export const exampleConfigs: ExampleConfig[] = [
 ];
 
 /** Fast lookup by slug */
-export const exampleConfigBySlug = new Map<string, ExampleConfig>(
-	exampleConfigs.map((c) => [c.slug, c]),
+export const testConfigBySlug = new Map<string, TestConfig>(
+	testConfigs.map((c) => [c.slug, c]),
 );
