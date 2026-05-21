@@ -44,13 +44,17 @@ export default async function globalSetup() {
 		// Tag may not exist on remote yet — that's fine, we'll deploy below
 	}
 
-	// Check if the tag already points to the current commit
+	// Check if the tag already points to the current commit.
+	// Use `git rev-list -n 1 refs/tags/<tag>` instead of `git rev-parse <tag>^{}`
+	// because cmd.exe on Windows treats `^` as an escape character, swallowing `^{}`
+	// before git ever sees it — making rev-parse always throw and the skip never trigger.
+	// `rev-list -n 1` walks through any annotated tag object and returns the commit SHA.
 	let taggedCommit: string | null = null;
 	try {
-		// ^{} dereferences an annotated tag to its underlying commit SHA
-		taggedCommit = execSync(`git rev-parse ${DEPLOY_TAG}^{}`, {
-			encoding: "utf8",
-		}).trim();
+		taggedCommit = execSync(
+			`git rev-list -n 1 refs/tags/${DEPLOY_TAG}`,
+			{encoding: "utf8", stdio: "pipe"},
+		).trim();
 	} catch {
 		// Tag doesn't exist locally
 	}
