@@ -1,6 +1,8 @@
 import {expect, test} from "@playwright/test";
+import * as fs from "fs";
+import * as path from "path";
 import {testConfigBySlug, testConfigs} from "../fixtures/testConfigs";
-import {AppLink, fetchAppLinks} from "../helpers/fetchAppLinks";
+import {AppLink} from "../helpers/fetchAppLinks";
 import {rewriteToTestBranch} from "../helpers/rewriteUrl";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {waitForModelLoaded} from "../helpers/waitForModelLoaded";
@@ -13,30 +15,36 @@ import {waitForModelLoaded} from "../helpers/waitForModelLoaded";
 const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
 
 // ---------------------------------------------------------------------------
-// Discovered links — populated once by beforeAll, read by all tests.
+// App links — written by global-setup.ts before spec files are evaluated.
+// Falls back to empty array if the file doesn't exist (shouldn't happen in
+// normal usage since globalSetup always runs first).
 // ---------------------------------------------------------------------------
-let appLinks: AppLink[] = [];
+const linksPath = path.resolve("tests/fixtures/.app-links.json");
+const allLinks: AppLink[] = fs.existsSync(linksPath)
+	? (JSON.parse(fs.readFileSync(linksPath, "utf-8")) as AppLink[])
+	: [];
 
-test.beforeAll(async () => {
-	appLinks = await fetchAppLinks();
-	if (appLinks.length === 0) {
-		throw new Error(
-			"No App links discovered — check fetchAppLinks markdown URLs",
-		);
+// Merge fetched links with testConfigs entries so that slugs listed in
+// testConfigs but absent from the markdown still get tests.
+const allEntries = new Map(
+	allLinks.map((l) => [l.slug, {slug: l.slug, url: l.url}]),
+);
+for (const config of testConfigs) {
+	if (!allEntries.has(config.slug)) {
+		allEntries.set(config.slug, {
+			slug: config.slug,
+			url: `https://appbuilder.shapediver.com/v1/main/latest/?slug=${config.slug}`,
+		});
 	}
-});
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Return the rewritten test URL for a slug, preferring the discovered URL. */
-function testUrl(slug: string): string {
-	const discovered = appLinks.find((l) => l.slug === slug);
-	const baseUrl =
-		discovered?.url ??
-		`https://appbuilder.shapediver.com/v1/main/latest/?slug=${slug}`;
-	return rewriteToTestBranch(baseUrl, TEST_BRANCH);
+/** Return the rewritten test URL. */
+function testUrl(url: string): string {
+	return rewriteToTestBranch(url, TEST_BRANCH);
 }
 
 /** Core smoke assertions: page loads, canvas visible, no JS errors. */
@@ -66,19 +74,24 @@ async function runSmoke(
 }
 
 // ---------------------------------------------------------------------------
-// One describe block per known example (declared at module-load time so
-// Playwright's test-discovery step sees all tests before any run).
+// One describe block per discovered slug. Generated at module load time from
+// the JSON written by global-setup.ts so Playwright's discovery step sees all
+// tests before any run — enabling full parallelism across all examples.
+// testConfigs supplies optional setup/actions for slugs that need them.
 // ---------------------------------------------------------------------------
-for (const config of testConfigs) {
-	const {slug, label, setup, actions} = config;
+for (const {slug, url} of allEntries.values()) {
+	const config = testConfigBySlug.get(slug);
+	const setup = config?.setup;
+	const actions = config?.actions;
+	const resolvedUrl = testUrl(url);
 
-	test.describe(label, () => {
+	test.describe(slug, () => {
 		test("smoke: loads without error", async ({page}) => {
-			await runSmoke(page, testUrl(slug), slug, setup);
+			await runSmoke(page, resolvedUrl, slug, setup);
 		});
 
 		test("visual: matches baseline", async ({page}) => {
-			await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
+			await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
 			await waitForModelLoaded(page, {interstitial: setup});
 			await takeSnapshot(page, slug);
 		});
@@ -87,37 +100,10 @@ for (const config of testConfigs) {
 			test("interaction: user actions complete successfully", async ({
 				page,
 			}) => {
-				await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
+				await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
 				await waitForModelLoaded(page, {interstitial: setup});
 				await actions(page, slug);
 			});
 		}
 	});
 }
-
-// ---------------------------------------------------------------------------
-// Catch-all: smoke-test any links discovered at runtime that are NOT listed
-// in the fixtures file. New examples added to the markdown are covered
-// automatically without having to touch the fixtures file.
-// ---------------------------------------------------------------------------
-test.describe("auto-discovered unlisted examples", () => {
-	test("all unlisted slugs load without error", async ({page}) => {
-		const unlisted = appLinks.filter((l) => !testConfigBySlug.has(l.slug));
-
-		if (unlisted.length === 0) {
-			console.log(
-				"No unlisted examples — all discovered slugs are in the fixtures file.",
-			);
-			return;
-		}
-
-		for (const link of unlisted) {
-			console.log(`Testing unlisted slug: ${link.slug}`);
-			await runSmoke(
-				page,
-				rewriteToTestBranch(link.url, TEST_BRANCH),
-				link.slug,
-			);
-		}
-	});
-});

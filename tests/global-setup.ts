@@ -1,4 +1,7 @@
 import {execSync} from "child_process";
+import * as fs from "fs";
+import * as path from "path";
+import {fetchAppLinks} from "./helpers/fetchAppLinks";
 
 /**
  * Playwright global setup — runs once before all tests.
@@ -18,6 +21,18 @@ import {execSync} from "child_process";
  * Override: set SKIP_DEPLOY=1 to bypass all of the above unconditionally.
  */
 export default async function globalSetup() {
+	// Fetch app links from tutorial markdown and cache to a JSON file.
+	// globalSetup runs before Playwright evaluates spec files, so the spec can
+	// read the JSON synchronously at module load time to generate one
+	// test.describe per slug — enabling full parallelism across all examples.
+	console.log("[global-setup] Fetching app links from tutorial markdown...");
+	const links = await fetchAppLinks();
+	const linksPath = path.resolve("tests/fixtures/.app-links.json");
+	fs.writeFileSync(linksPath, JSON.stringify(links, null, 2));
+	console.log(
+		`[global-setup] Cached ${links.length} app links to ${linksPath}`,
+	);
+
 	if (process.env.SKIP_DEPLOY === "1") {
 		console.log(
 			"[global-setup] SKIP_DEPLOY=1 — skipping branch creation and deploy.",
