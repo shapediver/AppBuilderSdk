@@ -2,6 +2,7 @@ import {expect, test} from "@playwright/test";
 import {exampleConfigBySlug, exampleConfigs} from "../fixtures/exampleActions";
 import {AppLink, fetchAppLinks} from "../helpers/fetchAppLinks";
 import {rewriteToTestBranch} from "../helpers/rewriteUrl";
+import {takeSnapshot} from "../helpers/takeSnapshot";
 import {waitForModelLoaded} from "../helpers/waitForModelLoaded";
 
 // ---------------------------------------------------------------------------
@@ -73,6 +74,12 @@ for (const config of exampleConfigs) {
 	test.describe(label, () => {
 		test("smoke: loads without error", async ({page}) => {
 			await runSmoke(page, testUrl(slug), slug);
+		});
+
+		test("visual: matches baseline", async ({page}) => {
+			await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
+			await waitForModelLoaded(page);
+			await takeSnapshot(page, slug);
 		});
 
 		if (actions) {

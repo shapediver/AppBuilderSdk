@@ -3,17 +3,19 @@ import {execSync} from "child_process";
 /**
  * Playwright global setup — runs once before all tests.
  *
- * Creates (or force-resets) the "testing" git branch to the current commit,
- * deploys both AppBuilder prefixes via the existing publish script, then
- * restores the original branch so the working tree is left unchanged.
+ * 1. Checks whether the current HEAD commit is already deployed by inspecting
+ *    the git tag "AppBuilderMain@<TEST_BRANCH>" created by build-appbuilder.sh.
+ *    If the tag points to HEAD, the deploy is skipped entirely.
  *
- * Requirements:
- *   - Working tree must be clean (no uncommitted changes) — the publish
- *     script enforces this and will fail if violated.
+ * 2. Otherwise: installs dependencies (pnpm i), creates/resets the testing
+ *    branch to HEAD, runs the publish script to deploy both AppBuilder prefixes,
+ *    then restores the original branch.
+ *
+ * Requirements when deploying:
+ *   - Working tree must be clean (enforced by the publish script).
  *   - AWS credentials and APPBUILDER_BUCKET must be set in the environment.
  *
- * Skip the deploy step by setting SKIP_DEPLOY=1, useful when the testing
- * branch is already deployed and you just want to re-run the tests.
+ * Override: set SKIP_DEPLOY=1 to bypass all of the above unconditionally.
  */
 export default async function globalSetup() {
 	if (process.env.SKIP_DEPLOY === "1") {
@@ -24,6 +26,41 @@ export default async function globalSetup() {
 	}
 
 	const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
+	// Tag name written by build-appbuilder.sh: "AppBuilder${MAIN_TARGET^}@$branch"
+	// MAIN_TARGET="main" → "AppBuilderMain@testing"
+	const DEPLOY_TAG = `AppBuilderMain@${TEST_BRANCH}`;
+
+	const currentCommit = execSync("git rev-parse HEAD", {
+		encoding: "utf8",
+	}).trim();
+
+	// Fetch the tag from remote so we don't miss a deploy done on another machine
+	try {
+		execSync(
+			`git fetch origin refs/tags/${DEPLOY_TAG}:refs/tags/${DEPLOY_TAG} --force`,
+			{stdio: "pipe"},
+		);
+	} catch {
+		// Tag may not exist on remote yet — that's fine, we'll deploy below
+	}
+
+	// Check if the tag already points to the current commit
+	let taggedCommit: string | null = null;
+	try {
+		// ^{} dereferences an annotated tag to its underlying commit SHA
+		taggedCommit = execSync(`git rev-parse ${DEPLOY_TAG}^{}`, {
+			encoding: "utf8",
+		}).trim();
+	} catch {
+		// Tag doesn't exist locally
+	}
+
+	if (taggedCommit === currentCommit) {
+		console.log(
+			`[global-setup] '${DEPLOY_TAG}' already points to ${currentCommit.slice(0, 8)} — skipping deploy.`,
+		);
+		return;
+	}
 
 	// Remember where we started so we can restore afterwards
 	const originalBranch = execSync("git rev-parse --abbrev-ref HEAD", {
@@ -31,19 +68,22 @@ export default async function globalSetup() {
 	}).trim();
 
 	console.log(
-		`[global-setup] Current branch: ${originalBranch}. Creating/resetting '${TEST_BRANCH}' branch to current HEAD.`,
+		`[global-setup] Current branch: ${originalBranch}. Creating/resetting '${TEST_BRANCH}' to current HEAD.`,
 	);
 
 	try {
-		// Create or force-reset the testing branch to the current commit,
-		// and switch to it. -B = create if absent, reset if present.
+		// Create or force-reset the testing branch to the current commit
 		execSync(`git checkout -B ${TEST_BRANCH}`, {stdio: "inherit"});
+
+		// Install dependencies so the build uses the correct package versions
+		console.log("[global-setup] Installing dependencies...");
+		execSync("pnpm i", {stdio: "inherit"});
 
 		// Deploy both URL prefixes (v1/main and app/builder/v1/main)
 		console.log(`[global-setup] Deploying branch '${TEST_BRANCH}'...`);
 		execSync("pnpm run publish", {stdio: "inherit"});
 
-		console.log(`[global-setup] Deploy complete.`);
+		console.log("[global-setup] Deploy complete.");
 	} finally {
 		// Always restore the original branch, even if deploy failed
 		execSync(`git checkout ${originalBranch}`, {stdio: "inherit"});

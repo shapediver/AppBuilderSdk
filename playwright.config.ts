@@ -20,6 +20,17 @@ export default defineConfig({
 	workers: process.env.CI ? 3 : 2,
 	reporter: [["html", {open: "never"}], ["list"]],
 	timeout: 120_000,
+	// Baseline PNGs are stored here and committed to git.
+	// Failed-run actuals and diffs land in test-results/ (already gitignored).
+	snapshotDir: "./tests/snapshots",
+	snapshotPathTemplate: "{snapshotDir}/{arg}{ext}",
+	expect: {
+		toMatchSnapshot: {
+			// Allow up to 2% pixel difference — accounts for WebGL/GPU variation
+			// across machines and OS. Tighten per-test if the UI panel is snapped.
+			maxDiffPixelRatio: 0.02,
+		},
+	},
 	use: {
 		// All tests share the same base; individual URLs are fully qualified
 		baseURL: undefined,
@@ -28,6 +39,8 @@ export default defineConfig({
 		video: "retain-on-failure",
 		actionTimeout: 30_000,
 		navigationTimeout: 60_000,
+		// Snapshots always capture the full page
+		viewport: {width: 1280, height: 800},
 	},
 	projects: [
 		{

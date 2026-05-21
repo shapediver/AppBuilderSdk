@@ -26,7 +26,21 @@ export async function waitForModelLoaded(
 		.locator('[data-component="Loader"]')
 		.waitFor({state: "hidden", timeout});
 
-	// Step 2: Wait until window.SDV is available, at least one viewport exists,
+	// Step 2: Canvas element must be visible — poll every 2 s for up to 60 s.
+	// Fails immediately if the canvas never appears (e.g. WebGL blocked or layout broken).
+	const CANVAS_POLL_MS = 2_000;
+	const CANVAS_TIMEOUT_MS = 60_000;
+	await page.waitForFunction(
+		() => {
+			const canvas = document.querySelector("canvas");
+			if (!canvas) return false;
+			const rect = canvas.getBoundingClientRect();
+			return rect.width > 0 && rect.height > 0;
+		},
+		{timeout: CANVAS_TIMEOUT_MS, polling: CANVAS_POLL_MS},
+	);
+
+	// Step 3: Wait until window.SDV is available, at least one viewport exists,
 	// and no viewport is in busy mode.
 	await page.waitForFunction(
 		() => {
