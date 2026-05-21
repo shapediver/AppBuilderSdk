@@ -247,7 +247,7 @@ After merge, **optional follow-up:** document the same pattern for the next **re
 | `Icon` | In registry: Zod-first in `Icon.types.ts` |
 | `LoaderPage` | |
 | `MarkdownWidgetComponent` | |
-| `ModalBase` | `useCustomTheme` key is `ModalBase`, but `ModalBase.tsx` calls `useProps("UniversalModal", …)` — verify theme override wiring; any registry key must follow the `useProps` string (Appendix A rule). |
+| `ModalBase` | `useProps("ModalBase", …)` in `ModalBase.tsx` — aligned with `useCustomTheme.components.ModalBase` (was `UniversalModal`, fixed). Registry: **SKIP** (Mantine-heavy). |
 | `MultiSelectCheckboxes` | Do not confuse with the `.tsx` file name |
 | `NotificationWrapper` | |
 | `OutputChunkLabelComponent` | |
@@ -357,7 +357,7 @@ Subagents assessed the remaining Wave 1 keys (Icon already shipped). **Registry 
 | `Icon` | `Icon` | **Done** | Zod-first in `Icon.types.ts`; registry uses **`@AppBuilderLib/shared/ui/icon/Icon.types`** + root Jest `moduleNameMapper` (Appendix B — *Registry import style*). |
 | `TooltipWrapper` | `TooltipWrapper` | **SKIP** | Theme type is `Partial<TooltipWrapperProps & TooltipProps>` — Mantine-heavy (`TooltipProps` bag). |
 | `MarkdownWidgetComponent` | `MarkdownWidgetComponent` | **SKIP** | App-owned primitives plus optional `MantineThemeOverride`; Appendix B default is skip unless the team adds a **thin** schema for primitives only. |
-| `ModalBase` | **`UniversalModal`** | **SKIP** | `StyleProps` extends `ModalProps` plus `Record<string, any>` button prop bags — Mantine-heavy. **Also:** theme key `ModalBase` vs `useProps("UniversalModal")` — confirm overrides behave as intended before any future registry work. |
+| `ModalBase` | `ModalBase` | **SKIP** | `StyleProps` extends `ModalProps` plus `Record<string, any>` button prop bags — Mantine-heavy. **Resolved:** `useProps` id was **`UniversalModal`** (theme did not apply); now **`ModalBase`** to match `useCustomTheme`. |
 
 **Wave 1 registry conclusion:** no additional `themeComponentDefaultPropsRegistry` entries beyond **`Icon`** unless policy changes or a team-approved thin schema is added later.
 
@@ -386,6 +386,55 @@ Subagents assessed the remaining Wave 1 keys (Icon already shipped). **Registry 
 - `CreateModelStateHook`
 - `NotificationWrapper`
 
+#### Wave 2 — execution log (subagent-driven, Appendix B)
+
+Subagents inventoried Wave 2 keys against Appendix B (Mantine-heavy skip vs thin, app-owned surfaces). **SKIP** means no `themeComponentDefaultPropsRegistry` work under current policy; **ELIGIBLE** means a thin Zod-first schema is plausible if the team prioritizes that key; **VERIFY** means the theme hook / `useProps` wiring was unclear in the snapshot submodule and should be re-checked in a full checkout before treating as ELIGIBLE vs SKIP.
+
+| Theme key (`useCustomTheme.components`) | `useProps(…)` id (or notes) | Registry / Zod-first | Outcome |
+|------------------------------------------|----------------------------|----------------------|---------|
+| `DefaultSession` | Aligned with `useDefaultSessionDto` props (not a standalone `useProps("DefaultSession")` surface in the assessed tree) | **SKIP** | Session DTO / hook-shaped defaults — not the same “small theme defaultProps object” pattern as `Icon`; defer unless the team defines a dedicated thin props type. |
+| `DesktopClientPanel` | `DesktopClientPanel` | **SKIP** | Mantine prop bags (`ButtonProps`, layout) — Appendix B default. |
+| `ExportButtonComponent` | `ExportButtonComponent` + `StargateShared` merge | **SKIP** | Mantine-heavy button/tooltip bags on the main key; Stargate colors are a separate thin surface (see `StargateShared` row). |
+| `ExportLabelComponent` | `ExportLabelComponent` | **Done** | Zod in `ExportLabelComponent.types.ts`; component uses `z.infer` for theme props. |
+| `OutputChunkLabelComponent` | `OutputChunkLabelComponent` | **Done** | Same pattern as export label. |
+| `OutputStargateComponent` | `OutputStargateComponent` | **SKIP** | Mantine-heavy. |
+| `ParameterColorComponent` | `ParameterColorComponent` | **Done** | `colorFormat` union in `ParameterColorComponent.types.ts`. |
+| `ParameterDraggingComponent` | `ParameterDraggingComponent` | **Done** | JSON schema in `parameterInteractionThemeDefaultProps.ts`; runtime defaults stay `InteractionEffect` in `.tsx`. |
+| `ParameterGumballComponent` | `ParameterGumballComponent` | **Done** | Same as dragging. |
+| `ParameterLabelComponent` | `ParameterLabelComponent` | **SKIP** | Mantine / composite label surface — Appendix B default. |
+| `ParameterSelectComponent` | `ParameterSelectComponent` | **SKIP** | Mantine-heavy select props. |
+| `ParameterSelectionComponent` | `ParameterSelectionComponent` | **Done** | Same interaction JSON pattern as dragging/gumball. |
+| `ParameterSliderComponent` | `ParameterSliderComponent` | **Done** | Width fields in `ParameterSliderComponent.types.ts`. |
+| `ParameterStargateComponent` | `ParameterStargateComponent` | **SKIP** | Mantine + Stargate UX composite. |
+| `MultiSelectCheckboxes` | `MultiSelectCheckboxes` | **SKIP** | Checkbox / Mantine composition. |
+| `SelectCarouselComponent` | `SelectCarouselComponent` | **SKIP** | Mantine / carousel bags. |
+| `SelectColorComponent` | `SelectColorComponent` | **SKIP** | Mantine-heavy (distinct from `ParameterColorComponent`). |
+| `SelectGridComponent` | `SelectGridComponent` | **SKIP** | Mantine-heavy grid/card props. |
+| `StargateInput` | `StargateInput` | **SKIP** | `ButtonProps`, `TextProps`, `LoaderProps` — Mantine-heavy. |
+| `StargateShared` | `StargateShared` (merged from `rest` in export/output/parameter Stargate UIs) | **Done** | Zod in `entities/stargate/ui/stargateShared.ts`; defaults use `satisfies` on nested colors; `StargateStyleProps` stays Mantine-strict for `mapStargateComponentStatusDefinition`. |
+| `CreateModelStateHook` | `CreateModelStateHook` | **Done** | Zod in `features/model-state/model/useCreateModelState.types.ts`; hook `defaultThemeProps` typed from `z.infer`. |
+| `NotificationWrapper` | `NotificationWrapper` | **Done** | Zod in `features/notifications/config/notificationcontext.ts` as `NotificationWrapperThemeDefaultPropsSchema`; `NotificationStyleProps` = `z.infer` (single source). |
+
+#### Wave 2 — registry implementation (shipped)
+
+Registry keys and schema locations (parent app + `src/shared`):
+
+| Registry key | Schema / types module |
+|----------------|------------------------|
+| `CreateModelStateHook` | `@AppBuilderLib/features/model-state/model/useCreateModelState.types` |
+| `ExportLabelComponent` | `@AppBuilderLib/entities/export/ui/ExportLabelComponent.types` |
+| `Icon` | `@AppBuilderLib/shared/ui/icon/Icon.types` |
+| `NotificationWrapper` | `@AppBuilderLib/features/notifications/config/notificationcontext` |
+| `OutputChunkLabelComponent` | `@AppBuilderLib/entities/output/ui/OutputChunkLabelComponent.types` |
+| `ParameterColorComponent` | `@AppBuilderLib/entities/parameter/ui/ParameterColorComponent.types` |
+| `ParameterDraggingComponent` | `@AppBuilderLib/entities/parameter/config/theme/parameterInteractionThemeDefaultProps` |
+| `ParameterGumballComponent` | same |
+| `ParameterSelectionComponent` | same |
+| `ParameterSliderComponent` | `@AppBuilderLib/entities/parameter/ui/ParameterSliderComponent.types` |
+| `StargateShared` | `@AppBuilderLib/entities/stargate/ui/stargateShared` |
+
+**Wave 2 registry conclusion (updated):** ELIGIBLE thin keys above are **registered** in `themeComponentDefaultPropsRegistry` with Zod-first (or Zod-primary for notifications) and Jest coverage in `validateAppBuilderSettingsJson.themeComponents.test.ts` for a subset (Icon, ParameterColor, StargateShared, CreateModelStateHook, NotificationWrapper, plus unknown-key policy). Interaction components keep `InteractionEffect`-typed runtime defaults in `.tsx` while theme JSON uses `InteractionEffectThemeJsonSchema` (`string | record | null`). Remaining Wave 2 keys in the inventory table stay **SKIP** (Mantine-heavy or out of scope).
+
 ### Wave 3 (`pages`, `entities/viewport`, and `widgets` where applicable)
 
 - `AppBuilderAppShellTemplatePage`
@@ -406,9 +455,25 @@ Subagents assessed the remaining Wave 1 keys (Icon already shipped). **Registry 
 - `ViewportIcons`
 - `ViewportOverlayWrapper`
 
+#### Wave 3 — execution log (initial)
+
+| Theme key | `useProps(…)` id | Registry / Zod-first | Outcome |
+|-----------|------------------|----------------------|---------|
+| `LoaderPage` | `LoaderPage` | **Done** | `pages/misc/LoaderPage.types.ts` — `type` + `size` (Mantine size union / string / number). |
+| `AppBuilderTemplateSelector` | `AppBuilderTemplateSelector` | **Done** | `pages/templates/AppBuilderTemplateSelector.types.ts` — `template` (`grid` \| `appshell`) + `showContainerButtons`. |
+| `AppBuilderAppShellTemplatePage`, `AppBuilderGridTemplatePage` | same | **SKIP** | Mantine / layout prop surfaces (typical Appendix B). |
+| `AppBuilderHorizontalContainer` | `AppBuilderHorizontalContainer` | **Done** | `pages/templates/AppBuilderHorizontalContainer.types.ts` — `w`/`h`/`justify`/`wrap`/`p` (JSON); component keeps Mantine `StyleProps` for `Group` typing (no `satisfies` merge). |
+| `AppBuilderVerticalContainer` | `AppBuilderVerticalContainer` | **Done** | `pages/templates/AppBuilderVerticalContainer.types.ts` — `p` spacing; component uses `satisfies` + `z.infer`. |
+| `AppBuilderContainer` | `AppBuilderContainer` (`usePropsAppBuilder`) | **Done** | `pages/templates/AppBuilderContainer.types.ts` — merge of horizontal + vertical schemas + `orientation`; component keeps Mantine intersection types for child spreads. |
+| `AppBuilderContainerWrapper` | `AppBuilderContainerWrapper` | **SKIP** | `containerThemeOverrides` maps to `MantineThemeOverride` — opaque at depth. |
+| `AppBuilderImage`, `AppBuilderTextWidgetComponent`, `AppBuilderAgentWidgetComponent` | widgets | **SKIP** (default) | Confirm per-file `useProps` if adding registry; expect Mantine-heavy. |
+| `ViewportBranding`, `ViewportComponent`, `ViewportIcons`, `ViewportIconButton`, `ViewportIconButtonDropdown`, `ViewportOverlayWrapper` | same | **SKIP** (default) | Viewport props merge with viewer session enums and Mantine; deep Zod not targeted in this rollout. |
+
+**Wave 3 registry (shipped subset):** `LoaderPage`, `AppBuilderTemplateSelector`, `AppBuilderVerticalContainer`, `AppBuilderHorizontalContainer`, `AppBuilderContainer` — see `themeComponentDefaultPropsRegistry` and Jest in `validateAppBuilderSettingsJson.themeComponents.test.ts`.
+
 ### Wave 3 (verify)
 
-- `AppBuilderActionComponent` — `useCustomTheme` types this key from `@AppBuilderLib/features/appbuilder`, but confirm the live `useProps` implementation slice (`features` vs `widgets`) before treating it as Wave 2 vs Wave 3.
+- `AppBuilderActionComponent` — **Resolved:** implemented in `features/appbuilder/ui/AppBuilderActionComponent.tsx` with `useProps("AppBuilderActionComponent", …)`; theme merges **`ButtonProps` / `PolymorphicComponentProps`** — **SKIP** for deep registry (Appendix B Mantine-heavy). Theme key matches `useProps` id.
 
 ### Unclassified (verify)
 
