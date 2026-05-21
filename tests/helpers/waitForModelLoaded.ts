@@ -17,14 +17,44 @@ import {Page} from "@playwright/test";
  *   EVENTTYPE_VIEWPORT.VIEWPORT_VISIBLE = "viewport.visible"
  *   EVENTTYPE_VIEWPORT.BUSY_MODE_OFF    = "viewport.busy.off"
  */
+/**
+ * Waits until the ShapeDiver App Builder has fully loaded:
+ *
+ *   1. The React-level LoaderPage (Mantine <Loader>) has disappeared,
+ *      meaning the session API is ready and the viewport is mounted.
+ *
+ *   1b. Optional interstitial callback — runs immediately after the session is
+ *       ready but before the canvas/busy checks. Use this for any input the
+ *       model needs before it can start computing (e.g. uploading a file).
+ *
+ *   2. The <canvas> element is visible with non-zero dimensions.
+ *
+ *   3. All ShapeDiver viewports have exited busy mode, meaning geometry
+ *      computation is complete and the 3D scene is rendered.
+ */
 export async function waitForModelLoaded(
 	page: Page,
-	timeout = 90_000,
+	options: {
+		timeout?: number;
+		/**
+		 * Called after the Mantine session loader disappears (step 1) but before
+		 * the canvas and viewport-busy checks (steps 2-3). Intended for setup
+		 * actions that must be performed after the session is established but
+		 * that are required for the model to produce any geometry at all —
+		 * e.g. uploading a required file parameter.
+		 */
+		interstitial?: (page: Page) => Promise<void>;
+	} = {},
 ): Promise<void> {
+	const {timeout = 90_000, interstitial} = options;
 	// Step 1: React-level loader gone — Mantine Loader renders with data-component="Loader"
 	await page
 		.locator('[data-component="Loader"]')
 		.waitFor({state: "hidden", timeout});
+
+	// Step 1b: Optional interstitial — session is ready, file inputs are in the DOM.
+	// Run any pre-compute setup (e.g. file upload) before checking canvas/busy state.
+	if (interstitial) await interstitial(page);
 
 	// Step 2: Canvas element must be visible — poll every 2 s for up to 60 s.
 	// Fails immediately if the canvas never appears (e.g. WebGL blocked or layout broken).

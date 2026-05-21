@@ -1,5 +1,6 @@
 import {Page} from "@playwright/test";
 import * as path from "path";
+import {takeSnapshot} from "../helpers/takeSnapshot";
 
 export interface TestConfig {
 	slug: string;
@@ -19,8 +20,10 @@ export interface TestConfig {
 	 * When defined, an interaction test is generated in addition to the smoke test.
 	 * Call waitForModelLoaded again after any action that triggers a new computation.
 	 * When undefined, only the smoke test (page loads, canvas visible, no JS errors) runs.
+	 * @param page - Playwright Page
+	 * @param slug - The slug of the example, use it to name snapshots: `${slug}-state.png`
 	 */
-	actions?: (page: Page) => Promise<void>;
+	actions?: (page: Page, slug: string) => Promise<void>;
 }
 
 /**
@@ -46,12 +49,13 @@ export const testConfigs: TestConfig[] = [
 			// Mantine FileInput renders a hidden <input type="file"> inside the
 			// styled button — setInputFiles targets it directly without opening a
 			// native file dialog, which is simpler and avoids filechooser timing issues.
+			// path.resolve() uses process.cwd() (repo root) — __dirname is unavailable
+			// in Playwright's ESM transform.
 			await page
 				.locator('input[type="file"]')
 				.setInputFiles(
-					path.join(
-						__dirname,
-						"../fixtures/files/11B-AppBuilder_Tutorial2_ExampleInpute.3dm",
+					path.resolve(
+						"tests/fixtures/files/11B-AppBuilder_Tutorial2_ExampleInput.3dm",
 					),
 				);
 		},
@@ -66,6 +70,21 @@ export const testConfigs: TestConfig[] = [
 	{
 		slug: "11g-accordionandstackwidgets",
 		label: "11G – Accordion & Stack Widgets",
+		actions: async (page, slug) => {
+			// Expand the Accordion panel and capture it
+			await page.getByRole("button", {name: "Accordion"}).click();
+			await page
+				.getByRole("region", {name: "Accordion"})
+				.waitFor({state: "visible"});
+			await takeSnapshot(page, `${slug}-accordion`);
+
+			// Navigate into the Stack sub-view and capture it
+			await page.getByRole("button", {name: "Stack"}).click();
+			await page
+				.getByRole("button", {name: "Back"})
+				.waitFor({state: "visible"});
+			await takeSnapshot(page, `${slug}-stack`);
+		},
 	},
 
 	// ── Interaction inputs ────────────────────────────────────────────────────

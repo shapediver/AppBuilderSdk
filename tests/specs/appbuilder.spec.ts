@@ -50,8 +50,7 @@ async function runSmoke(
 	page.on("pageerror", (err) => jsErrors.push(err.message));
 
 	await page.goto(url, {waitUntil: "domcontentloaded"});
-	if (setup) await setup(page);
-	await waitForModelLoaded(page);
+	await waitForModelLoaded(page, {interstitial: setup});
 
 	const canvas = page.locator("canvas").first();
 	await expect(canvas).toBeVisible();
@@ -80,8 +79,7 @@ for (const config of testConfigs) {
 
 		test("visual: matches baseline", async ({page}) => {
 			await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
-			if (setup) await setup(page);
-			await waitForModelLoaded(page);
+			await waitForModelLoaded(page, {interstitial: setup});
 			await takeSnapshot(page, slug);
 		});
 
@@ -90,9 +88,8 @@ for (const config of testConfigs) {
 				page,
 			}) => {
 				await page.goto(testUrl(slug), {waitUntil: "domcontentloaded"});
-				if (setup) await setup(page);
-				await waitForModelLoaded(page);
-				await actions(page);
+				await waitForModelLoaded(page, {interstitial: setup});
+				await actions(page, slug);
 			});
 		}
 	});
