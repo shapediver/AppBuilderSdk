@@ -13,7 +13,9 @@ export default defineConfig({
 	testDir: "./tests/specs",
 	globalSetup: "./tests/global-setup",
 	tsconfig: "./tests/tsconfig.json",
-	fullyParallel: false,
+	// true — tests across files AND within files can run concurrently across workers.
+	// Without this a single spec file uses only 1 worker regardless of the workers setting.
+	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
 	// Limit concurrency — too many parallel sessions may hit ShapeDiver API rate limits
@@ -25,9 +27,9 @@ export default defineConfig({
 	snapshotDir: "./tests/snapshots",
 	snapshotPathTemplate: "{snapshotDir}/{arg}{ext}",
 	expect: {
-		toMatchSnapshot: {
+		toHaveScreenshot: {
 			// Allow up to 2% pixel difference — accounts for WebGL/GPU variation
-			// across machines and OS. Tighten per-test if the UI panel is snapped.
+			// across machines and OS. Tighten per-test via takeSnapshot options.
 			maxDiffPixelRatio: 0.02,
 		},
 	},

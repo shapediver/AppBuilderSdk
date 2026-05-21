@@ -27,5 +27,10 @@ export async function takeSnapshot(
 ) {
 	const {maxDiffPixelRatio = 0.02} = options;
 
-	await expect(page).toMatchSnapshot(`${slug}.png`, {maxDiffPixelRatio});
+	// toHaveScreenshot is the correct API for Page/Locator visual snapshots.
+	// toMatchSnapshot is for raw Buffer values — it does not take a screenshot.
+	await expect(page).toHaveScreenshot(`${slug}.png`, {
+		fullPage: true,
+		maxDiffPixelRatio,
+	});
 }

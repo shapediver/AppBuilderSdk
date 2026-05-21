@@ -71,6 +71,32 @@ export default async function globalSetup() {
 		`[global-setup] Current branch: ${originalBranch}. Creating/resetting '${TEST_BRANCH}' to current HEAD.`,
 	);
 
+	// Guard: if the testing branch already exists and has commits that are not
+	// reachable from HEAD, a force-reset would permanently lose them.
+	let testingBranchExists = false;
+	try {
+		execSync(`git rev-parse --verify ${TEST_BRANCH}`, {stdio: "pipe"});
+		testingBranchExists = true;
+	} catch {
+		// Branch doesn't exist yet — safe to create
+	}
+
+	if (testingBranchExists) {
+		const diverged = execSync(`git log HEAD..${TEST_BRANCH} --oneline`, {
+			encoding: "utf8",
+			stdio: "pipe",
+		}).trim();
+
+		if (diverged) {
+			throw new Error(
+				`[global-setup] Aborting: branch '${TEST_BRANCH}' has commits that would be ` +
+					`lost by resetting it to the current HEAD:\n\n${diverged}\n\n` +
+					`Merge, push, or delete '${TEST_BRANCH}' before running tests, ` +
+					`or set SKIP_DEPLOY=1 to skip the deploy step entirely.`,
+			);
+		}
+	}
+
 	try {
 		// Create or force-reset the testing branch to the current commit
 		execSync(`git checkout -B ${TEST_BRANCH}`, {stdio: "inherit"});
