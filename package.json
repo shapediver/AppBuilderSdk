@@ -58,6 +58,8 @@
         "eslint-fix": "eslint --fix .",
         "prettier": "prettier --write ./src/ ./*.ts",
         "test": "jest",
+        "test-e2e": "playwright test",
+        "test-e2e-ui": "playwright test --ui",
         "convert-slug-data": "tsx ./scripts/convertSlugData.ts",
         "build-appbuilder": "scripts/build-appbuilder.sh 0 v1/main",
         "build-appbuilder-platform": "scripts/build-appbuilder.sh 0 app/builder/v1/main",
@@ -85,6 +87,7 @@
     },
     "devDependencies": {
         "@feature-sliced/eslint-config": "0.1.1",
+        "@playwright/test": "^1.60.0",
         "@sentry/cli": "2.58.4",
         "@testing-library/jest-dom": "6.9.1",
         "@testing-library/react": "16.3.2",
