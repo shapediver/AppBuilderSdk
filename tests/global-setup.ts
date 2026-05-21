@@ -51,10 +51,10 @@ export default async function globalSetup() {
 	// `rev-list -n 1` walks through any annotated tag object and returns the commit SHA.
 	let taggedCommit: string | null = null;
 	try {
-		taggedCommit = execSync(
-			`git rev-list -n 1 refs/tags/${DEPLOY_TAG}`,
-			{encoding: "utf8", stdio: "pipe"},
-		).trim();
+		taggedCommit = execSync(`git rev-list -n 1 refs/tags/${DEPLOY_TAG}`, {
+			encoding: "utf8",
+			stdio: "pipe",
+		}).trim();
 	} catch {
 		// Tag doesn't exist locally
 	}
