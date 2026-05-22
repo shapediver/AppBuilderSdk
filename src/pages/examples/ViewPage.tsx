@@ -101,7 +101,7 @@ const materialDefinitions: IGenericParameterDefinition[] = [
  *
  * @returns
  */
-export default function ViewPage(props: Partial<Props>) {
+export default function ViewPage(_props: Partial<Props>) {
 	const sessionSideboardKey = "Sideboard";
 	const sessionCreateDto = {
 		id: "default",

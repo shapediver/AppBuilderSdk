@@ -43,10 +43,8 @@ import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import {SentryErrorReportingContext} from "./instruments/sentry";
-import {
-	ParameterGumballComponent,
-	ParameterRectangleTransformComponent,
-} from "./shared/entities/parameter/ui";
+import ParameterGumballComponent from "./shared/entities/parameter/ui/ParameterGumballComponent";
+import ParameterRectangleTransformComponent from "./shared/entities/parameter/ui/ParameterRectangleTransformComponent";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,
