@@ -71,14 +71,33 @@ export async function waitForModelLoaded(
 	);
 
 	// Step 3: Wait until window.SDV is available, at least one viewport exists,
-	// and no viewport is in busy mode.
+	// and all viewports have been continuously not-busy for 500 ms.
+	// The debounce catches models that briefly exit busy mode between render
+	// passes (e.g. an initial SESSION_CUSTOMIZED triggers a second computation
+	// immediately after the first finishes).
 	await page.waitForFunction(
 		() => {
 			const sdv = (window as any).SDV;
 			if (!sdv?.viewports) return false;
 			const vps = Object.values(sdv.viewports) as any[];
-			return vps.length > 0 && vps.every((vp) => !vp.busy);
+			if (vps.length === 0) return false;
+
+			if (!vps.every((vp) => !vp.busy)) {
+				// Still busy — reset the stable-start timestamp.
+				(window as any).__sdvBusyFreeStart = undefined;
+				return false;
+			}
+
+			// Viewports are currently not-busy. Record when stability began.
+			const now = Date.now();
+			if (!(window as any).__sdvBusyFreeStart) {
+				(window as any).__sdvBusyFreeStart = now;
+				return false;
+			}
+
+			// Return true only after 500 ms of uninterrupted not-busy state.
+			return now - (window as any).__sdvBusyFreeStart >= 500;
 		},
-		{timeout, polling: 500},
+		{timeout, polling: 100},
 	);
 }

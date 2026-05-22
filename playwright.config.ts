@@ -17,9 +17,9 @@ export default defineConfig({
 	// Without this a single spec file uses only 1 worker regardless of the workers setting.
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
-	retries: process.env.CI ? 1 : 0,
+	retries: 2,
 	// Limit concurrency — too many parallel sessions may hit ShapeDiver API rate limits
-	workers: process.env.CI ? 3 : 2,
+	workers: process.env.CI ? 5 : 3,
 	reporter: [["html", {open: "never"}], ["list"]],
 	timeout: 120_000,
 	// Baseline PNGs are stored here and committed to git.
