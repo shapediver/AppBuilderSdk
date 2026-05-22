@@ -45,7 +45,7 @@ export default async function globalSetup() {
 	// MAIN_TARGET="main" → "AppBuilderMain@testing"
 	const DEPLOY_TAG = `AppBuilderMain@${TEST_BRANCH}`;
 
-	const currentCommit = execSync("git rev-parse HEAD", {
+	const currentCommit = execFileSync("git", ["rev-parse", "HEAD"], {
 		encoding: "utf8",
 	}).trim();
 
@@ -113,10 +113,14 @@ export default async function globalSetup() {
 	}
 
 	if (testingBranchExists) {
-		const diverged = execSync(`git log HEAD..${TEST_BRANCH} --oneline`, {
-			encoding: "utf8",
-			stdio: "pipe",
-		}).trim();
+		const diverged = execFileSync(
+			"git",
+			["log", `HEAD..${TEST_BRANCH}`, "--oneline"],
+			{
+				encoding: "utf8",
+				stdio: "pipe",
+			},
+		).trim();
 
 		if (diverged) {
 			throw new Error(
@@ -130,7 +134,7 @@ export default async function globalSetup() {
 
 	try {
 		// Create or force-reset the testing branch to the current commit
-		execSync(`git checkout -B ${TEST_BRANCH}`, {stdio: "inherit"});
+		execFileSync("git", ["checkout", "-B", TEST_BRANCH], {stdio: "inherit"});
 
 		// Install dependencies so the build uses the correct package versions
 		console.log("[global-setup] Installing dependencies...");
@@ -143,7 +147,7 @@ export default async function globalSetup() {
 		console.log("[global-setup] Deploy complete.");
 	} finally {
 		// Always restore the original branch, even if deploy failed
-		execSync(`git checkout ${originalBranch}`, {stdio: "inherit"});
+		execFileSync("git", ["checkout", originalBranch], {stdio: "inherit"});
 		console.log(`[global-setup] Restored branch '${originalBranch}'.`);
 	}
 }
