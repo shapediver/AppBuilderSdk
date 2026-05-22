@@ -104,7 +104,9 @@ export default async function globalSetup() {
 	// reachable from HEAD, a force-reset would permanently lose them.
 	let testingBranchExists = false;
 	try {
-		execSync(`git rev-parse --verify ${TEST_BRANCH}`, {stdio: "pipe"});
+		execFileSync("git", ["rev-parse", "--verify", TEST_BRANCH], {
+			stdio: "pipe",
+		});
 		testingBranchExists = true;
 	} catch {
 		// Branch doesn't exist yet — safe to create
