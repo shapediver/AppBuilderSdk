@@ -1,4 +1,4 @@
-import {execSync} from "child_process";
+import {execFileSync, execSync} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import {fetchAppLinks} from "./helpers/fetchAppLinks";
@@ -51,8 +51,14 @@ export default async function globalSetup() {
 
 	// Fetch the tag from remote so we don't miss a deploy done on another machine
 	try {
-		execSync(
-			`git fetch origin refs/tags/${DEPLOY_TAG}:refs/tags/${DEPLOY_TAG} --force`,
+		execFileSync(
+			"git",
+			[
+				"fetch",
+				"origin",
+				`refs/tags/${DEPLOY_TAG}:refs/tags/${DEPLOY_TAG}`,
+				"--force",
+			],
 			{stdio: "pipe"},
 		);
 	} catch {
@@ -66,10 +72,14 @@ export default async function globalSetup() {
 	// `rev-list -n 1` walks through any annotated tag object and returns the commit SHA.
 	let taggedCommit: string | null = null;
 	try {
-		taggedCommit = execSync(`git rev-list -n 1 refs/tags/${DEPLOY_TAG}`, {
-			encoding: "utf8",
-			stdio: "pipe",
-		}).trim();
+		taggedCommit = execFileSync(
+			"git",
+			["rev-list", "-n", "1", `refs/tags/${DEPLOY_TAG}`],
+			{
+				encoding: "utf8",
+				stdio: "pipe",
+			},
+		).trim();
 	} catch {
 		// Tag doesn't exist locally
 	}
