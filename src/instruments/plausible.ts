@@ -4,7 +4,7 @@ import {
 } from "@AppBuilderLib/shared/config/queryparams";
 import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import {roundToBracket} from "@AppBuilderLib/shared/lib/numerics";
-import {isRunningInPlatform} from "@AppBuilderLib/shared/lib/platform";
+import {isRunningInPlatform} from "@AppBuilderLib/shared/lib/platform/environment";
 import {
 	combineTrackers,
 	DelayedTrackerPropsAwaiter,
