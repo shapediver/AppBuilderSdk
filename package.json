@@ -141,10 +141,5 @@
 	"moduleNameMapper": {
 		"^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",
 		"^@AppBuilderShared/(.*)$": "<rootDir>/src/shared/$1"
-	},
-    "pnpm": {
-        "overrides": {
-            "axios": "1.15.2"
-        }
-    }
+	}
 }
