@@ -51,6 +51,7 @@
     },
     "scripts": {
         "start": "vite",
+        "postinstall": "playwright install chromium",
         "build": "tsc && vite build",
         "optimize": "tsc && vite optimize --force",
         "preview": "vite preview",
