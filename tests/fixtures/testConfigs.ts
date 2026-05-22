@@ -1,6 +1,7 @@
 import {Page} from "@playwright/test";
 import * as path from "path";
 import {takeSnapshot} from "../helpers/takeSnapshot";
+import {waitForModelLoaded} from "../helpers/waitForModelLoaded";
 
 export interface TestConfig {
 	slug: string;
@@ -54,6 +55,18 @@ export const testConfigs: TestConfig[] = [
 						"tests/fixtures/files/11B-AppBuilder_Tutorial2_ExampleInput.3dm",
 					),
 				);
+		},
+	},
+	{
+		slug: "appbuilder-tutorial3-imagewidget",
+		actions: async (page, slug) => {
+			// Upload an image — this triggers a new computation.
+			await page
+				.locator('input[type="file"]')
+				.setInputFiles(path.resolve("tests/fixtures/files/logo.png"));
+			// Wait for the model to finish recomputing with the new image.
+			await waitForModelLoaded(page);
+			await takeSnapshot(page, slug);
 		},
 	},
 	{
