@@ -147,7 +147,7 @@ echo "Current npm version: $npm_version"
 deploying_branch=1
 
 # If the branch is "development", "staging" or starts with "task/", we use the branch name as the version
-if [ "$branch" == "development" ] || [ "$branch" == "staging" ]; then
+if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [ "$branch" == "testing" ]; then
     deploying_branch=1
     version=$branch
 

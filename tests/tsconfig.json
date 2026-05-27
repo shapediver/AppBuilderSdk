@@ -1,0 +1,11 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"target": "es2017",
+		"types": ["node", "@playwright/test"],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noEmit": true
+	},
+	"include": ["./**/*.ts", "../playwright.config.ts"]
+}
