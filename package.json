@@ -68,7 +68,7 @@
         "publish-appbuilder": "scripts/build-appbuilder.sh 1 v1/main",
         "publish-appbuilder-platform": "scripts/build-appbuilder.sh 1 app/builder/v1/main",
         "publish": "scripts/build-appbuilder.sh 1",
-        "generate:mantine-props-zod": "ts-to-zod --config src/shared/shared/mantine-props/ts-to-zod.config.mjs"
+        "generate:mantine-props-zod": "ts-to-zod src/shared/shared/mantine-props/group.ts src/shared/shared/mantine-props/group.zod.ts"
     },
     "eslintConfig": {
         "extends": [
@@ -142,10 +142,11 @@
             "jsx",
             "json",
             "node"
-        ]
-    },
-    "moduleNameMapper": {
-        "^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",
-        "^@AppBuilderShared/(.*)$": "<rootDir>/src/shared/$1"
+        ],
+        "moduleNameMapper": {
+            "^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",
+            "^@AppBuilderShared/(.*)$": "<rootDir>/src/shared/$1",
+            "^~/(.*)$": "<rootDir>/src/$1"
+        }
     }
 }
