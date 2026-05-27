@@ -1,5 +1,6 @@
 import NotificationWrapper from "@AppBuilderLib/features/notifications/ui/NotificationWrapper";
 import {useCustomTheme} from "@AppBuilderLib/shared/ui/theme/useCustomTheme";
+import {useThemeFavicon} from "@AppBuilderLib/shared/ui/theme/useThemeFavicon";
 import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
 import "@mantine/charts/styles.css";
 import {MantineProvider} from "@mantine/core";
@@ -32,6 +33,7 @@ export default function AppBuilderBase() {
 	}, []);
 
 	const {theme, resolver} = useCustomTheme();
+	useThemeFavicon(theme);
 
 	return (
 		<MantineProvider
