@@ -134,7 +134,7 @@ export default defineConfig(async () => {
 							},
 							{
 								name: "utils",
-								test: /node_modules[\\/](immer|zustand|zod|uuid|gl-matrix)([\\/]|$)/,
+								test: /node_modules[\\/](immer|zustand|zod|gl-matrix)([\\/]|$)/,
 								priority: 23,
 							},
 							{

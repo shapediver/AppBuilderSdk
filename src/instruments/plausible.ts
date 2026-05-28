@@ -11,8 +11,11 @@ import {
 	setDefaultTrackerProps,
 } from "@AppBuilderLib/shared/lib/TrackerContext";
 import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
-import Plausible from "plausible-tracker";
-import {PlausibleInitOptions} from "plausible-tracker/build/main/lib/tracker";
+import {
+	PlausibleConfig,
+	init as PlausibleInit,
+	track,
+} from "@plausible-analytics/tracker";
 
 // default tracking domain
 const domain = isRunningInPlatform()
@@ -21,8 +24,8 @@ const domain = isRunningInPlatform()
 const apiHost = isRunningInPlatform()
 	? window.location.origin
 	: "https://appbuilder.shapediver.com";
-const hashMode = false;
-const trackLocalhost = false;
+const hashBasedRouting = false;
+const captureOnLocalhost = false;
 
 const mapMetricToBracket = {
 	CLS: 0.1,
@@ -33,18 +36,16 @@ const mapMetricToBracket = {
 	TTFB: 100,
 };
 
-function createPlausibleTracker(
-	options: PlausibleInitOptions,
-): ITrackerContext {
-	const plausible = Plausible(options);
+function createPlausibleTracker(options: PlausibleConfig): ITrackerContext {
+	PlausibleInit(options);
 	const delayedPropsAwaiter = new DelayedTrackerPropsAwaiter();
 
 	return {
 		trackPageview: function (eventData, options) {
-			plausible.trackPageview(eventData, options);
+			track("pageview", {...eventData, ...options});
 		},
 		trackEvent: function (eventName, options) {
-			plausible.trackEvent(eventName, options);
+			track(eventName, {...options});
 		},
 		trackMetric(type, metricName, value, options) {
 			const {rating, ...props} = options?.props ?? {};
@@ -59,7 +60,7 @@ function createPlausibleTracker(
 					| "TTFB";
 				const propNameValue = `${name}-val`;
 				const propNameRating = `${name}-rat`;
-				plausible.trackEvent(type, {
+				track(type, {
 					props: {
 						...props,
 						[propNameValue]: roundToBracket(
@@ -80,10 +81,10 @@ function createPlausibleTracker(
 
 // default plausible tracker
 let tracker = createPlausibleTracker({
-	hashMode,
-	trackLocalhost,
-	apiHost,
+	captureOnLocalhost,
 	domain,
+	endpoint: `${apiHost}/api/event`,
+	hashBasedRouting,
 });
 
 // default properties to be tracked
@@ -100,10 +101,10 @@ if (params.get(QUERYPARAM_TRACKING_DOMAIN)) {
 	const domain2nd = params.get(QUERYPARAM_TRACKING_DOMAIN);
 	if (domain2nd && domain2nd !== domain) {
 		const plausible2nd = createPlausibleTracker({
-			hashMode,
-			trackLocalhost,
-			apiHost,
+			captureOnLocalhost,
 			domain: domain2nd,
+			endpoint: `${apiHost}/api/event`,
+			hashBasedRouting,
 		});
 		tracker = combineTrackers([tracker, plausible2nd]);
 	}
