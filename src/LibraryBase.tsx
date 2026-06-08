@@ -4,6 +4,7 @@ import {
 	QUERYPARAM_SLUG,
 } from "@AppBuilderLib/shared/config/queryparams";
 import {useCustomTheme} from "@AppBuilderLib/shared/ui/theme/useCustomTheme";
+import {useThemeFavicon} from "@AppBuilderLib/shared/ui/theme/useThemeFavicon";
 import AppBuilderPage from "@AppBuilderShared/pages/appbuilder/AppBuilderPage";
 import LoaderPage from "@AppBuilderShared/pages/misc/LoaderPage";
 import LibraryPage from "@AppBuilderShared/pages/platform/LibraryPage";
@@ -54,6 +55,7 @@ export default function LibraryBase() {
 	const {tabs, loading} = useLibraryTabConfig({modelViewBaseUrl});
 
 	const {theme, resolver} = useCustomTheme();
+	useThemeFavicon(theme);
 
 	return (
 		<MantineProvider

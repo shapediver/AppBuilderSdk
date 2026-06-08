@@ -3,6 +3,7 @@ SENTRY_CLI="node_modules/.bin/sentry-cli"
 SENTRY_ORG="shapediver"
 SENTRY_PROJECT="app-builder"
 MAIN_TARGET="main"
+MAIN_TARGET_CAP="$(echo "${MAIN_TARGET:0:1}" | tr '[:lower:]' '[:upper:]')${MAIN_TARGET:1}"
 
 # Function to build and deploy the app
 # $1: deploy - should we deploy the build?
@@ -23,7 +24,7 @@ build_and_deploy() {
         sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/" sentryconfig.local.ts > sentryconfig.ts
     fi
 
-    echo "Building AppBuilder ${MAIN_TARGET^} version $version with prefix $prefix"
+    echo "Building AppBuilder ${MAIN_TARGET_CAP} version $version with prefix $prefix"
     vite build --base=$prefix/$version/
     if [ $? -ne 0 ]; then
         echo "Build failed."
@@ -147,13 +148,13 @@ echo "Current npm version: $npm_version"
 deploying_branch=1
 
 # If the branch is "development", "staging" or starts with "task/", we use the branch name as the version
-if [ "$branch" == "development" ] || [ "$branch" == "staging" ]; then
+if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [ "$branch" == "testing" ]; then
     deploying_branch=1
     version=$branch
 
-    # And we create a new tag with the name "AppBuilder${MAIN_TARGET^}@branch"
-    git tag -fa "AppBuilder${MAIN_TARGET^}@$branch" -m "Release of branch $branch"
-    git push origin "AppBuilder${MAIN_TARGET^}@$branch" --force
+    # And we create a new tag with the name "AppBuilder${MAIN_TARGET_CAP}@branch"
+    git tag -fa "AppBuilder${MAIN_TARGET_CAP}@$branch" -m "Release of branch $branch"
+    git push origin "AppBuilder${MAIN_TARGET_CAP}@$branch" --force
 elif [[ $branch == task/* ]]; then
     deploying_branch=1
     # In this case we have to remove the "task/" prefix
@@ -181,9 +182,9 @@ elif [[ $branch == "master" ]]; then
             git commit -m "Release of version $version"
             git push
 
-            # And we create a new tag with the name "AppBuilder${MAIN_TARGET^}@X.Y.Z"
-            git tag -a "AppBuilder${MAIN_TARGET^}@$version" -m "Release of version $version"
-            git push origin "AppBuilder${MAIN_TARGET^}@$version"
+            # And we create a new tag with the name "AppBuilder${MAIN_TARGET_CAP}@X.Y.Z"
+            git tag -a "AppBuilder${MAIN_TARGET_CAP}@$version" -m "Release of version $version"
+            git push origin "AppBuilder${MAIN_TARGET_CAP}@$version"
         else
             echo "Unsupported version type."
             exit 1
