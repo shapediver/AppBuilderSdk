@@ -62,11 +62,11 @@
 		"test-e2e-ui": "playwright test --ui",
 		"test-e2e-update-snapshots": "playwright test --update-snapshots",
 		"convert-slug-data": "tsx ./scripts/convertSlugData.ts",
-		"build-appbuilder": "scripts/build-appbuilder.sh 0 v1/main",
-		"build-appbuilder-platform": "scripts/build-appbuilder.sh 0 app/builder/v1/main",
-		"publish-appbuilder": "scripts/build-appbuilder.sh 1 v1/main",
-		"publish-appbuilder-platform": "scripts/build-appbuilder.sh 1 app/builder/v1/main",
-		"publish": "scripts/build-appbuilder.sh 1",
+		"build-appbuilder": "bash scripts/build-appbuilder.sh 0 v1/main",
+		"build-appbuilder-platform": "bash scripts/build-appbuilder.sh 0 app/builder/v1/main",
+		"publish-appbuilder": "bash scripts/build-appbuilder.sh 1 v1/main",
+		"publish-appbuilder-platform": "bash scripts/build-appbuilder.sh 1 app/builder/v1/main",
+		"publish": "bash scripts/build-appbuilder.sh 1",
 		"generate:mantine-props-zod": "node scripts/generate-mantine-props-zod.mjs"
 	},
 	"eslintConfig": {
