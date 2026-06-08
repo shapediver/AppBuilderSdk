@@ -1,0 +1,14 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"name": "App Builder — theme defaultProps",
+	"entryPoints": ["src/shared/features/appbuilder/config/typedoc-theme-default-props.entry.ts"],
+	"tsconfig": "tsconfig.json",
+	"out": "docs/api-theme-default-props",
+	"exclude": [
+		"**/node_modules/**",
+		"**/cypress/**",
+		"**/*.test.ts",
+		"**/*.spec.ts",
+		"**/dist/**"
+	]
+}

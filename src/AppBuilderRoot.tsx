@@ -1,5 +1,7 @@
 import ParameterDraggingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDraggingComponent";
 import ParameterDrawingComponent from "@AppBuilderLib/entities/parameter/ui/ParameterDrawingComponent";
+import ParameterGumballComponent from "@AppBuilderLib/entities/parameter/ui/ParameterGumballComponent";
+import ParameterRectangleTransformComponent from "@AppBuilderLib/entities/parameter/ui/ParameterRectangleTransformComponent";
 import ParameterSelectionComponent from "@AppBuilderLib/entities/parameter/ui/ParameterSelectionComponent";
 import ViewportAnchor2d, {
 	ViewportAnchor2dThemeProps,
@@ -43,8 +45,6 @@ import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import {SentryErrorReportingContext} from "./instruments/sentry";
-import ParameterGumballComponent from "./shared/entities/parameter/ui/ParameterGumballComponent";
-import ParameterRectangleTransformComponent from "./shared/entities/parameter/ui/ParameterRectangleTransformComponent";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement,

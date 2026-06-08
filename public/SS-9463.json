@@ -1,0 +1,202 @@
+{
+	"version": "1.0",
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "aeb34c624ff75099dda49670f13df76a4b9d3347258629cbc3e3373fb5e5bd04b2cb7c7c861982b5f81abf6aff38a8358411159926cb1d2114f9e7a08de7e81407f2e658c409c004df266d8fb8b1e30ced636e61e5590d4634de141859aa1d14edacc2b5e7ceeb-1dcebb5e8b7c42d0d368b0a8b1a03ae2",
+			"modelViewUrl": "https://sdr8euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "accordion",
+						"props": {}
+					},
+					{
+						"type": "text",
+						"props": {
+							"text": "All widget types fixture"
+						}
+					},
+					{
+						"type": "image",
+						"props": {
+							"href": "logo512.png"
+						}
+					},
+					{
+						"type": "roundChart",
+						"props": {
+							"style": "pie",
+							"data": [
+								{
+									"name": "A",
+									"value": 1,
+									"color": "#228be6"
+								}
+							]
+						}
+					},
+					{
+						"type": "lineChart",
+						"props": {
+							"plotSettings": {},
+							"data": {
+								"keys": ["x"],
+								"series": [
+									{
+										"name": "Series",
+										"color": "#228be6",
+										"values": [1]
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "areaChart",
+						"props": {
+							"plotSettings": {},
+							"data": {
+								"keys": ["x"],
+								"series": [
+									{
+										"name": "Series",
+										"color": "#40c057",
+										"values": [1]
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "barChart",
+						"props": {
+							"plotSettings": {},
+							"data": {
+								"keys": ["x"],
+								"series": [
+									{
+										"name": "Series",
+										"color": "#fab005",
+										"values": [1]
+									}
+								]
+							}
+						}
+					},
+					{
+						"type": "actions",
+						"props": {
+							"actions": [
+								{
+									"type": "closeConfigurator",
+									"props": {}
+								}
+							]
+						}
+					},
+					{
+						"type": "attributeVisualization",
+						"props": {}
+					},
+					{
+						"type": "agent",
+						"props": {}
+					},
+					{
+						"type": "progress",
+						"props": {}
+					},
+					{
+						"type": "desktopClientSelection",
+						"props": {}
+					},
+					{
+						"type": "desktopClientOutputs",
+						"props": {}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "P"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "form",
+						"props": {
+							"controls": []
+						}
+					},
+					{
+						"type": "accordionUi",
+						"props": {
+							"items": [
+								{
+									"name": "tab1",
+									"widgets": [
+										{
+											"type": "text",
+											"props": {
+												"text": "Nested in accordionUi"
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"type": "sceneTreeExplorer",
+						"props": {}
+					},
+					{
+						"type": "stackUi",
+						"props": {
+							"name": "demo",
+							"widgets": [
+								{
+									"type": "text",
+									"props": {
+										"text": "Nested in stackUi"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "savedStates",
+						"props": {}
+					},
+					{
+						"type": "table",
+						"props": {
+							"columns": [
+								{
+									"accessor": "id"
+								}
+							],
+							"records": [
+								{
+									"id": 1
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
+}
