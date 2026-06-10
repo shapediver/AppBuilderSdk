@@ -4,7 +4,10 @@ import {Application, Context, Converter} from "typedoc";
 import {
 	buildNestedDocRoot,
 	collectDocFlatProperties,
+	createDefinitionsContext,
 	dedupeFlatEntriesByConfigPath,
+	postProcessDefinitions,
+	wrapDocFlatEntries,
 } from "./buildArtifacts.ts";
 
 export function load(app: Application) {
@@ -28,6 +31,13 @@ export function load(app: Application) {
 					.replace(/^"|"$/g, "")
 					.trim();
 			};
+
+			const definitionsContext = createDefinitionsContext(
+				project,
+				getText,
+				processTagValue,
+				process.cwd(),
+			);
 
 			for (const reflection of Object.values(project.reflections)) {
 				const blockTags = reflection.comment?.blockTags;
@@ -70,10 +80,23 @@ export function load(app: Application) {
 					}
 				}
 
+				const categoryTag = tagMap.get("@category");
+				if (categoryTag) {
+					const category = processTagValue(
+						getText(categoryTag.content),
+					).trim();
+					if (category) {
+						entry.category = category;
+					}
+				}
+
+				definitionsContext.setEntrySourceFile(entry.source);
+
 				const props = collectDocFlatProperties(
 					reflection,
 					getText,
 					processTagValue,
+					definitionsContext,
 				);
 				if (props.length) {
 					entry.properties = props;
@@ -88,24 +111,39 @@ export function load(app: Application) {
 					p,
 				),
 			);
-			const nested = buildNestedDocRoot(flat);
+
+			postProcessDefinitions(
+				definitionsContext.definitions,
+				definitionsContext.tsMantineDocLinkForProps,
+			);
+
+			const nested = {
+				definitions: definitionsContext.definitions,
+				...buildNestedDocRoot(flat),
+			};
 
 			const publicDir = "./public";
 			if (!fs.existsSync(publicDir)) {
 				fs.mkdirSync(publicDir, {recursive: true});
 			}
 
+			const docFlat = wrapDocFlatEntries(
+				flat,
+				definitionsContext.definitions,
+			);
+
 			fs.writeFileSync(
 				path.join(publicDir, "doc-flat.json"),
-				JSON.stringify(flat, null, 2),
+				JSON.stringify(docFlat, null, 2),
 			);
 			fs.writeFileSync(
 				path.join(publicDir, "doc-nested.json"),
 				JSON.stringify(nested, null, 2),
 			);
 			console.log(
-				`Successfully generated doc-flat.json and doc-nested.json (${flat.length} entries)`,
+				`Successfully generated doc-flat.json and doc-nested.json (${flat.length} entries, ${Object.keys(definitionsContext.definitions).length} type definitions)`,
 			);
+			definitionsContext.disposePrograms?.();
 		} catch (error) {
 			console.error("Plugin error:", error);
 		}

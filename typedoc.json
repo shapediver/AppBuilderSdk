@@ -1,6 +1,10 @@
 {
-	"entryPoints": ["src"],
+	"entryPoints": [
+		"src/shared",
+		"node_modules/@shapediver/viewer.shared.types/dist/index.d.ts"
+	],
 	"entryPointStrategy": "expand",
+	"skipErrorChecking": true,
 	"emit": "none",
 	"plugin": [
 		"./typedoc/typedoc-plugin-config-filter/index.ts"
@@ -28,6 +32,7 @@
 		"@minimum",
 		"@maximum",
 		"@displayName",
-		"@docLink"
+		"@docLink",
+		"@category"
 	]
 }

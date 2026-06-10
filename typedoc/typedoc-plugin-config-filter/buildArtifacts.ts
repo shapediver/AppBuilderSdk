@@ -1,8 +1,23 @@
+import type {DefinitionsContext, DocTypeSchema} from "./typeDefinitions.ts";
+import {
+	createDefinitionsContext,
+	postProcessDefinitions,
+	wrapDocFlatEntries,
+	type DocFlatDocument,
+} from "./typeDefinitions.ts";
+
+export type {DocFlatDocument, DocTypeSchema, DefinitionsContext};
+export {
+	createDefinitionsContext,
+	postProcessDefinitions,
+	wrapDocFlatEntries,
+};
+
 /**
  * @typedef {Object} DocProperty
  * @property {string} name
  * @property {string} description
- * @property {string} type
+ * @property {DocTypeSchema} type
  * @property {string} [default]
  * @property {string} [minimum]
  * @property {string} [maximum]
@@ -17,6 +32,7 @@
  * @property {string} source
  * @property {DocProperty[]} [properties]
  * @property {string} [docLink] External reference URL when props are not inlined (e.g. Mantine docs).
+ * @property {string} [category] From `@category` — FSD grouping for filtering entries (e.g. `widget`, `entity`).
  */
 
 /**
@@ -80,6 +96,9 @@ export function buildNestedDocRoot(entries) {
 		if (entry.docLink) {
 			leaf.docLink = entry.docLink;
 		}
+		if (entry.category) {
+			leaf.category = entry.category;
+		}
 		setAtPath(root, entry.configPath, leaf);
 	}
 	return root;
@@ -90,13 +109,25 @@ export function buildNestedDocRoot(entries) {
  * @param {any} child
  * @param {(arr: any[] | undefined) => string} getText
  * @param {(value: string) => string} processTagValue
+ * @param {DefinitionsContext} definitionsContext
  * @returns {DocProperty}
  */
-function mapReflectionChild(child, getText, processTagValue) {
+function mapReflectionChild(
+	child,
+	getText,
+	processTagValue,
+	definitionsContext,
+) {
 	const prop = {
 		name: child.name,
 		description: getText(child.comment?.summary),
-		type: child.type?.toString?.() || "unknown",
+		type:
+			child.name === "themeOverride"
+				? definitionsContext.resolveType({
+						type: "reference",
+						name: "MantineThemeOverride",
+					})
+				: definitionsContext.resolveType(child.type, child.name),
 	};
 
 	const childTags = child.comment?.blockTags;
@@ -127,11 +158,22 @@ function mapReflectionChild(child, getText, processTagValue) {
  * @param {any} reflection - TypeDoc DeclarationReflection
  * @param {(arr: any[] | undefined) => string} getText
  * @param {(value: string) => string} processTagValue
+ * @param {DefinitionsContext} definitionsContext
  * @returns {DocProperty[]}
  */
-export function collectDocFlatProperties(reflection, getText, processTagValue) {
+export function collectDocFlatProperties(
+	reflection,
+	getText,
+	processTagValue,
+	definitionsContext,
+) {
 	const mapChild = (child) =>
-		mapReflectionChild(child, getText, processTagValue);
+		mapReflectionChild(
+			child,
+			getText,
+			processTagValue,
+			definitionsContext,
+		);
 
 	if (reflection.children?.length) {
 		return reflection.children.map(mapChild);
@@ -182,6 +224,41 @@ export function collectDocFlatProperties(reflection, getText, processTagValue) {
 			const refRefl = type.reflection;
 			if (refRefl?.children?.length) {
 				mergeChildren(refRefl.children);
+				return;
+			}
+			const refName = type.name ?? type.reflection?.name ?? "";
+			const needsTsFallback =
+				/^Mantine[A-Z]\w*Props$/.test(refName) ||
+				refName === "Pick" ||
+				refName === "Omit" ||
+				refName === "Partial";
+			if (!needsTsFallback) {
+				return;
+			}
+			const resolved = definitionsContext.resolveType(type);
+			if (
+				resolved &&
+				"properties" in resolved &&
+				resolved.properties
+			) {
+				for (const [propName, propSchema] of Object.entries(
+					resolved.properties,
+				)) {
+					const {
+						description,
+						default: defaultValue,
+						...typeSchema
+					} = propSchema;
+					const prop = {
+						name: propName,
+						description: description ?? "",
+						type: typeSchema,
+					};
+					if (defaultValue !== undefined) {
+						prop.default = defaultValue;
+					}
+					merged.set(propName, prop);
+				}
 			}
 			return;
 		}

@@ -1,8 +1,10 @@
 import {
 	buildNestedDocRoot,
 	collectDocFlatProperties,
+	createDefinitionsContext,
 	dedupeFlatEntriesByConfigPath,
 } from "./buildArtifacts.ts";
+import {DEFINITIONS_REF_PREFIX} from "./typeDefinitions.ts";
 
 type DocFlatEntry = {
 	configPath: string;
@@ -12,10 +14,16 @@ type DocFlatEntry = {
 	properties?: Array<{
 		name: string;
 		description: string;
-		type: string;
+		type: {type: string} | {$ref: string};
 	}>;
 	docLink?: string;
 };
+
+function createTestDefinitionsContext() {
+	const getText = (arr: {text: string}[] | undefined) =>
+		arr ? arr.map((s) => s.text).join("") : "";
+	return createDefinitionsContext({}, getText, (v) => v.trim());
+}
 
 describe("dedupeFlatEntriesByConfigPath", () => {
 	it("keeps last entry and notifies on duplicate configPath", () => {
@@ -26,7 +34,9 @@ describe("dedupeFlatEntriesByConfigPath", () => {
 				name: "First",
 				summary: "",
 				source: "a.ts",
-				properties: [{name: "n", description: "", type: "string"}],
+				properties: [
+					{name: "n", description: "", type: {type: "string"}},
+				],
 			},
 			{
 				configPath: "themeOverrides.components.X.defaultProps",
@@ -53,21 +63,30 @@ describe("collectDocFlatProperties", () => {
 	const processTagValue = (v: string) => v.trim();
 
 	it("maps declaration children when present", () => {
+		const definitionsContext = createTestDefinitionsContext();
 		const reflection = {
 			children: [
 				{
 					name: "foo",
-					type: {toString: () => "string"},
+					type: {type: "intrinsic", name: "string"},
 					comment: {summary: [{text: "Foo prop"}]},
 				},
 			],
 		};
 		expect(
-			collectDocFlatProperties(reflection, getText, processTagValue),
-		).toEqual([{name: "foo", description: "Foo prop", type: "string"}]);
+			collectDocFlatProperties(
+				reflection,
+				getText,
+				processTagValue,
+				definitionsContext,
+			),
+		).toEqual([
+			{name: "foo", description: "Foo prop", type: {type: "string"}},
+		]);
 	});
 
 	it("merges properties from intersection of reflection object types", () => {
+		const definitionsContext = createTestDefinitionsContext();
 		const reflection = {
 			type: {
 				type: "intersection",
@@ -78,7 +97,7 @@ describe("collectDocFlatProperties", () => {
 							children: [
 								{
 									name: "a",
-									type: {toString: () => "string"},
+									type: {type: "intrinsic", name: "string"},
 									comment: {summary: [{text: "first"}]},
 								},
 							],
@@ -90,12 +109,12 @@ describe("collectDocFlatProperties", () => {
 							children: [
 								{
 									name: "a",
-									type: {toString: () => "number"},
+									type: {type: "intrinsic", name: "number"},
 									comment: {summary: [{text: "overwritten"}]},
 								},
 								{
 									name: "b",
-									type: {toString: () => "boolean"},
+									type: {type: "intrinsic", name: "boolean"},
 									comment: {summary: []},
 								},
 							],
@@ -108,22 +127,24 @@ describe("collectDocFlatProperties", () => {
 			reflection,
 			getText,
 			processTagValue,
+			definitionsContext,
 		);
 		expect(props).toHaveLength(2);
 		const byName = Object.fromEntries(props.map((p) => [p.name, p]));
 		expect(byName.a).toEqual({
 			name: "a",
 			description: "overwritten",
-			type: "number",
+			type: {type: "number"},
 		});
 		expect(byName.b).toEqual({
 			name: "b",
 			description: "",
-			type: "boolean",
+			type: {type: "boolean"},
 		});
 	});
 
 	it("unwraps optional wrapper types", () => {
+		const definitionsContext = createTestDefinitionsContext();
 		const reflection = {
 			type: {
 				type: "optional",
@@ -133,7 +154,7 @@ describe("collectDocFlatProperties", () => {
 						children: [
 							{
 								name: "flag",
-								type: {toString: () => "boolean"},
+								type: {type: "intrinsic", name: "boolean"},
 								comment: {summary: []},
 							},
 						],
@@ -142,11 +163,17 @@ describe("collectDocFlatProperties", () => {
 			},
 		};
 		expect(
-			collectDocFlatProperties(reflection, getText, processTagValue),
-		).toEqual([{name: "flag", description: "", type: "boolean"}]);
+			collectDocFlatProperties(
+				reflection,
+				getText,
+				processTagValue,
+				definitionsContext,
+			),
+		).toEqual([{name: "flag", description: "", type: {type: "boolean"}}]);
 	});
 
 	it("includes @default on nested members", () => {
+		const definitionsContext = createTestDefinitionsContext();
 		const reflection = {
 			type: {
 				type: "reflection",
@@ -154,7 +181,7 @@ describe("collectDocFlatProperties", () => {
 					children: [
 						{
 							name: "x",
-							type: {toString: () => "number"},
+							type: {type: "intrinsic", name: "number"},
 							comment: {
 								summary: [],
 								blockTags: [
@@ -167,8 +194,44 @@ describe("collectDocFlatProperties", () => {
 			},
 		};
 		expect(
-			collectDocFlatProperties(reflection, getText, processTagValue),
-		).toEqual([{name: "x", description: "", type: "number", default: "1"}]);
+			collectDocFlatProperties(
+				reflection,
+				getText,
+				processTagValue,
+				definitionsContext,
+			),
+		).toEqual([
+			{name: "x", description: "", type: {type: "number"}, default: "1"},
+		]);
+	});
+
+	it("uses $ref for named reference property types", () => {
+		const definitionsContext = createTestDefinitionsContext();
+		const reflection = {
+			children: [
+				{
+					name: "draggingColor",
+					type: {
+						type: "reference",
+						name: "InteractionEffect",
+					},
+					comment: {summary: []},
+				},
+			],
+		};
+		const props = collectDocFlatProperties(
+			reflection,
+			getText,
+			processTagValue,
+			definitionsContext,
+		);
+		expect(props[0].type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}InteractionEffect`,
+		});
+		expect(definitionsContext.definitions.InteractionEffect).toEqual({
+			type: "unknown",
+			name: "InteractionEffect",
+		});
 	});
 });
 
@@ -181,7 +244,7 @@ describe("buildNestedDocRoot", () => {
 				summary: "About Foo",
 				source: "Foo.tsx",
 				properties: [
-					{name: "bar", description: "desc", type: "number"},
+					{name: "bar", description: "desc", type: {type: "number"}},
 				],
 			},
 		];
@@ -196,8 +259,34 @@ describe("buildNestedDocRoot", () => {
 			}
 		).themeOverrides.components.Foo.defaultProps;
 		expect(leaf.properties).toEqual([
-			{name: "bar", description: "desc", type: "number"},
+			{name: "bar", description: "desc", type: {type: "number"}},
 		]);
+	});
+
+	it("includes category on nested leaf when provided", () => {
+		const entries: DocFlatEntry[] = [
+			{
+				configPath: "themeOverrides.components.Widget.defaultProps",
+				name: "Widget",
+				summary: "",
+				source: "Widget.tsx",
+				properties: [],
+				category: "widget",
+			},
+		];
+		const nested = buildNestedDocRoot(entries) as Record<string, unknown>;
+		const leaf = (
+			nested as {
+				themeOverrides: {
+					components: {
+						Widget: {
+							defaultProps: {category?: string};
+						};
+					};
+				};
+			}
+		).themeOverrides.components.Widget.defaultProps;
+		expect(leaf.category).toBe("widget");
 	});
 
 	it("includes docLink on nested leaf when provided", () => {

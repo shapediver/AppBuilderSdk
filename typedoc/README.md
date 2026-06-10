@@ -12,8 +12,8 @@ It writes two files into **`public/`** (created if missing):
 
 | File | Description |
 |------|-------------|
-| **`doc-flat.json`** | Array of entries; easy to search or feed into scripts. |
-| **`doc-nested.json`** | Same data nested by dot-path from `@configPath` (e.g. `themeOverrides.components.*.defaultProps`). |
+| **`doc-flat.json`** | Object with **`definitions`** (shared type schemas, OpenAPI-style), **`entries`** (config rows), and **`entriesByCategory`** (index of `configPath` values grouped by `@category`). Property types use `{ "$ref": "#/definitions/…" }` or inline `{ "type": "string" }` etc. |
+| **`doc-nested.json`** | Same **`definitions`** plus config nested by dot-path from `@configPath`. |
 
 Duplicate `@configPath` values are deduplicated (last wins); duplicates log a warning.
 
@@ -31,6 +31,7 @@ Declared under `"blockTags"` in root **`typedoc.json`** so TypeDoc preserves the
 | **`@configPath`** | Yes | Dot path for JSON overrides (e.g. `themeOverrides.components.MyComponent.defaultProps`). |
 | **`@displayName`** | No | Human-facing name in output; falls back to the reflection name. |
 | **`@docLink`** | No | URL when props should not be inlined (e.g. full Mantine `PaperProps` docs). |
+| **`@category`** | No | Groups custom components for filtering (`widget`, `entity`, `feature`, `page`, `shared`). Emitted on each entry and in `entriesByCategory`. |
 | **`@default`**, **`@minimum`**, **`@maximum`**, **`@example`** | No | On individual props; copied into flat `properties` when present. |
 
 Example (minimal):
@@ -40,6 +41,7 @@ Example (minimal):
  * Short summary for docs.
  *
  * @docAttached
+ * @category widget
  * @configPath themeOverrides.components.MyWidget.defaultProps
  * @displayName MyWidget
  */
@@ -68,6 +70,7 @@ export type MyCardStyleProps = PaperProps;
 - **`export interface`** with explicit members is extracted reliably into **`properties`**.
 - **`export type`** aliases (especially intersections and `Partial<…>`) may produce **no members** until refactored (e.g. `interface … extends …`) or documented via **`@docLink`**.
 - The merger walks intersections and unwraps optional wrappers where TypeDoc exposes structure; complex mapped types may still yield an empty list.
+- **Mantine / utility types:** `Omit<ButtonProps, …>`, `Pick<…>`, `Partial<…>` and `*Props` from `@mantine/core` are expanded via the TypeScript checker (reads `.d.ts` under `node_modules`, including JSDoc). Very large prop surfaces (>120 fields) collapse to `docLink` pointing at [Mantine props docs](https://mantine.dev/).
 
 ### Tests
 
