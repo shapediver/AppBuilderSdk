@@ -1,10 +1,14 @@
+import path from "path";
 import {
 	buildNestedDocRoot,
 	collectDocFlatProperties,
 	createDefinitionsContext,
 	dedupeFlatEntriesByConfigPath,
+	detectMirroredMantinePropsDocKey,
 } from "./buildArtifacts.ts";
 import {DEFINITIONS_REF_PREFIX} from "./typeDefinitions.ts";
+
+const projectRoot = path.resolve(__dirname, "../..");
 
 type DocFlatEntry = {
 	configPath: string;
@@ -22,7 +26,7 @@ type DocFlatEntry = {
 function createTestDefinitionsContext() {
 	const getText = (arr: {text: string}[] | undefined) =>
 		arr ? arr.map((s) => s.text).join("") : "";
-	return createDefinitionsContext({}, getText, (v) => v.trim());
+	return createDefinitionsContext({}, getText, (v) => v.trim(), projectRoot);
 }
 
 describe("dedupeFlatEntriesByConfigPath", () => {
@@ -54,6 +58,26 @@ describe("dedupeFlatEntriesByConfigPath", () => {
 		]);
 		expect(out).toHaveLength(1);
 		expect(out[0].name).toBe("Second");
+	});
+});
+
+describe("detectMirroredMantinePropsDocKey", () => {
+	it("maps MantinePaperProps reference to PaperProps", () => {
+		expect(
+			detectMirroredMantinePropsDocKey({
+				type: "reference",
+				name: "MantinePaperProps",
+			}),
+		).toBe("PaperProps");
+	});
+
+	it("maps intersection of only MantinePaperProps to PaperProps", () => {
+		expect(
+			detectMirroredMantinePropsDocKey({
+				type: "intersection",
+				types: [{type: "reference", name: "MantinePaperProps"}],
+			}),
+		).toBe("PaperProps");
 	});
 });
 
@@ -202,6 +226,35 @@ describe("collectDocFlatProperties", () => {
 			),
 		).toEqual([
 			{name: "x", description: "", type: {type: "number"}, default: "1"},
+		]);
+	});
+
+	it("uses mirror-backed PaperProps for empty extends MantinePaperProps", () => {
+		const definitionsContext = createTestDefinitionsContext();
+		const reflection = {
+			type: {type: "reference", name: "MantinePaperProps"},
+		};
+		const props = collectDocFlatProperties(
+			reflection,
+			getText,
+			processTagValue,
+			definitionsContext,
+		);
+		const byName = Object.fromEntries(props.map((prop) => [prop.name, prop]));
+		expect(byName.px?.type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
+		});
+		expect(byName.py?.type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
+		});
+		expect(props.map((prop) => prop.name).sort()).toEqual([
+			"p",
+			"px",
+			"py",
+			"shadow",
+			"style",
+			"styles",
+			"withBorder",
 		]);
 	});
 

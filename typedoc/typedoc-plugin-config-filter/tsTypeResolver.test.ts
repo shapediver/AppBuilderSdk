@@ -1,9 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
 import {
+	compactReactNodeSchema,
 	createTsTypeResolver,
 	deepSimplifySchema,
+	isDomEventHandlerTypeName,
 	isInvalidPropertyName,
+	isReactElementLikeSchema,
+	mergeMirrorDefinitionOverlay,
 	normalizeUnknownTypeName,
 	shouldStubMantineExpandedProps,
 	simplifySchema,
@@ -73,26 +77,139 @@ describe("normalizeUnknownTypeName", () => {
 			"ReactNode",
 		);
 	});
+
+	it("maps event handlers to Function", () => {
+		expect(
+			normalizeUnknownTypeName("ClipboardEventHandler<SVGSVGElement>"),
+		).toBe("Function");
+	});
 });
 
 describe("deepSimplifySchema", () => {
-	it("simplifies nested oneOf inside properties", () => {
-		const simplified = deepSimplifySchema({
+	it("preserves mirror property JSDoc on $ref properties", () => {
+		const simplified = deepSimplifySchema(
+			{
+				properties: {
+					wrap: {
+						$ref: "#/definitions/MantineFlexWrap",
+						description: "Flex wrap",
+					},
+				},
+			},
+			{preserveMirrorFidelity: true},
+		);
+		expect(simplified).toEqual({
 			properties: {
-				size: {
-					oneOf: [
-						{type: "string", const: "md"},
-						{type: "string", const: "lg"},
-						{type: "string"},
-					],
+				wrap: {
+					$ref: "#/definitions/MantineFlexWrap",
+					description: "Flex wrap",
 				},
 			},
 		});
-		expect(simplified).toEqual({
-			properties: {
-				size: {type: "string"},
+	});
+});
+
+describe("mergeMirrorDefinitionOverlay", () => {
+	it("keeps mirror JSDoc and falls back to TS-built descriptions", () => {
+		const merged = mergeMirrorDefinitionOverlay(
+			{
+				properties: {
+					pt: {
+						$ref: "#/definitions/MantineSpacing",
+						description: "Padding top from Mantine",
+					},
+					pb: {
+						$ref: "#/definitions/MantineSpacing",
+						description: "Padding bottom from Mantine",
+					},
+				},
 			},
+			{
+				properties: {
+					pt: {
+						$ref: "#/definitions/MantineSpacing",
+						description: "Padding top",
+					},
+					pb: {$ref: "#/definitions/MantineSpacing"},
+				},
+			},
+		);
+		const props = (merged as {properties: Record<string, {description?: string}>})
+			.properties;
+		expect(props.pt?.description).toBe("Padding top");
+		expect(props.pb?.description).toBe("Padding bottom from Mantine");
+	});
+});
+
+describe("compactReactNodeSchema", () => {
+	it("detects ReactElement-like object shapes", () => {
+		expect(
+			isReactElementLikeSchema({
+				properties: {
+					type: {oneOf: [{type: "string"}, {type: "unknown", name: "ReactNode"}]},
+					props: {type: "unknown", name: "any"},
+					key: {type: "string"},
+					children: {type: "unknown", name: "ReactNode"},
+				},
+			}),
+		).toBe(true);
+	});
+
+	it("collapses nested ReactElement expansions in children unions", () => {
+		const nestedChildren = {
+			oneOf: [
+				{type: "string"},
+				{type: "number"},
+				{type: "boolean"},
+				{
+					properties: {
+						type: {
+							oneOf: [
+								{type: "string"},
+								{type: "unknown", name: "ReactNode"},
+							],
+						},
+						props: {type: "unknown", name: "any"},
+						key: {type: "string"},
+						children: {
+							oneOf: [
+								{type: "string"},
+								{
+									properties: {
+										type: {type: "string"},
+										props: {type: "unknown", name: "any"},
+										key: {type: "string"},
+									},
+								},
+							],
+						},
+					},
+				},
+				{type: "unknown", name: "ReactPortal"},
+			],
+		};
+		const compacted = compactReactNodeSchema(nestedChildren);
+		expect(JSON.stringify(compacted).length).toBeLessThan(200);
+		expect(compacted).toEqual({
+			oneOf: [
+				{type: "string"},
+				{type: "number"},
+				{type: "boolean"},
+				{type: "unknown", name: "ReactNode"},
+			],
 		});
+	});
+});
+
+describe("isDomEventHandlerTypeName", () => {
+	it("matches SVG event handler utility names", () => {
+		expect(isDomEventHandlerTypeName("ClipboardEventHandler_SVGSVGElement")).toBe(
+			true,
+		);
+		expect(isDomEventHandlerTypeName("MouseEventHandler<SVGSVGElement>")).toBe(
+			true,
+		);
+		expect(isDomEventHandlerTypeName("ButtonProps")).toBe(false);
 	});
 });
 
@@ -164,7 +281,80 @@ describe("createTsTypeResolver", () => {
 		).toEqual(["src", "alt"]);
 	});
 
-	it("expands Omit<ImageProps, src | alt | onError> from Mantine .d.ts", () => {
+	it("resolves Pick<ImageProps, radius | mah | maw> via mirror (not @mantine/core)", () => {
+		const imageDts = path.normalize(
+			path.join(
+				projectRoot,
+				"node_modules/@mantine/core/lib/components/Image/Image.d.ts",
+			),
+		);
+		expect(fs.existsSync(imageDts)).toBe(true);
+
+		const expanded = resolver.tryResolveTypeDocNode({
+			type: "reference",
+			name: "Pick",
+			typeArguments: [
+				{
+					type: "reference",
+					name: "ImageProps",
+					_target: {
+						packageName: "@mantine/core",
+						packagePath: "lib/components/Image/Image.d.ts",
+						qualifiedName: "ImageProps",
+					},
+				},
+				{
+					type: "union",
+					types: [
+						{type: "literal", value: "radius"},
+						{type: "literal", value: "mah"},
+						{type: "literal", value: "maw"},
+					],
+				},
+			],
+		});
+
+		expect(expanded).toEqual({
+			properties: {
+				mah: {$ref: "#/definitions/MantineCssLength"},
+				maw: {$ref: "#/definitions/MantineCssLength"},
+				radius: {$ref: "#/definitions/MantineSpacing"},
+			},
+		});
+	});
+
+	it("resolves Pick<ImageProps, fit | h> via mirror subset", () => {
+		const expanded = resolver.tryResolveTypeDocNode({
+			type: "reference",
+			name: "Pick",
+			typeArguments: [
+				{
+					type: "reference",
+					name: "ImageProps",
+					_target: {
+						packageName: "@mantine/core",
+						packagePath: "lib/components/Image/Image.d.ts",
+						qualifiedName: "ImageProps",
+					},
+				},
+				{
+					type: "union",
+					types: [
+						{type: "literal", value: "fit"},
+						{type: "literal", value: "h"},
+					],
+				},
+			],
+		});
+
+		expect(expanded).toHaveProperty("properties");
+		const props = (expanded as {properties: Record<string, unknown>}).properties;
+		expect(Object.keys(props).sort()).toEqual(["fit", "h"]);
+		expect(props).not.toHaveProperty("radius");
+		expect(props).not.toHaveProperty("maw");
+	});
+
+	it("expands Omit<ImageProps, src | alt | onError> from mirror", () => {
 		const imageDts = path.normalize(
 			path.join(
 				projectRoot,
@@ -225,31 +415,13 @@ describe("createTsTypeResolver", () => {
 
 		expect(expanded).toHaveProperty("properties");
 		const fz = (
-			expanded as {properties: Record<string, {oneOf?: unknown[]}>}
+			expanded as {properties: Record<string, {$ref?: string}>}
 		).properties.fz;
-		expect(fz).toBeDefined();
-		expect(fz.oneOf).toBeDefined();
-
-		const responsive = fz.oneOf?.find(
-			(member) =>
-				typeof member === "object" &&
-				member !== null &&
-				"properties" in member &&
-				(member as {properties?: Record<string, unknown>}).properties
-					?.xs !== undefined,
+		expect(fz).toEqual(
+			expect.objectContaining({
+				$ref: "#/definitions/MantineResponsiveCssSize",
+			}),
 		);
-		expect(responsive).toBeDefined();
-
-		const opaquePartial = fz.oneOf?.find(
-			(member) =>
-				typeof member === "object" &&
-				member !== null &&
-				"type" in member &&
-				(member as {type?: string; name?: string}).type ===
-					"unknown" &&
-				(member as {name?: string}).name?.includes("Partial<Record"),
-		);
-		expect(opaquePartial).toBeUndefined();
 	});
 
 	it("does not expand MantineTheme into inline properties", () => {

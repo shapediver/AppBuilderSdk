@@ -1,7 +1,13 @@
+import {
+	mantineCorePropsDocKeyForMirrorName,
+	resolveMantineCorePropsMirrorForDocKey,
+} from "./mantineMirrorParser.ts";
 import type {DefinitionsContext, DocTypeSchema} from "./typeDefinitions.ts";
 import {
 	createDefinitionsContext,
+	entryPropertiesFromDefinition,
 	postProcessDefinitions,
+	postProcessFlatEntries,
 	wrapDocFlatEntries,
 	type DocFlatDocument,
 } from "./typeDefinitions.ts";
@@ -10,6 +16,7 @@ export type {DocFlatDocument, DocTypeSchema, DefinitionsContext};
 export {
 	createDefinitionsContext,
 	postProcessDefinitions,
+	postProcessFlatEntries,
 	wrapDocFlatEntries,
 };
 
@@ -150,6 +157,80 @@ function mapReflectionChild(
 }
 
 /**
+ * @param {any} type
+ * @returns {string | undefined}
+ */
+function typeReferenceName(type) {
+	if (!type || type.type !== "reference") return undefined;
+	return type.name ?? type.reflection?.name;
+}
+
+/**
+ * When a `@docAttached` type is an empty `extends Mantine*Props` (or alias to one),
+ * return the canonical mirror doc key (e.g. `PaperProps`).
+ *
+ * @param {any} type
+ * @param {number} [depth]
+ * @returns {string | undefined}
+ */
+export function detectMirroredMantinePropsDocKey(type, depth = 0) {
+	if (!type || depth > 12) return undefined;
+
+	const kind = type.type;
+	if (kind === "reference") {
+		const refName = typeReferenceName(type);
+		if (!refName) return undefined;
+		const fromMirror = mantineCorePropsDocKeyForMirrorName(refName);
+		if (fromMirror) return fromMirror;
+		return undefined;
+	}
+
+	if (kind === "intersection") {
+		const members = type.types ?? [];
+		const mirrorKeys = members
+			.map((member) => detectMirroredMantinePropsDocKey(member, depth + 1))
+			.filter(Boolean);
+		const hasInlineMembers = members.some(
+			(member) =>
+				member.type === "reflection" &&
+				member.declaration?.children?.length,
+		);
+		if (mirrorKeys.length === 1 && !hasInlineMembers) {
+			return mirrorKeys[0];
+		}
+		return undefined;
+	}
+
+	if (kind === "optional") {
+		return detectMirroredMantinePropsDocKey(type.elementType, depth + 1);
+	}
+
+	return undefined;
+}
+
+/**
+ * @param {string} docKey
+ * @param {DefinitionsContext} definitionsContext
+ * @returns {DocProperty[]}
+ */
+function collectPropertiesFromMirrorDocKey(docKey, definitionsContext) {
+	let mirror = definitionsContext.definitions[docKey];
+	if (
+		(!mirror || !("properties" in mirror) || !mirror.properties) &&
+		definitionsContext.projectRoot
+	) {
+		mirror = resolveMantineCorePropsMirrorForDocKey(
+			definitionsContext.projectRoot,
+			docKey,
+		);
+	}
+	if (!mirror || !("properties" in mirror) || !mirror.properties) {
+		return [];
+	}
+	return entryPropertiesFromDefinition(mirror);
+}
+
+/**
  * Collect theme doc properties from a TypeDoc DeclarationReflection.
  * Uses `reflection.children` when present; otherwise walks `reflection.type`
  * (intersections, inline object reflections, resolved references) so that
@@ -181,6 +262,17 @@ export function collectDocFlatProperties(
 
 	if (!reflection.type) {
 		return [];
+	}
+
+	const mirrorDocKey = detectMirroredMantinePropsDocKey(reflection.type);
+	if (mirrorDocKey) {
+		const mirrorProps = collectPropertiesFromMirrorDocKey(
+			mirrorDocKey,
+			definitionsContext,
+		);
+		if (mirrorProps.length) {
+			return mirrorProps;
+		}
 	}
 
 	/** @type {Map<string, DocProperty>} */

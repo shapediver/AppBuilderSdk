@@ -11,6 +11,9 @@ import {
 	resolveMantineCorePropsMirror,
 } from "./mantineMirrorParser.ts";
 import {
+	compactISelectComponentOverridesValueSchema,
+	MANTINE_RESPONSIVE_CSS_SIZE_REF,
+	matchesMantineResponsiveCssSize,
 	recordSchemaFromParts,
 	valueSchemaFromExpanded,
 } from "./recordTypeSchema.ts";
@@ -108,6 +111,44 @@ function isPlainStringSchema(schema: DocTypeSchema): boolean {
 	);
 }
 
+export type SchemaSimplifyOptions = {
+	/** Keep mirror enum/const unions and property JSDoc when simplifying schema-input shapes. */
+	preserveMirrorFidelity?: boolean;
+};
+
+type MirrorPropertyMeta = {description?: string; default?: string};
+
+function extractMirrorPropertyMeta(schema: DocTypeSchema): MirrorPropertyMeta {
+	const meta: MirrorPropertyMeta = {};
+	const withMeta = schema as MirrorPropertyMeta;
+	if (withMeta.description) meta.description = withMeta.description;
+	if (withMeta.default) meta.default = withMeta.default;
+	return meta;
+}
+
+function applyMirrorPropertyMeta(
+	schema: DocTypeSchema,
+	meta: MirrorPropertyMeta,
+): DocTypeSchema {
+	if (!meta.description && !meta.default) return schema;
+	return {
+		...schema,
+		...(meta.description ? {description: meta.description} : {}),
+		...(meta.default ? {default: meta.default} : {}),
+	};
+}
+
+function schemaHasStringEnum(schema: DocTypeSchema): boolean {
+	if (schema.type === "string") {
+		const e = (schema as {enum?: string[]}).enum;
+		return Boolean(e?.length);
+	}
+	if ("oneOf" in schema && schema.oneOf) {
+		return schema.oneOf.some(schemaHasStringEnum);
+	}
+	return false;
+}
+
 const MANTINE_THEME_DOC_LINK =
 	"https://mantine.dev/theming/theme-object/";
 
@@ -122,6 +163,62 @@ export function isInvalidPropertyName(name: string): boolean {
 	if (name.startsWith("Symbol.")) return true;
 	if (name.includes("iterator")) return true;
 	return false;
+}
+
+/** DOM/React synthetic event handlers are not JSON-configurable. */
+export function isDomEventHandlerTypeName(name: string): boolean {
+	return /EventHandler/.test(name);
+}
+
+/** Expanded ReactElement object shape (type/props/key) — stub instead of recursing children. */
+export function isReactElementLikeSchema(schema: DocTypeSchema): boolean {
+	if (!("properties" in schema) || !schema.properties) return false;
+	const keys = Object.keys(schema.properties);
+	return (
+		keys.includes("type") &&
+		keys.includes("props") &&
+		keys.includes("key")
+	);
+}
+
+/** Collapse recursive ReactElement expansions in unions to a single ReactNode stub. */
+export function compactReactNodeSchema(
+	schema: DocTypeSchema,
+	options?: SchemaSimplifyOptions,
+): DocTypeSchema {
+	const meta = options?.preserveMirrorFidelity
+		? extractMirrorPropertyMeta(schema)
+		: {};
+	if (isReactElementLikeSchema(schema)) {
+		return applyMirrorPropertyMeta(
+			{type: "unknown", name: "ReactNode"},
+			meta,
+		);
+	}
+	if ("oneOf" in schema && schema.oneOf) {
+		const simplified = simplifySchema(
+			{
+				oneOf: schema.oneOf.map((member) =>
+					compactReactNodeSchema(member, options),
+				),
+			},
+			options,
+		);
+		return applyMirrorPropertyMeta(simplified, meta);
+	}
+	if ("properties" in schema && schema.properties) {
+		const properties: Record<string, DocTypeSchema> = {};
+		for (const [key, value] of Object.entries(schema.properties)) {
+			properties[key] = compactReactNodeSchema(value, options);
+		}
+		return {properties};
+	}
+	if ("items" in schema && schema.items) {
+		return {
+			items: compactReactNodeSchema(schema.items, options),
+		};
+	}
+	return applyMirrorPropertyMeta(schema, meta);
 }
 
 function isMantineCoreTarget(
@@ -182,6 +279,9 @@ export function normalizeUnknownTypeName(name: string): string {
 		/\bConstructor\b/.test(name)
 	) {
 		return "ReactNode";
+	}
+	if (isDomEventHandlerTypeName(name)) {
+		return "Function";
 	}
 	if (/Partial<Record<`--/.test(name)) {
 		return "ResponsiveCSSVariables";
@@ -255,30 +355,57 @@ function memberDedupKey(member: DocTypeSchema): string {
 }
 
 /** Recursively simplify unions and nested property/item schemas. */
-export function deepSimplifySchema(schema: DocTypeSchema): DocTypeSchema {
+export function deepSimplifySchema(
+	schema: DocTypeSchema,
+	options?: SchemaSimplifyOptions,
+): DocTypeSchema {
+	const meta = options?.preserveMirrorFidelity
+		? extractMirrorPropertyMeta(schema)
+		: {};
 	if ("properties" in schema && schema.properties) {
 		const properties: Record<string, DocTypeSchema> = {};
 		for (const [key, value] of Object.entries(schema.properties)) {
-			properties[key] = deepSimplifySchema(value);
+			properties[key] = deepSimplifySchema(value, options);
 		}
-		return simplifySchema({...schema, properties});
+		return applyMirrorPropertyMeta(
+			compactReactNodeSchema(
+				simplifySchema({...schema, properties}, options),
+				options,
+			),
+			meta,
+		);
 	}
 	if ("items" in schema && schema.items) {
-		return simplifySchema({
-			...schema,
-			items: deepSimplifySchema(schema.items),
-		});
+		return applyMirrorPropertyMeta(
+			compactReactNodeSchema(
+				simplifySchema(
+					{
+						...schema,
+						items: deepSimplifySchema(schema.items, options),
+					},
+					options,
+				),
+				options,
+			),
+			meta,
+		);
 	}
-	return simplifySchema(schema);
+	return applyMirrorPropertyMeta(
+		compactReactNodeSchema(simplifySchema(schema, options), options),
+		meta,
+	);
 }
 
 /** Collapse unions of string/number literals into `enum` for readable doc-flat output. */
-export function simplifySchema(schema: DocTypeSchema): DocTypeSchema {
+export function simplifySchema(
+	schema: DocTypeSchema,
+	options?: SchemaSimplifyOptions,
+): DocTypeSchema {
 	if (!("oneOf" in schema) || !schema.oneOf?.length) {
 		return schema;
 	}
 
-	const members = schema.oneOf.map(simplifySchema);
+	const members = schema.oneOf.map((member) => simplifySchema(member, options));
 	const stringEnums: string[] = [];
 	const numberEnums: number[] = [];
 	const rest: DocTypeSchema[] = [];
@@ -309,6 +436,10 @@ export function simplifySchema(schema: DocTypeSchema): DocTypeSchema {
 		}
 		if (member.type === "unknown" && member.name === "string & {}") {
 			rest.push({type: "string"});
+			continue;
+		}
+		if (isReactElementLikeSchema(member)) {
+			rest.push({type: "unknown", name: "ReactNode"});
 			continue;
 		}
 		if (member.type === "unknown" && member.name) {
@@ -365,9 +496,54 @@ export function simplifySchema(schema: DocTypeSchema): DocTypeSchema {
 		return {type: "unknown", name: "empty union"};
 	}
 	if (combined.length === 1) {
-		return combined[0];
+		const only = combined[0]!;
+		if (
+			options?.preserveMirrorFidelity &&
+			isPlainStringSchema(only) &&
+			(stringEnums.length > 0 || schemaHasStringEnum(schema))
+		) {
+			return {oneOf: combined};
+		}
+		return only;
+	}
+	if (
+		options?.preserveMirrorFidelity &&
+		stringEnums.length > 0 &&
+		hasPlainString
+	) {
+		return {oneOf: combined};
 	}
 	return {oneOf: combined};
+}
+
+/** Overlay mirror schema-input props onto a TS-built definition, keeping mirror types and JSDoc. */
+export function mergeMirrorDefinitionOverlay(
+	built: DocTypeDefinition,
+	fromMirror: DocTypeDefinition,
+): DocTypeDefinition {
+	if (!("properties" in fromMirror) || !fromMirror.properties) {
+		return fromMirror;
+	}
+	const builtProps =
+		"properties" in built && built.properties ? built.properties : {};
+	const properties: Record<
+		string,
+		DocTypeSchema & MirrorPropertyMeta
+	> = {};
+	const mirrorOptions: SchemaSimplifyOptions = {preserveMirrorFidelity: true};
+	for (const [key, mirrorProp] of Object.entries(fromMirror.properties)) {
+		const builtProp = builtProps[key] as
+			| (DocTypeSchema & MirrorPropertyMeta)
+			| undefined;
+		const simplified = deepSimplifySchema(mirrorProp, mirrorOptions);
+		const mirrorMeta = extractMirrorPropertyMeta(mirrorProp);
+		const builtMeta = builtProp ? extractMirrorPropertyMeta(builtProp) : {};
+		properties[key] = applyMirrorPropertyMeta(simplified, {
+			description: mirrorMeta.description ?? builtMeta.description,
+			default: mirrorMeta.default ?? builtMeta.default,
+		});
+	}
+	return {properties};
 }
 
 /**
@@ -560,11 +736,15 @@ export function createTsTypeResolver(projectRoot: string) {
 		}
 
 		if (type.isUnion()) {
-			return simplifySchema({
+			const simplified = simplifySchema({
 				oneOf: type.types.map((member) =>
 					schemaFromTsType(checker, member, depth + 1),
 				),
 			});
+			if (matchesMantineResponsiveCssSize(simplified)) {
+				return MANTINE_RESPONSIVE_CSS_SIZE_REF;
+			}
+			return simplified;
 		}
 
 		if (checker.isArrayType(type) || checker.isTupleType(type)) {
@@ -850,9 +1030,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		fromMirror: DocTypeDefinition,
 		omitKeys?: readonly string[],
 		pickKeys?: readonly string[],
-	): DocTypeDefinition | undefined {
+	): DocTypeDefinition {
 		if (!("properties" in fromMirror) || !fromMirror.properties) {
-			return undefined;
+			return fromMirror;
 		}
 		if (!omitKeys?.length && !pickKeys?.length) {
 			return fromMirror;
@@ -866,7 +1046,9 @@ export function createTsTypeResolver(projectRoot: string) {
 			if (pickKeys?.length && !pickKeys.includes(key)) continue;
 			filtered[key] = value;
 		}
-		if (!Object.keys(filtered).length) return undefined;
+		if (!Object.keys(filtered).length) {
+			return {properties: {}};
+		}
 		return deepSimplifySchema({properties: filtered});
 	}
 
@@ -887,12 +1069,7 @@ export function createTsTypeResolver(projectRoot: string) {
 				mirrorTypeName,
 			);
 			if (fromMirror) {
-				const mirrored = applyMirrorPickOmit(
-					fromMirror,
-					omitKeys,
-					pickKeys,
-				);
-				if (mirrored) return mirrored;
+				return applyMirrorPickOmit(fromMirror, omitKeys, pickKeys);
 			}
 		}
 
@@ -1015,6 +1192,9 @@ export function createTsTypeResolver(projectRoot: string) {
 	function valueSchemaFromTypeDocNode(
 		valueRef: TypeDocTypeNode,
 	): DocTypeSchema {
+		if (valueRef.name === "ISelectComponentOverrides") {
+			return compactISelectComponentOverridesValueSchema();
+		}
 		if (valueRef.type === "union" && valueRef.types?.length) {
 			const members = (valueRef.types as TypeDocTypeNode[]).map((member) =>
 				valueSchemaFromTypeDocNode(member),
@@ -1073,6 +1253,14 @@ export function createTsTypeResolver(projectRoot: string) {
 			`${utilityName}_${baseName.replace(/[^A-Za-z0-9_$]+/g, "_")}`;
 
 		if (utilityName === "Partial") {
+			const baseName = typeArgumentDisplayName(base);
+			const fromMirror = resolveMantineCorePropsMirror(
+				projectRoot,
+				base._target?.qualifiedName ?? base.name ?? baseName,
+			);
+			if (fromMirror) {
+				return fromMirror;
+			}
 			let expanded = resolveReferenceTarget(base);
 			if (!expanded && base.name) {
 				expanded = tryResolveLocalTypeName(base.name);
@@ -1109,11 +1297,27 @@ export function createTsTypeResolver(projectRoot: string) {
 
 		if (utilityName === "Omit") {
 			const omitKeys = collectLiteralKeys(keysArg);
+			const baseName = typeArgumentDisplayName(base);
+			const fromMirror = resolveMantineCorePropsMirror(
+				projectRoot,
+				base._target?.qualifiedName ?? base.name ?? baseName,
+			);
+			if (fromMirror) {
+				return applyMirrorPickOmit(fromMirror, omitKeys);
+			}
 			return resolveReferenceTarget(base, omitKeys);
 		}
 
 		if (utilityName === "Pick") {
 			const pickKeys = collectLiteralKeys(keysArg);
+			const baseName = typeArgumentDisplayName(base);
+			const fromMirror = resolveMantineCorePropsMirror(
+				projectRoot,
+				base._target?.qualifiedName ?? base.name ?? baseName,
+			);
+			if (fromMirror) {
+				return applyMirrorPickOmit(fromMirror, undefined, pickKeys);
+			}
 			const fromTarget = resolveReferenceTarget(base, undefined, pickKeys);
 			if (fromTarget) return fromTarget;
 			if (!base.name) return undefined;
@@ -1149,6 +1353,15 @@ export function createTsTypeResolver(projectRoot: string) {
 
 	const LOCAL_TYPE_SOURCE_FALLBACKS: Record<string, string[]> = {
 		IconProps: ["src/shared/shared/ui/icon/Icon.types.ts"],
+		ViewportBranding: [
+			"src/shared/entities/viewport/config/viewport.ts",
+		],
+		StargateStatusColorProps: [
+			"src/shared/entities/stargate/config/stargate.ts",
+		],
+		ISelectComponentOverrides: [
+			"src/shared/entities/parameter/ui/ParameterSelectComponent.tsx",
+		],
 		ViewportIconButtonStyleProps: [
 			"src/shared/entities/viewport/config/viewportIcons.ts",
 		],
@@ -1383,6 +1596,9 @@ export function createTsTypeResolver(projectRoot: string) {
 	}
 
 	function tryResolveLocalTypeName(typeName: string): DocTypeDefinition | undefined {
+		if (typeName === "ISelectComponentOverrides") {
+			return compactISelectComponentOverridesValueSchema();
+		}
 		const fromMirror = resolveMantineCorePropsMirror(projectRoot, typeName);
 		if (fromMirror) return fromMirror;
 		const mantineMirrorPath = mantineMirrorSchemaInputRelativePath(typeName);

@@ -7,6 +7,7 @@ import {
 	createDefinitionsContext,
 	dedupeFlatEntriesByConfigPath,
 	postProcessDefinitions,
+	postProcessFlatEntries,
 	wrapDocFlatEntries,
 } from "./buildArtifacts.ts";
 
@@ -115,6 +116,11 @@ export function load(app: Application) {
 			postProcessDefinitions(
 				definitionsContext.definitions,
 				definitionsContext.tsMantineDocLinkForProps,
+			);
+			postProcessFlatEntries(
+				flat,
+				definitionsContext.definitions,
+				process.cwd(),
 			);
 
 			const nested = {

@@ -1,12 +1,48 @@
 import * as path from "path";
 import {
+	canonicalMantinePropsDocKeyForPropertyKeys,
+	mantineCorePropsDocKeyForMirrorName,
 	parseInterfaceFromSourceFile,
 	parseSchemaInputTypeDefinition,
+	resolveDocRefForTypeName,
 	resolveMantineCorePropsMirror,
 	resolveMantineCorePropsMirrorForDocKey,
 } from "./mantineMirrorParser.ts";
 
 const projectRoot = path.resolve(__dirname, "../..");
+
+describe("mantineCorePropsDocKeyForMirrorName", () => {
+	it("maps MantineButtonProps to ButtonProps", () => {
+		expect(mantineCorePropsDocKeyForMirrorName("MantineButtonProps")).toBe(
+			"ButtonProps",
+		);
+	});
+
+	it("maps MantineThemeOverrideProps to MantineThemeOverride", () => {
+		expect(
+			mantineCorePropsDocKeyForMirrorName("MantineThemeOverrideProps"),
+		).toBe("MantineThemeOverride");
+	});
+});
+
+describe("resolveDocRefForTypeName", () => {
+	it("returns ButtonProps ref for MantineButtonProps", () => {
+		expect(resolveDocRefForTypeName(projectRoot, "MantineButtonProps")).toEqual(
+			{$ref: "#/definitions/ButtonProps"},
+		);
+	});
+});
+
+describe("canonicalMantinePropsDocKeyForPropertyKeys", () => {
+	it("matches ButtonProps field set", () => {
+		const mirror = resolveMantineCorePropsMirror(projectRoot, "ButtonProps");
+		expect(mirror).toHaveProperty("properties");
+		const keys = (mirror as {properties: Record<string, unknown>}).properties;
+		expect(canonicalMantinePropsDocKeyForPropertyKeys(projectRoot, keys)).toBe(
+			"ButtonProps",
+		);
+	});
+});
 
 describe("resolveMantineCorePropsMirror", () => {
 	it("resolves ButtonProps from button.schema-input.ts", () => {
@@ -113,5 +149,7 @@ describe("parseSchemaInputInterface", () => {
 		expect(props.w).toMatchObject({$ref: "#/definitions/MantineCssLength"});
 		expect(props.wrap).toMatchObject({$ref: "#/definitions/MantineFlexWrap"});
 		expect(props.wrap?.description).toContain("Flex wrap");
+		expect(props.pt?.description).toContain("Padding top");
+		expect(props.pb?.description).toContain("Padding bottom");
 	});
 });

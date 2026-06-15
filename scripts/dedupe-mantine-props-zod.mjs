@@ -13,6 +13,7 @@ const SHARED_SCHEMAS = {
 	mantineSpacingSchema: "spacing.zod.ts",
 	mantineSizeTokenSchema: "spacing.zod.ts",
 	mantineCssLengthSchema: "primitives.zod.ts",
+	mantineCssStyleRecordSchema: "primitives.zod.ts",
 	mantineFlexWrapSchema: "primitives.zod.ts",
 	mantineStylesApiValueSchema: "primitives.zod.ts",
 	mantineStylesApiSchema: "primitives.zod.ts",

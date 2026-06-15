@@ -327,6 +327,71 @@ export function mantineMirrorForCorePropsName(
 	return `Mantine${match[1]}Props`;
 }
 
+/** Maps `Mantine{Component}Props` mirror interface to canonical doc `definitions` key. */
+export function mantineCorePropsDocKeyForMirrorName(
+	mirrorInterfaceName: string,
+): string | undefined {
+	if (mirrorInterfaceName === "MantineThemeOverrideProps") {
+		return "MantineThemeOverride";
+	}
+	const match = /^Mantine([A-Z][A-Za-z]*)Props$/.exec(mirrorInterfaceName);
+	if (!match) return undefined;
+	return `${match[1]}Props`;
+}
+
+let mirrorPropertyFingerprintIndex: Map<string, string> | undefined;
+
+function mirrorInterfaceNameFromSchemaInputFile(fileName: string): string | undefined {
+	const match = /^([a-z][A-Za-z0-9]*)\.schema-input\.ts$/.exec(fileName);
+	if (!match) return undefined;
+	const fileBase = match[1];
+	if (fileBase === "primitives" || fileBase === "spacing" || fileBase === "themeOverride") {
+		return undefined;
+	}
+	return `Mantine${fileBase.charAt(0).toUpperCase()}${fileBase.slice(1)}Props`;
+}
+
+function buildMirrorPropertyFingerprintIndex(
+	projectRoot: string,
+): Map<string, string> {
+	const index = new Map<string, string>();
+	const mantinePropsDir = path.join(
+		projectRoot,
+		"src/shared/shared/mantine-props",
+	);
+	if (!fs.existsSync(mantinePropsDir)) return index;
+
+	for (const fileName of fs.readdirSync(mantinePropsDir)) {
+		const mirrorInterfaceName = mirrorInterfaceNameFromSchemaInputFile(fileName);
+		if (!mirrorInterfaceName) continue;
+		const docKey = mantineCorePropsDocKeyForMirrorName(mirrorInterfaceName);
+		if (!docKey) continue;
+		const mirror = resolveMantineCorePropsMirror(projectRoot, docKey);
+		if (!mirror || !("properties" in mirror) || !mirror.properties) continue;
+		const fingerprint = Object.keys(mirror.properties).sort().join(",");
+		if (fingerprint) index.set(fingerprint, docKey);
+	}
+	return index;
+}
+
+/** Match an inline-expanded props object to a canonical mirrored `*Props` doc key. */
+export function canonicalMantinePropsDocKeyForPropertyKeys(
+	projectRoot: string,
+	properties: Record<string, unknown>,
+): string | undefined {
+	if (!mirrorPropertyFingerprintIndex) {
+		mirrorPropertyFingerprintIndex =
+			buildMirrorPropertyFingerprintIndex(projectRoot);
+	}
+	const fingerprint = Object.keys(properties).sort().join(",");
+	return mirrorPropertyFingerprintIndex.get(fingerprint);
+}
+
+/** Reset fingerprint cache (tests only). */
+export function resetMantineMirrorPropertyFingerprintIndex(): void {
+	mirrorPropertyFingerprintIndex = undefined;
+}
+
 export function mantineMirrorSchemaInputRelativePath(
 	mirrorInterfaceName: string,
 ): string | undefined {
@@ -370,12 +435,21 @@ export function resolveDocRefForTypeName(
 	projectRoot: string,
 	typeName: string,
 ): DocTypeSchema | undefined {
-	return (
-		resolveDocRefForAliasedType(projectRoot, typeName) ??
-		(resolveMantineCorePropsMirrorForDocKey(projectRoot, typeName)
-			? {$ref: `${DEFINITIONS_REF_PREFIX}${typeName}`}
-			: undefined)
-	);
+	const aliasRef = resolveDocRefForAliasedType(projectRoot, typeName);
+	if (aliasRef) return aliasRef;
+
+	const coreFromMirror = mantineCorePropsDocKeyForMirrorName(typeName);
+	if (
+		coreFromMirror &&
+		resolveMantineCorePropsMirrorForDocKey(projectRoot, coreFromMirror)
+	) {
+		return {$ref: `${DEFINITIONS_REF_PREFIX}${coreFromMirror}`};
+	}
+
+	if (resolveMantineCorePropsMirrorForDocKey(projectRoot, typeName)) {
+		return {$ref: `${DEFINITIONS_REF_PREFIX}${typeName}`};
+	}
+	return undefined;
 }
 
 const SPECIAL_MIRROR_DEFINITIONS: Record<

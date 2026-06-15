@@ -1,7 +1,10 @@
 import {
 	buildRecordDefinitionName,
 	buildRecordTypeSchema,
+	compactRecordStringISelectComponentOverrides,
+	isBreakpointSizeObjectSchema,
 	isStringOrNumberUnionSchema,
+	matchesMantineResponsiveCssSize,
 	recordSchemaFromParts,
 } from "./recordTypeSchema.ts";
 
@@ -58,5 +61,55 @@ describe("recordTypeSchema", () => {
 				oneOf: [{type: "string"}, {type: "boolean"}],
 			}),
 		).toBe(false);
+	});
+
+	it("detects MantineResponsiveCssSize-shaped unions and breakpoint objects", () => {
+		const breakpointObject = {
+			properties: {
+				base: {oneOf: [{type: "string"}, {type: "number"}]},
+				xs: {oneOf: [{type: "string"}, {type: "number"}]},
+				sm: {oneOf: [{type: "string"}, {type: "number"}]},
+				md: {oneOf: [{type: "string"}, {type: "number"}]},
+				lg: {oneOf: [{type: "string"}, {type: "number"}]},
+				xl: {oneOf: [{type: "string"}, {type: "number"}]},
+			},
+		};
+		expect(isBreakpointSizeObjectSchema(breakpointObject)).toBe(true);
+		expect(
+			matchesMantineResponsiveCssSize({
+				oneOf: [
+					{type: "string"},
+					{type: "number"},
+					breakpointObject,
+				],
+			}),
+		).toBe(true);
+	});
+
+	it("stubs Record<string, ISelectComponentOverrides> with top-level keys only", () => {
+		const compact = compactRecordStringISelectComponentOverrides();
+		const value = (
+			compact as {
+				properties: Record<string, {properties?: Record<string, unknown>}>;
+			}
+		).properties["[string]"];
+		expect(value?.properties).toEqual({
+			type: {
+				type: "unknown",
+				name: "SelectComponentType",
+				description: "Type of select component to use.",
+			},
+			itemData: {
+				type: "unknown",
+				name: "Record<string, ISelectComponentItemDataType>",
+				description:
+					"Record containing optional further item data per item name.",
+			},
+			settings: {
+				type: "unknown",
+				name: "SelectComponentSettings",
+				description: "Optional further settings, like image width etc.",
+			},
+		});
 	});
 });

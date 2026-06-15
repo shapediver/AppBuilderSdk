@@ -1,22 +1,33 @@
 import {
+	canonicalMantinePropsDocKeyForPropertyKeys,
 	MANTINE_SCHEMA_INPUT_TYPE_NAMES,
+	mantineCorePropsDocKeyForMirrorName,
 	parseSchemaInputTypeDefinition,
+	resolveDocRefForTypeName,
 	resolveMantineCorePropsMirrorForDocKey,
 	seedMantineSchemaInputTypeDefinitions,
 } from "./mantineMirrorParser.ts";
 import {
 	buildRecordDefinitionName,
+	compactRecordStringISelectComponentOverrides,
+	isBreakpointSizeObjectSchema,
+	MANTINE_RESPONSIVE_CSS_SIZE_REF,
+	matchesMantineResponsiveCssSize,
 	typeArgumentLabelForDefinition,
 } from "./recordTypeSchema.ts";
 import {
 	createTsTypeResolver,
 	deepSimplifySchema,
+	isDomEventHandlerTypeName,
 	isMantineCorePackageTarget,
+	mergeMirrorDefinitionOverlay,
 	normalizeUnknownTypeName,
 	shouldStubMantineExpandedProps,
 	simplifySchema,
 	type TsTypeResolver,
 } from "./tsTypeResolver.ts";
+
+const MIRROR_SCHEMA_SIMPLIFY_OPTIONS = {preserveMirrorFidelity: true} as const;
 
 /** OpenAPI-style JSON Schema fragment used in doc-flat property `type` fields. */
 export type DocTypeSchema =
@@ -42,10 +53,181 @@ export type DocTypeDefinition = DocTypeSchema & {
 
 export const DEFINITIONS_REF_PREFIX = "#/definitions/";
 
+export const ICON_THEME_DEFAULT_PROPS_CONFIG_PATH =
+	"themeOverrides.components.Icon.defaultProps";
+
+/** Serializable Icon theme surface — matches mantine-props `MantineIconProps` mirror (5 fields). */
+export const COMPACT_ICON_PROPS: DocTypeDefinition = {
+	properties: {
+		iconType: {type: "string"},
+		color: {type: "string"},
+		colorDisabled: {type: "string"},
+		size: {$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`},
+		stroke: {type: "string"},
+	},
+};
+
+type DocEntryProperty = {
+	name: string;
+	description: string;
+	type: DocTypeSchema;
+	default?: string;
+	minimum?: string;
+	maximum?: string;
+	example?: string;
+};
+
+/** Build flat entry `properties` from a mirror-backed `definitions` object. */
+export function entryPropertiesFromDefinition(
+	definition: DocTypeDefinition,
+): DocEntryProperty[] {
+	if (!("properties" in definition) || !definition.properties) return [];
+	return Object.entries(definition.properties).map(([name, schema]) => {
+		const {
+			description,
+			default: defaultValue,
+			...typeSchema
+		} = schema;
+		const prop: DocEntryProperty = {
+			name,
+			description: description ?? "",
+			type: typeSchema,
+		};
+		if (defaultValue !== undefined) {
+			prop.default = defaultValue;
+		}
+		return prop;
+	});
+}
+
+function alignEntryPropertiesToMirrorDefinition(
+	entry: DocFlatEntry,
+	definitions: Record<string, DocTypeDefinition>,
+	projectRoot?: string,
+): boolean {
+	const props = entry.properties as DocEntryProperty[] | undefined;
+	if (!props?.length || !projectRoot) return false;
+
+	const fingerprintProps = Object.fromEntries(
+		props.map((prop) => [prop.name, prop.type]),
+	);
+	const docKey = canonicalMantinePropsDocKeyForPropertyKeys(
+		projectRoot,
+		fingerprintProps,
+	);
+	if (!docKey) return false;
+
+	const mirror = definitions[docKey];
+	if (!mirror || !("properties" in mirror) || !mirror.properties) {
+		return false;
+	}
+
+	entry.properties = entryPropertiesFromDefinition(mirror);
+	return true;
+}
+
+/** Normalize flat entries that inlined a mirrored Mantine props surface. */
+export function postProcessFlatEntries(
+	entries: DocFlatEntry[],
+	definitions: Record<string, DocTypeDefinition>,
+	projectRoot?: string,
+): void {
+	for (const entry of entries) {
+		if (entry.configPath === ICON_THEME_DEFAULT_PROPS_CONFIG_PATH) {
+			const mirror = definitions.IconProps;
+			if (mirror && "properties" in mirror && mirror.properties) {
+				entry.properties = entryPropertiesFromDefinition(mirror);
+				continue;
+			}
+			entry.properties = entryPropertiesFromDefinition(COMPACT_ICON_PROPS);
+			continue;
+		}
+
+		alignEntryPropertiesToMirrorDefinition(
+			entry,
+			definitions,
+			projectRoot,
+		);
+	}
+}
+
+/** Stable definition keys for recurring inline object property fingerprints. */
+const PROPERTY_KEY_FINGERPRINTS: Record<string, string> = {
+	"backgroundColor,busyModeDisplay,busyModeSpinner,logo,spinnerPositioning":
+		"ViewportBranding",
+	"dimmed,focused,primary": "StargateStatusColorProps",
+};
+
+function stableDefinitionNameForPropertyKeys(
+	properties: Record<string, unknown>,
+): string | undefined {
+	const fingerprint = Object.keys(properties).sort().join(",");
+	return PROPERTY_KEY_FINGERPRINTS[fingerprint];
+}
+
+const BREAKPOINT_SIZE_KEYS = new Set([
+	"base",
+	"xs",
+	"sm",
+	"md",
+	"lg",
+	"xl",
+]);
+
+function isMantineResponsiveCssSizeUnionNode(typeNode: {
+	types?: {type?: string; name?: string; declaration?: {children?: {name?: string}[]}}[];
+}): boolean {
+	const members = typeNode.types ?? [];
+	const hasString = members.some(
+		(member) => member.type === "intrinsic" && member.name === "string",
+	);
+	const hasNumber = members.some(
+		(member) => member.type === "intrinsic" && member.name === "number",
+	);
+	const objectMember = members.find((member) => member.type === "reflection");
+	const breakpointKeys =
+		objectMember?.declaration?.children
+			?.map((child) => child.name)
+			.filter(
+				(name): name is string =>
+					typeof name === "string" && BREAKPOINT_SIZE_KEYS.has(name),
+			) ?? [];
+	return hasString && hasNumber && breakpointKeys.length >= 3;
+}
+
+function rewriteDefinitionRefs(
+	definitions: Record<string, DocTypeDefinition>,
+	fromKey: string,
+	toKey: string,
+): void {
+	if (fromKey === toKey) return;
+	const fromRef = `${DEFINITIONS_REF_PREFIX}${fromKey}`;
+	const toRef = `${DEFINITIONS_REF_PREFIX}${toKey}`;
+	const visit = (value: unknown): void => {
+		if (!value || typeof value !== "object") return;
+		if (Array.isArray(value)) {
+			value.forEach(visit);
+			return;
+		}
+		const obj = value as Record<string, unknown>;
+		if (obj.$ref === fromRef) {
+			obj.$ref = toRef;
+		}
+		for (const child of Object.values(obj)) {
+			visit(child);
+		}
+	};
+	for (const def of Object.values(definitions)) {
+		visit(def);
+	}
+	delete definitions[fromKey];
+}
+
 export type DefinitionsContext = {
 	definitions: Record<string, DocTypeDefinition>;
 	resolveType: (type: unknown, propertyName?: string) => DocTypeSchema;
 	setEntrySourceFile: (sourceFile: string | undefined) => void;
+	projectRoot?: string;
 	disposePrograms?: () => void;
 };
 
@@ -194,6 +376,22 @@ function isPrimitiveSchema(schema: DocTypeSchema): boolean {
 	);
 }
 
+function isSanitizedInlinePropsKey(key: string): boolean {
+	if (key.endsWith("Props") || key.endsWith("StyleProps")) return false;
+	if (/^[A-Z][A-Za-z0-9]*$/.test(key)) return false;
+	return (
+		key.includes("_string_or_number") ||
+		key.includes("_or_") ||
+		(key.includes("_string_") && key.includes("_"))
+	);
+}
+
+function isFingerprintCandidateKey(key: string): boolean {
+	if (key.startsWith("Partial_")) return false;
+	if (key === "InlineObject" || key === "InlineUnion") return true;
+	return isSanitizedInlinePropsKey(key);
+}
+
 /**
  * Build a registry that resolves TypeDoc type nodes to JSON Schema fragments,
  * collecting named complex types under `definitions` (OpenAPI-style).
@@ -224,11 +422,77 @@ export function createDefinitionsContext(
 		);
 	}
 
+	function ensureMirrorDefinitionSeeded(docKey: string): void {
+		if (!projectRoot) return;
+		const existing = definitions[docKey];
+		if (existing && isResolvedDefinition(existing)) return;
+		const fromMirror = resolveMantineCorePropsMirrorForDocKey(
+			projectRoot,
+			docKey,
+		);
+		if (fromMirror) {
+			definitions[docKey] = deepSimplifySchema(
+				fromMirror,
+				MIRROR_SCHEMA_SIMPLIFY_OPTIONS,
+			);
+		}
+	}
+
+	function tryRedirectToCanonicalMantinePropsRef(
+		key: string,
+		built: DocTypeDefinition,
+	): {$ref: string} | undefined {
+		if (!projectRoot || key.startsWith("Partial_")) return undefined;
+
+		const coreFromMirrorName = mantineCorePropsDocKeyForMirrorName(key);
+		if (
+			coreFromMirrorName &&
+			resolveMantineCorePropsMirrorForDocKey(projectRoot, coreFromMirrorName)
+		) {
+			ensureMirrorDefinitionSeeded(coreFromMirrorName);
+			delete definitions[key];
+			return {
+				$ref: `${DEFINITIONS_REF_PREFIX}${sanitizeDefinitionName(coreFromMirrorName)}`,
+			};
+		}
+
+		if (
+			isFingerprintCandidateKey(key) &&
+			"properties" in built &&
+			built.properties
+		) {
+			const coreFromFingerprint = canonicalMantinePropsDocKeyForPropertyKeys(
+				projectRoot,
+				built.properties,
+			);
+			if (coreFromFingerprint) {
+				ensureMirrorDefinitionSeeded(coreFromFingerprint);
+				delete definitions[key];
+				return {
+					$ref: `${DEFINITIONS_REF_PREFIX}${sanitizeDefinitionName(coreFromFingerprint)}`,
+				};
+			}
+		}
+
+		return undefined;
+	}
+
 	function registerDefinition(
 		name: string,
 		build: () => DocTypeDefinition,
-	): {$ref: string} {
+	): {$ref: string} | DocTypeSchema {
 		let key = sanitizeDefinitionName(name);
+		if (isDomEventHandlerTypeName(key)) {
+			return {type: "unknown", name: "Function"};
+		}
+		if (projectRoot && !key.startsWith("Partial_")) {
+			const earlyRef = resolveDocRefForTypeName(projectRoot, key);
+			if (earlyRef && "$ref" in earlyRef) {
+				const docKey = earlyRef.$ref.slice(DEFINITIONS_REF_PREFIX.length);
+				ensureMirrorDefinitionSeeded(docKey);
+				return earlyRef;
+			}
+		}
 		if (MANTINE_SCHEMA_INPUT_TYPE_NAMES.has(key) && definitions[key]) {
 			return {$ref: `${DEFINITIONS_REF_PREFIX}${key}`};
 		}
@@ -268,7 +532,10 @@ export function createDefinitionsContext(
 				key,
 			);
 			if (fromMirror && "properties" in fromMirror && fromMirror.properties) {
-				built = deepSimplifySchema(fromMirror);
+				built = deepSimplifySchema(
+					mergeMirrorDefinitionOverlay(built, fromMirror),
+					MIRROR_SCHEMA_SIMPLIFY_OPTIONS,
+				);
 			}
 		}
 		let topLevelPropCount =
@@ -288,25 +555,8 @@ export function createDefinitionsContext(
 			"properties" in built &&
 			topLevelPropCount > 10
 		) {
-			built = {
-				properties: {
-					color: {type: "string"},
-					colorDisabled: {type: "string"},
-					iconType: {
-						oneOf: [
-							{type: "string"},
-							{
-								type: "unknown",
-								name: "IconifyIconDefinition",
-							},
-						],
-					},
-					size: {
-						oneOf: [{type: "string"}, {type: "number"}],
-					},
-				},
-			};
-			topLevelPropCount = 4;
+			built = COMPACT_ICON_PROPS;
+			topLevelPropCount = Object.keys(COMPACT_ICON_PROPS.properties ?? {}).length;
 		}
 		const hasMantineMirror =
 			Boolean(projectRoot) &&
@@ -335,24 +585,36 @@ export function createDefinitionsContext(
 			return built.type === "unknown" ? {type: "string"} : built;
 		}
 		if (key === "Partial_IconProps") {
-			built = {
-				properties: {
-					color: {type: "string"},
-					colorDisabled: {type: "string"},
-					iconType: {
-						oneOf: [
-							{type: "string"},
-							{
-								type: "unknown",
-								name: "IconifyIconDefinition",
-							},
-						],
-					},
-					size: {
-						oneOf: [{type: "string"}, {type: "number"}],
-					},
-				},
-			};
+			built = COMPACT_ICON_PROPS;
+		}
+		if (matchesMantineResponsiveCssSize(built)) {
+			delete definitions[key];
+			return MANTINE_RESPONSIVE_CSS_SIZE_REF;
+		}
+		if (isBreakpointSizeObjectSchema(built)) {
+			delete definitions[key];
+			return MANTINE_RESPONSIVE_CSS_SIZE_REF;
+		}
+		if (
+			"properties" in built &&
+			built.properties &&
+			isFingerprintCandidateKey(key)
+		) {
+			const stableName = stableDefinitionNameForPropertyKeys(
+				built.properties,
+			);
+			if (stableName && stableName !== key) {
+				if (definitions[stableName]) {
+					delete definitions[key];
+					return {$ref: `${DEFINITIONS_REF_PREFIX}${stableName}`};
+				}
+				delete definitions[key];
+				key = stableName;
+			}
+		}
+		const canonicalRef = tryRedirectToCanonicalMantinePropsRef(key, built);
+		if (canonicalRef) {
+			return canonicalRef;
 		}
 		if ("$ref" in built && !("properties" in built)) {
 			delete definitions[key];
@@ -425,7 +687,9 @@ export function createDefinitionsContext(
 			);
 		}
 		if (
-			utilityName === "Partial" &&
+			(utilityName === "Partial" ||
+				utilityName === "Pick" ||
+				utilityName === "Omit") &&
 			typeNode.typeArguments?.length
 		) {
 			const base = typeNode.typeArguments[0] as {
@@ -435,12 +699,22 @@ export function createDefinitionsContext(
 			const baseName =
 				base._target?.qualifiedName ?? base.name ?? "Unknown";
 			if (base._target && isMantineCorePackageTarget(base._target)) {
-				return sanitizeDefinitionName(baseName);
+				if (
+					projectRoot &&
+					resolveMantineCorePropsMirrorForDocKey(projectRoot, baseName)
+				) {
+					return sanitizeDefinitionName(baseName);
+				}
+				if (utilityName === "Partial") {
+					return sanitizeDefinitionName(baseName);
+				}
 			}
-			return (
-				buildUtilityDefinitionName(utilityName, typeNode.typeArguments) ??
-				sanitizeDefinitionName(baseName)
-			);
+			if (utilityName === "Partial") {
+				return (
+					buildUtilityDefinitionName(utilityName, typeNode.typeArguments) ??
+					sanitizeDefinitionName(baseName)
+				);
+			}
 		}
 		if (preferredDefinitionName) {
 			return sanitizeDefinitionName(preferredDefinitionName);
@@ -719,14 +993,19 @@ export function createDefinitionsContext(
 				break;
 			}
 			case "union": {
+				if (isMantineResponsiveCssSizeUnionNode(t)) {
+					result = MANTINE_RESPONSIVE_CSS_SIZE_REF;
+					break;
+				}
+				const simplified = simplifySchema({
+					oneOf: (t.types ?? []).map((member) => resolveType(member)),
+				});
+				if (matchesMantineResponsiveCssSize(simplified)) {
+					result = MANTINE_RESPONSIVE_CSS_SIZE_REF;
+					break;
+				}
 				const unionName = typeDisplayName(t, t.reflection?.name ?? "Union");
-				result = registerDefinition(unionName, () =>
-					simplifySchema({
-						oneOf: (t.types ?? []).map((member) =>
-							resolveType(member),
-						),
-					}),
-				);
+				result = registerDefinition(unionName, () => simplified);
 				break;
 			}
 			case "intersection": {
@@ -848,6 +1127,21 @@ export function createDefinitionsContext(
 								},
 					);
 					break;
+				}
+
+				if (projectRoot) {
+					const canonicalRef = resolveDocRefForTypeName(
+						projectRoot,
+						refName,
+					);
+					if (canonicalRef) {
+						const docKey = canonicalRef.$ref.slice(
+							DEFINITIONS_REF_PREFIX.length,
+						);
+						ensureMirrorDefinitionSeeded(docKey);
+						result = canonicalRef;
+						break;
+					}
 				}
 
 				const utilityDefName = ["Omit", "Pick", "Partial", "Record"].includes(
@@ -1009,6 +1303,7 @@ export function createDefinitionsContext(
 	return {
 		definitions,
 		resolveType: resolvePropertyType,
+		projectRoot,
 		tsMantineDocLinkForProps: tsResolver?.mantineDocLinkForProps.bind(
 			tsResolver,
 		),
@@ -1067,21 +1362,22 @@ export {
 	sanitizeDefinitionName,
 };
 
-const COMPACT_VIEWPORT_ICON_PROPS: DocTypeDefinition = {
+const COMPACT_VIEWPORT_OVERLAY_WRAPPER_PROPS: DocTypeDefinition = {
 	properties: {
-		color: {type: "string"},
-		colorDisabled: {type: "string"},
-		iconType: {
-			oneOf: [
-				{type: "string"},
-				{type: "unknown", name: "IconifyIconDefinition"},
-			],
+		children: {type: "unknown", name: "ReactNode"},
+		position: {
+			type: "unknown",
+			name: "ResponsiveValueType<OverlayPositionType>",
 		},
-		size: {
-			oneOf: [{type: "string"}, {type: "number"}],
-		},
+		offset: {type: "string"},
+		offsetX: {type: "string"},
+		offsetY: {type: "string"},
+		className: {type: "string"},
 	},
 };
+
+const MANTINE_PROPS_STUB_LINE_THRESHOLD = 500;
+const DOMAIN_RECORD_STUB_LINE_THRESHOLD = 80;
 
 /** Final pass: fix definitions polluted by late registration order or Iconify expansion. */
 export function postProcessDefinitions(
@@ -1089,12 +1385,76 @@ export function postProcessDefinitions(
 	mantineDocLinkForProps?: (name: string) => string | undefined,
 ): void {
 	if (definitions.Partial_IconProps) {
-		definitions.Partial_IconProps = COMPACT_VIEWPORT_ICON_PROPS;
+		definitions.Partial_IconProps = COMPACT_ICON_PROPS;
+	}
+
+	if (definitions.ViewportOverlayWrapperProps_and_Partial_OverlayStyleProps) {
+		definitions.ViewportOverlayWrapperProps_and_Partial_OverlayStyleProps =
+			COMPACT_VIEWPORT_OVERLAY_WRAPPER_PROPS;
+	}
+
+	if (definitions.Record_string_ISelectComponentOverrides) {
+		definitions.Record_string_ISelectComponentOverrides =
+			compactRecordStringISelectComponentOverrides();
+	}
+
+	for (const key of Object.keys(definitions)) {
+		if (isDomEventHandlerTypeName(key)) {
+			delete definitions[key];
+		}
+	}
+
+	for (const key of Object.keys(definitions)) {
+		const pickOmitMatch = /^(Pick|Omit)_(.+)$/.exec(key);
+		if (!pickOmitMatch) continue;
+		const baseName = pickOmitMatch[2];
+		if (!baseName.endsWith("Props")) continue;
+		const def = definitions[key];
+		const propCount =
+			def && "properties" in def && def.properties
+				? Object.keys(def.properties).length
+				: 0;
+		if (propCount === 0 || definitions[baseName]) {
+			delete definitions[key];
+		}
+	}
+
+	for (const key of Object.keys(definitions)) {
+		if (key === "MantineResponsiveCssSize") continue;
+		const def = definitions[key];
+		if (!def) continue;
+		if (matchesMantineResponsiveCssSize(def) || isBreakpointSizeObjectSchema(def)) {
+			rewriteDefinitionRefs(definitions, key, "MantineResponsiveCssSize");
+			continue;
+		}
+		if (
+			"properties" in def &&
+			def.properties &&
+			isFingerprintCandidateKey(key)
+		) {
+			const stableName = stableDefinitionNameForPropertyKeys(def.properties);
+			if (stableName && stableName !== key) {
+				if (!definitions[stableName]) {
+					definitions[stableName] = def;
+				}
+				rewriteDefinitionRefs(definitions, key, stableName);
+			}
+		}
 	}
 
 	for (const [key, def] of Object.entries(definitions)) {
 		const lineCount = JSON.stringify(def, null, 2).split("\n").length;
-		if (lineCount < 2000) continue;
+		if (
+			key.startsWith("Record_string_") &&
+			lineCount >= DOMAIN_RECORD_STUB_LINE_THRESHOLD
+		) {
+			if (key === "Record_string_ISelectComponentOverrides") {
+				definitions[key] = compactRecordStringISelectComponentOverrides();
+			}
+			continue;
+		}
+
+		if (lineCount < MANTINE_PROPS_STUB_LINE_THRESHOLD) continue;
 
 		const baseName = key.replace(/^Partial_/, "");
 		if (!baseName.endsWith("Props") && !baseName.endsWith("StyleProps")) {
