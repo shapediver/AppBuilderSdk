@@ -1,5 +1,6 @@
 import {
 	canonicalMantinePropsDocKeyForPropertyKeys,
+	findMirroredMantinePropsDocKeyForSuperset,
 	MANTINE_SCHEMA_INPUT_TYPE_NAMES,
 	mantineCorePropsDocKeyForMirrorName,
 	parseSchemaInputTypeDefinition,
@@ -126,6 +127,57 @@ function alignEntryPropertiesToMirrorDefinition(
 	return true;
 }
 
+function alignEntryPropertiesWithMirrorSuperset(
+	entry: DocFlatEntry,
+	definitions: Record<string, DocTypeDefinition>,
+	projectRoot?: string,
+): boolean {
+	const props = entry.properties as DocEntryProperty[] | undefined;
+	if (!props?.length || !projectRoot) return false;
+
+	const docKey = findMirroredMantinePropsDocKeyForSuperset(
+		projectRoot,
+		props.map((prop) => prop.name),
+	);
+	if (!docKey) return false;
+
+	let mirror = definitions[docKey];
+	if (
+		(!mirror || !("properties" in mirror) || !mirror.properties) &&
+		projectRoot
+	) {
+		mirror = resolveMantineCorePropsMirrorForDocKey(projectRoot, docKey);
+	}
+	if (!mirror || !("properties" in mirror) || !mirror.properties) {
+		return false;
+	}
+
+	const mirrorPropsByName = Object.fromEntries(
+		entryPropertiesFromDefinition(mirror).map((prop) => [prop.name, prop]),
+	);
+
+	let changed = false;
+	entry.properties = props.map((prop) => {
+		const mirrorProp = mirrorPropsByName[prop.name];
+		if (!mirrorProp) return prop;
+		if (
+			JSON.stringify(prop.type) === JSON.stringify(mirrorProp.type) &&
+			(prop.description || "") === (mirrorProp.description || "") &&
+			prop.default === mirrorProp.default
+		) {
+			return prop;
+		}
+		changed = true;
+		return {
+			...prop,
+			type: mirrorProp.type,
+			description: prop.description || mirrorProp.description,
+			default: prop.default ?? mirrorProp.default,
+		};
+	});
+	return changed;
+}
+
 /** Normalize flat entries that inlined a mirrored Mantine props surface. */
 export function postProcessFlatEntries(
 	entries: DocFlatEntry[],
@@ -143,11 +195,17 @@ export function postProcessFlatEntries(
 			continue;
 		}
 
-		alignEntryPropertiesToMirrorDefinition(
-			entry,
-			definitions,
-			projectRoot,
-		);
+		if (
+			alignEntryPropertiesToMirrorDefinition(
+				entry,
+				definitions,
+				projectRoot,
+			)
+		) {
+			continue;
+		}
+
+		alignEntryPropertiesWithMirrorSuperset(entry, definitions, projectRoot);
 	}
 }
 

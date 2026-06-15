@@ -1,9 +1,11 @@
 import * as path from "path";
 import {
 	canonicalMantinePropsDocKeyForPropertyKeys,
+	findMirroredMantinePropsDocKeyForSuperset,
 	mantineCorePropsDocKeyForMirrorName,
 	parseInterfaceFromSourceFile,
 	parseSchemaInputTypeDefinition,
+	resetMantineMirrorPropertyFingerprintIndex,
 	resolveDocRefForTypeName,
 	resolveMantineCorePropsMirror,
 	resolveMantineCorePropsMirrorForDocKey,
@@ -41,6 +43,29 @@ describe("canonicalMantinePropsDocKeyForPropertyKeys", () => {
 		expect(canonicalMantinePropsDocKeyForPropertyKeys(projectRoot, keys)).toBe(
 			"ButtonProps",
 		);
+	});
+});
+
+describe("findMirroredMantinePropsDocKeyForSuperset", () => {
+	beforeEach(() => {
+		resetMantineMirrorPropertyFingerprintIndex();
+	});
+
+	it("matches ButtonProps when entry adds actionIconProps", () => {
+		const mirror = resolveMantineCorePropsMirror(projectRoot, "ButtonProps");
+		expect(mirror).toHaveProperty("properties");
+		const buttonProps = (mirror as {properties: Record<string, unknown>})
+			.properties;
+		const buttonKeys = Object.keys(buttonProps);
+		expect(buttonKeys.length).toBeGreaterThan(0);
+		expect(
+			canonicalMantinePropsDocKeyForPropertyKeys(projectRoot, buttonProps),
+		).toBe("ButtonProps");
+		const result = findMirroredMantinePropsDocKeyForSuperset(projectRoot, [
+			...buttonKeys,
+			"actionIconProps",
+		]);
+		expect(result).toBe("ButtonProps");
 	});
 });
 
@@ -114,6 +139,30 @@ describe("parseSchemaInputTypeDefinition", () => {
 		});
 	});
 
+	it("parses MantineFloatingPosition as string enum", () => {
+		const parsed = parseSchemaInputTypeDefinition(
+			projectRoot,
+			"MantineFloatingPosition",
+		);
+		expect(parsed).toEqual({
+			type: "string",
+			enum: [
+				"top",
+				"right",
+				"bottom",
+				"left",
+				"top-start",
+				"top-end",
+				"bottom-start",
+				"bottom-end",
+				"left-start",
+				"left-end",
+				"right-start",
+				"right-end",
+			],
+		});
+	});
+
 	it("parses MantineCssStyleRecord as string-keyed style map", () => {
 		const parsed = parseSchemaInputTypeDefinition(
 			projectRoot,
@@ -151,5 +200,18 @@ describe("parseSchemaInputInterface", () => {
 		expect(props.wrap?.description).toContain("Flex wrap");
 		expect(props.pt?.description).toContain("Padding top");
 		expect(props.pb?.description).toContain("Padding bottom");
+	});
+
+	it("parses MantineTooltipProps position as MantineFloatingPosition ref", () => {
+		const parsed = parseInterfaceFromSourceFile(
+			projectRoot,
+			"src/shared/shared/mantine-props/tooltip.schema-input.ts",
+			"MantineTooltipProps",
+		);
+		expect(parsed).toHaveProperty("properties");
+		const props = (parsed as {properties: Record<string, unknown>}).properties;
+		expect(props.position).toEqual({
+			$ref: "#/definitions/MantineFloatingPosition",
+		});
 	});
 });

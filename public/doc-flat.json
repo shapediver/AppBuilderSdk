@@ -32,6 +32,23 @@
         "wrap-reverse"
       ]
     },
+    "MantineFloatingPosition": {
+      "type": "string",
+      "enum": [
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "top-start",
+        "top-end",
+        "bottom-start",
+        "bottom-end",
+        "left-start",
+        "left-end",
+        "right-start",
+        "right-end"
+      ]
+    },
     "MantineStylesApiValue": {
       "oneOf": [
         {
@@ -253,8 +270,7 @@
           "description": "Show tooltip arrow (standard Mantine Tooltip) (Mantine default: `true`)"
         },
         "position": {
-          "type": "unknown",
-          "name": "MantineFloatingPosition"
+          "$ref": "#/definitions/MantineFloatingPosition"
         },
         "withinPortal": {
           "type": "boolean"
@@ -777,8 +793,7 @@
           "type": "string"
         },
         "position": {
-          "type": "unknown",
-          "name": "MantineFloatingPosition"
+          "$ref": "#/definitions/MantineFloatingPosition"
         }
       }
     },
@@ -2341,7 +2356,7 @@
           "name": "style",
           "description": "Style properties for the container",
           "type": {
-            "$ref": "#/definitions/CSSProperties"
+            "$ref": "#/definitions/MantineCssStyleRecord"
           }
         },
         {
@@ -2597,6 +2612,13 @@
       "source": "src/shared/features/appbuilder/ui/AppBuilderActionComponent.tsx",
       "category": "feature",
       "properties": [
+        {
+          "name": "actionIconProps",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/ActionIconProps"
+          }
+        },
         {
           "name": "fw",
           "description": "",
@@ -3305,14 +3327,7 @@
           "name": "size",
           "description": "Modal size",
           "type": {
-            "type": "string",
-            "enum": [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl"
-            ]
+            "$ref": "#/definitions/MantineSizeToken"
           }
         },
         {
@@ -3406,21 +3421,7 @@
           "name": "position",
           "description": "",
           "type": {
-            "type": "string",
-            "enum": [
-              "top",
-              "right",
-              "bottom",
-              "left",
-              "top-start",
-              "top-end",
-              "bottom-start",
-              "bottom-end",
-              "left-start",
-              "left-end",
-              "right-start",
-              "right-end"
-            ]
+            "$ref": "#/definitions/MantineFloatingPosition"
           }
         },
         {
@@ -3441,7 +3442,7 @@
           "name": "radius",
           "description": "",
           "type": {
-            "$ref": "#/definitions/string_or_number"
+            "$ref": "#/definitions/MantineSpacing"
           }
         },
         {

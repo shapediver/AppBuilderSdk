@@ -1,5 +1,10 @@
 import * as path from "path";
 import {
+	findMirroredMantinePropsDocKeyForSuperset,
+	resetMantineMirrorPropertyFingerprintIndex,
+	resolveMantineCorePropsMirror,
+} from "./mantineMirrorParser.ts";
+import {
 	buildIntersectionDefinitionName,
 	COMPACT_ICON_PROPS,
 	createDefinitionsContext,
@@ -560,6 +565,73 @@ describe("Icon theme doc entry", () => {
 		};
 		postProcessDefinitions(definitions);
 		expect(definitions.Partial_IconProps).toEqual(COMPACT_ICON_PROPS);
+	});
+
+	it("postProcessFlatEntries aligns mirror subset when z.infer adds extra props", () => {
+		resetMantineMirrorPropertyFingerprintIndex();
+		const projectRoot = path.resolve(__dirname, "../..");
+		const buttonMirror = resolveMantineCorePropsMirror(
+			projectRoot,
+			"ButtonProps",
+		) as {properties: Record<string, unknown>};
+		const inlinedButtonProps = Object.fromEntries(
+			Object.keys(buttonMirror.properties).map((name) => [
+				name,
+				{
+					name,
+					description: "",
+					type:
+						name === "mt" || name === "ml" || name === "px"
+							? {$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`}
+							: {type: "string"},
+				},
+			]),
+		);
+		const entries = [
+			{
+				configPath:
+					"themeOverrides.components.AppBuilderActionComponent.defaultProps",
+				name: "AppBuilderActionComponent",
+				summary: "",
+				source: "AppBuilderActionComponent.tsx",
+				properties: [
+					{
+						name: "actionIconProps",
+						description: "",
+						type: {$ref: `${DEFINITIONS_REF_PREFIX}ActionIconProps`},
+					},
+					...Object.values(inlinedButtonProps),
+				],
+			},
+		];
+		const definitions = {
+			ButtonProps: buttonMirror,
+		};
+		expect(
+			findMirroredMantinePropsDocKeyForSuperset(
+				projectRoot,
+				entries[0].properties!.map((prop) => prop.name),
+			),
+		).toBe("ButtonProps");
+		expect((buttonMirror as {properties: {mt: unknown}}).properties.mt).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
+		});
+		postProcessFlatEntries(entries, definitions, projectRoot);
+		const byName = Object.fromEntries(
+			entries[0].properties!.map((prop) => [prop.name, prop]),
+		);
+		expect(byName.mt?.type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
+		});
+		expect(byName.ml?.type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
+		});
+		expect(byName.px?.type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
+		});
+		expect(byName.actionIconProps?.type).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}ActionIconProps`,
+		});
 	});
 });
 

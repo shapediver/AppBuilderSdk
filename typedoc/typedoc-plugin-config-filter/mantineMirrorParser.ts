@@ -15,6 +15,7 @@ export const MANTINE_SCHEMA_INPUT_TYPE_SOURCES: Record<string, string> = {
 	MantineCssLength: PRIMITIVES_SCHEMA_INPUT,
 	MantineCssStyleRecord: PRIMITIVES_SCHEMA_INPUT,
 	MantineFlexWrap: PRIMITIVES_SCHEMA_INPUT,
+	MantineFloatingPosition: PRIMITIVES_SCHEMA_INPUT,
 	MantineStylesApiValue: PRIMITIVES_SCHEMA_INPUT,
 	MantineStylesApi: PRIMITIVES_SCHEMA_INPUT,
 	MantineResponsiveCssSize: PRIMITIVES_SCHEMA_INPUT,
@@ -385,6 +386,36 @@ export function canonicalMantinePropsDocKeyForPropertyKeys(
 	}
 	const fingerprint = Object.keys(properties).sort().join(",");
 	return mirrorPropertyFingerprintIndex.get(fingerprint);
+}
+
+/**
+ * When entry keys are a superset of a mirror fingerprint (e.g. `ButtonProps` +
+ * `actionIconProps`), return the largest matching mirror doc key.
+ */
+export function findMirroredMantinePropsDocKeyForSuperset(
+	projectRoot: string,
+	propertyNames: Iterable<string>,
+): string | undefined {
+	if (!mirrorPropertyFingerprintIndex) {
+		mirrorPropertyFingerprintIndex =
+			buildMirrorPropertyFingerprintIndex(projectRoot);
+	}
+	const entryKeys = new Set(propertyNames);
+	let bestDocKey: string | undefined;
+	let bestSize = 0;
+
+	for (const [fingerprint, docKey] of Array.from(
+		mirrorPropertyFingerprintIndex.entries(),
+	)) {
+		const mirrorKeys = fingerprint.split(",");
+		if (mirrorKeys.length <= bestSize) continue;
+		if (mirrorKeys.every((key) => entryKeys.has(key))) {
+			bestSize = mirrorKeys.length;
+			bestDocKey = docKey;
+		}
+	}
+
+	return bestDocKey;
 }
 
 /** Reset fingerprint cache (tests only). */
