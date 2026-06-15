@@ -309,6 +309,9 @@
         },
         "style": {
           "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
         }
       }
     },
@@ -3203,7 +3206,7 @@
             },
             {
               "name": "themeOverride",
-              "description": "Optional nested Mantine theme override for rendered markdown.",
+              "description": "",
               "type": {
                 "$ref": "#/definitions/MantineThemeOverride"
               }
@@ -3287,15 +3290,15 @@
         "defaultProps": {
           "properties": [
             {
-              "name": "withArrow",
-              "description": "Show tooltip arrow (standard Mantine Tooltip) (Mantine default: `true`)",
+              "name": "floating",
+              "description": "Use Mantine `Tooltip.Floating` (follows the pointer) instead of the standard `Tooltip`.",
               "type": {
                 "type": "boolean"
               }
             },
             {
-              "name": "floating",
-              "description": "Use Mantine `Tooltip.Floating` (follows the pointer) instead of the standard `Tooltip`.",
+              "name": "withArrow",
+              "description": "Show tooltip arrow (standard Mantine Tooltip) (Mantine default: `true`)",
               "type": {
                 "type": "boolean"
               }
@@ -3417,6 +3420,13 @@
               "description": "",
               "type": {
                 "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "styles",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineStylesApi"
               }
             }
           ],
@@ -3955,6 +3965,13 @@
               "description": "",
               "type": {
                 "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "styles",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineStylesApi"
               }
             }
           ],
