@@ -1,14 +1,38 @@
 {
-	"$schema": "https://typedoc.org/schema.json",
-	"name": "App Builder — theme defaultProps",
-	"entryPoints": ["src/shared/features/appbuilder/config/typedoc-theme-default-props.entry.ts"],
-	"tsconfig": "tsconfig.json",
-	"out": "docs/api-theme-default-props",
-	"exclude": [
-		"**/node_modules/**",
-		"**/cypress/**",
-		"**/*.test.ts",
-		"**/*.spec.ts",
-		"**/dist/**"
+	"entryPoints": [
+		"src/shared",
+		"node_modules/@shapediver/viewer.shared.types/dist/index.d.ts"
+	],
+	"entryPointStrategy": "expand",
+	"skipErrorChecking": true,
+	"emit": "none",
+	"plugin": [
+		"./typedoc/typedoc-plugin-config-filter/index.ts"
+	],
+	"categorizeByGroup": true,
+	"categoryOrder": ["Layout", "UI", "Core"],
+	"readme": "none",
+	"excludePrivate": true,
+	"excludeProtected": true,
+	"blockTags": [
+		"@docAttached",
+		"@configPath",
+		"@subcategory",
+		"@param",
+		"@returns",
+		"@see",
+		"@property",
+		"@throws",
+		"@example",
+		"@deprecated",
+		"@since",
+		"@author",
+		"@version",
+		"@default",
+		"@minimum",
+		"@maximum",
+		"@displayName",
+		"@docLink",
+		"@category"
 	]
 }

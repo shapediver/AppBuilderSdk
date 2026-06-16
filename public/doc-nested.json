@@ -1,0 +1,4145 @@
+{
+  "definitions": {
+    "MantineCssLength": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "MantineCssStyleRecord": {
+      "properties": {
+        "[string]": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "MantineFlexWrap": {
+      "type": "string",
+      "enum": [
+        "nowrap",
+        "wrap",
+        "wrap-reverse"
+      ]
+    },
+    "MantineFloatingPosition": {
+      "type": "string",
+      "enum": [
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "top-start",
+        "top-end",
+        "bottom-start",
+        "bottom-end",
+        "left-start",
+        "left-end",
+        "right-start",
+        "right-end"
+      ]
+    },
+    "MantineStylesApiValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "MantineStylesApi": {
+      "properties": {
+        "[selector]": {
+          "oneOf": [
+            {
+              "properties": {
+                "[property]": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/definitions/MantineStylesApiValue"
+                    },
+                    {
+                      "$ref": "#/definitions/MantineStylesApi"
+                    },
+                    {
+                      "items": {
+                        "$ref": "#/definitions/MantineStylesApiValue"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "MantineResponsiveCssSize": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "properties": {
+            "base": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "xs": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "sm": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "md": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "lg": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "xl": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "MantineSpacing": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "MantineSizeToken": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "string_or_number": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    },
+    "ButtonProps": {
+      "properties": {
+        "fw": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "mt": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "ml": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "px": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "fz": {
+          "$ref": "#/definitions/MantineResponsiveCssSize"
+        },
+        "h": {
+          "$ref": "#/definitions/MantineResponsiveCssSize"
+        },
+        "variant": {
+          "type": "string"
+        },
+        "size": {
+          "$ref": "#/definitions/MantineSizeToken"
+        },
+        "fullWidth": {
+          "type": "boolean"
+        },
+        "justify": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        }
+      }
+    },
+    "TooltipProps": {
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "withArrow": {
+          "type": "boolean",
+          "description": "Show tooltip arrow (standard Mantine Tooltip) (Mantine default: `true`)"
+        },
+        "position": {
+          "$ref": "#/definitions/MantineFloatingPosition"
+        },
+        "withinPortal": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": "string"
+        },
+        "radius": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "multiline": {
+          "type": "boolean"
+        },
+        "zIndex": {
+          "type": "number"
+        }
+      }
+    },
+    "StackProps": {
+      "properties": {
+        "gap": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "p": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "align": {
+          "type": "string"
+        },
+        "justify": {
+          "type": "string"
+        }
+      }
+    },
+    "PaperProps": {
+      "properties": {
+        "withBorder": {
+          "type": "boolean"
+        },
+        "shadow": {
+          "type": "string"
+        },
+        "p": {
+          "$ref": "#/definitions/MantineSpacing",
+          "description": "Padding on all sides (Mantine spacing)"
+        },
+        "px": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "py": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
+        }
+      }
+    },
+    "styles_MantineStylesApi": {
+      "properties": {
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi",
+          "description": ""
+        }
+      }
+    },
+    "ColorFormatType": {
+      "type": "unknown",
+      "name": "ColorFormatType"
+    },
+    "InteractionEffect": {
+      "type": "unknown",
+      "name": "InteractionEffect"
+    },
+    "CheckboxProps": {
+      "properties": {
+        "ml": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "Record_string_ISelectComponentOverrides": {
+      "properties": {
+        "[string]": {
+          "properties": {
+            "type": {
+              "type": "unknown",
+              "name": "SelectComponentType",
+              "description": "Type of select component to use."
+            },
+            "itemData": {
+              "type": "unknown",
+              "name": "Record<string, ISelectComponentItemDataType>",
+              "description": "Record containing optional further item data per item name."
+            },
+            "settings": {
+              "type": "unknown",
+              "name": "SelectComponentSettings",
+              "description": "Optional further settings, like image width etc."
+            }
+          }
+        }
+      }
+    },
+    "ActionIconProps": {
+      "properties": {
+        "variant": {
+          "type": "string"
+        },
+        "size": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/MantineSizeToken"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
+        },
+        "loaderProps": {
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "IconProps": {
+      "properties": {
+        "iconType": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "colorDisabled": {
+          "type": "string"
+        },
+        "size": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "stroke": {
+          "type": "string"
+        }
+      }
+    },
+    "ImageProps": {
+      "properties": {
+        "fit": {
+          "type": "string"
+        },
+        "fallbackSrc": {
+          "type": "string"
+        },
+        "h": {
+          "$ref": "#/definitions/MantineCssLength"
+        },
+        "w": {
+          "$ref": "#/definitions/MantineCssLength"
+        },
+        "radius": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "mah": {
+          "$ref": "#/definitions/MantineCssLength"
+        },
+        "maw": {
+          "$ref": "#/definitions/MantineCssLength"
+        }
+      }
+    },
+    "TextProps": {
+      "properties": {
+        "fw": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "size": {
+          "$ref": "#/definitions/MantineSizeToken"
+        },
+        "c": {
+          "type": "string"
+        },
+        "fs": {
+          "type": "string"
+        }
+      }
+    },
+    "GroupProps": {
+      "properties": {
+        "w": {
+          "$ref": "#/definitions/MantineCssLength",
+          "description": "Group width (Mantine default: `\"100%\"`)"
+        },
+        "h": {
+          "$ref": "#/definitions/MantineCssLength",
+          "description": "Group height (Mantine default: `\"100%\"`)"
+        },
+        "justify": {
+          "type": "string",
+          "description": "Flex justify-content (Mantine default: `\"center\"`)"
+        },
+        "align": {
+          "type": "string",
+          "description": "Flex align-items"
+        },
+        "gap": {
+          "$ref": "#/definitions/MantineSpacing",
+          "description": "Gap between children (Mantine spacing)"
+        },
+        "wrap": {
+          "$ref": "#/definitions/MantineFlexWrap",
+          "description": "Flex wrap (Mantine default: `\"nowrap\"`)"
+        },
+        "p": {
+          "$ref": "#/definitions/MantineSpacing",
+          "description": "Padding — Mantine spacing (Mantine default: `\"xs\"`)"
+        },
+        "pt": {
+          "$ref": "#/definitions/MantineSpacing",
+          "description": "Padding top"
+        },
+        "pb": {
+          "$ref": "#/definitions/MantineSpacing",
+          "description": "Padding bottom"
+        },
+        "mb": {
+          "$ref": "#/definitions/MantineSpacing",
+          "description": "Margin bottom (Mantine spacing)"
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
+        }
+      }
+    },
+    "ReactNode": {
+      "type": "unknown",
+      "name": "ReactNode"
+    },
+    "search_string_void": {
+      "type": "unknown",
+      "name": "object"
+    },
+    "SimpleGridProps": {
+      "properties": {
+        "cols": {
+          "type": "number"
+        },
+        "spacing": {
+          "$ref": "#/definitions/MantineSpacing"
+        }
+      }
+    },
+    "IShapeDiverExampleModels": {
+      "type": "unknown",
+      "name": "IShapeDiverExampleModels"
+    },
+    "Promise_string": {
+      "type": "unknown",
+      "name": "object"
+    },
+    "[key_string]_string": {
+      "type": "unknown",
+      "name": "object"
+    },
+    "type_string": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "title_string": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "SelectProps": {
+      "properties": {
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "label": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        }
+      }
+    },
+    "LoaderProps": {
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "size": {
+          "$ref": "#/definitions/MantineSizeToken"
+        }
+      }
+    },
+    "Partial_IconProps": {
+      "properties": {
+        "iconType": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "colorDisabled": {
+          "type": "string"
+        },
+        "size": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "stroke": {
+          "type": "string"
+        }
+      }
+    },
+    "StargateStatusColorProps": {
+      "properties": {
+        "primary": {
+          "type": "string",
+          "description": "Color for active/selected Stargate states (e.g. object selected).",
+          "default": "var(--mantine-primary-color-filled)"
+        },
+        "focused": {
+          "type": "string",
+          "description": "Color for interactive states awaiting user action (e.g. no selection yet).",
+          "default": "var(--mantine-color-orange-7)"
+        },
+        "dimmed": {
+          "type": "string",
+          "description": "Color for disabled, inactive, or incompatible Stargate states.",
+          "default": "var(--mantine-color-gray-2)"
+        }
+      }
+    },
+    "HTMLCanvasElement": {
+      "type": "unknown",
+      "name": "HTMLCanvasElement"
+    },
+    "BUSY_MODE_DISPLAY": {
+      "type": "unknown",
+      "name": "BUSY_MODE_DISPLAY"
+    },
+    "SPINNER_POSITIONING": {
+      "type": "unknown",
+      "name": "SPINNER_POSITIONING"
+    },
+    "ViewportBranding": {
+      "properties": {
+        "logo": {
+          "type": "string",
+          "description": "Optional URL to a logo to be displayed while the viewport is hidden.\nA default logo will be used if none is provided.\nSupply null to display no logo at all."
+        },
+        "backgroundColor": {
+          "type": "string",
+          "description": "Optional background color to show while the viewport is hidden, can include alpha channel.\nA default color will be used if none is provided."
+        },
+        "busyModeSpinner": {
+          "type": "string",
+          "description": "Optional URL to a logo to be displayed while the viewport is in busy mode.\nA default logo will be used if none is provided.\nThe positioning of the spinner can be influenced via SPINNER_POSITIONING."
+        },
+        "busyModeDisplay": {
+          "$ref": "#/definitions/BUSY_MODE_DISPLAY",
+          "description": "The mode used to indicate that the viewport is busy. (default: BUSY_MODE_DISPLAY.SPINNER)\nWhenever the busy mode gets toggled, the events EVENTTYPE_VIEWPORT.BUSY_MODE_ON and EVENTTYPE_VIEWPORT.BUSY_MODE_OFF will be emitted."
+        },
+        "spinnerPositioning": {
+          "$ref": "#/definitions/SPINNER_POSITIONING",
+          "description": "Where the spinner that is specified by BUSY_MODE_DISPLAY is displayed on the screen. (default: BUSY_MODE_DISPLAY.BOTTOM_RIGHT)"
+        }
+      }
+    },
+    "SESSION_SETTINGS_MODE": {
+      "type": "unknown",
+      "name": "SESSION_SETTINGS_MODE"
+    },
+    "VISIBILITY_MODE": {
+      "type": "unknown",
+      "name": "VISIBILITY_MODE"
+    },
+    "[key_string]_FLAG_TYPE": {
+      "type": "unknown",
+      "name": "object"
+    },
+    "CSSProperties": {
+      "type": "unknown",
+      "name": "CSSProperties"
+    },
+    "MantineStyleProp": {
+      "type": "unknown",
+      "name": "MantineStyleProp"
+    },
+    "ViewportOverlayWrapperProps_and_Partial_OverlayStyleProps": {
+      "properties": {
+        "children": {
+          "type": "unknown",
+          "name": "ReactNode"
+        },
+        "position": {
+          "type": "unknown",
+          "name": "ResponsiveValueType<OverlayPositionType>"
+        },
+        "offset": {
+          "type": "string"
+        },
+        "offsetX": {
+          "type": "string"
+        },
+        "offsetY": {
+          "type": "string"
+        },
+        "className": {
+          "type": "string"
+        }
+      }
+    },
+    "DividerProps": {
+      "properties": {
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "TransitionProps": {
+      "properties": {
+        "transition": {
+          "type": "unknown",
+          "name": "MantineTransitionName"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "timingFunction": {
+          "type": "string"
+        },
+        "keepMounted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "MantineActionIconProps_and_Unknown": {
+      "properties": {
+        "variant": {
+          "type": "string"
+        },
+        "size": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/MantineSizeToken"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
+        },
+        "loaderProps": {
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "color_string_colorDisabled_string": {
+      "properties": {
+        "color": {
+          "type": "string",
+          "description": ""
+        },
+        "colorDisabled": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "MenuProps": {
+      "properties": {
+        "shadow": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/definitions/MantineFloatingPosition"
+        }
+      }
+    },
+    "MenuDropdownProps": {
+      "properties": {
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        }
+      }
+    },
+    "base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined": {
+      "properties": {
+        "base": {
+          "$ref": "#/definitions/T",
+          "description": ""
+        },
+        "xs": {
+          "$ref": "#/definitions/T",
+          "description": ""
+        },
+        "sm": {
+          "$ref": "#/definitions/T",
+          "description": ""
+        },
+        "md": {
+          "$ref": "#/definitions/T",
+          "description": ""
+        },
+        "lg": {
+          "$ref": "#/definitions/T",
+          "description": ""
+        },
+        "xl": {
+          "$ref": "#/definitions/T",
+          "description": ""
+        }
+      }
+    },
+    "T": {
+      "type": "unknown",
+      "name": "T"
+    },
+    "base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined"
+        },
+        {
+          "$ref": "#/definitions/T"
+        }
+      ]
+    },
+    "number_or_boolean": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    },
+    "AppShellResponsiveSize": {
+      "type": "unknown",
+      "name": "AppShellResponsiveSize"
+    },
+    "AppShellSize": {
+      "type": "unknown",
+      "name": "AppShellSize"
+    },
+    "AppShellResponsiveSize_or_AppShellSize": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/AppShellResponsiveSize"
+        },
+        {
+          "$ref": "#/definitions/AppShellSize"
+        }
+      ]
+    },
+    "MantineBreakpoint": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "ThemeOverridePerContainerType": {
+      "type": "unknown",
+      "name": "ThemeOverridePerContainerType"
+    },
+    "Pick_Unknown": {
+      "type": "unknown",
+      "name": "Pick<ComponentProp<\"a\"> & Omit<Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLA…"
+    },
+    "Unknown_and_Pick_Unknown": {
+      "type": "unknown",
+      "name": "Unknown_and_Pick_Unknown"
+    },
+    "HTMLAttributeAnchorTarget": {
+      "type": "unknown",
+      "name": "HTMLAttributeAnchorTarget"
+    },
+    "MantineThemeOverride": {
+      "properties": {
+        "focusRing": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "always",
+            "never"
+          ]
+        },
+        "scale": {
+          "type": "number"
+        },
+        "fontSmoothing": {
+          "type": "boolean"
+        },
+        "white": {
+          "type": "string"
+        },
+        "black": {
+          "type": "string"
+        },
+        "primaryColor": {
+          "type": "string"
+        },
+        "autoContrast": {
+          "type": "boolean"
+        },
+        "luminanceThreshold": {
+          "type": "number"
+        },
+        "fontFamily": {
+          "type": "string"
+        },
+        "fontFamilyMonospace": {
+          "type": "string"
+        },
+        "defaultRadius": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "cursorType": {
+          "type": "string",
+          "enum": [
+            "default",
+            "pointer"
+          ]
+        },
+        "respectReducedMotion": {
+          "type": "boolean"
+        },
+        "activeClassName": {
+          "type": "string"
+        },
+        "focusClassName": {
+          "type": "string"
+        },
+        "colors": {
+          "properties": {
+            "[string]": {
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "primaryShade": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "properties": {
+                "light": {
+                  "type": "number"
+                },
+                "dark": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "fontSizes": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "lineHeights": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "radius": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "spacing": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "breakpoints": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "shadows": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "headings": {
+          "properties": {
+            "[string]": {
+              "type": "unknown",
+              "name": "unknown"
+            }
+          }
+        },
+        "defaultGradient": {
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            },
+            "deg": {
+              "type": "number"
+            }
+          }
+        },
+        "components": {
+          "properties": {
+            "[string]": {
+              "type": "unknown",
+              "name": "unknown"
+            }
+          }
+        },
+        "other": {
+          "properties": {
+            "[string]": {
+              "type": "unknown",
+              "name": "unknown"
+            }
+          }
+        }
+      }
+    },
+    "Pick_MantineGroupProps_and_Unknown": {
+      "properties": {
+        "justify": {
+          "type": "string",
+          "description": "Flex justify-content (Mantine default: `\"center\"`)"
+        }
+      }
+    },
+    "TitleProps": {
+      "properties": {
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        }
+      }
+    },
+    "h_number": {
+      "properties": {
+        "h": {
+          "type": "number",
+          "description": ""
+        }
+      }
+    },
+    "Pick_MantineImageProps": {
+      "properties": {
+        "radius": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "mah": {
+          "$ref": "#/definitions/MantineCssLength"
+        },
+        "maw": {
+          "$ref": "#/definitions/MantineCssLength"
+        }
+      }
+    },
+    "Partial_SelectComponentPropsExt_type_SavedStatesVisualization": {
+      "type": "unknown",
+      "name": "Partial<SelectComponentPropsExt> & { type: SavedStatesVisualization; }"
+    },
+    "FlexProps": {
+      "properties": {
+        "justify": {
+          "type": "string"
+        },
+        "align": {
+          "type": "string"
+        },
+        "gap": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "wrap": {
+          "$ref": "#/definitions/MantineFlexWrap"
+        }
+      }
+    },
+    "BoxProps": {
+      "properties": {
+        "p": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "px": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "py": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "pb": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "pt": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "m": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "ml": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "mt": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        }
+      }
+    },
+    "TableProps": {
+      "properties": {
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
+        }
+      }
+    },
+    "TextInputProps": {
+      "properties": {
+        "size": {
+          "$ref": "#/definitions/MantineSizeToken"
+        }
+      }
+    },
+    "ViewportAcceptRejectButtonsIconStyleProps": {
+      "properties": {
+        "size": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "themeOverrides": {
+    "components": {
+      "ExportLabelComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "fontWeight",
+              "description": "Font weight for the export title text (Mantine `fw` prop).",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ExportButtonComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "buttonProps",
+              "description": "Mantine Button props for the main export action",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "downloadTooltipProps",
+              "description": "Tooltip wrapping the download button when applicable",
+              "type": {
+                "$ref": "#/definitions/TooltipProps"
+              }
+            },
+            {
+              "name": "downloadButtonProps",
+              "description": "Mantine Button props for the download control",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "buttonLabel",
+              "description": "When provided, hides the label header and uses this text as the button label.",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "OutputChunkLabelComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "fontWeight",
+              "description": "Font weight for chunk title (`fw` on label text).",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "OutputStargateComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "paperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "accordionProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionItemProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionControlProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionPanelProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            }
+          ]
+        }
+      },
+      "ParameterColorComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "colorFormat",
+              "description": "Color format for ShapeDiver ↔ Mantine conversion.",
+              "type": {
+                "$ref": "#/definitions/ColorFormatType"
+              },
+              "default": "rgba"
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterDraggingComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "draggingColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterGumballComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectionColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterRectangleTransformComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectionColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterSelectionComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectionColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "availableColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            },
+            {
+              "name": "hoverColor",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/InteractionEffect"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "MultiSelectCheckboxes": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "checkboxProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/CheckboxProps"
+              }
+            },
+            {
+              "name": "checkboxPropsSelectAll",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/CheckboxProps"
+              }
+            },
+            {
+              "name": "labelSelectAll",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterLabelComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "tooltipProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TooltipProps"
+              }
+            },
+            {
+              "name": "fontWeight",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterSelectComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "componentSettings",
+              "description": "Defines settings for select components per parameter name.",
+              "type": {
+                "$ref": "#/definitions/Record_string_ISelectComponentOverrides"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterSliderComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "sliderWidth",
+              "description": "Width of the slider track (`w` on Mantine `Slider`).",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              },
+              "default": "60%"
+            },
+            {
+              "name": "numberWidth",
+              "description": "Width of the numeric input beside the slider (`w` on Mantine `NumberInput`).",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              },
+              "default": "35%"
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterStargateComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "tooltipProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TooltipProps"
+              }
+            },
+            {
+              "name": "actionIconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ActionIconProps"
+              }
+            },
+            {
+              "name": "iconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "SelectCarouselComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "carouselProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/SelectCarouselStyleProps"
+              }
+            },
+            {
+              "name": "cardProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "imageProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ImageProps"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "descriptionProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "showLabel",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "SelectFullWidthCardsComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "cardProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "groupProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "imageProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ImageProps"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "descriptionProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "searchable",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "limit",
+              "description": "",
+              "type": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "bottomSection",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ReactNode"
+              }
+            },
+            {
+              "name": "topSection",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ReactNode"
+              }
+            },
+            {
+              "name": "useLocalSearch",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "onSearch",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/search_string_void"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "SelectGridComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "gridProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/SimpleGridProps"
+              }
+            },
+            {
+              "name": "cardProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "imageProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ImageProps"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "descriptionProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "showLabel",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "searchable",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "limit",
+              "description": "",
+              "type": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "height",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "bottomSection",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ReactNode"
+              }
+            },
+            {
+              "name": "topSection",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ReactNode"
+              }
+            },
+            {
+              "name": "onSearch",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/search_string_void"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "DefaultSession": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "example",
+              "description": "Name of example model",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "exampleModels",
+              "description": "Available example models",
+              "type": {
+                "$ref": "#/definitions/IShapeDiverExampleModels"
+              }
+            },
+            {
+              "name": "slug",
+              "description": "Either slug and platformUrl, or ticket and modelViewUrl must be set.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "platformUrl",
+              "description": "Either slug and platformUrl, or ticket and modelViewUrl must be set.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "acceptRejectMode",
+              "description": "Set to true to require confirmation of the user to accept or reject changed parameter values.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hideAttributeVisualization",
+              "description": "If the attribute visualization should be hidden by default.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hideJsonMenu",
+              "description": "If the JSON menu should be hidden by default.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hideSavedStates",
+              "description": "If the saved states menu should be hidden by default.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hideDesktopClients",
+              "description": "If the desktop clients should be hidden by default.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hideExports",
+              "description": "If the exports should be hidden by default.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "loadPlatformSettingsFromViewer",
+              "description": "In case we cannot connect to the platform, load settings from the viewer, if they were stored there. (default: undefined)",
+              "type": {
+                "type": "string",
+                "enum": [
+                  "iframe",
+                  "platform"
+                ]
+              }
+            },
+            {
+              "name": "modelStateId",
+              "description": "Optional model state id.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "refreshJwtToken",
+              "description": "Optional callback for refreshing the JWT token.",
+              "type": {
+                "$ref": "#/definitions/Promise_string"
+              }
+            },
+            {
+              "name": "instance",
+              "description": "Optional boolean to treat this sessions as an instance (default: false).",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "loadOnFirstUse",
+              "description": "If the session is an instance, optional property to delay loading of the instance until the first time it is used. (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "keepInStore",
+              "description": "If the session should be kept in the store after the first use (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "id",
+              "description": "The unique identifier of the session that was specified or automatically chosen on creation of the session.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "ticket",
+              "description": "The ticket for direct embedding of the model represented by the session. This identifies the model on the Geometry Backend. If no ticket was provided, a guid has to be provided instead.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "guid",
+              "description": "The geometry backend model id (guid). This identifies the model on the Geometry Backend. A jwtToken is needed for authentication. If no guid was provided, a ticket has to be provided instead.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "modelViewUrl",
+              "description": "The modelViewUrl of the https://help.shapediver.com/doc/Geometry-Backend.1863942173.html|ShapeDiver Geometry Backend hosting the model.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "jwtToken",
+              "description": "The JWT used for authorizing API calls to the Geometry Backend.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "waitForOutputs",
+              "description": "Option to wait for the outputs to be loaded, or return immediately after creation of the session. (default: true)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "allowOutputLoading",
+              "description": "Option to allow the outputs to be loaded, or to prevent them from being loaded. (default: true)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "ignoreUnknownParams",
+              "description": "Option to allow relaxed validation of parameter identifiers. When set to `true`, unrecognized parameters will be ignored rather than causing an error.  (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "loadOutputs",
+              "description": "Option to load the outputs, or not load them until the first call of ISession.customize. (default: true)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "loadSdtf",
+              "description": "Option to load the SDTF data. The data is not loaded by default as it can be quite large. (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "excludeViewports",
+              "description": "Option to exclude some viewports from the start. Can be accessed via ISession.excludeViewports.",
+              "type": {
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "initialParameterValues",
+              "description": "The initial set of parameter values to use. Map from parameter id to parameter value. The default value will be used for any parameter not specified.",
+              "type": {
+                "$ref": "#/definitions/[key_string]_string"
+              }
+            },
+            {
+              "name": "modelStateValidationMode",
+              "description": "The optional model state validation mode to use for the session. If not provided, the default validation mode of the Geometry SDK will be used.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "throwOnCustomizationError",
+              "description": "Option to throw an error if parts of a customization failed. (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "DesktopClientPanel": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "iconStatusProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ActionIconProps"
+              }
+            },
+            {
+              "name": "alertProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/title_string"
+              }
+            },
+            {
+              "name": "alertTextProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "paperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "groupTopProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "textProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "selectProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/SelectProps"
+              }
+            },
+            {
+              "name": "actionIconRefreshProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ActionIconProps"
+              }
+            },
+            {
+              "name": "iconRefreshProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "groupBottomProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "loaderProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/LoaderProps"
+              }
+            },
+            {
+              "name": "statusIconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/Partial_IconProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "StargateInput": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "buttonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "loadingButtonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "textProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "loaderProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/LoaderProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "StargateShared": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stargateColorProps",
+              "description": "Mantine color tokens for Stargate status UI (`mapStargateComponentStatusDefinition`).\r\nMerged into Stargate-related components via `useProps(\"StargateShared\", …)`.",
+              "type": {
+                "$ref": "#/definitions/StargateStatusColorProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ViewportComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "children",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ReactNode"
+              }
+            },
+            {
+              "name": "className",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "showStatistics",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "canvas",
+              "description": "The canvas element in which the viewport should be created, it is encourage to provide one. If none was provided, a canvas will be created.",
+              "type": {
+                "$ref": "#/definitions/HTMLCanvasElement"
+              }
+            },
+            {
+              "name": "id",
+              "description": "The unique identifier of the session that was specified or automatically chosen on creation of the viewport.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "branding",
+              "description": "The branding options of the viewport.",
+              "type": {
+                "$ref": "#/definitions/ViewportBranding"
+              }
+            },
+            {
+              "name": "sessionSettingsId",
+              "description": "The id of the session of which the settings should be used. Only works when sessionSettingsMode is set to SESSION_SETTINGS_MODE.SESSION.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "sessionSettingsMode",
+              "description": "The mode in which settings should be applied. (default: SESSION_SETTINGS_MODE.FIRST)",
+              "type": {
+                "$ref": "#/definitions/SESSION_SETTINGS_MODE"
+              }
+            },
+            {
+              "name": "visibility",
+              "description": "The initial visibility of the viewport. (default: VISIBILITY_MODE.SESSION)",
+              "type": {
+                "$ref": "#/definitions/VISIBILITY_MODE"
+              }
+            },
+            {
+              "name": "visibilitySessionIds",
+              "description": "The ids of the sessions that should be displayed in the viewport. This only is considered if the visibility is set to VISIBILITY_MODE.SESSIONS.\nIt's recommended that with this workflow, the sessionSettingsMode is set to SESSION_SETTINGS_MODE.SESSION and a sessionSettingsId is provided.",
+              "type": {
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "flags",
+              "description": "Optional flags that should be initially set on the viewport.\nThe key is the token that is used to identify the flag, and the value is the type of the flag.",
+              "type": {
+                "$ref": "#/definitions/[key_string]_FLAG_TYPE"
+              }
+            },
+            {
+              "name": "initialAutoAdjust",
+              "description": "If the viewport should automatically adjust the camera to fit the model on creation. (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ViewportBranding": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "dark",
+              "description": "Branding settings for dark scheme",
+              "type": {
+                "$ref": "#/definitions/ViewportBranding"
+              }
+            },
+            {
+              "name": "light",
+              "description": "Branding settings for light scheme",
+              "type": {
+                "$ref": "#/definitions/ViewportBranding"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ViewportIcons": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "style",
+              "description": "Style properties for the container",
+              "type": {
+                "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "fullscreenId",
+              "description": "ID of the fullscreen area",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "enableHistoryButtons",
+              "description": "enable/disable the \"parameter history\" buttons",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableModelStateButtons",
+              "description": "enable/disable the \"model state\" buttons",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableImportExportButtons",
+              "description": "enable/disable the \"import/export JSON file\" buttons",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableResetButton",
+              "description": "enable/disable the \"reset parameter values\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableArBtn",
+              "description": "enable/disable the \"AR\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableCamerasBtn",
+              "description": "enable/disable the \"cameras\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableFullscreenBtn",
+              "description": "enable/disable the \"fullscreen\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableFullscreenBtn3States",
+              "description": "enable/disable the \"fullscreen 3 states (normal | fullscreen with inputs | viewer only fullscreen)\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableZoomBtn",
+              "description": "enable/disable the \"zoom\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableHistoryMenuButton",
+              "description": "enable/disable the \"history menu\" button",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "color",
+              "description": "color of the icons",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "colorDisabled",
+              "description": "color of the icons when disabled",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "variant",
+              "description": "variant of the icons",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "variantDisabled",
+              "description": "variant of the icons when disabled",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "iconStyle",
+              "description": "style of the icons",
+              "type": {
+                "$ref": "#/definitions/MantineStyleProp"
+              }
+            },
+            {
+              "name": "size",
+              "description": "size of the icons",
+              "type": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "viewportOverlayProps",
+              "description": "viewport overlay props",
+              "type": {
+                "$ref": "#/definitions/ViewportOverlayWrapperProps_and_Partial_OverlayStyleProps"
+              }
+            },
+            {
+              "name": "paperProps",
+              "description": "paper props",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "dividerProps",
+              "description": "divider props",
+              "type": {
+                "$ref": "#/definitions/DividerProps"
+              }
+            },
+            {
+              "name": "transitionProps",
+              "description": "transition props",
+              "type": {
+                "$ref": "#/definitions/TransitionProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ViewportIconButton": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "actionIconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineActionIconProps_and_Unknown"
+              }
+            },
+            {
+              "name": "iconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "tooltipWrapperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TooltipProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ViewportIconButtonDropdowns": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "menuProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MenuProps"
+              }
+            },
+            {
+              "name": "menuDropdownProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MenuDropdownProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ViewportOverlayWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "position",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T"
+              }
+            },
+            {
+              "name": "offset",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "offsetX",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "offsetY",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "className",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "AppBuilderActionComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "actionIconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ActionIconProps"
+              }
+            },
+            {
+              "name": "fw",
+              "description": "",
+              "type": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "mt",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "ml",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "px",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "fz",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineResponsiveCssSize"
+              }
+            },
+            {
+              "name": "h",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineResponsiveCssSize"
+              }
+            },
+            {
+              "name": "variant",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "size",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSizeToken"
+              }
+            },
+            {
+              "name": "fullWidth",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "justify",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "disabled",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "style",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            }
+          ],
+          "category": "feature"
+        }
+      },
+      "CreateModelStateHook": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "parameterNamesToInclude",
+              "description": "Default allow-list of parameter `name` or `displayname` values saved to a model state.\r\nWhen omitted, all parameters pass the include filter (subject to exclude rules).",
+              "type": {
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "parameterNamesToExclude",
+              "description": "Default deny-list of parameter `name` or `displayname` values omitted from a model state.\r\nWhen omitted, no parameters are excluded by this filter.",
+              "type": {
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "parameterNamesToAlwaysExclude",
+              "description": "Parameter `name` or `displayname` values always omitted from a model state,\r\nregardless of include/exclude lists.",
+              "type": {
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default": "[]"
+            }
+          ],
+          "category": "feature"
+        }
+      },
+      "NotificationWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "successColor",
+              "description": "Optional color to use for success notifications.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "warningColor",
+              "description": "Optional color to use for warning notifications.",
+              "type": {
+                "type": "string"
+              },
+              "default": "yellow"
+            },
+            {
+              "name": "errorColor",
+              "description": "Optional color to use for error notifications.",
+              "type": {
+                "type": "string"
+              },
+              "default": "red"
+            },
+            {
+              "name": "autoClose",
+              "description": "Determines whether notification should be closed automatically,\r\nnumber is auto close timeout in ms.",
+              "type": {
+                "$ref": "#/definitions/number_or_boolean"
+              },
+              "default": "20000"
+            }
+          ],
+          "category": "feature"
+        }
+      },
+      "AppBuilderHorizontalContainer": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "w",
+              "description": "Group width (Mantine default: `\"100%\"`)",
+              "type": {
+                "$ref": "#/definitions/MantineCssLength"
+              }
+            },
+            {
+              "name": "h",
+              "description": "Group height (Mantine default: `\"100%\"`)",
+              "type": {
+                "$ref": "#/definitions/MantineCssLength"
+              }
+            },
+            {
+              "name": "justify",
+              "description": "Flex justify-content (Mantine default: `\"center\"`)",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "align",
+              "description": "Flex align-items",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "gap",
+              "description": "Gap between children (Mantine spacing)",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "wrap",
+              "description": "Flex wrap (Mantine default: `\"nowrap\"`)",
+              "type": {
+                "$ref": "#/definitions/MantineFlexWrap"
+              }
+            },
+            {
+              "name": "p",
+              "description": "Padding — Mantine spacing (Mantine default: `\"xs\"`)",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "pt",
+              "description": "Padding top",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "pb",
+              "description": "Padding bottom",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "mb",
+              "description": "Margin bottom (Mantine spacing)",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "style",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "styles",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineStylesApi"
+              }
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "AppBuilderTemplateSelector": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "template",
+              "description": "Layout template key to render",
+              "type": {
+                "type": "string",
+                "enum": [
+                  "grid",
+                  "appshell"
+                ]
+              },
+              "default": "appshell"
+            },
+            {
+              "name": "showContainerButtons",
+              "description": "Show UI buttons for toggling template containers (top/left/right/bottom)",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "AppBuilderVerticalContainer": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "p",
+              "description": "Stack padding",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              },
+              "default": "xs"
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "LoaderPage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "type",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "size",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSizeToken"
+              }
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "AppBuilderAppShellTemplatePage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "headerHeight",
+              "description": "Height of the header (responsive)",
+              "type": {
+                "$ref": "#/definitions/AppShellResponsiveSize_or_AppShellSize"
+              },
+              "default": "{base: \"4em\", md: \"4em\"}",
+              "example": "{base: \"4em\", md: \"4em\"}"
+            },
+            {
+              "name": "navbarBreakpoint",
+              "description": "Breakpoint below which to hide the navigation bar",
+              "type": {
+                "$ref": "#/definitions/MantineBreakpoint"
+              },
+              "default": "md"
+            },
+            {
+              "name": "navbarWidth",
+              "description": "Width of the navigation bar",
+              "type": {
+                "$ref": "#/definitions/AppShellResponsiveSize_or_AppShellSize"
+              },
+              "default": "{md: 250, lg: 300}",
+              "example": "{md: 250, lg: 300}"
+            },
+            {
+              "name": "columns",
+              "description": "Main area (viewport, bottom, and right container): Number of grid columns",
+              "type": {
+                "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T"
+              },
+              "default": "3",
+              "minimum": "1"
+            },
+            {
+              "name": "rows",
+              "description": "Main area (viewport, bottom, and right container): Number of grid rows",
+              "type": {
+                "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T"
+              },
+              "default": "3",
+              "minimum": "1"
+            },
+            {
+              "name": "rightColumns",
+              "description": "Main area (viewport, bottom, and right container): Number of columns for right container",
+              "type": {
+                "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T"
+              },
+              "default": "1",
+              "minimum": "1"
+            },
+            {
+              "name": "bottomRows",
+              "description": "Main area (viewport, bottom, and right container): Number of rows for bottom container",
+              "type": {
+                "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T"
+              },
+              "default": "1",
+              "minimum": "1"
+            },
+            {
+              "name": "bottomFullWidth",
+              "description": "Main area (viewport, bottom, and right container): Shall the bottom container use the full width?",
+              "type": {
+                "$ref": "#/definitions/base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined_or_T"
+              },
+              "default": "false"
+            },
+            {
+              "name": "navbarBorder",
+              "description": "Should the navbar have a border",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "headerBorder",
+              "description": "Should the header have a border",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "rightBorder",
+              "description": "Should the right container area have a border",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "keepBottomInGrid",
+              "description": "Should the bottom container be shown at the bottom of the grid even below the navbarBreakpoint?\r\nIf false, the bottom container is shown as part of the navigation bar area below the navbarBreakpoint.\r\nIn that case, the right container moves to the bottom of the grid layout in portrait mode.",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "AppBuilderContainerWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "containerThemeOverrides",
+              "description": "Theme overrides per container",
+              "type": {
+                "$ref": "#/definitions/ThemeOverridePerContainerType"
+              }
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "AppBuilderGridTemplatePage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "bgTop",
+              "description": "Top background color",
+              "type": {
+                "type": "string"
+              },
+              "default": "transparent"
+            },
+            {
+              "name": "bgLeft",
+              "description": "Left background color",
+              "type": {
+                "type": "string"
+              },
+              "default": "transparent"
+            },
+            {
+              "name": "bgRight",
+              "description": "Right background color",
+              "type": {
+                "type": "string"
+              },
+              "default": "transparent"
+            },
+            {
+              "name": "bgBottom",
+              "description": "Bottom background color",
+              "type": {
+                "type": "string"
+              },
+              "default": "transparent"
+            },
+            {
+              "name": "columns",
+              "description": "Number of grid columns",
+              "type": {
+                "type": "number"
+              },
+              "default": "4"
+            },
+            {
+              "name": "rows",
+              "description": "Number of grid rows",
+              "type": {
+                "type": "number"
+              },
+              "default": "4"
+            },
+            {
+              "name": "leftColumns",
+              "description": "Number of columns for left container",
+              "type": {
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "rightColumns",
+              "description": "Number of columns for right container",
+              "type": {
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "topRows",
+              "description": "Number of rows for top container",
+              "type": {
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "bottomRows",
+              "description": "Number of rows for bottom container",
+              "type": {
+                "type": "number"
+              },
+              "default": "1"
+            },
+            {
+              "name": "topFullWidth",
+              "description": "Shall the top container use the full width?",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "bottomFullWidth",
+              "description": "Shall the bottom container use the full width?",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "false"
+            }
+          ],
+          "category": "page"
+        }
+      },
+      "Hint": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "containerGroupProps",
+              "description": "Container group props",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "groupProps",
+              "description": "Group props",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "iconProps",
+              "description": "Icon props",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "textProps",
+              "description": "Text props",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "buttonProps",
+              "description": "Button props (anchor link); `component`/`target`/`rel` are runtime-only, not JSON theme",
+              "type": {
+                "$ref": "#/definitions/Unknown_and_Pick_Unknown"
+              }
+            }
+          ],
+          "category": "shared"
+        }
+      },
+      "Icon": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "iconType",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "color",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "colorDisabled",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "size",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "stroke",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "shared"
+        }
+      },
+      "MarkdownWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "anchorTarget",
+              "description": "Target for markdown links.",
+              "type": {
+                "$ref": "#/definitions/HTMLAttributeAnchorTarget"
+              },
+              "default": "_blank"
+            },
+            {
+              "name": "boldFontWeight",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "strongFontWeight",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "setHeadingFontSize",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "themeOverride",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineThemeOverride"
+              }
+            }
+          ],
+          "category": "shared"
+        }
+      },
+      "ModalBase": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "size",
+              "description": "Modal size",
+              "type": {
+                "$ref": "#/definitions/MantineSizeToken"
+              }
+            },
+            {
+              "name": "centered",
+              "description": "Center modal vertically",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "name": "closeButtonProps",
+              "description": "Close button props for styling",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "stackGap",
+              "description": "Gap for the main stack container",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "groupGap",
+              "description": "Gap for button groups (both additional and action buttons)",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "buttonContainerProps",
+              "description": "Props for the button container group",
+              "type": {
+                "$ref": "#/definitions/Pick_MantineGroupProps_and_Unknown"
+              }
+            },
+            {
+              "name": "cancelButtonProps",
+              "description": "Props for the cancel button",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "confirmButtonProps",
+              "description": "Props for the confirm button",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            }
+          ],
+          "category": "shared"
+        }
+      },
+      "TooltipWrapper": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "floating",
+              "description": "Use Mantine `Tooltip.Floating` (follows the pointer) instead of the standard `Tooltip`.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "withArrow",
+              "description": "Show tooltip arrow (standard Mantine Tooltip) (Mantine default: `true`)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "themeOverride",
+              "description": "Nested Mantine theme applied to tooltip label content.",
+              "type": {
+                "$ref": "#/definitions/MantineThemeOverride"
+              }
+            },
+            {
+              "name": "label",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "position",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineFloatingPosition"
+              }
+            },
+            {
+              "name": "withinPortal",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "color",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "radius",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "multiline",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "zIndex",
+              "description": "",
+              "type": {
+                "type": "number"
+              }
+            }
+          ],
+          "category": "shared"
+        }
+      },
+      "AppBuilderAgentWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "withBorder",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "shadow",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "p",
+              "description": "Padding on all sides (Mantine spacing)",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "px",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "py",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "style",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "styles",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineStylesApi"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderAccordionUiWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "accordionProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionPaperProps",
+              "description": "Props for the Paper component wrapping each accordion.",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "accordionItemProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionControlProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionPanelProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderAccordionWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "showAcceptRejectButtons",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderAreaChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TitleProps"
+              }
+            },
+            {
+              "name": "areaChartProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/h_number"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderAttributeVisualizationWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "widgetGroupProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TitleProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderBarChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TitleProps"
+              }
+            },
+            {
+              "name": "barChartProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/h_number"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderControlsWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "elementPaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "outputPaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderFormWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "formPaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "elementPaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "exportPaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "submitButtonPaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "messagePaperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "submitButtonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "resetButtonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ActionIconProps"
+              }
+            },
+            {
+              "name": "resetMessage",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderImage": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "fit",
+              "description": "Object-fit behavior (see MDN `object-fit`). `scale-down` never upscales past intrinsic size.",
+              "type": {
+                "type": "string",
+                "enum": [
+                  "contain",
+                  "scale-down"
+                ]
+              },
+              "default": "contain"
+            },
+            {
+              "name": "withBorder",
+              "description": "When true, applies bordered image styling.",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "isSvg",
+              "description": "When true, render via `Svg` instead of Mantine `Image`.",
+              "type": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderLineChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TitleProps"
+              }
+            },
+            {
+              "name": "lineChartProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/h_number"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderRoundChartWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "widgetProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "titleProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TitleProps"
+              }
+            },
+            {
+              "name": "pieChartProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/h_number"
+              }
+            },
+            {
+              "name": "donutChartProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/h_number"
+              }
+            },
+            {
+              "name": "badgeProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TitleProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderSavedStatesWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "selectProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/Partial_SelectComponentPropsExt_type_SavedStatesVisualization"
+              }
+            },
+            {
+              "name": "paperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "loaderFlexProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/FlexProps"
+              }
+            },
+            {
+              "name": "loaderProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/LoaderProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderStackUiWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "stackPaperProps",
+              "description": "Props for the Paper component wrapping the stack.",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "buttonBackProps",
+              "description": "Props for the back button.",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "iconBackProps",
+              "description": "Props for the icon on the left of the back button.",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "contentStackProps",
+              "description": "Props for the content Stack.",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "stackContentProps",
+              "description": "Props for the content Box.",
+              "type": {
+                "$ref": "#/definitions/BoxProps"
+              }
+            },
+            {
+              "name": "stackProps",
+              "description": "Props for the Stack component containing buttons.",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "iconForwardProps",
+              "description": "Props for the icon on the right of the stack buttons.",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "itemTextProps",
+              "description": "Props for the text of the stack buttons.",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "buttonForwardProps",
+              "description": "Props for stack buttons.",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderTableWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "tableProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TableProps"
+              }
+            },
+            {
+              "name": "searchTextInputProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextInputProps"
+              }
+            },
+            {
+              "name": "searchBarProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/BoxProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "AppBuilderTextWidgetComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "withBorder",
+              "description": "",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "shadow",
+              "description": "",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "p",
+              "description": "Padding on all sides (Mantine spacing)",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "px",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "py",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineSpacing"
+              }
+            },
+            {
+              "name": "style",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "styles",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineStylesApi"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "ParametersAndExportsAccordionComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "defaultGroupName",
+              "description": "Name of group to use for parameters and exports which are not assigned to a group.\r\nLeave this empty to not display such parameters and exports inside of an accordion.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "avoidSingleComponentGroups",
+              "description": "Set this to true to avoid groups containing a single parameter or export component.\r\nIn case this is not set or true, parameters and exports of groups with a single\r\ncomponent will be displayed without using an accordion.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "mergeAccordions",
+              "description": "Merge accordions of subsequent groups into one.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "pbSlider",
+              "description": "Bottom padding of Paper component wrapping slider components.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "identifyGroupsById",
+              "description": "Set this to true to identify groups by id instead of name. If so,\r\nmultiple groups with the same name will be displayed as separate groups.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "accordionPaperProps",
+              "description": "Props for the Paper component wrapping each accordion.",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "elementPaperProps",
+              "description": "Props for the Paper component wrapping each element inside the accordion.",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "accordionProps",
+              "description": "Props for the Accordion component.",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionItemProps",
+              "description": "Props for the c.Item component.",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionControlProps",
+              "description": "Props for the Accordion.Control component.",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "accordionPanelProps",
+              "description": "Props for the Accordion.Panel component.",
+              "type": {
+                "$ref": "#/definitions/styles_MantineStylesApi"
+              }
+            },
+            {
+              "name": "wrapperStackProps",
+              "description": "Props for the Stack component wrapping everything.",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "elementStackProps",
+              "description": "Props for the Stack component wrapping the elements except the topSection.",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            },
+            {
+              "name": "panelStackProps",
+              "description": "Props for the Stack component wrapping the elements inside accordion panels.",
+              "type": {
+                "$ref": "#/definitions/StackProps"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
+      "ViewportAcceptRejectButtons": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "groupProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/GroupProps"
+              }
+            },
+            {
+              "name": "buttonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "acceptButtonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "rejectButtonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ButtonProps"
+              }
+            },
+            {
+              "name": "iconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/ViewportAcceptRejectButtonsIconStyleProps"
+              }
+            },
+            {
+              "name": "textProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
+              }
+            },
+            {
+              "name": "showButtons",
+              "description": "Whether to show the buttons or not.\r\nIf false, the buttons will never be rendered.\r\nIf true, the buttons will always be rendered.\r\nIf undefined, the buttons will be rendered if there are changes to accept or reject.",
+              "type": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      }
+    }
+  }
+}
