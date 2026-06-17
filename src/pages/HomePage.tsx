@@ -9,7 +9,6 @@ import {
 	Image,
 	Text,
 } from "@mantine/core";
-import React from "react";
 import classes from "~/pages/HomePage.module.css";
 
 const modelCards = [

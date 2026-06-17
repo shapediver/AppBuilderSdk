@@ -10,7 +10,7 @@ import "@mantine/notifications/styles.css";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import "AppBuilderBase.css";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import packagejson from "../package.json";
 
 // log the SDK version directly to the console

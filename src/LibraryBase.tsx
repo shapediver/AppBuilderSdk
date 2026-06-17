@@ -16,7 +16,7 @@ import "@mantine/notifications/styles.css";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import useLibraryTabConfig from "hooks/useLibraryTabConfig";
-import React, {useEffect, useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import classes from "~/LibraryBase.module.css";
 import packagejson from "../package.json";
 

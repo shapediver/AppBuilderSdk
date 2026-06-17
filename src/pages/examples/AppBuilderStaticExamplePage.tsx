@@ -24,7 +24,7 @@ import {
 	PARAMETER_TYPE,
 } from "@shapediver/viewer.session";
 import {MaterialEngine} from "@shapediver/viewer.viewport";
-import React, {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 interface Props extends IAppBuilderSettingsSession {
 	/** Name of example model */
