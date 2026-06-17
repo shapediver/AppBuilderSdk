@@ -39,7 +39,10 @@ function jsDocSummary(node: ts.Node): string | undefined {
 			return comment.trim();
 		}
 		if (Array.isArray(comment)) {
-			const text = comment.map((part) => part.text).join("").trim();
+			const text = comment
+				.map((part) => part.text)
+				.join("")
+				.trim();
 			if (text) return text;
 		}
 	}
@@ -54,7 +57,12 @@ function jsDocDefault(node: ts.Node): string | undefined {
 			return comment.trim();
 		}
 		if (Array.isArray(comment)) {
-			return comment.map((part) => part.text).join("").trim() || undefined;
+			return (
+				comment
+					.map((part) => part.text)
+					.join("")
+					.trim() || undefined
+			);
 		}
 	}
 	return undefined;
@@ -174,7 +182,9 @@ function schemaFromTypeNode(typeNode: ts.TypeNode | undefined): DocTypeSchema {
 			const keyLabel = typeNode.typeArguments[0]!.getText();
 			return {
 				properties: {
-					[`[${keyLabel}]`]: schemaFromTypeNode(typeNode.typeArguments[1]),
+					[`[${keyLabel}]`]: schemaFromTypeNode(
+						typeNode.typeArguments[1],
+					),
 				},
 			};
 		}
@@ -197,13 +207,19 @@ export function parseInterfaceFromSourceFile(
 	sourceFileRelative: string,
 	interfaceName: string,
 ): DocTypeDefinition | undefined {
-	const sourceFile = readSchemaInputSourceFile(projectRoot, sourceFileRelative);
+	const sourceFile = readSchemaInputSourceFile(
+		projectRoot,
+		sourceFileRelative,
+	);
 	if (!sourceFile) return undefined;
 
 	let iface: ts.InterfaceDeclaration | undefined;
 	const visit = (node: ts.Node) => {
 		if (iface) return;
-		if (ts.isInterfaceDeclaration(node) && node.name.text === interfaceName) {
+		if (
+			ts.isInterfaceDeclaration(node) &&
+			node.name.text === interfaceName
+		) {
 			iface = node;
 			return;
 		}
@@ -259,7 +275,10 @@ export function parseSchemaInputTypeDefinition(
 ): DocTypeDefinition | undefined {
 	const sourceFileRelative = MANTINE_SCHEMA_INPUT_TYPE_SOURCES[typeName];
 	if (!sourceFileRelative) return undefined;
-	const sourceFile = readSchemaInputSourceFile(projectRoot, sourceFileRelative);
+	const sourceFile = readSchemaInputSourceFile(
+		projectRoot,
+		sourceFileRelative,
+	);
 	if (!sourceFile) return undefined;
 
 	let typeAlias: ts.TypeAliasDeclaration | undefined;
@@ -317,7 +336,6 @@ export function parseSchemaInputInterface(
 	);
 }
 
-
 /** Maps `@mantine/core` `{Component}Props` to mantine-props mirror interface name. */
 export function mantineMirrorForCorePropsName(
 	corePropsName: string,
@@ -342,11 +360,17 @@ export function mantineCorePropsDocKeyForMirrorName(
 
 let mirrorPropertyFingerprintIndex: Map<string, string> | undefined;
 
-function mirrorInterfaceNameFromSchemaInputFile(fileName: string): string | undefined {
+function mirrorInterfaceNameFromSchemaInputFile(
+	fileName: string,
+): string | undefined {
 	const match = /^([a-z][A-Za-z0-9]*)\.schema-input\.ts$/.exec(fileName);
 	if (!match) return undefined;
 	const fileBase = match[1];
-	if (fileBase === "primitives" || fileBase === "spacing" || fileBase === "themeOverride") {
+	if (
+		fileBase === "primitives" ||
+		fileBase === "spacing" ||
+		fileBase === "themeOverride"
+	) {
 		return undefined;
 	}
 	return `Mantine${fileBase.charAt(0).toUpperCase()}${fileBase.slice(1)}Props`;
@@ -363,12 +387,14 @@ function buildMirrorPropertyFingerprintIndex(
 	if (!fs.existsSync(mantinePropsDir)) return index;
 
 	for (const fileName of fs.readdirSync(mantinePropsDir)) {
-		const mirrorInterfaceName = mirrorInterfaceNameFromSchemaInputFile(fileName);
+		const mirrorInterfaceName =
+			mirrorInterfaceNameFromSchemaInputFile(fileName);
 		if (!mirrorInterfaceName) continue;
 		const docKey = mantineCorePropsDocKeyForMirrorName(mirrorInterfaceName);
 		if (!docKey) continue;
 		const mirror = resolveMantineCorePropsMirror(projectRoot, docKey);
-		if (!mirror || !("properties" in mirror) || !mirror.properties) continue;
+		if (!mirror || !("properties" in mirror) || !mirror.properties)
+			continue;
 		const fingerprint = Object.keys(mirror.properties).sort().join(",");
 		if (fingerprint) index.set(fingerprint, docKey);
 	}
@@ -428,8 +454,7 @@ export function mantineMirrorSchemaInputRelativePath(
 ): string | undefined {
 	const match = /^Mantine([A-Z][A-Za-z]*)Props$/.exec(mirrorInterfaceName);
 	if (!match) return undefined;
-	const fileBase =
-		match[1].charAt(0).toLowerCase() + match[1].slice(1);
+	const fileBase = match[1].charAt(0).toLowerCase() + match[1].slice(1);
 	return `src/shared/shared/mantine-props/${fileBase}.schema-input.ts`;
 }
 

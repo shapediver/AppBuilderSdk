@@ -127,14 +127,16 @@ export default async function globalSetup() {
 				`[global-setup] Aborting: branch '${TEST_BRANCH}' has commits that would be ` +
 					`lost by resetting it to the current HEAD:\n\n${diverged}\n\n` +
 					`Merge, push, or delete '${TEST_BRANCH}' before running tests, ` +
-					`or set SKIP_DEPLOY=1 to skip the deploy step entirely.`,
+					"or set SKIP_DEPLOY=1 to skip the deploy step entirely.",
 			);
 		}
 	}
 
 	try {
 		// Create or force-reset the testing branch to the current commit
-		execFileSync("git", ["checkout", "-B", TEST_BRANCH], {stdio: "inherit"});
+		execFileSync("git", ["checkout", "-B", TEST_BRANCH], {
+			stdio: "inherit",
+		});
 
 		// Install dependencies so the build uses the correct package versions
 		console.log("[global-setup] Installing dependencies...");

@@ -12,13 +12,13 @@ import {
 	type DocFlatDocument,
 } from "./typeDefinitions.ts";
 
-export type {DocFlatDocument, DocTypeSchema, DefinitionsContext};
 export {
 	createDefinitionsContext,
 	postProcessDefinitions,
 	postProcessFlatEntries,
 	wrapDocFlatEntries,
 };
+export type {DefinitionsContext, DocFlatDocument, DocTypeSchema};
 
 /**
  * @typedef {Object} DocProperty
@@ -79,7 +79,7 @@ function setAtPath(obj, dotPath, value) {
 		if (!next || typeof next !== "object") {
 			current[key] = {};
 		}
-		current = /** @type {Record<string, unknown>} */ (current[key]);
+		current = /** @type {Record<string, unknown>} */ current[key];
 	}
 	const lastKey = keys[keys.length - 1];
 	if (isUnsafeKey(lastKey)) {
@@ -188,7 +188,9 @@ export function detectMirroredMantinePropsDocKey(type, depth = 0) {
 	if (kind === "intersection") {
 		const members = type.types ?? [];
 		const mirrorKeys = members
-			.map((member) => detectMirroredMantinePropsDocKey(member, depth + 1))
+			.map((member) =>
+				detectMirroredMantinePropsDocKey(member, depth + 1),
+			)
 			.filter(Boolean);
 		const hasInlineMembers = members.some(
 			(member) =>
@@ -249,12 +251,7 @@ export function collectDocFlatProperties(
 	definitionsContext,
 ) {
 	const mapChild = (child) =>
-		mapReflectionChild(
-			child,
-			getText,
-			processTagValue,
-			definitionsContext,
-		);
+		mapReflectionChild(child, getText, processTagValue, definitionsContext);
 
 	if (reflection.children?.length) {
 		return reflection.children.map(mapChild);
@@ -328,11 +325,7 @@ export function collectDocFlatProperties(
 				return;
 			}
 			const resolved = definitionsContext.resolveType(type);
-			if (
-				resolved &&
-				"properties" in resolved &&
-				resolved.properties
-			) {
+			if (resolved && "properties" in resolved && resolved.properties) {
 				for (const [propName, propSchema] of Object.entries(
 					resolved.properties,
 				)) {

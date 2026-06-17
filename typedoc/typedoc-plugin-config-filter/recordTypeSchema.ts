@@ -8,14 +8,7 @@ export const MANTINE_RESPONSIVE_CSS_SIZE_REF: DocTypeSchema = {
 	$ref: "#/definitions/MantineResponsiveCssSize",
 };
 
-const BREAKPOINT_SIZE_KEYS = new Set([
-	"base",
-	"xs",
-	"sm",
-	"md",
-	"lg",
-	"xl",
-]);
+const BREAKPOINT_SIZE_KEYS = new Set(["base", "xs", "sm", "md", "lg", "xl"]);
 
 type TypeArgNode = {
 	name?: string;
@@ -29,7 +22,9 @@ export function typeArgumentLabelForDefinition(arg: TypeArgNode): string {
 	if (typeof arg.name === "string" && arg.name.length) return arg.name;
 	if (arg.type === "union" && Array.isArray(arg.types)) {
 		return arg.types
-			.map((member) => typeArgumentLabelForDefinition(member as TypeArgNode))
+			.map((member) =>
+				typeArgumentLabelForDefinition(member as TypeArgNode),
+			)
 			.join("_or_");
 	}
 	return "Unknown";
@@ -83,7 +78,9 @@ export function isBreakpointSizeObjectSchema(schema: DocTypeSchema): boolean {
 }
 
 /** Detect inline unions equivalent to `MantineResponsiveCssSize`. */
-export function matchesMantineResponsiveCssSize(schema: DocTypeSchema): boolean {
+export function matchesMantineResponsiveCssSize(
+	schema: DocTypeSchema,
+): boolean {
 	if (!("oneOf" in schema) || !schema.oneOf?.length) return false;
 	const hasString = schema.oneOf.some((member) => member.type === "string");
 	const hasNumber = schema.oneOf.some((member) => member.type === "number");

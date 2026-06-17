@@ -22,7 +22,8 @@ describe("mantine-props mirror resolution", () => {
 		const resolved = resolver.tryResolveLocalTypeName("MantineGroupProps");
 		expect(resolved).toBeDefined();
 		expect(resolved).toHaveProperty("properties");
-		const props = (resolved as {properties: Record<string, unknown>}).properties;
+		const props = (resolved as {properties: Record<string, unknown>})
+			.properties;
 		expect(props).toHaveProperty("w");
 		expect(props).toHaveProperty("justify");
 	});
@@ -41,7 +42,8 @@ describe("mantine-props mirror resolution", () => {
 		});
 		expect(resolved).toBeDefined();
 		expect(resolved).toHaveProperty("properties");
-		const props = (resolved as {properties: Record<string, unknown>}).properties;
+		const props = (resolved as {properties: Record<string, unknown>})
+			.properties;
 		expect(Object.keys(props)).toEqual(["p"]);
 	});
 });
@@ -55,10 +57,14 @@ describe("normalizeUnknownTypeName", () => {
 			"ReactNode",
 		);
 		expect(
-			normalizeUnknownTypeName("IterableIterator<ReactNode> __@iterator@"),
+			normalizeUnknownTypeName(
+				"IterableIterator<ReactNode> __@iterator@",
+			),
 		).toBe("ReactNode");
 		expect(
-			normalizeUnknownTypeName("Partial<Record<`--mantine-color-red`, string>>"),
+			normalizeUnknownTypeName(
+				"Partial<Record<`--mantine-color-red`, string>>",
+			),
 		).toBe("ResponsiveCSSVariables");
 		expect(
 			normalizeUnknownTypeName(
@@ -134,8 +140,9 @@ describe("mergeMirrorDefinitionOverlay", () => {
 				},
 			},
 		);
-		const props = (merged as {properties: Record<string, {description?: string}>})
-			.properties;
+		const props = (
+			merged as {properties: Record<string, {description?: string}>}
+		).properties;
 		expect(props.pt?.description).toBe("Padding top");
 		expect(props.pb?.description).toBe("Padding bottom from Mantine");
 	});
@@ -146,7 +153,12 @@ describe("compactReactNodeSchema", () => {
 		expect(
 			isReactElementLikeSchema({
 				properties: {
-					type: {oneOf: [{type: "string"}, {type: "unknown", name: "ReactNode"}]},
+					type: {
+						oneOf: [
+							{type: "string"},
+							{type: "unknown", name: "ReactNode"},
+						],
+					},
 					props: {type: "unknown", name: "any"},
 					key: {type: "string"},
 					children: {type: "unknown", name: "ReactNode"},
@@ -203,12 +215,12 @@ describe("compactReactNodeSchema", () => {
 
 describe("isDomEventHandlerTypeName", () => {
 	it("matches SVG event handler utility names", () => {
-		expect(isDomEventHandlerTypeName("ClipboardEventHandler_SVGSVGElement")).toBe(
-			true,
-		);
-		expect(isDomEventHandlerTypeName("MouseEventHandler<SVGSVGElement>")).toBe(
-			true,
-		);
+		expect(
+			isDomEventHandlerTypeName("ClipboardEventHandler_SVGSVGElement"),
+		).toBe(true);
+		expect(
+			isDomEventHandlerTypeName("MouseEventHandler<SVGSVGElement>"),
+		).toBe(true);
 		expect(isDomEventHandlerTypeName("ButtonProps")).toBe(false);
 	});
 });
@@ -252,7 +264,8 @@ describe("shouldStubMantineExpandedProps", () => {
 	it("stubs @mantine/core Props above lower thresholds", () => {
 		const target = {
 			packageName: "@mantine/core",
-			fileName: "node_modules/@mantine/core/lib/components/Button/Button.d.ts",
+			fileName:
+				"node_modules/@mantine/core/lib/components/Button/Button.d.ts",
 		};
 		expect(shouldStubMantineExpandedProps("ButtonProps", 60, target)).toBe(
 			true,
@@ -260,9 +273,9 @@ describe("shouldStubMantineExpandedProps", () => {
 		expect(shouldStubMantineExpandedProps("ButtonProps", 40, target)).toBe(
 			false,
 		);
-		expect(shouldStubMantineExpandedProps("MantineGradient", 90, target)).toBe(
-			true,
-		);
+		expect(
+			shouldStubMantineExpandedProps("MantineGradient", 90, target),
+		).toBe(true);
 	});
 });
 
@@ -348,7 +361,8 @@ describe("createTsTypeResolver", () => {
 		});
 
 		expect(expanded).toHaveProperty("properties");
-		const props = (expanded as {properties: Record<string, unknown>}).properties;
+		const props = (expanded as {properties: Record<string, unknown>})
+			.properties;
 		expect(Object.keys(props).sort()).toEqual(["fit", "h"]);
 		expect(props).not.toHaveProperty("radius");
 		expect(props).not.toHaveProperty("maw");
@@ -388,7 +402,8 @@ describe("createTsTypeResolver", () => {
 		});
 
 		expect(expanded).toHaveProperty("properties");
-		const props = (expanded as {properties: Record<string, unknown>}).properties;
+		const props = (expanded as {properties: Record<string, unknown>})
+			.properties;
 		expect(props).toHaveProperty("fit");
 		expect(props).toHaveProperty("fallbackSrc");
 		expect(props).toHaveProperty("h");
@@ -407,16 +422,14 @@ describe("createTsTypeResolver", () => {
 			name: "MantineStyleProps",
 			_target: {
 				packageName: "@mantine/core",
-				packagePath:
-					"lib/core/Box/style-props/style-props.types.d.ts",
+				packagePath: "lib/core/Box/style-props/style-props.types.d.ts",
 				qualifiedName: "MantineStyleProps",
 			},
 		});
 
 		expect(expanded).toHaveProperty("properties");
-		const fz = (
-			expanded as {properties: Record<string, {$ref?: string}>}
-		).properties.fz;
+		const fz = (expanded as {properties: Record<string, {$ref?: string}>})
+			.properties.fz;
 		expect(fz).toEqual(
 			expect.objectContaining({
 				$ref: "#/definitions/MantineResponsiveCssSize",
@@ -473,7 +486,8 @@ describe("createTsTypeResolver", () => {
 		});
 
 		expect(expanded).toHaveProperty("properties");
-		const props = (expanded as {properties: Record<string, unknown>}).properties;
+		const props = (expanded as {properties: Record<string, unknown>})
+			.properties;
 		expect(props).toHaveProperty("fw");
 		expect(props).toHaveProperty("mt");
 		expect(props).toHaveProperty("variant");
@@ -497,17 +511,14 @@ describe("createTsTypeResolver", () => {
 				{
 					type: "reference",
 					name: "Partial",
-					typeArguments: [
-						{type: "reference", name: "IconProps"},
-					],
+					typeArguments: [{type: "reference", name: "IconProps"}],
 				},
 			],
 		});
 
 		expect(expanded).toHaveProperty("properties");
-		const props = (
-			expanded as {properties: Record<string, unknown>}
-		).properties;
+		const props = (expanded as {properties: Record<string, unknown>})
+			.properties;
 		expect(props.color).toBeDefined();
 		expect(props.colorDisabled).toBeDefined();
 		expect(props.iconType).toBeDefined();
