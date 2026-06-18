@@ -1,6 +1,5 @@
 import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
 import "instruments/sentry";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import {PlausibleTracker} from "~/instruments/plausible";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";

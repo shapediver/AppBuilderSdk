@@ -3,10 +3,8 @@ import * as path from "path";
 import ts from "typescript";
 import {
 	isLocalTypesSourcePath,
-	isSchemaInputRelativePath,
 	mantineMirrorSchemaInputRelativePath,
 	parseInterfaceFromSourceFile,
-	parseSchemaInputInterface,
 	resolveDocRefForTypeName,
 	resolveMantineCorePropsMirror,
 } from "./mantineMirrorParser.ts";
@@ -40,14 +38,7 @@ const MAX_CACHED_PROGRAMS = 6;
 /** Mantine types that must stay expandable (responsive/style props). */
 const MANTINE_TS_EXPAND_ALLOWLIST = new Set(["MantineStyleProps"]);
 
-const MANTINE_BREAKPOINT_KEYS = new Set([
-	"xs",
-	"sm",
-	"md",
-	"lg",
-	"xl",
-	"base",
-]);
+const MANTINE_BREAKPOINT_KEYS = new Set(["xs", "sm", "md", "lg", "xl", "base"]);
 
 function stringLiteralKeysFromType(type: ts.Type): string[] {
 	if (type.flags & ts.TypeFlags.StringLiteral) {
@@ -149,8 +140,7 @@ function schemaHasStringEnum(schema: DocTypeSchema): boolean {
 	return false;
 }
 
-const MANTINE_THEME_DOC_LINK =
-	"https://mantine.dev/theming/theme-object/";
+const MANTINE_THEME_DOC_LINK = "https://mantine.dev/theming/theme-object/";
 
 const TYPE_DENYLIST_DOC_LINKS: Record<string, string> = {
 	MantineTheme: MANTINE_THEME_DOC_LINK,
@@ -175,9 +165,7 @@ export function isReactElementLikeSchema(schema: DocTypeSchema): boolean {
 	if (!("properties" in schema) || !schema.properties) return false;
 	const keys = Object.keys(schema.properties);
 	return (
-		keys.includes("type") &&
-		keys.includes("props") &&
-		keys.includes("key")
+		keys.includes("type") && keys.includes("props") && keys.includes("key")
 	);
 }
 
@@ -313,9 +301,7 @@ function denylistedTypeSchema(typeName: string): DocTypeDefinition | undefined {
 function isIntrinsicPrimitiveTsType(type: ts.Type): boolean {
 	return !!(
 		type.flags &
-		(ts.TypeFlags.String |
-			ts.TypeFlags.Number |
-			ts.TypeFlags.Boolean)
+		(ts.TypeFlags.String | ts.TypeFlags.Number | ts.TypeFlags.Boolean)
 	);
 }
 
@@ -405,7 +391,9 @@ export function simplifySchema(
 		return schema;
 	}
 
-	const members = schema.oneOf.map((member) => simplifySchema(member, options));
+	const members = schema.oneOf.map((member) =>
+		simplifySchema(member, options),
+	);
 	const stringEnums: string[] = [];
 	const numberEnums: number[] = [];
 	const rest: DocTypeSchema[] = [];
@@ -420,8 +408,7 @@ export function simplifySchema(
 			continue;
 		}
 		const quotedUnknown =
-			member.type === "unknown" &&
-			/^"([^"]+)"$/.test(member.name);
+			member.type === "unknown" && /^"([^"]+)"$/.test(member.name);
 		if (quotedUnknown) {
 			stringEnums.push(member.name.slice(1, -1));
 			continue;
@@ -526,10 +513,7 @@ export function mergeMirrorDefinitionOverlay(
 	}
 	const builtProps =
 		"properties" in built && built.properties ? built.properties : {};
-	const properties: Record<
-		string,
-		DocTypeSchema & MirrorPropertyMeta
-	> = {};
+	const properties: Record<string, DocTypeSchema & MirrorPropertyMeta> = {};
 	const mirrorOptions: SchemaSimplifyOptions = {preserveMirrorFidelity: true};
 	for (const [key, mirrorProp] of Object.entries(fromMirror.properties)) {
 		const builtProp = builtProps[key] as
@@ -849,17 +833,24 @@ export function createTsTypeResolver(projectRoot: string) {
 				return comment.trim();
 			}
 			if (Array.isArray(comment)) {
-				const text = comment.map((part) => part.text).join("").trim();
+				const text = comment
+					.map((part) => part.text)
+					.join("")
+					.trim();
 				if (text) return text;
 			}
 		}
-		const fromSymbol = ts.displayPartsToString(
-			member.symbol?.getDocumentationComment(checker) ?? [],
-		).trim();
+		const fromSymbol = ts
+			.displayPartsToString(
+				member.symbol?.getDocumentationComment(checker) ?? [],
+			)
+			.trim();
 		return fromSymbol || undefined;
 	}
 
-	function jsDocDefaultForMember(member: ts.PropertySignature): string | undefined {
+	function jsDocDefaultForMember(
+		member: ts.PropertySignature,
+	): string | undefined {
 		for (const tag of ts.getJSDocCommentsAndTags(member)) {
 			if (!ts.isJSDocTag(tag) || tag.tagName.text !== "default") continue;
 			const comment = tag.comment;
@@ -867,7 +858,12 @@ export function createTsTypeResolver(projectRoot: string) {
 				return comment.trim();
 			}
 			if (Array.isArray(comment)) {
-				return comment.map((part) => part.text).join("").trim() || undefined;
+				return (
+					comment
+						.map((part) => part.text)
+						.join("")
+						.trim() || undefined
+				);
 			}
 		}
 		return undefined;
@@ -876,7 +872,10 @@ export function createTsTypeResolver(projectRoot: string) {
 	function propertiesFromDeclarationMembers(
 		checker: ts.TypeChecker,
 		node: ts.InterfaceDeclaration | ts.TypeLiteralNode,
-	): Record<string, DocTypeSchema & {description?: string; default?: string}> {
+	): Record<
+		string,
+		DocTypeSchema & {description?: string; default?: string}
+	> {
 		const props: Record<
 			string,
 			DocTypeSchema & {description?: string; default?: string}
@@ -965,7 +964,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		return props;
 	}
 
-	function resolveDeclarationPath(target: NonNullable<TypeDocTypeNode["_target"]>): string | undefined {
+	function resolveDeclarationPath(
+		target: NonNullable<TypeDocTypeNode["_target"]>,
+	): string | undefined {
 		if (target.packageName && target.packagePath) {
 			const pkgRoot = path.join(
 				projectRoot,
@@ -1024,7 +1025,6 @@ export function createTsTypeResolver(projectRoot: string) {
 		if (!node) return undefined;
 		return {checker, node};
 	}
-
 
 	function applyMirrorPickOmit(
 		fromMirror: DocTypeDefinition,
@@ -1172,7 +1172,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		return deepSimplifySchema({properties});
 	}
 
-	function collectLiteralKeys(typeNode: TypeDocTypeNode | undefined): string[] {
+	function collectLiteralKeys(
+		typeNode: TypeDocTypeNode | undefined,
+	): string[] {
 		if (!typeNode) return [];
 
 		const kind = typeNode.type;
@@ -1196,8 +1198,8 @@ export function createTsTypeResolver(projectRoot: string) {
 			return compactISelectComponentOverridesValueSchema();
 		}
 		if (valueRef.type === "union" && valueRef.types?.length) {
-			const members = (valueRef.types as TypeDocTypeNode[]).map((member) =>
-				valueSchemaFromTypeDocNode(member),
+			const members = (valueRef.types as TypeDocTypeNode[]).map(
+				(member) => valueSchemaFromTypeDocNode(member),
 			);
 			if (
 				members.length === 2 &&
@@ -1240,17 +1242,13 @@ export function createTsTypeResolver(projectRoot: string) {
 	function expandUtilityReference(
 		utilityName: string,
 		typeNode: TypeDocTypeNode,
-		preferredDefinitionName?: string,
+		_preferredDefinitionName?: string,
 	): DocTypeDefinition | undefined {
 		const args = typeNode.typeArguments as TypeDocTypeNode[] | undefined;
 		if (!args?.length) return undefined;
 
 		const base = args[0];
 		const keysArg = args[1];
-		const baseName = typeArgumentDisplayName(base);
-		const utilityDefName =
-			preferredDefinitionName ??
-			`${utilityName}_${baseName.replace(/[^A-Za-z0-9_$]+/g, "_")}`;
 
 		if (utilityName === "Partial") {
 			const baseName = typeArgumentDisplayName(base);
@@ -1318,15 +1316,21 @@ export function createTsTypeResolver(projectRoot: string) {
 			if (fromMirror) {
 				return applyMirrorPickOmit(fromMirror, undefined, pickKeys);
 			}
-			const fromTarget = resolveReferenceTarget(base, undefined, pickKeys);
+			const fromTarget = resolveReferenceTarget(
+				base,
+				undefined,
+				pickKeys,
+			);
 			if (fromTarget) return fromTarget;
 			if (!base.name) return undefined;
 			const local = tryResolveLocalTypeName(base.name);
 			if (!local || !("properties" in local) || !local.properties) {
 				return undefined;
 			}
-			const picked: Record<string, DocTypeSchema & {description?: string}> =
-				{};
+			const picked: Record<
+				string,
+				DocTypeSchema & {description?: string}
+			> = {};
 			for (const key of pickKeys) {
 				if (local.properties[key]) {
 					picked[key] = local.properties[key];
@@ -1350,12 +1354,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		return undefined;
 	}
 
-
 	const LOCAL_TYPE_SOURCE_FALLBACKS: Record<string, string[]> = {
 		IconProps: ["src/shared/shared/ui/icon/Icon.types.ts"],
-		ViewportBranding: [
-			"src/shared/entities/viewport/config/viewport.ts",
-		],
+		ViewportBranding: ["src/shared/entities/viewport/config/viewport.ts"],
 		StargateStatusColorProps: [
 			"src/shared/entities/stargate/config/stargate.ts",
 		],
@@ -1391,10 +1392,7 @@ export function createTsTypeResolver(projectRoot: string) {
 				),
 				"IconProps",
 			);
-			if (
-				iconDecl &&
-				ts.isInterfaceDeclaration(iconDecl.node)
-			) {
+			if (iconDecl && ts.isInterfaceDeclaration(iconDecl.node)) {
 				Object.assign(
 					merged,
 					propertiesFromDeclarationMembers(
@@ -1426,8 +1424,10 @@ export function createTsTypeResolver(projectRoot: string) {
 				type,
 			);
 			if (iconProps) return iconProps;
-			const merged: Record<string, DocTypeSchema & {description?: string}> =
-				{};
+			const merged: Record<
+				string,
+				DocTypeSchema & {description?: string}
+			> = {};
 			for (const member of type.types) {
 				const part = propertiesFromTsType(checker, member);
 				Object.assign(merged, part);
@@ -1449,9 +1449,7 @@ export function createTsTypeResolver(projectRoot: string) {
 		if (!objectNode || !indexNode) return undefined;
 
 		const objectName =
-			objectNode._target?.qualifiedName ??
-			objectNode.name ??
-			"";
+			objectNode._target?.qualifiedName ?? objectNode.name ?? "";
 		const indexKey =
 			indexNode.type === "literal" && typeof indexNode.value === "string"
 				? indexNode.value
@@ -1510,9 +1508,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		if (!resolved) return undefined;
 
 		const parentType = resolved.checker.getTypeAtLocation(resolved.node);
-		const propSymbol = parentType
-			.getProperty(propertyName)
-			?? resolved.checker.getProperty(parentTypeName, propertyName);
+		const propSymbol =
+			parentType.getProperty(propertyName) ??
+			resolved.checker.getProperty(parentTypeName, propertyName);
 		if (!propSymbol) return undefined;
 
 		const decl =
@@ -1595,13 +1593,16 @@ export function createTsTypeResolver(projectRoot: string) {
 		return definitionFromTsType(resolved.checker, type);
 	}
 
-	function tryResolveLocalTypeName(typeName: string): DocTypeDefinition | undefined {
+	function tryResolveLocalTypeName(
+		typeName: string,
+	): DocTypeDefinition | undefined {
 		if (typeName === "ISelectComponentOverrides") {
 			return compactISelectComponentOverridesValueSchema();
 		}
 		const fromMirror = resolveMantineCorePropsMirror(projectRoot, typeName);
 		if (fromMirror) return fromMirror;
-		const mantineMirrorPath = mantineMirrorSchemaInputRelativePath(typeName);
+		const mantineMirrorPath =
+			mantineMirrorSchemaInputRelativePath(typeName);
 
 		const candidates = [
 			sourceFileContext,
@@ -1651,7 +1652,6 @@ export function createTsTypeResolver(projectRoot: string) {
 			);
 			if (expanded) return expanded;
 			const base = (typeNode.typeArguments as TypeDocTypeNode[])[0];
-			const baseName = typeArgumentDisplayName(base);
 			if (typeNode.name === "Partial" && base.name) {
 				if (
 					base.name === "IconProps" &&

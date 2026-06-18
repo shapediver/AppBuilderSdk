@@ -240,7 +240,9 @@ describe("collectDocFlatProperties", () => {
 			processTagValue,
 			definitionsContext,
 		);
-		const byName = Object.fromEntries(props.map((prop) => [prop.name, prop]));
+		const byName = Object.fromEntries(
+			props.map((prop) => [prop.name, prop]),
+		);
 		expect(byName.px?.type).toEqual({
 			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
 		});

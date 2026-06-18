@@ -84,11 +84,7 @@ export function entryPropertiesFromDefinition(
 ): DocEntryProperty[] {
 	if (!("properties" in definition) || !definition.properties) return [];
 	return Object.entries(definition.properties).map(([name, schema]) => {
-		const {
-			description,
-			default: defaultValue,
-			...typeSchema
-		} = schema;
+		const {description, default: defaultValue, ...typeSchema} = schema;
 		const prop: DocEntryProperty = {
 			name,
 			description: description ?? "",
@@ -191,7 +187,8 @@ export function postProcessFlatEntries(
 				entry.properties = entryPropertiesFromDefinition(mirror);
 				continue;
 			}
-			entry.properties = entryPropertiesFromDefinition(COMPACT_ICON_PROPS);
+			entry.properties =
+				entryPropertiesFromDefinition(COMPACT_ICON_PROPS);
 			continue;
 		}
 
@@ -223,17 +220,14 @@ function stableDefinitionNameForPropertyKeys(
 	return PROPERTY_KEY_FINGERPRINTS[fingerprint];
 }
 
-const BREAKPOINT_SIZE_KEYS = new Set([
-	"base",
-	"xs",
-	"sm",
-	"md",
-	"lg",
-	"xl",
-]);
+const BREAKPOINT_SIZE_KEYS = new Set(["base", "xs", "sm", "md", "lg", "xl"]);
 
 function isMantineResponsiveCssSizeUnionNode(typeNode: {
-	types?: {type?: string; name?: string; declaration?: {children?: {name?: string}[]}}[];
+	types?: {
+		type?: string;
+		name?: string;
+		declaration?: {children?: {name?: string}[]};
+	}[];
 }): boolean {
 	const members = typeNode.types ?? [];
 	const hasString = members.some(
@@ -330,10 +324,7 @@ function buildUtilityDefinitionName(
 		name?: string;
 		_target?: {qualifiedName?: string};
 	};
-	const baseName =
-		first._target?.qualifiedName ??
-		first.name ??
-		"Unknown";
+	const baseName = first._target?.qualifiedName ?? first.name ?? "Unknown";
 	return sanitizeDefinitionName(`${utilityName}_${baseName}`);
 }
 
@@ -405,13 +396,20 @@ function buildReflectionIndex(project: {
 }
 
 function typeDisplayName(
-	type: {name?: string; reflection?: {name?: string}; toString?: () => string},
+	type: {
+		name?: string;
+		reflection?: {name?: string};
+		toString?: () => string;
+	},
 	fallback: string,
 ): string {
 	if (typeof type.name === "string" && type.name.length) {
 		return type.name;
 	}
-	if (typeof type.reflection?.name === "string" && type.reflection.name.length) {
+	if (
+		typeof type.reflection?.name === "string" &&
+		type.reflection.name.length
+	) {
 		return type.reflection.name;
 	}
 	if (typeof type.toString === "function") {
@@ -505,7 +503,10 @@ export function createDefinitionsContext(
 		const coreFromMirrorName = mantineCorePropsDocKeyForMirrorName(key);
 		if (
 			coreFromMirrorName &&
-			resolveMantineCorePropsMirrorForDocKey(projectRoot, coreFromMirrorName)
+			resolveMantineCorePropsMirrorForDocKey(
+				projectRoot,
+				coreFromMirrorName,
+			)
 		) {
 			ensureMirrorDefinitionSeeded(coreFromMirrorName);
 			delete definitions[key];
@@ -519,10 +520,11 @@ export function createDefinitionsContext(
 			"properties" in built &&
 			built.properties
 		) {
-			const coreFromFingerprint = canonicalMantinePropsDocKeyForPropertyKeys(
-				projectRoot,
-				built.properties,
-			);
+			const coreFromFingerprint =
+				canonicalMantinePropsDocKeyForPropertyKeys(
+					projectRoot,
+					built.properties,
+				);
 			if (coreFromFingerprint) {
 				ensureMirrorDefinitionSeeded(coreFromFingerprint);
 				delete definitions[key];
@@ -546,7 +548,9 @@ export function createDefinitionsContext(
 		if (projectRoot && !key.startsWith("Partial_")) {
 			const earlyRef = resolveDocRefForTypeName(projectRoot, key);
 			if (earlyRef && "$ref" in earlyRef) {
-				const docKey = earlyRef.$ref.slice(DEFINITIONS_REF_PREFIX.length);
+				const docKey = earlyRef.$ref.slice(
+					DEFINITIONS_REF_PREFIX.length,
+				);
 				ensureMirrorDefinitionSeeded(docKey);
 				return earlyRef;
 			}
@@ -589,7 +593,11 @@ export function createDefinitionsContext(
 				projectRoot,
 				key,
 			);
-			if (fromMirror && "properties" in fromMirror && fromMirror.properties) {
+			if (
+				fromMirror &&
+				"properties" in fromMirror &&
+				fromMirror.properties
+			) {
 				built = deepSimplifySchema(
 					mergeMirrorDefinitionOverlay(built, fromMirror),
 					MIRROR_SCHEMA_SIMPLIFY_OPTIONS,
@@ -614,7 +622,9 @@ export function createDefinitionsContext(
 			topLevelPropCount > 10
 		) {
 			built = COMPACT_ICON_PROPS;
-			topLevelPropCount = Object.keys(COMPACT_ICON_PROPS.properties ?? {}).length;
+			topLevelPropCount = Object.keys(
+				COMPACT_ICON_PROPS.properties ?? {},
+			).length;
 		}
 		const hasMantineMirror =
 			Boolean(projectRoot) &&
@@ -729,7 +739,11 @@ export function createDefinitionsContext(
 		typeNode: {
 			name?: string;
 			typeArguments?: unknown[];
-			_target?: {qualifiedName?: string; packageName?: string; fileName?: string};
+			_target?: {
+				qualifiedName?: string;
+				packageName?: string;
+				fileName?: string;
+			};
 		},
 		preferredDefinitionName?: string,
 	): string {
@@ -740,8 +754,10 @@ export function createDefinitionsContext(
 			typeNode.typeArguments.length >= 2
 		) {
 			return (
-				buildUtilityDefinitionName(utilityName, typeNode.typeArguments) ??
-				"Record_unknown"
+				buildUtilityDefinitionName(
+					utilityName,
+					typeNode.typeArguments,
+				) ?? "Record_unknown"
 			);
 		}
 		if (
@@ -752,14 +768,21 @@ export function createDefinitionsContext(
 		) {
 			const base = typeNode.typeArguments[0] as {
 				name?: string;
-				_target?: {qualifiedName?: string; packageName?: string; fileName?: string};
+				_target?: {
+					qualifiedName?: string;
+					packageName?: string;
+					fileName?: string;
+				};
 			};
 			const baseName =
 				base._target?.qualifiedName ?? base.name ?? "Unknown";
 			if (base._target && isMantineCorePackageTarget(base._target)) {
 				if (
 					projectRoot &&
-					resolveMantineCorePropsMirrorForDocKey(projectRoot, baseName)
+					resolveMantineCorePropsMirrorForDocKey(
+						projectRoot,
+						baseName,
+					)
 				) {
 					return sanitizeDefinitionName(baseName);
 				}
@@ -769,8 +792,10 @@ export function createDefinitionsContext(
 			}
 			if (utilityName === "Partial") {
 				return (
-					buildUtilityDefinitionName(utilityName, typeNode.typeArguments) ??
-					sanitizeDefinitionName(baseName)
+					buildUtilityDefinitionName(
+						utilityName,
+						typeNode.typeArguments,
+					) ?? sanitizeDefinitionName(baseName)
 				);
 			}
 		}
@@ -787,7 +812,11 @@ export function createDefinitionsContext(
 		expanded: DocTypeDefinition,
 		typeNode: {
 			name?: string;
-			_target?: {qualifiedName?: string; packageName?: string; fileName?: string};
+			_target?: {
+				qualifiedName?: string;
+				packageName?: string;
+				fileName?: string;
+			};
 			typeArguments?: unknown[];
 		},
 	): DocTypeDefinition {
@@ -796,8 +825,11 @@ export function createDefinitionsContext(
 			const propCount = Object.keys(expanded.properties).length;
 			const qualifiedName =
 				target?.qualifiedName ??
-				(typeNode.typeArguments?.[0] as {_target?: {qualifiedName?: string}})
-					?._target?.qualifiedName ??
+				(
+					typeNode.typeArguments?.[0] as {
+						_target?: {qualifiedName?: string};
+					}
+				)?._target?.qualifiedName ??
 				"";
 			const firstArg = typeNode.typeArguments?.[0] as
 				| {
@@ -827,7 +859,8 @@ export function createDefinitionsContext(
 					);
 					if (mirror) return mirror;
 				}
-				const docLink = tsResolver!.mantineDocLinkForProps(qualifiedName);
+				const docLink =
+					tsResolver!.mantineDocLinkForProps(qualifiedName);
 				return {
 					type: "unknown",
 					name: `${qualifiedName} (${propCount} props — see Mantine docs)`,
@@ -837,8 +870,11 @@ export function createDefinitionsContext(
 		}
 		const qualifiedForMirror =
 			target?.qualifiedName ??
-			(typeNode.typeArguments?.[0] as {_target?: {qualifiedName?: string}})
-				?._target?.qualifiedName ??
+			(
+				typeNode.typeArguments?.[0] as {
+					_target?: {qualifiedName?: string};
+				}
+			)?._target?.qualifiedName ??
 			"";
 		if (qualifiedForMirror && projectRoot) {
 			const mirror = resolveMantineCorePropsMirrorForDocKey(
@@ -878,7 +914,11 @@ export function createDefinitionsContext(
 		const node = typeNode as {
 			type?: string;
 			name?: string;
-			_target?: {qualifiedName?: string; packageName?: string; fileName?: string};
+			_target?: {
+				qualifiedName?: string;
+				packageName?: string;
+				fileName?: string;
+			};
 			typeArguments?: unknown[];
 		};
 		if (
@@ -887,7 +927,9 @@ export function createDefinitionsContext(
 			(node as {types?: unknown[]}).types?.length
 		) {
 			const expanded = tsResolver.tryResolveTypeDocNode(
-				typeNode as Parameters<TsTypeResolver["tryResolveTypeDocNode"]>[0],
+				typeNode as Parameters<
+					TsTypeResolver["tryResolveTypeDocNode"]
+				>[0],
 				preferredDefinitionName,
 			);
 			if (expanded && "properties" in expanded && expanded.properties) {
@@ -910,29 +952,30 @@ export function createDefinitionsContext(
 		if ("$ref" in expanded && !("properties" in expanded)) {
 			return expanded;
 		}
-		const defName = canonicalTsDefinitionName(node, preferredDefinitionName);
+		const defName = canonicalTsDefinitionName(
+			node,
+			preferredDefinitionName,
+		);
 		return registerDefinition(defName, () =>
 			finalizeTsExpanded(expanded, node),
 		);
 	}
 
-	function resolveReflectionDeclaration(
-		reflection: {
-			name?: string;
-			type?: unknown;
-			children?: unknown[];
-		},
-	): DocTypeSchema {
+	function resolveReflectionDeclaration(reflection: {
+		name?: string;
+		type?: unknown;
+		children?: unknown[];
+	}): DocTypeSchema {
 		if (reflection.children?.length) {
-			return registerDefinition(reflection.name ?? "AnonymousType", () => ({
-				properties: mapDeclarationChildren(reflection.children),
-			}));
+			return registerDefinition(
+				reflection.name ?? "AnonymousType",
+				() => ({
+					properties: mapDeclarationChildren(reflection.children),
+				}),
+			);
 		}
 		if (reflection.type) {
-			const tsResolved = tryTsResolve(
-				reflection.type,
-				reflection.name,
-			);
+			const tsResolved = tryTsResolve(reflection.type, reflection.name);
 			if (tsResolved) return tsResolved;
 
 			const resolved = resolveType(reflection.type);
@@ -948,7 +991,10 @@ export function createDefinitionsContext(
 
 	function mapDeclarationChildren(
 		children: unknown[] | undefined,
-	): Record<string, DocTypeSchema & {description?: string; default?: string}> {
+	): Record<
+		string,
+		DocTypeSchema & {description?: string; default?: string}
+	> {
 		const props: Record<
 			string,
 			DocTypeSchema & {description?: string; default?: string}
@@ -970,8 +1016,7 @@ export function createDefinitionsContext(
 					() => ({
 						type: "unknown",
 						name: "MantineThemeOverride",
-						docLink:
-							"https://mantine.dev/theming/theme-object/",
+						docLink: "https://mantine.dev/theming/theme-object/",
 					}),
 				);
 			}
@@ -1062,7 +1107,10 @@ export function createDefinitionsContext(
 					result = MANTINE_RESPONSIVE_CSS_SIZE_REF;
 					break;
 				}
-				const unionName = typeDisplayName(t, t.reflection?.name ?? "Union");
+				const unionName = typeDisplayName(
+					t,
+					t.reflection?.name ?? "Union",
+				);
 				result = registerDefinition(unionName, () => simplified);
 				break;
 			}
@@ -1099,13 +1147,15 @@ export function createDefinitionsContext(
 									"MantineThemeOverride",
 								)
 							: undefined;
-						result = registerDefinition("MantineThemeOverride", () =>
-							themeMirror ?? {
-								type: "unknown",
-								name: "MantineThemeOverride",
-								docLink:
-									"https://mantine.dev/theming/theme-object/",
-							},
+						result = registerDefinition(
+							"MantineThemeOverride",
+							() =>
+								themeMirror ?? {
+									type: "unknown",
+									name: "MantineThemeOverride",
+									docLink:
+										"https://mantine.dev/theming/theme-object/",
+								},
 						);
 					} else {
 						result = {properties: merged};
@@ -1158,15 +1208,20 @@ export function createDefinitionsContext(
 				if (MANTINE_SCHEMA_INPUT_TYPE_NAMES.has(refName)) {
 					result = definitions[refName]
 						? {$ref: `${DEFINITIONS_REF_PREFIX}${refName}`}
-						: registerDefinition(refName, () =>
-								parseSchemaInputTypeDefinition(
-									projectRoot!,
-									refName,
-								) ?? {type: "unknown", name: refName},
+						: registerDefinition(
+								refName,
+								() =>
+									parseSchemaInputTypeDefinition(
+										projectRoot!,
+										refName,
+									) ?? {type: "unknown", name: refName},
 							);
 					break;
 				}
-				if (refName === "MantineTheme" || refName === "MantineThemeOverride") {
+				if (
+					refName === "MantineTheme" ||
+					refName === "MantineThemeOverride"
+				) {
 					const themeMirror =
 						refName === "MantineThemeOverride" && projectRoot
 							? resolveMantineCorePropsMirrorForDocKey(
@@ -1202,9 +1257,12 @@ export function createDefinitionsContext(
 					}
 				}
 
-				const utilityDefName = ["Omit", "Pick", "Partial", "Record"].includes(
-					refName,
-				)
+				const utilityDefName = [
+					"Omit",
+					"Pick",
+					"Partial",
+					"Record",
+				].includes(refName)
 					? buildUtilityDefinitionName(refName, t.typeArguments)
 					: undefined;
 
@@ -1231,10 +1289,10 @@ export function createDefinitionsContext(
 							(refName === "Partial" ||
 								refName.startsWith("Partial<")) &&
 							t.typeArguments?.length
-								? buildUtilityDefinitionName(
+								? (buildUtilityDefinitionName(
 										"Partial",
 										t.typeArguments,
-									) ?? "Partial_IconProps"
+									) ?? "Partial_IconProps")
 								: t.name;
 						result = registerDefinition(localDefName, () => local);
 						break;
@@ -1248,18 +1306,18 @@ export function createDefinitionsContext(
 					result = registerDefinition(
 						utilityDefName ?? refName,
 						() => {
-						const resolved = resolveReflectionDeclaration(
-							refl as {
-								name?: string;
-								type?: unknown;
-								children?: unknown[];
-							},
-						);
-						if (isPrimitiveSchema(resolved)) {
-							return {type: "unknown", name: refName};
-						}
-						return resolved;
-					},
+							const resolved = resolveReflectionDeclaration(
+								refl as {
+									name?: string;
+									type?: unknown;
+									children?: unknown[];
+								},
+							);
+							if (isPrimitiveSchema(resolved)) {
+								return {type: "unknown", name: refName};
+							}
+							return resolved;
+						},
 					);
 				} else {
 					const label = t.typeArguments?.length
@@ -1362,9 +1420,8 @@ export function createDefinitionsContext(
 		definitions,
 		resolveType: resolvePropertyType,
 		projectRoot,
-		tsMantineDocLinkForProps: tsResolver?.mantineDocLinkForProps.bind(
-			tsResolver,
-		),
+		tsMantineDocLinkForProps:
+			tsResolver?.mantineDocLinkForProps.bind(tsResolver),
 		setEntrySourceFile(sourceFile: string | undefined) {
 			tsResolverSourceFile = sourceFile;
 			tsResolver?.setSourceFileContext(sourceFile);
@@ -1481,7 +1538,10 @@ export function postProcessDefinitions(
 		if (key === "MantineResponsiveCssSize") continue;
 		const def = definitions[key];
 		if (!def) continue;
-		if (matchesMantineResponsiveCssSize(def) || isBreakpointSizeObjectSchema(def)) {
+		if (
+			matchesMantineResponsiveCssSize(def) ||
+			isBreakpointSizeObjectSchema(def)
+		) {
 			rewriteDefinitionRefs(definitions, key, "MantineResponsiveCssSize");
 			continue;
 		}
@@ -1490,7 +1550,9 @@ export function postProcessDefinitions(
 			def.properties &&
 			isFingerprintCandidateKey(key)
 		) {
-			const stableName = stableDefinitionNameForPropertyKeys(def.properties);
+			const stableName = stableDefinitionNameForPropertyKeys(
+				def.properties,
+			);
 			if (stableName && stableName !== key) {
 				if (!definitions[stableName]) {
 					definitions[stableName] = def;
@@ -1507,7 +1569,8 @@ export function postProcessDefinitions(
 			lineCount >= DOMAIN_RECORD_STUB_LINE_THRESHOLD
 		) {
 			if (key === "Record_string_ISelectComponentOverrides") {
-				definitions[key] = compactRecordStringISelectComponentOverrides();
+				definitions[key] =
+					compactRecordStringISelectComponentOverrides();
 			}
 			continue;
 		}

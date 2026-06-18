@@ -11,7 +11,10 @@ import {
 describe("recordTypeSchema", () => {
 	it("builds unique Record definition names from key and value", () => {
 		expect(
-			buildRecordDefinitionName({name: "string"}, {name: "ISelectComponentOverrides"}),
+			buildRecordDefinitionName(
+				{name: "string"},
+				{name: "ISelectComponentOverrides"},
+			),
 		).toBe("Record_string_ISelectComponentOverrides");
 		expect(
 			buildRecordDefinitionName(
@@ -77,11 +80,7 @@ describe("recordTypeSchema", () => {
 		expect(isBreakpointSizeObjectSchema(breakpointObject)).toBe(true);
 		expect(
 			matchesMantineResponsiveCssSize({
-				oneOf: [
-					{type: "string"},
-					{type: "number"},
-					breakpointObject,
-				],
+				oneOf: [{type: "string"}, {type: "number"}, breakpointObject],
 			}),
 		).toBe(true);
 	});
@@ -90,7 +89,10 @@ describe("recordTypeSchema", () => {
 		const compact = compactRecordStringISelectComponentOverrides();
 		const value = (
 			compact as {
-				properties: Record<string, {properties?: Record<string, unknown>}>;
+				properties: Record<
+					string,
+					{properties?: Record<string, unknown>}
+				>;
 			}
 		).properties["[string]"];
 		expect(value?.properties).toEqual({

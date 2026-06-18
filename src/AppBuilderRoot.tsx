@@ -39,7 +39,6 @@ import {NumberAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/at
 import {StringAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/StringAttribute";
 import {PARAMETER_TYPE} from "@shapediver/viewer.session";
 import "instruments/sentry";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";

@@ -9,7 +9,7 @@ import {Notifications} from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import HomePage from "~/pages/HomePage";
 import AppBuilderStaticExamplePage from "~/pages/examples/AppBuilderStaticExamplePage";
