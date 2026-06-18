@@ -1,3 +1,4 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
 	preset: "ts-jest",
 	testEnvironment: "node",
@@ -5,6 +6,15 @@ export default {
 	testMatch: ["**/*.(test|spec).(ts|tsx)"],
 
 	moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+
+	transform: {
+		"^.+\\.(ts|tsx)$": [
+			"ts-jest",
+			{
+				tsconfig: "tsconfig.jest.json",
+			},
+		],
+	},
 
 	moduleNameMapper: {
 		"^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",
