@@ -68,8 +68,15 @@ export default tseslint.config(
 		rules: {
 			"prettier/prettier": "error",
 			"linebreak-style": ["error", "windows"],
-            semi: ["error", "always"],
+			semi: ["error", "always"],
 			"@typescript-eslint/no-explicit-any": "off",
+			"@typescript-eslint/no-empty-object-type": [
+				"error",
+				{
+					// TypeDoc: empty interfaces alias z.infer / Mantine / other supertypes.
+					allowInterfaces: "always",
+				},
+			],
 			"@typescript-eslint/no-unused-vars": [
 				"error",
 				{
