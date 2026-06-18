@@ -166,7 +166,7 @@ export const testConfigs: TestConfig[] = [
 	{
 		// EXPORT / DOWNLOAD pattern: assert that a file download is offered.
 		slug: "11e-parameterandexportcontrols",
-		actions: async (page, slug) => {
+		actions: async (page, _slug) => {
 			const downloadPromise = page.waitForEvent("download");
 			await page.getByRole("button", {name: "Download File"}).click();
 			const download = await downloadPromise;

@@ -158,17 +158,83 @@ describe("Mantine mirror canonical refs", () => {
 			type: "reflection",
 			declaration: {
 				children: [
-					{name: "fw", type: {type: "union", types: [{type: "intrinsic", name: "string"}, {type: "intrinsic", name: "number"}]}},
-					{name: "mt", type: {type: "union", types: [{type: "intrinsic", name: "string"}, {type: "intrinsic", name: "number"}]}},
-					{name: "ml", type: {type: "union", types: [{type: "intrinsic", name: "string"}, {type: "intrinsic", name: "number"}]}},
-					{name: "px", type: {type: "union", types: [{type: "intrinsic", name: "string"}, {type: "intrinsic", name: "number"}]}},
-					{name: "fz", type: {type: "union", types: [{type: "intrinsic", name: "string"}, {type: "intrinsic", name: "number"}]}},
-					{name: "h", type: {type: "union", types: [{type: "intrinsic", name: "string"}, {type: "intrinsic", name: "number"}]}},
-					{name: "variant", type: {type: "intrinsic", name: "string"}},
+					{
+						name: "fw",
+						type: {
+							type: "union",
+							types: [
+								{type: "intrinsic", name: "string"},
+								{type: "intrinsic", name: "number"},
+							],
+						},
+					},
+					{
+						name: "mt",
+						type: {
+							type: "union",
+							types: [
+								{type: "intrinsic", name: "string"},
+								{type: "intrinsic", name: "number"},
+							],
+						},
+					},
+					{
+						name: "ml",
+						type: {
+							type: "union",
+							types: [
+								{type: "intrinsic", name: "string"},
+								{type: "intrinsic", name: "number"},
+							],
+						},
+					},
+					{
+						name: "px",
+						type: {
+							type: "union",
+							types: [
+								{type: "intrinsic", name: "string"},
+								{type: "intrinsic", name: "number"},
+							],
+						},
+					},
+					{
+						name: "fz",
+						type: {
+							type: "union",
+							types: [
+								{type: "intrinsic", name: "string"},
+								{type: "intrinsic", name: "number"},
+							],
+						},
+					},
+					{
+						name: "h",
+						type: {
+							type: "union",
+							types: [
+								{type: "intrinsic", name: "string"},
+								{type: "intrinsic", name: "number"},
+							],
+						},
+					},
+					{
+						name: "variant",
+						type: {type: "intrinsic", name: "string"},
+					},
 					{name: "size", type: {type: "intrinsic", name: "string"}},
-					{name: "fullWidth", type: {type: "intrinsic", name: "boolean"}},
-					{name: "justify", type: {type: "intrinsic", name: "string"}},
-					{name: "disabled", type: {type: "intrinsic", name: "boolean"}},
+					{
+						name: "fullWidth",
+						type: {type: "intrinsic", name: "boolean"},
+					},
+					{
+						name: "justify",
+						type: {type: "intrinsic", name: "string"},
+					},
+					{
+						name: "disabled",
+						type: {type: "intrinsic", name: "boolean"},
+					},
 					{
 						name: "style",
 						type: {
@@ -347,8 +413,11 @@ describe("Partial utility definitions", () => {
 		expect(ctx.definitions.Partial_ButtonProps).toBeUndefined();
 		expect(ctx.definitions.ButtonProps).toHaveProperty("properties");
 		expect(
-			(ctx.definitions.ButtonProps as {properties: Record<string, unknown>})
-				.properties,
+			(
+				ctx.definitions.ButtonProps as {
+					properties: Record<string, unknown>;
+				}
+			).properties,
 		).toHaveProperty("variant");
 		expect(ctx.definitions.Partial_TextProps).toBeUndefined();
 		expect(ctx.definitions.TextProps).toHaveProperty("properties");
@@ -388,8 +457,7 @@ describe("ViewportIconButton Partial props", () => {
 						name: "TooltipProps",
 						_target: {
 							packageName: "@mantine/core",
-							packagePath:
-								"lib/components/Tooltip/Tooltip.d.ts",
+							packagePath: "lib/components/Tooltip/Tooltip.d.ts",
 							qualifiedName: "TooltipProps",
 						},
 					},
@@ -443,22 +511,32 @@ describe("Icon theme doc entry", () => {
 				summary: "",
 				source: "AppBuilderTextWidgetComponent.tsx",
 				properties: [
-					{name: "withBorder", description: "", type: {type: "boolean"}},
+					{
+						name: "withBorder",
+						description: "",
+						type: {type: "boolean"},
+					},
 					{name: "shadow", description: "", type: {type: "string"}},
 					{
 						name: "p",
 						description: "",
-						type: {$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`},
+						type: {
+							$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`,
+						},
 					},
 					{
 						name: "px",
 						description: "",
-						type: {$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`},
+						type: {
+							$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`,
+						},
 					},
 					{
 						name: "py",
 						description: "",
-						type: {$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`},
+						type: {
+							$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`,
+						},
 					},
 					{
 						name: "style",
@@ -539,7 +617,11 @@ describe("Icon theme doc entry", () => {
 				source: "src/shared/shared/ui/icon/Icon.types.ts",
 				properties: [
 					{name: "id", description: "", type: {type: "string"}},
-					{name: "onLoad", description: "", type: {type: "unknown", name: "Function"}},
+					{
+						name: "onLoad",
+						description: "",
+						type: {type: "unknown", name: "Function"},
+					},
 				],
 			},
 		];
@@ -582,7 +664,9 @@ describe("Icon theme doc entry", () => {
 					description: "",
 					type:
 						name === "mt" || name === "ml" || name === "px"
-							? {$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`}
+							? {
+									$ref: `${DEFINITIONS_REF_PREFIX}string_or_number`,
+								}
 							: {type: "string"},
 				},
 			]),
@@ -598,7 +682,9 @@ describe("Icon theme doc entry", () => {
 					{
 						name: "actionIconProps",
 						description: "",
-						type: {$ref: `${DEFINITIONS_REF_PREFIX}ActionIconProps`},
+						type: {
+							$ref: `${DEFINITIONS_REF_PREFIX}ActionIconProps`,
+						},
 					},
 					...Object.values(inlinedButtonProps),
 				],
@@ -613,7 +699,9 @@ describe("Icon theme doc entry", () => {
 				entries[0].properties!.map((prop) => prop.name),
 			),
 		).toBe("ButtonProps");
-		expect((buttonMirror as {properties: {mt: unknown}}).properties.mt).toEqual({
+		expect(
+			(buttonMirror as {properties: {mt: unknown}}).properties.mt,
+		).toEqual({
 			$ref: `${DEFINITIONS_REF_PREFIX}MantineSpacing`,
 		});
 		postProcessFlatEntries(entries, definitions, projectRoot);
@@ -694,7 +782,12 @@ describe("Record utility definitions", () => {
 		const def = ctx.definitions.Record_string_ISelectComponentOverrides;
 		expect(def).toHaveProperty("properties");
 		const value = (
-			def as {properties: Record<string, {properties?: Record<string, unknown>}>}
+			def as {
+				properties: Record<
+					string,
+					{properties?: Record<string, unknown>}
+				>;
+			}
 		).properties["[string]"];
 		expect(value?.properties).toEqual({
 			type: {
@@ -733,9 +826,15 @@ describe("postProcessDefinitions", () => {
 							{
 								properties: {
 									type: {type: "string" as const},
-									props: {type: "unknown" as const, name: "any"},
+									props: {
+										type: "unknown" as const,
+										name: "any",
+									},
 									key: {type: "string" as const},
-									children: {type: "unknown" as const, name: "ReactNode"},
+									children: {
+										type: "unknown" as const,
+										name: "ReactNode",
+									},
 								},
 							},
 						],
@@ -773,10 +872,16 @@ describe("postProcessDefinitions", () => {
 				properties: {
 					"[string]": {
 						properties: {
-							type: {type: "unknown" as const, name: "SelectComponentType"},
+							type: {
+								type: "unknown" as const,
+								name: "SelectComponentType",
+							},
 							settings: {
 								properties: {
-									carouselProps: {type: "unknown" as const, name: "Huge"},
+									carouselProps: {
+										type: "unknown" as const,
+										name: "Huge",
+									},
 								},
 							},
 						},
@@ -788,9 +893,24 @@ describe("postProcessDefinitions", () => {
 			},
 			base_string_or_number_xs_string_or_number_sm_string_or_number: {
 				properties: {
-					base: {oneOf: [{type: "string" as const}, {type: "number" as const}]},
-					xs: {oneOf: [{type: "string" as const}, {type: "number" as const}]},
-					sm: {oneOf: [{type: "string" as const}, {type: "number" as const}]},
+					base: {
+						oneOf: [
+							{type: "string" as const},
+							{type: "number" as const},
+						],
+					},
+					xs: {
+						oneOf: [
+							{type: "string" as const},
+							{type: "number" as const},
+						],
+					},
+					sm: {
+						oneOf: [
+							{type: "string" as const},
+							{type: "number" as const},
+						],
+					},
 				},
 			},
 			ViewportBranding: {
@@ -803,7 +923,10 @@ describe("postProcessDefinitions", () => {
 					logo: {type: "string" as const},
 					backgroundColor: {type: "string" as const},
 					busyModeSpinner: {type: "string" as const},
-					busyModeDisplay: {type: "unknown" as const, name: "BUSY_MODE_DISPLAY"},
+					busyModeDisplay: {
+						type: "unknown" as const,
+						name: "BUSY_MODE_DISPLAY",
+					},
 					spinnerPositioning: {
 						type: "unknown" as const,
 						name: "SPINNER_POSITIONING",
@@ -822,9 +945,7 @@ describe("postProcessDefinitions", () => {
 			},
 		};
 		postProcessDefinitions(definitions);
-		expect(
-			definitions.Record_string_ISelectComponentOverrides,
-		).toEqual({
+		expect(definitions.Record_string_ISelectComponentOverrides).toEqual({
 			properties: {
 				"[string]": {
 					properties: {
@@ -942,7 +1063,9 @@ describe("postProcessDefinitions", () => {
 		});
 		expect(schema).toEqual({type: "unknown", name: "Function"});
 		expect(
-			Object.keys(ctx.definitions).some((k) => k.includes("EventHandler")),
+			Object.keys(ctx.definitions).some((k) =>
+				k.includes("EventHandler"),
+			),
 		).toBe(false);
 	});
 });

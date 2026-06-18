@@ -2,7 +2,6 @@ import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportCompo
 import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import ModelSelect from "@AppBuilderLib/features/model-select/ui/ModelSelect";
-import React from "react";
 import {ExampleModels} from "tickets";
 import ExamplePage from "~/pages/examples/ExamplePage";
 

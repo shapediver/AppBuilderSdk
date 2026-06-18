@@ -12,7 +12,7 @@ import TabsComponent, {
 import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbuilder/ui/ParametersAndExportsAccordionComponent";
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
-import React, {useMemo} from "react";
+import {useMemo} from "react";
 import {ExampleModels} from "tickets";
 import ExamplePage from "~/pages/examples/ExamplePage";
 import classes from "./MultipleViewportPage.module.css";

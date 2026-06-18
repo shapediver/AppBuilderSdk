@@ -29,20 +29,24 @@ describe("mantineCorePropsDocKeyForMirrorName", () => {
 
 describe("resolveDocRefForTypeName", () => {
 	it("returns ButtonProps ref for MantineButtonProps", () => {
-		expect(resolveDocRefForTypeName(projectRoot, "MantineButtonProps")).toEqual(
-			{$ref: "#/definitions/ButtonProps"},
-		);
+		expect(
+			resolveDocRefForTypeName(projectRoot, "MantineButtonProps"),
+		).toEqual({$ref: "#/definitions/ButtonProps"});
 	});
 });
 
 describe("canonicalMantinePropsDocKeyForPropertyKeys", () => {
 	it("matches ButtonProps field set", () => {
-		const mirror = resolveMantineCorePropsMirror(projectRoot, "ButtonProps");
-		expect(mirror).toHaveProperty("properties");
-		const keys = (mirror as {properties: Record<string, unknown>}).properties;
-		expect(canonicalMantinePropsDocKeyForPropertyKeys(projectRoot, keys)).toBe(
+		const mirror = resolveMantineCorePropsMirror(
+			projectRoot,
 			"ButtonProps",
 		);
+		expect(mirror).toHaveProperty("properties");
+		const keys = (mirror as {properties: Record<string, unknown>})
+			.properties;
+		expect(
+			canonicalMantinePropsDocKeyForPropertyKeys(projectRoot, keys),
+		).toBe("ButtonProps");
 	});
 });
 
@@ -52,14 +56,20 @@ describe("findMirroredMantinePropsDocKeyForSuperset", () => {
 	});
 
 	it("matches ButtonProps when entry adds actionIconProps", () => {
-		const mirror = resolveMantineCorePropsMirror(projectRoot, "ButtonProps");
+		const mirror = resolveMantineCorePropsMirror(
+			projectRoot,
+			"ButtonProps",
+		);
 		expect(mirror).toHaveProperty("properties");
 		const buttonProps = (mirror as {properties: Record<string, unknown>})
 			.properties;
 		const buttonKeys = Object.keys(buttonProps);
 		expect(buttonKeys.length).toBeGreaterThan(0);
 		expect(
-			canonicalMantinePropsDocKeyForPropertyKeys(projectRoot, buttonProps),
+			canonicalMantinePropsDocKeyForPropertyKeys(
+				projectRoot,
+				buttonProps,
+			),
 		).toBe("ButtonProps");
 		const result = findMirroredMantinePropsDocKeyForSuperset(projectRoot, [
 			...buttonKeys,
@@ -71,9 +81,13 @@ describe("findMirroredMantinePropsDocKeyForSuperset", () => {
 
 describe("resolveMantineCorePropsMirror", () => {
 	it("resolves ButtonProps from button.schema-input.ts", () => {
-		const parsed = resolveMantineCorePropsMirror(projectRoot, "ButtonProps");
+		const parsed = resolveMantineCorePropsMirror(
+			projectRoot,
+			"ButtonProps",
+		);
 		expect(parsed).toHaveProperty("properties");
-		const props = (parsed as {properties: Record<string, unknown>}).properties;
+		const props = (parsed as {properties: Record<string, unknown>})
+			.properties;
 		expect(props).toHaveProperty("fw");
 		expect(props).toHaveProperty("variant");
 		expect(props).toHaveProperty("size");
@@ -112,9 +126,8 @@ describe("parseSchemaInputTypeDefinition", () => {
 			"MantineStylesApi",
 		);
 		expect(parsed).toHaveProperty("properties");
-		const selector = (
-			parsed as {properties: Record<string, unknown>}
-		).properties["[selector]"];
+		const selector = (parsed as {properties: Record<string, unknown>})
+			.properties["[selector]"];
 		expect(selector).toBeDefined();
 	});
 
@@ -192,11 +205,14 @@ describe("parseSchemaInputInterface", () => {
 			"MantineGroupProps",
 		);
 		expect(parsed).toHaveProperty("properties");
-		const props = (parsed as {properties: Record<string, {description?: string}>})
-			.properties;
+		const props = (
+			parsed as {properties: Record<string, {description?: string}>}
+		).properties;
 		expect(props.w?.description).toContain("Group width");
 		expect(props.w).toMatchObject({$ref: "#/definitions/MantineCssLength"});
-		expect(props.wrap).toMatchObject({$ref: "#/definitions/MantineFlexWrap"});
+		expect(props.wrap).toMatchObject({
+			$ref: "#/definitions/MantineFlexWrap",
+		});
 		expect(props.wrap?.description).toContain("Flex wrap");
 		expect(props.pt?.description).toContain("Padding top");
 		expect(props.pb?.description).toContain("Padding bottom");
@@ -209,7 +225,8 @@ describe("parseSchemaInputInterface", () => {
 			"MantineTooltipProps",
 		);
 		expect(parsed).toHaveProperty("properties");
-		const props = (parsed as {properties: Record<string, unknown>}).properties;
+		const props = (parsed as {properties: Record<string, unknown>})
+			.properties;
 		expect(props.position).toEqual({
 			$ref: "#/definitions/MantineFloatingPosition",
 		});
