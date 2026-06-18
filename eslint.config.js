@@ -118,4 +118,17 @@ export default tseslint.config(
 			"boundaries/element-types": "off",
 		},
 	},
+	{
+		files: ["src/**/*.{test,spec}.{ts,tsx}"],
+		languageOptions: {
+			globals: {
+				...globals.node,
+				...globals.jest,
+			},
+			parserOptions: {
+				project: "./tsconfig.jest.json",
+				tsconfigRootDir: __dirname,
+			},
+		},
+	},
 );
