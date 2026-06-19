@@ -18,15 +18,21 @@ import {
 } from "@plausible-analytics/tracker";
 
 // default tracking domain
+
 const domain = isRunningInPlatform()
 	? "appbuilder.platform"
 	: "appbuilder.shapediver.com";
 const apiHost = isRunningInPlatform()
 	? window.location.origin
 	: "https://appbuilder.shapediver.com";
-const hashBasedRouting = false;
-const captureOnLocalhost = false;
-
+const defaultOptions: PlausibleConfig = {
+	endpoint: `${apiHost}/api/event`,
+	hashBasedRouting: false,
+	captureOnLocalhost: false,
+	bindToWindow: false,
+	autoCapturePageviews: false,
+	domain,
+};
 const mapMetricToBracket = {
 	CLS: 0.1,
 	FCP: 250,
@@ -80,12 +86,7 @@ function createPlausibleTracker(options: PlausibleConfig): ITrackerContext {
 }
 
 // default plausible tracker
-let tracker = createPlausibleTracker({
-	captureOnLocalhost,
-	domain,
-	endpoint: `${apiHost}/api/event`,
-	hashBasedRouting,
-});
+let tracker = createPlausibleTracker(defaultOptions);
 
 // default properties to be tracked
 const defaultProps: {[key: string]: any} = {};
@@ -101,10 +102,8 @@ if (params.get(QUERYPARAM_TRACKING_DOMAIN)) {
 	const domain2nd = params.get(QUERYPARAM_TRACKING_DOMAIN);
 	if (domain2nd && domain2nd !== domain) {
 		const plausible2nd = createPlausibleTracker({
-			captureOnLocalhost,
+			...defaultOptions,
 			domain: domain2nd,
-			endpoint: `${apiHost}/api/event`,
-			hashBasedRouting,
 		});
 		tracker = combineTrackers([tracker, plausible2nd]);
 	}
