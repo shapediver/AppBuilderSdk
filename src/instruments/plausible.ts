@@ -29,7 +29,7 @@ const defaultOptions: PlausibleConfig = {
 	endpoint: `${apiHost}/api/event`,
 	hashBasedRouting: false,
 	captureOnLocalhost: false,
-	bindToWindow: false,
+	bindToWindow: true,
 	autoCapturePageviews: false,
 	domain,
 };
