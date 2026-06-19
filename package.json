@@ -55,7 +55,7 @@
 		"preview": "vite preview",
 		"eslint": "eslint ./src ./*.ts ./cypress.config.ts ./tests ./typedoc",
 		"eslint-fix": "eslint --fix ./src ./*.ts ./cypress.config.ts ./tests ./typedoc",
-		"prettier": "prettier --write ./src/ ./*.ts",
+		"prettier": "prettier --write ./src/ ./*.ts ./*.html",
 		"test": "jest --config jest.config.mjs",
 		"test-e2e": "playwright test",
 		"test-e2e-ui": "playwright test --ui",
