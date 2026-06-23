@@ -1,0 +1,74 @@
+{
+	"version": "1.0",
+	"sessions": [
+		{
+			"id": "default",
+			"slug": "unHEkdNzahgHiF1iQDO278KoMX2CvC"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "right",
+				"tabs": [
+					{
+						"name": "Textile",
+						"icon": "adjustments",
+						"tooltip": "SS-9717 filterable database",
+						"widgets": [
+							{
+								"type": "accordion",
+								"props": {
+									"parameters": [
+										{
+											"name": "Textile",
+											"overrides": {
+												"settings": {
+													"selectSettings": {
+														"type": "fullwidthcards",
+														"height": "400px",
+														"searchable": true,
+														"database": {
+															"dataSource": {
+																"href": "/textile-database-sample.csv"
+															},
+															"itemDataDefinition": {
+																"value": 0,
+																"displayname": 1,
+																"imageUrl": 2,
+																"data": {
+																	"category": 3,
+																	"color": 4,
+																	"materials": 5
+																}
+															},
+															"filters": [
+																{"column": 3, "multiple": true},
+																{
+																	"column": 4,
+																	"type": "color",
+																	"multiple": true
+																},
+																{
+																	"column": 5,
+																	"multivalued": true,
+																	"multiple": true
+																}
+															]
+														}
+													}
+												}
+											}
+										}
+									],
+									"exports": []
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
