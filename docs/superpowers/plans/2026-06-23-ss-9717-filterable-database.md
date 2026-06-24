@@ -1088,6 +1088,7 @@ Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) un
 | Jest test path aliases | Task 24 — **Done** |
 | Filters in Select dropdown + tags inside input | Task 25 — **Done** |
 | Filter `multiple` UI (radio vs checkbox) | Task 26 — **Done** |
+| Filter group “select all” checkbox | Task 27 — **Done** |
 
 ---
 
@@ -1190,6 +1191,22 @@ Stack
 Hook `useFilterableDatabase` delegates to `toggleFilterSelection` (no separate hook test — Jest env is `node`).
 
 UI (Radio vs Checkbox): manual QA on Category (`multiple: false`); no RTL in repo unless `testEnvironment` extended.
+
+---
+
+### Task 27: Select-all checkbox per filter group — DONE
+
+**Goal:** Multi-select tag groups show a master **All** checkbox by default (no JSON flag).
+
+**Behavior:** When `multiple !== false` and `type !== "text"`, accordion panel includes master checkbox — checked / unchecked / indeterminate; toggles full `group.nodes` list.
+
+**Settings:** No `selectAll` field — only `multiple` and `type` matter.
+
+**Logic:** `getSelectAllState`, `applySelectAll` in `filterLogic.ts` + tests.
+
+**Fixture:** TenCards Category → `"multiple": true` (checkbox + All by default).
+
+**Manual QA:** TenCards → Category + Color → each multi-select group has “All”.
 
 ---
 
