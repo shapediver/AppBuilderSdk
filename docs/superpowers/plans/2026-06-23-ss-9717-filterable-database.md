@@ -1086,3 +1086,115 @@ Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) un
 | Export data source (`dataSource.export`) | Task 22 — **Done** |
 | JSON data source (`jsonEngine`) | Task 23 — **Done** |
 | Jest test path aliases | Task 24 — **Done** |
+| Filters in Select dropdown + tags inside input | Task 25 — **Done** |
+| Filter `multiple` UI (radio vs checkbox) | Task 26 — **Done** |
+
+---
+
+## Phase 4: Filter UX — dropdown + multiple
+
+> Added 2026-06-23. Replaces accordion-above-cards layout with Mantine combobox/select pattern.
+
+### Task 25: Filters as Select dropdown; tags inside select — DONE
+
+**Goal:** Filter UI opens in a Mantine dropdown when the user clicks the filter select control. Active filter pills render **inside** the select input (not in `prependTopSection` above cards).
+
+**Current layout (remove):**
+
+```
+Stack
+  FilterableDatabaseFilters (Accordion above cards)
+  SelectComponentAsync
+    prependTopSection → FilterableDatabaseActiveFilterTags
+```
+
+**Target layout:**
+
+```
+Stack
+  FilterableDatabaseFilterSelect (Mantine Combobox / Select)
+    input area → active filter Pills (removable)
+    dropdown → FilterableDatabaseFilters (Accordion panels)
+  SelectComponentAsync (no filter prependTopSection)
+```
+
+**Requirements:**
+
+- Use Mantine v8 (`Combobox`, `Select`, or `Popover` + `Input` — pick the pattern that supports custom dropdown content + inline pills).
+- Style props via `defaultStyleProps` on `FilterableSelectComponent` — no hardcoded visual props (see `.cursor/rules/use-props.mdc`).
+- Preserve existing filter logic (`useFilterableDatabase`, `toggleFilterValue`, `removeFilterValue`, `activeFilterTags`).
+- Dropdown should not close when toggling a filter checkbox (click inside dropdown).
+- Placeholder / label when no filters active (e.g. "Filters" or count).
+
+**Files (expected):**
+
+| File | Action |
+|------|--------|
+| `ui/filterableDatabase/FilterableDatabaseFilterSelect.tsx` | **Create** — combobox shell + pills in input |
+| `ui/select/FilterableSelectComponent.tsx` | **Modify** — wire new component, remove accordion stack + prepend tags |
+| `ui/filterableDatabase/FilterableDatabaseFilters.tsx` | **Modify** — optional `inDropdown` layout tweaks if needed |
+| `FilterableDatabaseFilters.module.css` | **Modify** — dropdown max-height / scroll |
+
+**Manual QA:** `http://localhost:3000/?g=SS-9717.json` — TenCards: click filter select → accordion in dropdown; pills inside input; cards below unchanged.
+
+**Tests (required):**
+
+| Test file | Coverage |
+|-----------|----------|
+| `lib/filterableDatabase/__tests__/buildFilterSelectPlaceholder.test.ts` | Placeholder when 0 / 1 / N active tags |
+| `ui/filterableDatabase/__tests__/FilterableDatabaseFilterSelect.test.ts` | Optional: only if pure helpers extracted; UI uses `jsdom` only if project adds it |
+
+`FilterableDatabaseFilterSelect` must use `buildFilterSelectPlaceholder` from lib (already tested).
+
+---
+
+### Task 26: Filter `multiple` support in UI — DONE
+
+**Goal:** Honor `filters[n].multiple` from settings JSON in the filter option UI.
+
+**Current state:**
+
+- Zod + `useFilterableDatabase.toggleFilterValue` already branch on `filter.multiple` (multi toggle vs single replace).
+- `FilterableDatabaseFilterGroup` receives `multiple` prop but **does not pass it** to options; all options render as `Checkbox`.
+
+**Requirements:**
+
+| `multiple` | UI control | Toggle behavior (already in hook) |
+|------------|------------|-----------------------------------|
+| `true` (default) | `Checkbox` | Add/remove value in group |
+| `false` | `Radio` (same `Radio.Group` per filter group) | Single value; click again clears |
+
+- Add `radioProps` style bag alongside `checkboxProps` in style props chain (`FilterableSelectComponent` → `Filters` → `FilterGroup` → `FilterOption`).
+- Default props pattern — no hardcoded `size` / `fw` on Radio.
+- Unit test: `toggleFilterValue` with `multiple: false` (if not covered); optional component test for Radio rendering.
+
+**Files (expected):**
+
+| File | Action |
+|------|--------|
+| `ui/filterableDatabase/FilterableDatabaseFilterOption.tsx` | **Modify** — Checkbox vs Radio by `multiple` |
+| `ui/filterableDatabase/FilterableDatabaseFilterGroup.tsx` | **Modify** — pass `multiple`, `radioProps` |
+| `ui/filterableDatabase/FilterableDatabaseFilters.tsx` | **Modify** — thread `radioProps` |
+| `ui/select/FilterableSelectComponent.tsx` | **Modify** — `defaultStyleProps.radioProps` |
+| `model/filterableDatabase/__tests__/` or lib tests | **Modify** — cover single-select toggle |
+
+**Fixture:** Add one filter with `"multiple": false` in `public/SS-9717.json` (e.g. Category) for manual QA.
+
+**Tests (required):**
+
+| Test file | Coverage |
+|-----------|----------|
+| `lib/filterableDatabase/__tests__/filterLogic.test.ts` | `toggleFilterSelection` — multi default, add/remove, single replace, clear on re-toggle |
+| `lib/filterableDatabase/__tests__/filterLogic.test.ts` | `rowMatchesFilter` / `applyFilters` with mixed `multiple` groups |
+
+Hook `useFilterableDatabase` delegates to `toggleFilterSelection` (no separate hook test — Jest env is `node`).
+
+UI (Radio vs Checkbox): manual QA on Category (`multiple: false`); no RTL in repo unless `testEnvironment` extended.
+
+---
+
+### Task 25 + 26 integration notes
+
+- Task 25 owns layout/orchestration; Task 26 owns `FilterOption` control type.
+- If both touch `FilterableSelectComponent.tsx`, merge `defaultStyleProps` (filter select props + `radioProps`).
+- Run after both: `pnpm test --testPathPattern=filterableDatabase` (**target: ≥68 tests** after Task 25–26)
