@@ -165,7 +165,15 @@ Each component entry should include:
 
 ### 6. LLM-oriented config docs (`doc-flat.json`)
 
-To include the component in generated theme docs (`pnpm run docs` → `public/doc-flat.json`):
+**After creating or changing a custom component** (style props type, `useProps` id, `useCustomTheme.ts` registration, or `@docAttached` tags), **regenerate documentation**:
+
+```bash
+pnpm run docs
+```
+
+This updates `public/doc-flat.json` (and related TypeDoc artifacts) via `typedoc-plugin-config-filter`. Commit regenerated output when the component is part of the same change.
+
+To include the component in generated theme docs:
 
 1. The style props type must be **`export`** (otherwise TypeDoc will not index it). Use a **unique** type name across barrel `export *` (e.g. `ExportButtonComponentStyleProps`, not a generic `StyleProps` reused from multiple modules in the same barrel).
 2. Add a tag block above the type:
@@ -231,6 +239,7 @@ This allows container-level overrides for theme defaults.
 - [ ] Add `ComponentNameThemeProps()` in `useCustomTheme.ts`.
 - [ ] Document with commented examples.
 - [ ] For LLM docs: export the style type and add `@docAttached` / `@configPath` / `@displayName` (see §6).
+- [ ] Run **`pnpm run docs`** and include updated `public/doc-flat.json` in the change (see §6).
 - [ ] Use resolved props in JSX.
 
 ## Examples from the codebase

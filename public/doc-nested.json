@@ -429,6 +429,140 @@
         }
       }
     },
+    "Record_string_IStringParameterSelectSettings": {
+      "properties": {
+        "[string]": {
+          "properties": {
+            "items": {
+              "items": {
+                "type": "string"
+              }
+            },
+            "source": {
+              "type": "string",
+              "description": "Name of the optional \"data source\" to fetch \"items\" and \"itemData\" from.\r\nThis is used for connecting to data sources via the e-commerce API.\r\nCurrently, this is only supported for type \"fullwidthcards\" and \"grid\"."
+            },
+            "database": {
+              "properties": {
+                "dataSource": {
+                  "properties": {
+                    "export": {
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "sessionId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "href": {
+                      "type": "string"
+                    },
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "csv",
+                        "json"
+                      ]
+                    }
+                  }
+                },
+                "itemDataDefinition": {
+                  "properties": {
+                    "value": {
+                      "type": "number"
+                    },
+                    "displayname": {
+                      "type": "number"
+                    },
+                    "tooltip": {
+                      "type": "number"
+                    },
+                    "description": {
+                      "type": "number"
+                    },
+                    "imageUrl": {
+                      "type": "number"
+                    },
+                    "color": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "unknown",
+                      "name": "Record<string, number>"
+                    }
+                  }
+                },
+                "filters": {
+                  "items": {
+                    "properties": {
+                      "column": {
+                        "type": "number"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "multivalued": {
+                        "type": "boolean"
+                      },
+                      "multiple": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "color",
+                          "text"
+                        ]
+                      },
+                      "filterValues": {
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "color",
+                "buttonflex",
+                "buttongroup",
+                "chipgroup",
+                "dropdown",
+                "imagedropdown",
+                "fullwidthcards",
+                "carousel",
+                "grid",
+                "multiselect-checkboxes"
+              ],
+              "description": "Type of select component to use."
+            },
+            "itemData": {
+              "type": "unknown",
+              "name": "Record<string, ISelectComponentItemDataType>",
+              "description": "Record containing optional further item data per item name."
+            },
+            "searchable": {
+              "type": "boolean",
+              "description": "Enable search for string list inputs (only for type==\"dropdown\")."
+            },
+            "limit": {
+              "type": "number",
+              "description": "Max number of options rendered at the same time (only for type==\"dropdown\"). Default: 5 if searchable is enabled"
+            },
+            "height": {
+              "type": "string",
+              "description": "Optional CSS controlling the absolute height of the widget.\r\nIn case this is not specified, the default behavior of the widget\r\nis to adapt its height according to the items."
+            }
+          }
+        }
+      }
+    },
     "ImageProps": {
       "properties": {
         "fit": {
@@ -1558,6 +1692,20 @@
               "description": "",
               "type": {
                 "$ref": "#/definitions/IconProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterStringComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "componentSettings",
+              "description": "Select settings per parameter name, displayname, or id (see ParameterSelectComponent).",
+              "type": {
+                "$ref": "#/definitions/Record_string_IStringParameterSelectSettings"
               }
             }
           ],
