@@ -2,35 +2,77 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a `FilterableSelectComponent` that loads CSV from a public URL, filters rows via Mantine TreeSelect UI, and displays results through the existing `SelectComponentAsync` infinite-scroll path.
+**Goal:** Add a `FilterableSelectComponent` that loads CSV from a public URL, filters rows via Mantine filter UI (Accordion + checkboxes), and displays results through the existing `SelectComponentAsync` infinite-scroll path.
 
-**Architecture:** `csvEngine` implements `FilterableDatabaseEngine` (fetch + parse). Shared `filterLogic` and `itemMapping` operate on a normalized `DatabaseTable`. A client-side `IScrollingApi` adapter feeds `SelectComponentAsync`. Types from commit `fdc188b` merged into `appbuilder.ts` with Zod validation.
+**Architecture:** `FilterableDatabaseEngine` (`csvEngine` | `jsonEngine`) + `resolveDataSource` (`href` | `export`) → shared `filterLogic` / `itemMapping` → client-side `IScrollingApi` adapter → `SelectComponentAsync`. Types from commit `fdc188b` merged into `appbuilder.ts` with Zod validation.
 
-**Tech Stack:** React 19, TypeScript, Mantine v8 (Tree), Zustand (existing scrolling store bypassed — local adapter), Jest, Zod.
+**Tech Stack:** React 19, TypeScript, Mantine v8 (Accordion, Checkbox, Pill), Zustand (existing scrolling store bypassed — local adapter), Jest, Zod.
+
+**Status (2026-06-23):** Tasks 1–12, Phase 2, and Phase 3 (Tasks 22–23) complete in submodule. Commits: `3cf9008` (review fixes), `ff5f016` (jsonEngine), `a4e192a` (export). **58 tests** in `lib/filterableDatabase` + settings. Parent repo: submodule pointer, plan, `textile-database-sample.json` commit pending. Manual QA (`SS-9717.json` href + export path) recommended before PR.
 
 **Spec:** `docs/superpowers/specs/2026-06-23-ss-9717-filterable-database-design.md`
 
 **Branch:** `task/SS-9717-Filterable-database-component` (parent + `src/shared` submodule)
 
+**Manual test URL:** `http://localhost:3000/?g=SS-9717.json` (parameter **TenCards**, session SS-8997 / `sdr8euc1`)
+
 ---
 
 ## File map
 
-| File | Action |
-|------|--------|
-| `src/shared/features/appbuilder/config/appbuilder.ts` | Add `IFilterableDatabaseSettings`, `database` field |
-| `src/shared/features/appbuilder/config/appbuildertypecheck.ts` | Zod schemas + href-required refinement |
-| `src/shared/entities/parameter/lib/filterableDatabase/types.ts` | Create |
-| `src/shared/entities/parameter/lib/filterableDatabase/csvEngine.ts` | Create |
-| `src/shared/entities/parameter/lib/filterableDatabase/filterLogic.ts` | Create |
-| `src/shared/entities/parameter/lib/filterableDatabase/itemMapping.ts` | Create |
-| `src/shared/entities/parameter/lib/filterableDatabase/createScrollingApi.ts` | Create |
-| `src/shared/entities/parameter/lib/filterableDatabase/__tests__/*.test.ts` | Create |
-| `src/shared/entities/parameter/model/filterableDatabase/useFilterableDatabase.ts` | Create |
-| `src/shared/entities/parameter/ui/select/FilterableSelectComponent.tsx` | Create |
-| `src/shared/entities/parameter/ui/select/SelectComponent.tsx` | Wire `database` branch |
-| `public/SS-9717.json` | Test fixture (parent repo) |
-| `public/textile-database-sample.csv` | Trimmed CSV sample (parent repo) |
+### Phase 1 (original)
+
+| File | Action | Status |
+|------|--------|--------|
+| `src/shared/features/appbuilder/config/appbuilder.ts` | Add `IFilterableDatabaseSettings`, `database` on select settings | Done |
+| `src/shared/features/appbuilder/config/appbuildertypecheck.ts` | Zod schemas + href refinement | Done (+ Phase 2 fixes) |
+| `src/shared/entities/parameter/lib/filterableDatabase/types.ts` | Create | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/csvEngine.ts` | Create | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/filterLogic.ts` | Create | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/itemMapping.ts` | Create | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/createScrollingApi.ts` | Create | Done (+ Phase 2 fixes) |
+| `src/shared/entities/parameter/lib/filterableDatabase/__tests__/*.test.ts` | Create | Done (58 tests in lib + settings) |
+| `src/shared/entities/parameter/model/filterableDatabase/useFilterableDatabase.ts` | Create | Done (+ Phase 2) |
+| `src/shared/entities/parameter/ui/select/FilterableSelectComponent.tsx` | Create | Done (thin orchestrator) |
+| `src/shared/entities/parameter/ui/select/SelectComponent.tsx` | Wire `database` branch | Done |
+| `public/SS-9717.json` | Test fixture (parent repo) | Done (+ Phase 2) |
+| `public/textile-database-sample.csv` | Trimmed CSV sample (parent repo) | Done |
+
+### Phase 2 (integration, UI, bugfixes)
+
+| File | Action | Status |
+|------|--------|--------|
+| `src/shared/entities/parameter/lib/filterableDatabase/filterableDatabaseSettingsSchema.ts` | Extract Zod schema (avoid circular import with theme registry) | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/buildActiveFilterTags.ts` | Pure helper for active-filter pills | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/resolveFilterColor.ts` | Named color → hex for `ColorSwatch` | Done |
+| `src/shared/entities/parameter/lib/filterableDatabase/__tests__/buildActiveFilterTags.test.ts` | Unit test | Done |
+| `src/shared/entities/parameter/ui/filterableDatabase/FilterableDatabaseFilters.tsx` | Accordion container | Done |
+| `src/shared/entities/parameter/ui/filterableDatabase/FilterableDatabaseFilterGroup.tsx` | One filter group panel | Done |
+| `src/shared/entities/parameter/ui/filterableDatabase/FilterableDatabaseFilterOption.tsx` | Checkbox row + optional swatch | Done |
+| `src/shared/entities/parameter/ui/filterableDatabase/FilterableDatabaseActiveFilterTags.tsx` | Removable `Pill` tags | Done |
+| `src/shared/entities/parameter/ui/filterableDatabase/FilterableDatabaseFilters.module.css` | Row hover + accordion item gap | Done |
+| `src/shared/entities/parameter/config/selectComponent.theme.types.ts` | Allow `database`, `height`, `searchable`, etc. in theme `componentSettings` | Done |
+| `src/shared/entities/parameter/ui/ParameterSelectComponent.tsx` | Pass `database={settings.database}` | Done |
+| `src/shared/entities/parameter/ui/ParameterStringComponent.tsx` | `componentSettings` theme merge + `database` render branch; pass `value` to `SelectComponent` | Done |
+| `src/shared/entities/parameter/model/select/useSelectAsync.ts` | `resetState` + `searchRevision` deps; `onSyncScrollingApiState` callback | Done |
+| `src/shared/entities/parameter/ui/select/SelectComponentAsync.tsx` | `prependTopSection`, `onSyncScrollingApiState`, conditional reset + `displayValue` JSON→key | Done (+ review fixes) |
+
+### Phase 3 (additional data sources)
+
+| File | Action | Status |
+|------|--------|--------|
+| `entities/parameter/lib/filterableDatabase/fetchDataSource.ts` | Shared `fetchText(href)` | Done (`ff5f016`) |
+| `entities/parameter/lib/filterableDatabase/jsonEngine.ts` | JSON parse → `DatabaseTable` (Option A) | Done |
+| `entities/parameter/lib/filterableDatabase/resolveEngine.ts` | `format` explicit or `.json`/`.csv` suffix | Done |
+| `entities/parameter/lib/filterableDatabase/exportEngine.ts` | Session export → raw text via `getExport` + `actions.request/fetch` | Done (`a4e192a`) |
+| `entities/parameter/lib/filterableDatabase/resolveDataSource.ts` | `fetchRawText` — href precedence over export | Done |
+| `entities/parameter/lib/filterableDatabase/__tests__/jsonEngine.test.ts` | 6 parse tests | Done |
+| `entities/parameter/lib/filterableDatabase/__tests__/resolveEngine.test.ts` | 5 resolution tests | Done |
+| `entities/parameter/lib/filterableDatabase/__tests__/exportEngine.test.ts` | Mock export store | Done |
+| `entities/parameter/lib/filterableDatabase/__tests__/resolveDataSource.test.ts` | href vs export routing | Done |
+| `features/appbuilder/config/appbuilder.ts` | `dataSource.format?: "csv" \| "json"` | Done |
+| `public/textile-database-sample.json` | Parent repo JSON sample (Option A) | Done (uncommitted in parent) |
+| `tsconfig.jest.json` (parent repo) | Explicit `baseUrl` + `paths` for `@AppBuilderLib/*` in tests | Done |
 
 ---
 
@@ -262,7 +304,6 @@ describe("csvEngine.parse", () => {
 	it("parses simple rows", () => {
 		const {rows} = csvEngine.parse("a,b\n1,2\n3,4\n");
 		expect(rows).toEqual([
-			["a", "b"],
 			["1", "2"],
 			["3", "4"],
 		]);
@@ -330,6 +371,9 @@ function parseCsv(raw: string): DatabaseTable {
 		.map((l) => l.trimEnd())
 		.filter((l) => l.length > 0)
 		.map(parseCsvLine);
+	if (rows.length > 0) {
+		rows.shift(); // v1: first row is header
+	}
 	return {rows};
 }
 
@@ -643,36 +687,402 @@ Load app with `SS-9717.json`; verify filters + selection.
 
 ### Task 12: Full test suite + submodule pointer
 
-- [ ] **Step 1: Run all new tests**
+- [x] **Step 1: Run all new tests** — `pnpm test -- src/shared/entities/parameter/lib/filterableDatabase filterableDatabaseSettings.test.ts` (**58 passed** after Phase 3)
 
-```bash
-pnpm test -- filterableDatabase
-pnpm test -- filterableDatabaseSettings
+- [x] **Step 2: Update parent submodule pointer** — initial pointer committed; review-fix pointer update in parent pending
+
+> Tasks 1–12 complete. Continue with **Phase 2** below.
+
+---
+
+No placeholders. Export data source explicitly deferred.
+
+---
+
+## Phase 2: Integration, UI polish, and bugfixes
+
+> Added after initial implementation. Captures conversation history so context overflow does not lose work.
+
+### Task 13: Settings config pattern (SS-8997 style) — DONE
+
+**Problem:** `database` in `appBuilderOverride` / wrong component path did not match App Builder theme conventions.
+
+**Solution:**
+- Test fixture `public/SS-9717.json` uses **SS-8997 session** (`sdr8euc1`) and pattern:
+
+```json
+"themeOverrides": {
+  "components": {
+    "ParameterSelectComponent": {
+      "defaultProps": {
+        "componentSettings": {
+          "TenCards": {
+            "type": "fullwidthcards",
+            "height": "400px",
+            "searchable": true,
+            "database": { ... }
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
-- [ ] **Step 2: Update parent submodule pointer**
+- `database` added to `ISelectParameterSettings` (not only `IStringParameterSelectSettings`).
+- `ParameterSelectComponent` passes `database={settings.database}` to `SelectComponent`.
+- `ParameterStringComponent`: optional `componentSettings` theme merge (for future String params); render branch extended to show `SelectComponent` when `selectSettings.database` is set (not only `items` / `source`).
+
+**Key:** `componentSettings` key must match parameter **name** in the model (`TenCards`, not `RhinoVersion`).
+
+---
+
+### Task 14: Theme validation for `componentSettings` — DONE
+
+**Problem:** App failed to load with:
+
+```
+Unrecognized keys: "height", "searchable", "database"
+→ at themeOverrides.components.ParameterSelectComponent.defaultProps.componentSettings.TenCards
+```
+
+**Solution:**
+- Extended `selectComponentOverridesSchema` in `selectComponent.theme.types.ts` with `height`, `searchable`, `limit`, `source`, `database`.
+- Extracted `filterableDatabaseSettingsSchema` to `entities/parameter/lib/filterableDatabase/filterableDatabaseSettingsSchema.ts` to avoid **circular import** (`appbuildertypecheck` → theme registry → `selectComponent.theme.types` → `appbuildertypecheck`).
+
+---
+
+### Task 15: Zod fixes — DONE
+
+| Fix | Detail |
+|-----|--------|
+| Relative `href` | Accept absolute URL **or** root-relative path (`/textile-database-sample.csv`) |
+| `safeExtend` | `IStringParameterSelectSettingsSchema` uses `ISelectParameterSettingsSchema.safeExtend({ items, source })` — avoids refinement overwrite error |
+| `database` on select settings | `ISelectParameterSettingsSchema` includes `database: filterableDatabaseSettingsSchema.optional()` |
+
+**Note:** `filterableDatabaseSettings.test.ts` fixed in Task 21 (Jest mocks for `@shapediver/viewer.session` / `viewer.shared.types`).
+
+---
+
+### Task 16: Filter UI refactor (separate components) — DONE
+
+**Problem:** Raw Mantine `Tree` — no styling, `Checkbox.Indicator` not clickable, no visual grouping, no active-filter tags in search area.
+
+**Architecture** (`entities/parameter/ui/filterableDatabase/`):
+
+| Component | Role |
+|-----------|------|
+| `FilterableDatabaseFilters` | `Stack` + `Accordion` (`variant="separated"`) |
+| `FilterableDatabaseFilterGroup` | One accordion panel per filter definition |
+| `FilterableDatabaseFilterOption` | Full `Checkbox` row + optional `ColorSwatch` |
+| `FilterableDatabaseActiveFilterTags` | Removable `Pill` tags (`"Filter 2: Red"`) |
+
+`FilterableSelectComponent.tsx` is a thin orchestrator (~70 lines): hook + filters + `SelectComponentAsync`.
+
+**UX details:**
+- Active filter pills via `SelectComponentAsync.prependTopSection` (above cards, below search input).
+- `buildActiveFilterTags(selection, filterGroups)` in lib + unit test.
+- `resolveFilterColor.ts` — map common color names to hex; skip invalid values (avoids THREE.js warnings for names like `Gray`).
+- Accordion **collapsed by default** (`defaultValue={[]}`); overridable via theme `accordionProps.defaultValue`.
+- Accordion item gap: `margin-top: var(--mantine-spacing-sm)` on sibling items in `FilterableDatabaseFilters.module.css` (Mantine `--accordion-spacing` on root does **not** affect item margin in v8.3 — must target `.mantine-Accordion-item + .mantine-Accordion-item`).
+
+**Deferred:** Register filter component `ThemeProps` in `useCustomTheme.ts` / theme registry (factories exist, not wired).
+
+---
+
+### Task 17: React re-render bugs (filters + search) — DONE
+
+**Root cause:** `useSelectAsync` memoized `items` / `itemsData` only by `scrollingApi` **reference**. `createScrollingApi` mutates `api.items` in place; React did not re-render.
+
+| Trigger | Fix |
+|---------|-----|
+| Filter selection | `updateSelection` → `bumpResetState()`; hook calls `setScrollingApi({...api})` after `updateSelection` |
+| Search input | `setSearchTerms` → `applyPaging()` + `bumpResetState()`; `useSelectAsync` increments `searchRevision` after debounce; `syncScrollingApiState()` in `useFilterableDatabase` mirrors filter sync |
+| Initial filter fix | `useMemo` deps include `scrollingApi?.resetState` |
+
+**Files:** `createScrollingApi.ts`, `useSelectAsync.ts`, `useFilterableDatabase.ts`, `SelectComponentAsync.tsx` (`onSyncScrollingApiState` prop).
+
+**Test added:** `setSearchTerms bumps resetState so consumers can re-render` in `createScrollingApi.test.ts`.
+
+---
+
+### Task 18: Other bugfixes — DONE
+
+| Bug | Fix |
+|-----|-----|
+| `Maximum update depth exceeded` in filter tree | Removed `tree` from `useEffect` deps when syncing checkbox state (obsolete after Accordion refactor; tree removed entirely in Task 16) |
+| `props.database` empty — String param branch | `ParameterStringComponent` checks `selectSettings.database` |
+| Checkbox only worked on label text | Replaced `Checkbox.Indicator` with full `Checkbox` + row click handler (Task 16) |
+
+---
+
+### Task 19: Manual verification checklist — PENDING QA
+
+**URL:** `http://localhost:3000/?g=SS-9717.json` → **TenCards**
+
+| # | Check | Expected |
+|---|-------|----------|
+| 1 | Filter panels | 3 collapsed accordion groups: **Category**, **Color**, **Materials** |
+| 2 | Checkbox / label click | Toggles selection |
+| 3 | Active pills | Appear above cards (prepend section); removable |
+| 4 | Filter logic | No spurious header values in filters; Red → fabric cards; combined filters narrow results |
+| 5 | Search | Typing does **not** clear selected card if still in filtered list |
+| 6 | Selection persistence | Card stays selected after filter change when item still visible |
+| 7 | Console | No `Maximum update depth exceeded` |
+| 8 | JSON href (optional) | `href: "/textile-database-sample.json"` + `format: "json"` loads same data as CSV |
+| 9 | Export source (optional) | Replace `href` with `export: { name, sessionId }` on live session — Task 22 Step 5 |
+
+**Automated:**
 
 ```bash
-cd d:/projects/ShapeDiverCreateReactAppExample
-git add src/shared
-git commit -m "SS-9717: Update AppBuilderShared submodule for filterable database"
+pnpm test -- src/shared/entities/parameter/lib/filterableDatabase filterableDatabaseSettings.test.ts
+cd src/shared && pnpm exec tsc --noEmit
 ```
 
 ---
 
-## Plan self-review
+### Task 21: Code review fixes — DONE
+
+Post-implementation review (`fdf3cb2..a82481e` + follow-up commit `3cf9008`).
+
+| Issue | Fix |
+|-------|-----|
+| Load-time `onChange(null)` | Removed redundant `setSelection({})` after CSV parse; `isSelectionEqual` guard in `updateSelection` skips no-op `bumpResetState` |
+| CSV header as data | `csvEngine.parse` — `rows.shift()` (v1: always skip first row); test `"skips first row as header"` |
+| Unconditional reset on search/filter | `SelectComponentAsync` — `isValueInAvailableItems()`; `onChange(null)` only when value absent (item key or JSON `data` match) |
+| String param value not shown | `ParameterStringComponent` — `value={value \|\| undefined}`; `resolveItemKeyForValue` + `displayValue` in `SelectComponentAsync` for card highlight |
+| Jest ESM crash | `filterableDatabaseSettings.test.ts` — viewer mocks (same pattern as `validateSettingsJsonFile.test.ts`) |
+
+**Tests after fixes:** 6 suites, 35 tests — all PASS.
+
+---
+
+### Known limitations / follow-up
+
+| Item | Status | Notes |
+|------|--------|-------|
+| CSV header row | **Done** (Task 21) | First row always skipped; v2 could add `hasHeaderRow` setting |
+| `SelectComponentAsync` reset effect | **Done** (Task 21) | Clears only when value ∉ filtered items |
+| Jest ESM | **Done** (Task 21) | Viewer mocks in settings test |
+| String param value display | **Done** (Task 21) | JSON value resolved to item key for UI |
+| **Search scope** | Open | `matchesSearchTerms` only checks `item` + `displayname` — not `description` / `data` columns |
+| **Fetch error UX** | Open | Inline `Text c="red"` only; spec also mentions notification |
+| **Theme registry** | Open | `FilterableSelectComponentThemeProps` not registered in `useCustomTheme.ts` |
+| **`FilterableDatabaseFilterGroup.multiple`** | Open | Prop passed but unused; hook handles toggle logic |
+| **`ParameterStringComponent` TS** | Open | `componentSettings` + `useProps` typing — verify clean `tsc` |
+| **`dataSource.export`** | **Done** (Task 22) | `exportEngine` + `resolveDataSource`; Zod `href OR export`; commit `a4e192a` |
+| **`jsonEngine`** | **Done** (Task 23) | `jsonEngine` + `resolveEngine` + `format`; commit `ff5f016` |
+| **Export session timing** | Open | No retry if export store not ready on first mount (Task 22 review) |
+| **Export-only JSON** | Open | Requires explicit `dataSource.format: "json"` (no href suffix to infer) |
+| **Production config** | Deferred | Southern Sewing production parameter name / live export name |
+
+---
+
+## Phase 3 (v2): Additional data sources — DONE
+
+> Completed 2026-06-23. Builds on v1 `FilterableDatabaseEngine` + shared `filterLogic` / `itemMapping` / `createScrollingApi`. UI unchanged — only load/parse path extended.
+
+**Load path (current):**
+
+```
+resolveDataSource.fetchRawText(settings)
+  ├─ href → engine.fetch(href)
+  └─ export → exportEngine.fetch({ name, sessionId })
+resolveFilterableDatabaseEngine(settings).parse(raw) → DatabaseTable
+```
+
+### Task 22: `dataSource.export` (ShapeDiver export) — DONE
+
+**Goal:** Load database rows from a **session export** (Grasshopper-generated CSV) instead of a public `href`.
+
+**Motivation:** Production Southern Sewing data may live behind ShapeDiver session exports, not a static public URL. Types already document this in `IFilterableDatabaseSettings.dataSource.export`; v1 Zod explicitly rejects export-only configs.
+
+**Commit:** `a4e192a` — `SS-9717: Add filterable database export data source`
+
+**Implemented state:**
+
+| Layer | Status |
+|-------|--------|
+| `exportEngine.ts` | `getExport(sessionId, name)` → `actions.request()` → `content[0].href` → `actions.fetch().text()` (JWT-aware; fallback `fetchText`) |
+| `resolveDataSource.ts` | `hasDataSource()`, `fetchRawText()` — href takes precedence when both set |
+| `filterableDatabaseSettingsSchema.ts` | `.refine((ds) => !!ds.href \|\| !!ds.export)` |
+| `useFilterableDatabase.ts` | Loads via `fetchRawText`; effect deps on `dataSource` fields |
+| Tests | `exportEngine`, `resolveDataSource`, settings accept export-only |
+
+**Target architecture:**
+
+```
+dataSource.export ──► exportEngine.fetch({ name, sessionId })
+                           │
+                           ▼
+                      raw CSV string ──► csvEngine.parse() ──► DatabaseTable
+                           │
+              (same filterLogic → itemMapping → scrolling API)
+```
+
+**Files (planned):**
+
+| File | Action |
+|------|--------|
+| `entities/parameter/lib/filterableDatabase/exportEngine.ts` | Create — resolve export URL / download via existing session/export APIs |
+| `entities/parameter/lib/filterableDatabase/resolveDataSource.ts` | Create — pick `href` vs `export`, single `fetchTable(settings)` entry |
+| `entities/parameter/lib/filterableDatabase/filterableDatabaseSettingsSchema.ts` | Modify — `href` **or** `export` required (not both mandatory); keep href precedence when both set |
+| `entities/parameter/model/filterableDatabase/useFilterableDatabase.ts` | Use `resolveDataSource` instead of direct `csvEngine.fetch(href)` |
+| `entities/parameter/lib/filterableDatabase/__tests__/exportEngine.test.ts` | Mock session/export API |
+| `features/appbuilder/config/__tests__/filterableDatabaseSettings.test.ts` | Accept export-only; reject neither href nor export |
+
+**Implementation steps:**
+
+- [x] **Step 1:** Research existing export download path in App Builder (session store / `@shapediver/viewer` export API — same patterns as other export downloads).
+- [x] **Step 2:** Implement `exportEngine.fetch(exportRef): Promise<string>` returning raw CSV text.
+- [x] **Step 3:** Relax Zod: `(ds.href || ds.export)` with clear error message; update tests.
+- [x] **Step 4:** Wire `useFilterableDatabase` — if `href` set, use current path; else `exportEngine.fetch` + `csvEngine.parse`.
+- [ ] **Step 5:** Manual test with session that exposes a CSV export (fixture or Southern Sewing model).
+- [x] **Step 6:** Commit submodule `SS-9717: Add filterable database export data source`.
+
+**Code review (Task 22):** Ready to merge. Follow-ups: session readiness retry, export-only needs explicit `format` for JSON, `lib` → `model` coupling in `exportEngine`.
+
+**Open questions (manual QA — Step 5 still open):**
+
+- Auth / ticket: confirm `sessionId` maps to loaded App Builder session namespace.
+- Caching: re-fetch on every mount vs cache until session commit.
+- Error UX: reuse notification backlog (inline + toast).
+
+---
+
+### Task 23: `jsonEngine` — DONE
+
+**Commit:** `ff5f016` — `SS-9717: Add filterable database jsonEngine`
+
+**Goal:** Support **JSON** database files via the same `FilterableDatabaseEngine` extension point (not only CSV).
+
+**Motivation:** Datasets may ship as JSON (pre-structured rows). Implemented alongside Task 22; `csvEngine` remains default.
+
+**Target architecture:**
+
+```
+dataSource.href ──fetch──► jsonEngine.fetch(href)
+                                │
+                                ▼
+                         jsonEngine.parse(raw) ──► DatabaseTable { rows: string[][] }
+                                │
+              (shared filterLogic → itemMapping → scrolling API — unchanged)
+```
+
+**JSON format (Option A — implemented):**
+
+```json
+{
+  "columns": ["id", "name", "category", "color"],
+  "rows": [
+    ["1", "Red Cotton", "Fabric", "Red"]
+  ]
+}
+```
+
+`columns` is optional metadata (ignored at parse; only `rows` stored in `DatabaseTable`).
+
+Option B — array of objects mapped via `itemDataDefinition` keys — **deferred**.
+
+**Files (implemented):**
+
+| File | Action |
+|------|--------|
+| `entities/parameter/lib/filterableDatabase/jsonEngine.ts` | Create — `fetch` (reuse `csvEngine.fetch` or shared `fetchText`) + `parse` |
+| `entities/parameter/lib/filterableDatabase/resolveEngine.ts` | Create — select `csvEngine` vs `jsonEngine` by `dataSource.format?: "csv" \| "json"` or file extension |
+| `entities/parameter/lib/filterableDatabase/types.ts` | Optional — `dataSource.format` on settings type + Zod |
+| `entities/parameter/lib/filterableDatabase/__tests__/jsonEngine.test.ts` | Parse fixtures, edge cases |
+| `public/textile-database-sample.json` | Parent repo — sample fixture (optional) |
+
+**Implementation steps:**
+
+- [x] **Step 1:** JSON schema — Option A adopted (`{ columns?, rows: string[][] }`).
+- [x] **Step 2:** TDD `jsonEngine.parse` → `DatabaseTable`.
+- [x] **Step 3:** `dataSource.format` + suffix inference; default `csv`.
+- [x] **Step 4:** Wire `resolveEngine` in `useFilterableDatabase` (via `fetchRawText` after Task 22).
+- [x] **Step 5:** Zod + settings test for `format: "json"`.
+- [x] **Step 6:** Commit submodule `SS-9717: Add filterable database jsonEngine`.
+
+**Code review (Task 23):** Proceed to Task 22 — no blockers. Minor: document `columns` ignored at parse; Zod negative test for invalid `format`.
+
+**Relationship to Task 22:** `exportEngine` returns raw text; `resolveFilterableDatabaseEngine` chooses parser **after** fetch regardless of href vs export.
+
+**Out of scope for Task 23:** Arbitrary nested JSON without tabular mapping; server-side JSON via e-commerce `source` API.
+
+---
+
+### Task 24: Jest / test TypeScript paths — DONE
+
+**Problem:** Test files under `src/shared/` using `@AppBuilderLib/` failed IDE type-check (`tsconfig.json` excludes `**/*.test.ts`; paths not applied).
+
+**Solution:**
+
+1. **`tsconfig.jest.json` (parent repo)** — standalone config (does not `extends` root) with `baseUrl` + `paths` for `@AppBuilderLib/*`, `include` only `src/**/*.test.ts(x)` and `src/**/*.spec.ts(x)`, `module: "esnext"` (transitive `import.meta` in app code).
+2. **`tsconfig.json`** — `"references": [{ "path": "./tsconfig.jest.json" }]` so IDE loads the test project alongside the app project.
+3. **Jest runtime** — unchanged: `jest.config.mjs` `moduleNameMapper` + `ts-jest` with `tsconfig: "tsconfig.jest.json"`.
+
+**Test import convention:** prefer relative imports + `Parameters<typeof fn>` for types where possible (`resolveEngine.test.ts`). When mocking modules imported by SUT via `@AppBuilderLib/`, keep the same alias in `jest.mock()` and `import` — paths come from `tsconfig.jest.json`.
+
+After config change: reload TypeScript server in IDE if `@AppBuilderLib` errors persist.
+
+---
+
+### Task 20: Custom filter labels — DONE
+
+Optional `label` on each entry in `database.filters[]`:
+
+```json
+{ "column": 3, "label": "Category", "multiple": true }
+```
+
+- Type: `IFilterableDatabaseSettings.filters[].label?: string` in `appbuilder.ts`
+- Zod: `filterableDatabaseSettingsSchema` — `label: z.string().min(1).optional()`
+- UI: `useFilterableDatabase` → `filter.label?.trim() || \`Filter ${n}\`` (accordion title + active pills)
+- Fixture: `public/SS-9717.json` — Category / Color / Materials
+
+---
+
+### Commit guidance
+
+**Submodule (`src/shared`) — done:**
+
+| Commit | Message |
+|--------|---------|
+| `3cf9008` | Review fixes |
+| `ff5f016` | jsonEngine |
+| `a4e192a` | export data source |
+
+**Parent repo — pending:**
+
+```bash
+git add public/SS-9717.json public/textile-database-sample.json \
+  docs/superpowers/plans/2026-06-23-ss-9717-filterable-database.md \
+  tsconfig.jest.json src/shared
+git commit -m "SS-9717: Phase 3 data sources, plan, jest paths, submodule pointer"
+```
+
+Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) unless part of this task.
+
+---
+
+## Plan self-review (updated)
 
 | Spec requirement | Task |
 |------------------|------|
-| CSV via href only | Task 4, Zod refine Task 2 |
+| CSV via href only | Task 4, Zod refine Task 2, 15 |
 | csvEngine + future jsonEngine interface | Task 3–4 |
 | Shared filter logic | Task 5 |
-| IScrollingApi adapter | Task 7 |
-| SelectComponentAsync reuse | Task 9–10 |
-| TreeSelect filters + color swatch | Task 9 |
+| IScrollingApi adapter | Task 7, 17 |
+| SelectComponentAsync reuse | Task 9–10, 16–17 |
+| Filter UI (client-approved; Accordion replaced Tree in practice) | Task 16 |
 | Type definitions PR 318 | Task 1 |
-| Zod validation | Task 2 |
-| Unit tests | Tasks 2, 4–7 |
-| Manual fixture | Task 11 |
-
-No placeholders. Export data source explicitly deferred.
+| Zod validation | Task 2, 14–15 |
+| Theme `componentSettings` pattern | Task 13–14 |
+| Unit tests | Tasks 2, 4–7, 16 (`buildActiveFilterTags`), 21, 22–23 (**58** total) |
+| Manual fixture | Task 11, 13 |
+| Search + filter pills | Task 16–17 |
+| Code review blockers | Task 21 |
+| Selection lifecycle (load/search/filter) | Task 21 |
+| Export data source (`dataSource.export`) | Task 22 — **Done** |
+| JSON data source (`jsonEngine`) | Task 23 — **Done** |
+| Jest test path aliases | Task 24 — **Done** |

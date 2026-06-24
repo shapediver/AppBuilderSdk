@@ -3,6 +3,13 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"moduleResolution": "node",
+		"baseUrl": "src",
+		"paths": {
+			"@AppBuilderShared/*": ["./shared/*"],
+			"@AppBuilderLib/*": ["./shared/*"],
+			"~/*": ["./*"],
+			"@modelstorage": ["../modelstorage.ts"]
+		},
 		"types": [
 			"node",
 			"@testing-library/jest-dom",

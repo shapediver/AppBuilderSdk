@@ -3,72 +3,93 @@
 	"sessions": [
 		{
 			"id": "default",
-			"slug": "unHEkdNzahgHiF1iQDO278KoMX2CvC"
+			"ticket": "aeb34c624ff75099dda49670f13df76a4b9d3347258629cbc3e3373fb5e5bd04b2cb7c7c861982b5f81abf6aff38a8358411159926cb1d2114f9e7a08de7e81407f2e658c409c004df266d8fb8b1e30ced636e61e5590d4634de141859aa1d14edacc2b5e7ceeb-1dcebb5e8b7c42d0d368b0a8b1a03ae2",
+			"modelViewUrl": "https://sdr8euc1.eu-central-1.shapediver.com"
 		}
 	],
-	"appBuilderOverride": {
-		"version": "1.0",
-		"containers": [
-			{
-				"name": "right",
-				"tabs": [
-					{
-						"name": "Textile",
-						"icon": "adjustments",
-						"tooltip": "SS-9717 filterable database",
-						"widgets": [
-							{
-								"type": "accordion",
-								"props": {
-									"parameters": [
-										{
-											"name": "Textile",
-											"overrides": {
-												"settings": {
-													"selectSettings": {
-														"type": "fullwidthcards",
-														"height": "400px",
-														"searchable": true,
-														"database": {
-															"dataSource": {
-																"href": "/textile-database-sample.csv"
-															},
-															"itemDataDefinition": {
-																"value": 0,
-																"displayname": 1,
-																"imageUrl": 2,
-																"data": {
-																	"category": 3,
-																	"color": 4,
-																	"materials": 5
-																}
-															},
-															"filters": [
-																{"column": 3, "multiple": true},
-																{
-																	"column": 4,
-																	"type": "color",
-																	"multiple": true
-																},
-																{
-																	"column": 5,
-																	"multivalued": true,
-																	"multiple": true
-																}
-															]
-														}
-													}
-												}
-											}
-										}
-									],
-									"exports": []
-								}
+	"themeOverrides": {
+		"components": {
+			"ParameterSelectComponent": {
+				"defaultProps": {
+					"componentSettings": {
+						"TenCards": {
+							"type": "fullwidthcards",
+							"height": "400px",
+							"searchable": true,
+							"database": {
+								"dataSource": {
+									"href": "/textile-database-sample.csv"
+								},
+								"itemDataDefinition": {
+									"value": 0,
+									"displayname": 1,
+									"imageUrl": 2,
+									"data": {
+										"category": 3,
+										"color": 4,
+										"materials": 5
+									}
+								},
+								"filters": [
+									{"column": 3, "label": "Category", "multiple": true},
+									{
+										"column": 4,
+										"label": "Color",
+										"type": "color",
+										"multiple": true
+									},
+									{
+										"column": 5,
+										"label": "Materials",
+										"multivalued": true,
+										"multiple": true
+									}
+								]
 							}
-						]
+						},
+						"SevenCards": {
+							"type": "fullwidthcards",
+							"height": "400px",
+							"searchable": true,
+							"database": {
+								"dataSource": {
+									"href": "/textile-database-sample.json",
+									"format": "json"
+								},
+								"itemDataDefinition": {
+									"value": 0,
+									"displayname": 1,
+									"imageUrl": 2,
+									"data": {
+										"category": 3,
+										"color": 4,
+										"materials": 5
+									}
+								},
+								"filters": [
+									{
+										"column": 3,
+										"label": "Category",
+										"multiple": true
+									},
+									{
+										"column": 4,
+										"label": "Color",
+										"type": "color",
+										"multiple": true
+									},
+									{
+										"column": 5,
+										"label": "Materials",
+										"multivalued": true,
+										"multiple": true
+									}
+								]
+							}
+						}
 					}
-				]
+				}
 			}
-		]
+		}
 	}
 }
