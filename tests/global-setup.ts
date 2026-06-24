@@ -2,6 +2,7 @@ import {execFileSync, execSync} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import {fetchAppLinks} from "./helpers/fetchAppLinks";
+import {fetchTestingAccountLinks} from "./helpers/fetchTestingAccountLinks";
 
 /**
  * Playwright global setup — runs once before all tests.
@@ -26,11 +27,19 @@ export default async function globalSetup() {
 	// read the JSON synchronously at module load time to generate one
 	// test.describe per slug — enabling full parallelism across all examples.
 	console.log("[global-setup] Fetching app links from tutorial markdown...");
-	const links = await fetchAppLinks();
-	const linksPath = path.resolve("tests/fixtures/.app-links.json");
-	fs.writeFileSync(linksPath, JSON.stringify(links, null, 2));
+	const markdownLinks = await fetchAppLinks();
 	console.log(
-		`[global-setup] Cached ${links.length} app links to ${linksPath}`,
+		"[global-setup] Fetching owned app links from the ShapeDiver testing account...",
+	);
+	const testingAccountLinks = await fetchTestingAccountLinks();
+	const links = new Map(markdownLinks.map((link) => [link.slug, link]));
+	for (const link of testingAccountLinks) links.set(link.slug, link);
+	const allLinks = [...links.values()];
+	const linksPath = path.resolve("tests/fixtures/.app-links.json");
+	fs.writeFileSync(linksPath, JSON.stringify(allLinks, null, 2));
+	console.log(
+		`[global-setup] Cached ${allLinks.length} app links to ${linksPath} ` +
+			`(${markdownLinks.length} markdown, ${testingAccountLinks.length} testing-account).`,
 	);
 
 	if (process.env.SKIP_DEPLOY === "1") {
