@@ -31,8 +31,13 @@
 									}
 								},
 								"filters": [
-									{"column": 1, "label": "Name", "type": "text"},
-									{"column": 3, "label": "Category", "multiple": false},
+									{"column": 1, "label": "Name", "type": "text", "inline": true},
+									{
+										"column": 3,
+										"label": "Category",
+										"multiple": true,
+										"inline": true
+									},
 									{
 										"column": 4,
 										"label": "Color",
@@ -49,9 +54,9 @@
 							}
 						},
 						"SevenCards": {
-							"type": "fullwidthcards",
+							"type": "grid",
 							"height": "400px",
-							"searchable": true,
+							"searchable": false,
 							"database": {
 								"dataSource": {
 									"href": "/textile-database-sample.json",
@@ -71,13 +76,15 @@
 									{
 										"column": 3,
 										"label": "Category",
-										"multiple": true
+										"multiple": true,
+										"inline": true
 									},
 									{
 										"column": 4,
 										"label": "Color",
 										"type": "color",
-										"multiple": true
+										"multiple": true,
+										"inline": true
 									},
 									{
 										"column": 5,

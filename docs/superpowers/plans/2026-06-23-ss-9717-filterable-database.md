@@ -8,13 +8,13 @@
 
 **Tech Stack:** React 19, TypeScript, Mantine v8 (Accordion, Checkbox, Pill), Zustand (existing scrolling store bypassed — local adapter), Jest, Zod.
 
-**Status (2026-06-23):** Tasks 1–12, Phase 2, and Phase 3 (Tasks 22–23) complete in submodule. Commits: `3cf9008` (review fixes), `ff5f016` (jsonEngine), `a4e192a` (export). **58 tests** in `lib/filterableDatabase` + settings. Parent repo: submodule pointer, plan, `textile-database-sample.json` commit pending. Manual QA (`SS-9717.json` href + export path) recommended before PR.
+**Status (2026-06-24):** Tasks 1–12, Phases 2–3, and Phase 4 (Tasks 25–31) complete in submodule. **71 tests** (`pnpm test --testPathPattern=filterableDatabase`). Parent repo: `SS-9717.json` fixture (Name `inline: true`, text filter), plan updates; submodule pointer commit pending. Manual QA recommended before PR.
 
 **Spec:** `docs/superpowers/specs/2026-06-23-ss-9717-filterable-database-design.md`
 
 **Branch:** `task/SS-9717-Filterable-database-component` (parent + `src/shared` submodule)
 
-**Manual test URL:** `http://localhost:3000/?g=SS-9717.json` (parameter **TenCards**, session SS-8997 / `sdr8euc1`)
+**Manual test URL:** `http://localhost:3000/?g=SS-9717.json` (parameter **TenCards**; dev server may use port 3001)
 
 ---
 
@@ -31,7 +31,7 @@
 | `src/shared/entities/parameter/lib/filterableDatabase/filterLogic.ts` | Create | Done |
 | `src/shared/entities/parameter/lib/filterableDatabase/itemMapping.ts` | Create | Done |
 | `src/shared/entities/parameter/lib/filterableDatabase/createScrollingApi.ts` | Create | Done (+ Phase 2 fixes) |
-| `src/shared/entities/parameter/lib/filterableDatabase/__tests__/*.test.ts` | Create | Done (58 tests in lib + settings) |
+| `src/shared/entities/parameter/lib/filterableDatabase/__tests__/*.test.ts` | Create | Done (**71** tests in filterableDatabase scope) |
 | `src/shared/entities/parameter/model/filterableDatabase/useFilterableDatabase.ts` | Create | Done (+ Phase 2) |
 | `src/shared/entities/parameter/ui/select/FilterableSelectComponent.tsx` | Create | Done (thin orchestrator) |
 | `src/shared/entities/parameter/ui/select/SelectComponent.tsx` | Wire `database` branch | Done |
@@ -73,6 +73,25 @@
 | `features/appbuilder/config/appbuilder.ts` | `dataSource.format?: "csv" \| "json"` | Done |
 | `public/textile-database-sample.json` | Parent repo JSON sample (Option A) | Done (uncommitted in parent) |
 | `tsconfig.jest.json` (parent repo) | Explicit `baseUrl` + `paths` for `@AppBuilderLib/*` in tests | Done |
+
+### Phase 4 (filter dropdown UX)
+
+| File | Action | Status |
+|------|--------|--------|
+| `ui/filterableDatabase/FilterableDatabaseFilterSelect.tsx` | Combobox + pills in input; dropdown hosts filters | Done |
+| `ui/filterableDatabase/FilterableDatabaseActiveFilterTags.tsx` | Removable pills inside `PillsInput` | Done |
+| `lib/filterableDatabase/buildFilterSelectPlaceholder.ts` | Placeholder helper | Done |
+| `lib/filterableDatabase/__tests__/buildFilterSelectPlaceholder.test.ts` | Unit test | Done |
+| `lib/filterableDatabase/buildFilterTreeData.ts` | Tree metadata incl. `text-input` nodes | Done |
+| `lib/filterableDatabase/__tests__/buildFilterTreeData.test.ts` | Unit test | Done |
+| `lib/filterableDatabase/buildFilterRenderSegments.ts` | Batch accordion groups; preserve order with `inline` filters | Done |
+| `lib/filterableDatabase/__tests__/buildFilterRenderSegments.test.ts` | Order / batching tests | Done |
+| `features/appbuilder/config/appbuilder.ts` | `type: "text"`, `inline?: boolean` on filters | Done |
+| `lib/filterableDatabase/filterableDatabaseSettingsSchema.ts` | Zod: `type`, `inline` | Done |
+| `lib/filterableDatabase/filterLogic.ts` | Text substring match; `filterNodesBySearch`; select-all helpers | Done |
+| `ui/filterableDatabase/FilterableDatabaseFilterGroup.tsx` | Accordion + `FilterableDatabaseInlineFilter`; shared `FilterableDatabaseFilterGroupBody` | Done |
+| `ui/filterableDatabase/FilterableDatabaseFilterOption.tsx` | `keepComboboxOpen` on option rows (inverted focus pattern) | Done |
+| `public/SS-9717.json` | TenCards: Name `type: "text"`, `inline: true`; Category/Color/Materials | Done |
 
 ---
 
@@ -687,7 +706,7 @@ Load app with `SS-9717.json`; verify filters + selection.
 
 ### Task 12: Full test suite + submodule pointer
 
-- [x] **Step 1: Run all new tests** — `pnpm test -- src/shared/entities/parameter/lib/filterableDatabase filterableDatabaseSettings.test.ts` (**58 passed** after Phase 3)
+- [x] **Step 1: Run all new tests** — `pnpm test --testPathPattern=filterableDatabase` (**71 passed** after Phase 4)
 
 - [x] **Step 2: Update parent submodule pointer** — initial pointer committed; review-fix pointer update in parent pending
 
@@ -818,19 +837,23 @@ Unrecognized keys: "height", "searchable", "database"
 
 ### Task 19: Manual verification checklist — PENDING QA
 
-**URL:** `http://localhost:3000/?g=SS-9717.json` → **TenCards**
+**URL:** `http://localhost:3000/?g=SS-9717.json` → **TenCards** (or `:3001` if port busy)
 
 | # | Check | Expected |
 |---|-------|----------|
-| 1 | Filter panels | 3 collapsed accordion groups: **Category**, **Color**, **Materials** |
-| 2 | Checkbox / label click | Toggles selection |
-| 3 | Active pills | Appear above cards (prepend section); removable |
-| 4 | Filter logic | No spurious header values in filters; Red → fabric cards; combined filters narrow results |
-| 5 | Search | Typing does **not** clear selected card if still in filtered list |
-| 6 | Selection persistence | Card stays selected after filter change when item still visible |
-| 7 | Console | No `Maximum update depth exceeded` |
-| 8 | JSON href (optional) | `href: "/textile-database-sample.json"` + `format: "json"` loads same data as CSV |
-| 9 | Export source (optional) | Replace `href` with `export: { name, sessionId }` on live session — Task 22 Step 5 |
+| 1 | Filter dropdown | Click **Filters** → dropdown opens; accordion groups for Category / Color / Materials |
+| 2 | Inline Name filter | **Name** text field visible at top of dropdown **without** expanding accordion |
+| 3 | Text filter | Type in Name field → focus works; tag `Name: …` appears; cards narrow by substring |
+| 4 | Checkbox / label click | Toggles selection; dropdown stays open |
+| 5 | Select-all | Master checkbox in **accordion header** (left of group label), no "All" label; does not toggle accordion |
+| 6 | Child option indent | Multi-select options indented under header checkbox; vertical `gap` between rows |
+| 7 | Active pills | Inside filter input; removable |
+| 8 | Filter logic | Combined filters AND across groups; Red + Category etc. |
+| 9 | Search (cards) | Card search does not clear selection when item still in filtered list |
+| 10 | Console | No `Maximum update depth exceeded` |
+| 11 | SevenCards | Grid variant without Name filter; href JSON sample |
+| 12 | JSON href (optional) | `href: "/textile-database-sample.json"` + `format: "json"` |
+| 13 | Export source (optional) | `export: { name, sessionId }` on live session |
 
 **Automated:**
 
@@ -868,7 +891,9 @@ Post-implementation review (`fdf3cb2..a82481e` + follow-up commit `3cf9008`).
 | **Search scope** | Open | `matchesSearchTerms` only checks `item` + `displayname` — not `description` / `data` columns |
 | **Fetch error UX** | Open | Inline `Text c="red"` only; spec also mentions notification |
 | **Theme registry** | Open | `FilterableSelectComponentThemeProps` not registered in `useCustomTheme.ts` |
-| **`FilterableDatabaseFilterGroup.multiple`** | Open | Prop passed but unused; hook handles toggle logic |
+| **`FilterableDatabaseFilterGroup.multiple`** | **Done** (Task 26) | Passed to `FilterOption`; Radio vs Checkbox |
+| **Inline filter (`inline`)** | **Done** (Task 30) | Per-filter flat layout in dropdown |
+| **Text filter (`type: "text"`)** | **Done** (Task 28) | Substring match + `TextInput` UI |
 | **`ParameterStringComponent` TS** | Open | `componentSettings` + `useProps` typing — verify clean `tsc` |
 | **`dataSource.export`** | **Done** (Task 22) | `exportEngine` + `resolveDataSource`; Zod `href OR export`; commit `a4e192a` |
 | **`jsonEngine`** | **Done** (Task 23) | `jsonEngine` + `resolveEngine` + `format`; commit `ff5f016` |
@@ -1038,7 +1063,7 @@ Optional `label` on each entry in `database.filters[]`:
 - Type: `IFilterableDatabaseSettings.filters[].label?: string` in `appbuilder.ts`
 - Zod: `filterableDatabaseSettingsSchema` — `label: z.string().min(1).optional()`
 - UI: `useFilterableDatabase` → `filter.label?.trim() || \`Filter ${n}\`` (accordion title + active pills)
-- Fixture: `public/SS-9717.json` — Category / Color / Materials
+- Fixture: `public/SS-9717.json` — Category / Color / Materials; TenCards Name (`type: "text"`, `inline: true`)
 
 ---
 
@@ -1078,7 +1103,7 @@ Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) un
 | Type definitions PR 318 | Task 1 |
 | Zod validation | Task 2, 14–15 |
 | Theme `componentSettings` pattern | Task 13–14 |
-| Unit tests | Tasks 2, 4–7, 16 (`buildActiveFilterTags`), 21, 22–23 (**58** total) |
+| Unit tests | Tasks 2, 4–7, 16 (`buildActiveFilterTags`), 21, 22–23, 25–31 (**71** total) |
 | Manual fixture | Task 11, 13 |
 | Search + filter pills | Task 16–17 |
 | Code review blockers | Task 21 |
@@ -1089,6 +1114,10 @@ Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) un
 | Filters in Select dropdown + tags inside input | Task 25 — **Done** |
 | Filter `multiple` UI (radio vs checkbox) | Task 26 — **Done** |
 | Filter group “select all” checkbox | Task 27 — **Done** |
+| Text filter (`type: "text"`) | Task 28 — **Done** |
+| Combobox focus / dropdown interaction fixes | Task 29 — **Done** |
+| Inline filter (`inline: true`) | Task 30 — **Done** |
+| Option row padding / Stack gap | Task 31 — **Done** |
 
 ---
 
@@ -1125,6 +1154,7 @@ Stack
 - Style props via `defaultStyleProps` on `FilterableSelectComponent` — no hardcoded visual props (see `.cursor/rules/use-props.mdc`).
 - Preserve existing filter logic (`useFilterableDatabase`, `toggleFilterValue`, `removeFilterValue`, `activeFilterTags`).
 - Dropdown should not close when toggling a filter checkbox (click inside dropdown).
+- **Focus pattern (Task 29):** `preventDefault` on `mousedown` only on interactive filter rows (`FilterOption`, multi `Stack`, `Radio.Group`, select-all wrapper) — **not** on entire `Combobox.Dropdown` and **not** on `TextInput`.
 - Placeholder / label when no filters active (e.g. "Filters" or count).
 
 **Files (expected):**
@@ -1196,17 +1226,99 @@ UI (Radio vs Checkbox): manual QA on Category (`multiple: false`); no RTL in rep
 
 ### Task 27: Select-all checkbox per filter group — DONE
 
-**Goal:** Multi-select tag groups show a master **All** checkbox by default (no JSON flag).
+**Goal:** Multi-select tag groups show a master checkbox by default (no JSON flag).
 
-**Behavior:** When `multiple !== false` and `type !== "text"`, accordion panel includes master checkbox — checked / unchecked / indeterminate; toggles full `group.nodes` list.
+**Behavior:** When `multiple !== false` and `type !== "text"`, show master checkbox in **accordion header** (left of group label) — checked / unchecked / indeterminate; toggles full `group.nodes` list. Click on select-all must **not** toggle accordion expand/collapse. No separate "All" label in panel.
 
 **Settings:** No `selectAll` field — only `multiple` and `type` matter.
 
-**Logic:** `getSelectAllState`, `applySelectAll` in `filterLogic.ts` + tests.
+**Logic:** `getSelectAllState`, `applySelectAll`, `toggleSelectAll` in `filterLogic.ts` + hook + tests.
 
-**Fixture:** TenCards Category → `"multiple": true` (checkbox + All by default).
+**Layout:** Child options use `filterOptionChildren` left indent; options in `Stack` (not wrapper `div`) for vertical `gap`.
 
-**Manual QA:** TenCards → Category + Color → each multi-select group has “All”.
+**Fixture:** TenCards Category / Color / Materials → `"multiple": true`.
+
+**Manual QA:** TenCards → Category + Color → header checkbox per multi-select group.
+
+---
+
+### Task 28: Text filter (`type: "text"`) — DONE
+
+**Goal:** Free-text substring filter on a column (case-insensitive), combinable with tag filters.
+
+**Settings:**
+
+```json
+{"column": 1, "label": "Name", "type": "text", "inline": true}
+```
+
+**Logic:** `rowMatchesFilter` — empty selection passes; non-empty uses `selected[0]` substring match on column cells (`filterLogic.test.ts`).
+
+**UI:** `TextInput` in filter panel (accordion or inline); value synced via `setFilterText` in hook (trimmed); active tag uses group label + value.
+
+**Files:** `filterLogic.ts`, `useFilterableDatabase.ts`, `FilterableDatabaseFilterGroup.tsx` (`FilterableDatabaseFilterGroupBody`), Zod `type: z.enum(["color", "text"])`.
+
+**Fixture:** TenCards Name filter on column 1 (`displayname`).
+
+---
+
+### Task 29: Combobox dropdown focus fixes — DONE
+
+**Problem:** Global `onMouseDown` + `preventDefault` on `Combobox.Dropdown` blocked `TextInput` focus in Name filter.
+
+**Solution (inverted logic):** Remove dropdown-level handler. Call `preventDefault` only where combobox must keep focus:
+
+| Location | Handler |
+|----------|---------|
+| `FilterableDatabaseFilterOption` `.filterOption` | `onMouseDown` → `preventDefault` |
+| `FilterableDatabaseFilterGroup` multi `Stack` | `onMouseDown` → `preventDefault` |
+| `FilterableDatabaseFilterGroup` `Radio.Group` | `onMouseDown` → `preventDefault` |
+| Select-all wrapper | `stopPropagation` + `preventDefault` |
+
+**Regression:** Dropdown re-open after pills (no `stopPropagation` on pill container); `handlePillsInputClick` ignores button targets.
+
+---
+
+### Task 30: Inline filter (`inline: true`) — DONE
+
+**Goal:** Render a filter **without** Mantine Accordion (no Control/Panel) — content visible directly in combobox dropdown.
+
+**Settings:**
+
+```json
+{"column": 1, "label": "Name", "type": "text", "inline": true}
+```
+
+- `inline: true` — flat block in dropdown (label + body).
+- Default `false` — accordion item (current behavior).
+- Works for all filter types (text, checkbox, color, radio).
+
+**Order:** `buildFilterRenderSegments(filterGroups, filters)` batches consecutive accordion groups and flushes when an inline filter appears — preserves `filters[]` order.
+
+**Files:**
+
+| File | Role |
+|------|------|
+| `buildFilterRenderSegments.ts` | Segment batching pure function |
+| `FilterableDatabaseInlineFilter` | Flat layout (in `FilterableDatabaseFilterGroup.tsx`) |
+| `FilterableDatabaseFilters.tsx` | Renders `inline` segments + accordion segments |
+| `appbuilder.ts` + Zod | `inline?: boolean` |
+
+**Tests:** `buildFilterRenderSegments.test.ts`, `filterableDatabaseSettings.test.ts` accepts `inline: true`.
+
+**UX (inline non-text):** Multi-select shows label + select-all row + indented options (same semantics as accordion header/panel).
+
+---
+
+### Task 31: Filter option layout polish — DONE
+
+**Problems fixed during Phase 4 QA:**
+
+| Issue | Fix |
+|-------|-----|
+| Checkbox vertical gap lost | Wrap options in `Stack` with `filterGroupStackProps` instead of bare `div` |
+| Child indent under select-all | `filterOptionChildren` — `padding-left: calc(gap + checkbox-size)` |
+| Redundant nested `Stack` in panel | Single `Stack` per panel branch |
 
 ---
 
@@ -1214,4 +1326,4 @@ UI (Radio vs Checkbox): manual QA on Category (`multiple: false`); no RTL in rep
 
 - Task 25 owns layout/orchestration; Task 26 owns `FilterOption` control type.
 - If both touch `FilterableSelectComponent.tsx`, merge `defaultStyleProps` (filter select props + `radioProps`).
-- Run after both: `pnpm test --testPathPattern=filterableDatabase` (**target: ≥68 tests** after Task 25–26)
+- Run after Phase 4: `pnpm test --testPathPattern=filterableDatabase` (**71 tests**)
