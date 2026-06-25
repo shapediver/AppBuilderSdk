@@ -12,6 +12,7 @@
 
 import {spawn} from "node:child_process";
 import {existsSync} from "node:fs";
+import {createRequire} from "node:module";
 import {dirname, join, resolve} from "node:path";
 import process from "node:process";
 import {fileURLToPath} from "node:url";
@@ -19,6 +20,12 @@ import {fileURLToPath} from "node:url";
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RUNNER = join(repoRoot, "scripts/validate-settings-json-runner.ts");
 const TIMEOUT_MS = 30_000;
+
+const require = createRequire(join(repoRoot, "package.json"));
+const tsxCli = join(
+	dirname(require.resolve("tsx/package.json")),
+	"dist/cli.mjs",
+);
 
 function printUsage() {
 	console.error(`Usage: pnpm run validate:settings -- <path-to-json>
@@ -47,20 +54,12 @@ if (!existsSync(absPath)) {
 	process.exit(1);
 }
 
-const isWin = process.platform === "win32";
 const childEnv = {...process.env, VALIDATE_SETTINGS_FILE: absPath};
-const child = isWin
-	? spawn(`pnpm exec tsx "${RUNNER.replace(/"/g, '\\"')}"`, {
-			cwd: repoRoot,
-			env: childEnv,
-			stdio: "inherit",
-			shell: true,
-		})
-	: spawn("pnpm", ["exec", "tsx", RUNNER], {
-			cwd: repoRoot,
-			env: childEnv,
-			stdio: "inherit",
-		});
+const child = spawn(process.execPath, [tsxCli, RUNNER], {
+	cwd: repoRoot,
+	env: childEnv,
+	stdio: "inherit",
+});
 
 const timer = setTimeout(() => {
 	console.error(
