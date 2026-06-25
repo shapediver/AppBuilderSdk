@@ -67,7 +67,8 @@
 		"publish-appbuilder": "bash scripts/build-appbuilder.sh 1 v1/main",
 		"publish-appbuilder-platform": "bash scripts/build-appbuilder.sh 1 app/builder/v1/main",
 		"publish": "bash scripts/build-appbuilder.sh 1",
-		"generate:mantine-props-zod": "node scripts/generate-mantine-props-zod.mjs"
+		"generate:mantine-props-zod": "node scripts/generate-mantine-props-zod.mjs",
+		"validate:settings": "node scripts/validate-settings-json.mjs"
 	},
 	"browserslist": {
 		"production": [
