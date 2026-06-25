@@ -3,9 +3,7 @@
  */
 import {readFileSync} from "node:fs";
 import {register} from "node:module";
-import {dirname, join} from "node:path";
 import process from "node:process";
-import {fileURLToPath, pathToFileURL} from "node:url";
 
 /** Minimal surface from appbuildertypecheck.ts (dynamic import — loader must register first). */
 interface AppBuilderTypecheckModule {
@@ -15,9 +13,7 @@ interface AppBuilderTypecheckModule {
 	formatAppBuilderZodError: (error: unknown) => string;
 }
 
-const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
-
-register("./validate-settings-json-loader.mjs", import.meta.url);
+register(import.meta.resolve("./validate-settings-json-loader.mjs"));
 
 const file = process.env.VALIDATE_SETTINGS_FILE;
 if (!file) {
@@ -27,15 +23,11 @@ if (!file) {
 	process.exit(1);
 }
 
-const typecheckUrl = pathToFileURL(
-	join(
-		repoRoot,
-		"src/shared/features/appbuilder/config/appbuildertypecheck.ts",
-	),
-).href;
-
 const {formatAppBuilderZodError, validateAppBuilderSettingsJson} =
-	(await import(typecheckUrl)) as AppBuilderTypecheckModule;
+	(await import(
+		import.meta
+			.resolve("../src/shared/features/appbuilder/config/appbuildertypecheck.ts")
+	)) as AppBuilderTypecheckModule;
 
 let json: unknown;
 try {
