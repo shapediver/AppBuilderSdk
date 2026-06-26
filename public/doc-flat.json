@@ -897,7 +897,7 @@
     },
     "Pick_Unknown": {
       "type": "unknown",
-      "name": "Pick<ComponentProp<\"a\"> & Omit<Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLA…"
+      "name": "Pick<ComponentProp<\"a\"> & Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchor…"
     },
     "Unknown_and_Pick_Unknown": {
       "type": "unknown",
@@ -1004,6 +1004,13 @@
           }
         },
         "lineHeights": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "fontWeights": {
           "properties": {
             "[string]": {
               "type": "string"
