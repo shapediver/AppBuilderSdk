@@ -51,32 +51,32 @@ importers:
         specifier: 1.6.3
         version: 1.6.3
       '@shapediver/viewer.features.attribute-visualization':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.features.drawing-tools':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.features.interaction':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.features.transformation-tools':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.session':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.shared.global-access-objects':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.shared.types':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@shapediver/viewer.utils.mime-type':
         specifier: 1.1.0
         version: 1.1.0
       '@shapediver/viewer.viewport':
-        specifier: 3.18.0
-        version: 3.18.0
+        specifier: 3.18.2
+        version: 3.18.2
       '@tanstack/match-sorter-utils':
         specifier: 8.19.4
         version: 8.19.4
@@ -112,7 +112,7 @@ importers:
         version: 5.0.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react-markdown:
         specifier: 9.1.0
-        version: 9.1.0(@types/react@18.3.28)(react@19.2.4)(supports-color@8.1.1)
+        version: 9.1.0(@types/react@18.3.28)(react@19.2.4)
       react-router-dom:
         specifier: 7.15.1
         version: 7.15.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -140,13 +140,13 @@ importers:
         version: 9.39.4
       '@feature-sliced/eslint-config':
         specifier: 0.1.1
-        version: 0.1.1(eslint-plugin-boundaries@5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1)))(eslint-plugin-import@2.32.0)
+        version: 0.1.1(eslint-plugin-boundaries@5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4))(eslint-plugin-import@2.32.0)
       '@playwright/test':
         specifier: ^1.60.0
         version: 1.61.0
       '@sentry/cli':
         specifier: 2.58.4
-        version: 2.58.4(supports-color@8.1.1)
+        version: 2.58.4
       '@testing-library/jest-dom':
         specifier: 6.9.1
         version: 6.9.1
@@ -176,10 +176,10 @@ importers:
         version: 10.0.0
       '@typescript-eslint/eslint-plugin':
         specifier: 8.55.0
-        version: 8.55.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+        version: 8.55.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/parser':
         specifier: 8.55.0
-        version: 8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+        version: 8.55.0(eslint@9.39.4)(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: 5.1.4
         version: 5.1.4(vite@8.0.16(@types/node@22.19.11)(esbuild@0.28.1)(tsx@4.22.4)(yaml@2.9.0))
@@ -188,25 +188,25 @@ importers:
         version: 17.2.3
       eslint:
         specifier: ^9.39.4
-        version: 9.39.4(supports-color@8.1.1)
+        version: 9.39.4
       eslint-config-prettier:
         specifier: 10.1.8
-        version: 10.1.8(eslint@9.39.4(supports-color@8.1.1))
+        version: 10.1.8(eslint@9.39.4)
       eslint-import-resolver-typescript:
         specifier: 4.4.4
-        version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)
+        version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4)
       eslint-plugin-boundaries:
         specifier: 5.4.0
-        version: 5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+        version: 5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
       eslint-plugin-import:
         specifier: 2.32.0
-        version: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+        version: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
       eslint-plugin-prettier:
         specifier: 5.5.5
-        version: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(supports-color@8.1.1)))(eslint@9.39.4(supports-color@8.1.1))(prettier@3.8.1)
+        version: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4))(eslint@9.39.4)(prettier@3.8.1)
       eslint-plugin-react:
         specifier: 7.37.5
-        version: 7.37.5(eslint@9.39.4(supports-color@8.1.1))
+        version: 7.37.5(eslint@9.39.4)
       globals:
         specifier: ^17.6.0
         version: 17.6.0
@@ -215,7 +215,7 @@ importers:
         version: 29.7.0(@types/node@22.19.11)(babel-plugin-macros@3.1.0)
       jest-environment-jsdom:
         specifier: 29.7.0
-        version: 29.7.0(supports-color@8.1.1)
+        version: 29.7.0
       prettier:
         specifier: 3.8.1
         version: 3.8.1
@@ -227,7 +227,7 @@ importers:
         version: 29.4.6(@babel/core@7.29.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.29.7))(esbuild@0.28.1)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.19.11)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-to-zod:
         specifier: ^5.1.0
-        version: 5.1.0(supports-color@8.1.1)
+        version: 5.1.0
       tsx:
         specifier: 4.22.4
         version: 4.22.4
@@ -242,7 +242,7 @@ importers:
         version: 5.9.3
       typescript-eslint:
         specifier: ^8.61.1
-        version: 8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+        version: 8.61.1(eslint@9.39.4)(typescript@5.9.3)
       vite:
         specifier: 8.0.16
         version: 8.0.16(@types/node@22.19.11)(esbuild@0.28.1)(tsx@4.22.4)(yaml@2.9.0)
@@ -1187,143 +1187,143 @@ packages:
     engines: {node: '>= 14'}
 
   '@shapediver/api.platform-api-dto-v1@2.29.16':
-    resolution: {integrity: sha512-WnjO5xPc2xcAku0dZEmr7d/RrJd1LdYxUKYMwe3i47aqp9NEQvER5prFJwGhZWs8XOuziPg0LwlRUnlKSxanCg==, tarball: https://registry.npmjs.org/@shapediver/api.platform-api-dto-v1/-/api.platform-api-dto-v1-2.29.16.tgz}
+    resolution: {integrity: sha512-WnjO5xPc2xcAku0dZEmr7d/RrJd1LdYxUKYMwe3i47aqp9NEQvER5prFJwGhZWs8XOuziPg0LwlRUnlKSxanCg==}
 
   '@shapediver/sdk.geometry-api-sdk-v2@3.4.2':
-    resolution: {integrity: sha512-BPoehzHZC4TBV3wJ0Nqok6ZrntqUbKhRJP99GNL1uqMMCJ+j9otdt8u8LcV4MuQQ4t2cSXkqzKRmpistoNoQOw==, tarball: https://registry.npmjs.org/@shapediver/sdk.geometry-api-sdk-v2/-/sdk.geometry-api-sdk-v2-3.4.2.tgz}
+    resolution: {integrity: sha512-BPoehzHZC4TBV3wJ0Nqok6ZrntqUbKhRJP99GNL1uqMMCJ+j9otdt8u8LcV4MuQQ4t2cSXkqzKRmpistoNoQOw==}
 
   '@shapediver/sdk.platform-api-sdk-v1@2.29.16':
-    resolution: {integrity: sha512-IMStGjv+6/hCMfqoxhKy0PhgsnWDaC/AyNQsqLvEIX9m8pR+xQEp14bglwz6T7x0EREkG4M20pDrhkAh8UrtRQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.platform-api-sdk-v1/-/sdk.platform-api-sdk-v1-2.29.16.tgz}
+    resolution: {integrity: sha512-IMStGjv+6/hCMfqoxhKy0PhgsnWDaC/AyNQsqLvEIX9m8pR+xQEp14bglwz6T7x0EREkG4M20pDrhkAh8UrtRQ==}
 
   '@shapediver/sdk.sdtf-core@1.7.3':
-    resolution: {integrity: sha512-DhMZVbLw8ZNV5SWKofgZEENxTLnOjrr2VWlAYrqFBlfzFbkGUu/UWMoCaxmwhp2RNBLHmGFGvFr4H0ZOxAkclg==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-core/-/sdk.sdtf-core-1.7.3.tgz}
+    resolution: {integrity: sha512-DhMZVbLw8ZNV5SWKofgZEENxTLnOjrr2VWlAYrqFBlfzFbkGUu/UWMoCaxmwhp2RNBLHmGFGvFr4H0ZOxAkclg==}
 
   '@shapediver/sdk.sdtf-geometry@1.7.3':
-    resolution: {integrity: sha512-1jRlBOC3MTyahtQOYRdzmxb3OchBdOS16DL3xCLdP65pGq3+psWLvtAziDpLv2rujOPVTax6utJnU15CQlbfCw==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-geometry/-/sdk.sdtf-geometry-1.7.3.tgz}
+    resolution: {integrity: sha512-1jRlBOC3MTyahtQOYRdzmxb3OchBdOS16DL3xCLdP65pGq3+psWLvtAziDpLv2rujOPVTax6utJnU15CQlbfCw==}
 
   '@shapediver/sdk.sdtf-primitives@1.7.3':
-    resolution: {integrity: sha512-jLSHRlFkHuosJ080FrYiEnEOlSwcmJs7GwXWgDkXtj7CG2lCGvVlwQP2Zd3jxvfW3oh9Gfyb7xIWAE17L9N1uQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-primitives/-/sdk.sdtf-primitives-1.7.3.tgz}
+    resolution: {integrity: sha512-jLSHRlFkHuosJ080FrYiEnEOlSwcmJs7GwXWgDkXtj7CG2lCGvVlwQP2Zd3jxvfW3oh9Gfyb7xIWAE17L9N1uQ==}
 
   '@shapediver/sdk.sdtf-v1@1.7.3':
-    resolution: {integrity: sha512-eaymGF67keXLlO/4uXXx9Zo5OWeyFMBcj5Tg/3CpOCWBLDvCf9Bkjn8uJNbA71qsWKpnDT86HjF6Zrjjzq0YLQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.sdtf-v1/-/sdk.sdtf-v1-1.7.3.tgz}
+    resolution: {integrity: sha512-eaymGF67keXLlO/4uXXx9Zo5OWeyFMBcj5Tg/3CpOCWBLDvCf9Bkjn8uJNbA71qsWKpnDT86HjF6Zrjjzq0YLQ==}
     hasBin: true
 
   '@shapediver/sdk.stargate-sdk-core@1.3.3':
-    resolution: {integrity: sha512-/h37udMLycFAltdwFUjhvM5F11PODLJVZKAnHOL6oAQKuHp1boXGjjbBknD09mM5htNe/ea0N+MLQhq+90KGcQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.stargate-sdk-core/-/sdk.stargate-sdk-core-1.3.3.tgz}
+    resolution: {integrity: sha512-/h37udMLycFAltdwFUjhvM5F11PODLJVZKAnHOL6oAQKuHp1boXGjjbBknD09mM5htNe/ea0N+MLQhq+90KGcQ==}
 
   '@shapediver/sdk.stargate-sdk-v1@1.6.3':
-    resolution: {integrity: sha512-7UtsSf6EOvJzYmxi0wWo/bJUy+pXab2VFvWfee8olQUHn2wrsEcOhe2hXWVLEcD4VVARxE292+gxsa52KmDYZQ==, tarball: https://registry.npmjs.org/@shapediver/sdk.stargate-sdk-v1/-/sdk.stargate-sdk-v1-1.6.3.tgz}
+    resolution: {integrity: sha512-7UtsSf6EOvJzYmxi0wWo/bJUy+pXab2VFvWfee8olQUHn2wrsEcOhe2hXWVLEcD4VVARxE292+gxsa52KmDYZQ==}
 
-  '@shapediver/viewer.api.general@3.18.0':
-    resolution: {integrity: sha512-juFAjUskAtJYL2Ue7DCin7j2uBw5hgxtTqO2WmvwQyT3IzN1Wua/zzBFpMTZKAaJu8/9CEI/ulYGToWu4Noi7g==, tarball: https://registry.npmjs.org/@shapediver/viewer.api.general/-/viewer.api.general-3.18.0.tgz}
+  '@shapediver/viewer.api.general@3.18.2':
+    resolution: {integrity: sha512-OQN0QWR0cllV3le2zUIQd+K5oHhumtiCEj5HZ16zdWaxZW7vIDNWHmZl0ZKWBrsAiVWlVMoYpr5zpNwLU8aAug==}
 
-  '@shapediver/viewer.creation-control-center.session@3.18.0':
-    resolution: {integrity: sha512-umF1hnTTKeyYmZeKxNNZugvLwAespk1DbrPSNk1jrqPsVPn/UWM9glZD5yukrHs7GKZO3wiLnn/LCGIwHx7w7g==, tarball: https://registry.npmjs.org/@shapediver/viewer.creation-control-center.session/-/viewer.creation-control-center.session-3.18.0.tgz}
+  '@shapediver/viewer.creation-control-center.session@3.18.2':
+    resolution: {integrity: sha512-GW2tKVpaADUUHNO4GQXgWNO4TOPNhF4A5RpE0sZpxuvwU5I53aFJpefpoS0eBTDV8bfQDwfIgBcTgHRfgED2jw==}
 
-  '@shapediver/viewer.creation-control-center.viewport@3.18.0':
-    resolution: {integrity: sha512-ztKkcnsuEK0PIKMn+fWAoxSkdBEP9I2VubPqFfc0gCX6ZEL/MzyWVAo4Rd3uKWY6ISb6WRNI1kXKn7Hnxi8x+Q==, tarball: https://registry.npmjs.org/@shapediver/viewer.creation-control-center.viewport/-/viewer.creation-control-center.viewport-3.18.0.tgz}
+  '@shapediver/viewer.creation-control-center.viewport@3.18.2':
+    resolution: {integrity: sha512-R5ycLKj+drqt7x85buOa30j0FxacjSMRNV2zZcKfGH/gb/2cSe1oGiUOLSOOg5QD7HdRqP4obVwNysWolI91eQ==}
 
-  '@shapediver/viewer.data-engine.data-engine@3.18.0':
-    resolution: {integrity: sha512-Wbyt/CA8NrgmqbJz0ufsL6i0wmSC0ES6FWScS7AmPaxM399F++O1XdSVXfCmHqcsMHwpjjMxl24fj0Osig+FYA==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.data-engine/-/viewer.data-engine.data-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.data-engine@3.18.2':
+    resolution: {integrity: sha512-5wsFDjBa+ONyQ4QutpnNRIxbrHCZETJRfWtECNUY+mIDkI96U+bETUrAiu3W8u9RK4C53x5f2wqkY1lR20/EsA==}
 
-  '@shapediver/viewer.data-engine.geometry-engine@3.18.0':
-    resolution: {integrity: sha512-CvMEden3ocrlFHvWHOK7tLlfrmzBBE4Vb/lTNbho9NPllBE/AWc5L03QdfMSlowzLnEQsXR96rN7b6V+tz2BNQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.geometry-engine/-/viewer.data-engine.geometry-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.geometry-engine@3.18.2':
+    resolution: {integrity: sha512-PxzoTi32OCM0pnY8/8yUl7Fg5tfVcvzlvTaiNjFGboD6BEFndmEikEl4+XPTVMXU5uyYggShQ3+R4g5cBekF6g==}
 
-  '@shapediver/viewer.data-engine.gltf-converter@3.18.0':
-    resolution: {integrity: sha512-kEsC4x0nLh51GJwigtR5es5EhRje3DOOq0rC3zPEa7pw+ctD8LFJVcLyQKcw+Lkp9ialGpPHMllkXb9EmPGXMw==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.gltf-converter/-/viewer.data-engine.gltf-converter-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.gltf-converter@3.18.2':
+    resolution: {integrity: sha512-MHNsQVS1UsVz+8evsMnBk9eNtFky5V9qT7ZS0oG/8OCN2doGv7t3qZCHcAFk2moQdWg5n4lYURKC9RHUvVyriQ==}
 
-  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.18.0':
-    resolution: {integrity: sha512-TBZoKnexkZh/VOUTIjynd9BvCoGwYk50zNaZTe3X0nW+pXDRKxwJAh56h5YrrkRjMtxvUVS1ZDtVcRLYT8uu3w==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.html-element-anchor-engine/-/viewer.data-engine.html-element-anchor-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.18.2':
+    resolution: {integrity: sha512-6uep2PXchtKgKzHG+Y2m4hNfV5Jv6UD39MmFVO9pXeC8SG9UdywVd6qteDnQfAt0zu7SdNA5FEaosZXDsV45/g==}
 
-  '@shapediver/viewer.data-engine.material-database-engine@3.18.0':
-    resolution: {integrity: sha512-Jvi9wsI7GeAyeqCgdNxu6S/hZDJfChAq5rjtEv9WSDHFodT5DLjYxj/JNR6/Y7LH6FCrr0C3vqYlJNAu999bsg==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.material-database-engine/-/viewer.data-engine.material-database-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.material-database-engine@3.18.2':
+    resolution: {integrity: sha512-xSfzzZG/YnYEG3yG9+kZ+OPAPWnAIvJ35Zjo2/cz3eLx6s+KFqoFUV+Cgu3negMNpfStCOKa6BtZryRpfMWkVg==}
 
-  '@shapediver/viewer.data-engine.material-engine@3.18.0':
-    resolution: {integrity: sha512-rrv/3zpvz61uoQsSNNERe1dGz6vVG9++FH1CpGHenGwEfghoEX2AmhCAZoeyWhrLkbYMVNOeL/dafZTdR4wYsQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.material-engine/-/viewer.data-engine.material-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.material-engine@3.18.2':
+    resolution: {integrity: sha512-kc8epbdfEsy6YEabopBSppT354HbEa+EA8KgcysE/z1V12V/3bwzPC3FhaQU32k+o5rQDVbGHZ6FNzreC+oDyg==}
 
-  '@shapediver/viewer.data-engine.sdtf-engine@3.18.0':
-    resolution: {integrity: sha512-7f3odtfVfwv+gPVZWCOxamb7y5VGm1WG33WIThwZDT1R4dOiZeIGyZKyhTYeG4AjgRobbz3iBQyEsFPstLjZcA==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.sdtf-engine/-/viewer.data-engine.sdtf-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.sdtf-engine@3.18.2':
+    resolution: {integrity: sha512-qE+UHzxSjX8Ot3FFGBNxRi+DoUQvTmNNVy5/rh1T1No8X9CYptFaoyrved0AAGEXw9hTlxlWeio+xPyamZTZgQ==}
 
-  '@shapediver/viewer.data-engine.shared-types@3.18.0':
-    resolution: {integrity: sha512-YrYhCKsufXuui5fb8Gc7NKqVuZwy+obyyJAllRqGfs88Gfrd6AwLd9tcPwW081vgLKUEUyPN0tu7Gj48DYZv+w==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.shared-types/-/viewer.data-engine.shared-types-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.shared-types@3.18.2':
+    resolution: {integrity: sha512-A4Sb3P/s2TsBBuOjeeT6/IDpG3m1i6xkdrtAYsEn3eqRVk3+YQuXV0d2+yBaZmv9vJl6uiDLl5UvI89e5/SyvQ==}
 
-  '@shapediver/viewer.data-engine.tag3d-engine@3.18.0':
-    resolution: {integrity: sha512-W9T8hxSaA6eAVRLqE3pkHzo7Uoc8EPMMQX3VpmUkrEUsQlXx77u9gOIA5eDLQodEmfpWKGh/Ogi5ajl+Dh9u1Q==, tarball: https://registry.npmjs.org/@shapediver/viewer.data-engine.tag3d-engine/-/viewer.data-engine.tag3d-engine-3.18.0.tgz}
+  '@shapediver/viewer.data-engine.tag3d-engine@3.18.2':
+    resolution: {integrity: sha512-aNzhhrTl+cVUgSvSG5LDqlCGqYISIzURsfqfMMXYf4oIMlEFoePozby6ZrIigUKGjmgQgLLkZ65gi06GVIZyOw==}
 
-  '@shapediver/viewer.features.attribute-visualization@3.18.0':
-    resolution: {integrity: sha512-qDkScCTozQSLs3Da3asGpMAeFgvg4RQNrY34GQsExP/7X7NLaDqM/WFSwXwa2tPY0Kesl80BdIkZESE7YhECVw==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.attribute-visualization/-/viewer.features.attribute-visualization-3.18.0.tgz}
+  '@shapediver/viewer.features.attribute-visualization@3.18.2':
+    resolution: {integrity: sha512-0MBUcmnz/5uWeQytTdiVPxixLo3LrIq8EiG+2BGe4nzobFC1zUAASNvrv5P3mpKYdR2130sS/jxu+pxhHlhnig==}
 
-  '@shapediver/viewer.features.drawing-tools@3.18.0':
-    resolution: {integrity: sha512-1MvFVJHY50xsBemJOFQ4XiiPe+deTHcyCp/x9KT1LGirTonCfgQJIN7iUdgfagIn+8qdN8ZR/EDhGEBPYTtaaA==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.drawing-tools/-/viewer.features.drawing-tools-3.18.0.tgz}
+  '@shapediver/viewer.features.drawing-tools@3.18.2':
+    resolution: {integrity: sha512-hwgxOFqPDNd4yi3owtoccmB8QUyv5mXf8HKiJYE2CHLXKrYwcBG05T4f4Njeh2SYpGaDviLtDJc1SHAmfnTtvA==}
 
-  '@shapediver/viewer.features.interaction@3.18.0':
-    resolution: {integrity: sha512-mJD/mykPtWJurfANxUKNApEPQMjDWYi9mDz+r13JrnbacqDsIdJkA6jz9hE1IeHQMGPiZdLtPiKj2HpDq5plzA==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.interaction/-/viewer.features.interaction-3.18.0.tgz}
+  '@shapediver/viewer.features.interaction@3.18.2':
+    resolution: {integrity: sha512-gZ+ExlB2MY1M97MR9I0KLKqxL/R0rDhp/f7PA3pNAUhgaVGJ8ZV5Hy6pzn0Ryg3zmKxbt//pUbmzN4lv6A5TJQ==}
 
-  '@shapediver/viewer.features.transformation-tools@3.18.0':
-    resolution: {integrity: sha512-vlNJbFLdKQ7Z24cXhqCP56YgE5YM0GjwKFbBU0+1yXfyqgb39JWCRB1lWTUl79Vp1hiZu0hnXsHrJ1IBVFAMdw==, tarball: https://registry.npmjs.org/@shapediver/viewer.features.transformation-tools/-/viewer.features.transformation-tools-3.18.0.tgz}
+  '@shapediver/viewer.features.transformation-tools@3.18.2':
+    resolution: {integrity: sha512-O9zGS1ZA2Tj8S0G92TyujY5jpngAcsQddS78nO0EjZCxuW3VaY2t3Q70qk3by/06EfaI6RH23C3RkYu8giKCBQ==}
 
-  '@shapediver/viewer.rendering-engine.animation-engine@3.18.0':
-    resolution: {integrity: sha512-yx6fcTG2UhMmLbZOkbSswCiyJ1TX6Kc34orjOW9XINXsaGQ7ZYtjLgsPnCiRvafVS0BLl+lP6nrH8EVODpBAzA==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.animation-engine/-/viewer.rendering-engine.animation-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.animation-engine@3.18.2':
+    resolution: {integrity: sha512-S+mvVCkUyB+pAQ1Qqb4Av+a67o+8LxS3JjtZ9RwcLiiG4ZGYOV14blaNp1jR9UVfenooxWNr/o+Pybz1YP/4vw==}
 
-  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.18.0':
-    resolution: {integrity: sha512-4jglXzdKSJ/I+eCKnIuBCCW9mjptYYzloG1YZzQoRFoCCkBEZSAfyCMLmvd8mQIrI0W2zUzKDPmcFnrLNIJgeQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.animation-frame-engine/-/viewer.rendering-engine.animation-frame-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.18.2':
+    resolution: {integrity: sha512-A8m1svf6Kf2vtBR8PkS1lirLv4r29sh4E1DxNA3WGaoSW/8XVXkjPjuVECaqtAy2ZENpzidShaXDUX2yf39okA==}
 
-  '@shapediver/viewer.rendering-engine.camera-engine@3.18.0':
-    resolution: {integrity: sha512-0KKlAdSArltz5pW2xu04N6bvSYTIXMLFkCraghb51jAFBBeGpwDotO03yhxhH3kG8UJV05VH8vZrgfvt6QplWg==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.camera-engine/-/viewer.rendering-engine.camera-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.camera-engine@3.18.2':
+    resolution: {integrity: sha512-3z5gaqLHnD1VUrUG9sOk+WmrI5HSYsQe0wAeZ1b1gfl6x9opbTHRXc7vx4Ei5n1EzWRAFeWZNhWf01mxKHX9aQ==}
 
-  '@shapediver/viewer.rendering-engine.canvas-engine@3.18.0':
-    resolution: {integrity: sha512-cpB6HakP5qsf5//+nTA472LBBSE8DVcvltBAPbuj8o+8f+yfCoWexHLZdpLhRQjjg5Ra7O3JvUYq+4tCepQ6UQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.canvas-engine/-/viewer.rendering-engine.canvas-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.canvas-engine@3.18.2':
+    resolution: {integrity: sha512-STWZKPg0rW1YSWxl1Ftc+kn5hk54ix33mNEB2w1Eyt/CcGCr/OeBVu4Wnl0dAN3feYKmJS38EjWO7aCZ3Ncwpg==}
 
-  '@shapediver/viewer.rendering-engine.intersection-engine@3.18.0':
-    resolution: {integrity: sha512-5Y3nl/08hHGJCEdBWyumk2ojLyrC7HpYpAOZiBnGhtPSuQ/9fQIfDWAHXn/fq8KFJWXkFSy07x7Jx8fqlr2WVQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.intersection-engine/-/viewer.rendering-engine.intersection-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.intersection-engine@3.18.2':
+    resolution: {integrity: sha512-G2485m7yxn/OmtrqSn347VIEgqhZo3xi+FXUfJSTTfkgwpBOL6fMLlDg96eumOVW1aoz+Ga5zUGQi160ob0xeQ==}
 
-  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.18.0':
-    resolution: {integrity: sha512-iKNy1d+Q195BIY5dHi1M5QoqKINr7fHyULjxMsRLNNaeheqaTL2HcAfNQGnloYg5lzWdyNMzqvSoY9TMYhle4g==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.intersection-restriction-engine/-/viewer.rendering-engine.intersection-restriction-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.18.2':
+    resolution: {integrity: sha512-yVMm1M9PW52ticFAxjGRwoOvTO0YqL48EgGQGkwcEoH2lbchF1NOPm8xA6GGRoI8ayDJUiw+MTOTscvRgYe0hQ==}
 
-  '@shapediver/viewer.rendering-engine.light-engine@3.18.0':
-    resolution: {integrity: sha512-HSxq/q2XtYfQOp5AHWBLdM1TyqWVTW2r9rddEKR5jSHzB3M2MRROAPze2O0zlnKExLphbIwwOSNUVzA0vjbgjw==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.light-engine/-/viewer.rendering-engine.light-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.light-engine@3.18.2':
+    resolution: {integrity: sha512-RF4qVQ1BL17vQEtz/pE6ryWfpfP0Jlz+iMdFaVRGoarxTqHs3Y1bnzQ3/fm6pTdo8qGzNnHBEXAmKbNk5mseZw==}
 
-  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.18.0':
-    resolution: {integrity: sha512-ePUfccqlOqMBw1ai/kFZWynRKlODdDSo/rrSZCt4ETxfPQ316OweNoz9hF4CUBmdDNqftAniFmVgUUXWa03jWA==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.rendering-engine-threejs/-/viewer.rendering-engine.rendering-engine-threejs-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.18.2':
+    resolution: {integrity: sha512-mICMuB+nksFIxYwgBoAlyUn/1fXubL7t+BKUgj4gccviKJ+/O7WPxZVHVd1oIL8ZXQEtMzRw7IuelhPxnT34Ug==}
 
-  '@shapediver/viewer.rendering-engine.rendering-engine@3.18.0':
-    resolution: {integrity: sha512-u05sJVh3+hI+7p5Jqzi3z6hFpEX2SpCE7VSZo5gyPFWlnhqLRAEu+nOZCkQT1YhoUKlP035zpI/30rCdYGee6A==, tarball: https://registry.npmjs.org/@shapediver/viewer.rendering-engine.rendering-engine/-/viewer.rendering-engine.rendering-engine-3.18.0.tgz}
+  '@shapediver/viewer.rendering-engine.rendering-engine@3.18.2':
+    resolution: {integrity: sha512-Bs/ziMzl//cAQhMCxKNUcfFEOOisUib10QwjRNEMMdWiPVpPEGVOpiDH1G+CA0+9SNvFw0u4W4YwTsXJJxK+0g==}
 
-  '@shapediver/viewer.session-engine.session-engine@3.18.0':
-    resolution: {integrity: sha512-beeKyeR1bzn1sGvvYmhXJlfMiLdPqtbUwTb2A6GA+ZpxO2dE2BVRyBFSFrZoTSqoDOv5lIACNdN/6eYYvi0qCA==, tarball: https://registry.npmjs.org/@shapediver/viewer.session-engine.session-engine/-/viewer.session-engine.session-engine-3.18.0.tgz}
+  '@shapediver/viewer.session-engine.session-engine@3.18.2':
+    resolution: {integrity: sha512-Qj+4NO5Y68PD4v7qQkOZTQoEAInfukVEQbAoht+/WC7IKS4v+sonRsg6wxUk5vbRFQqH6zUuybx4fEb0bYwrXA==}
 
-  '@shapediver/viewer.session@3.18.0':
-    resolution: {integrity: sha512-39iW1parpdeRjIQgTv/LmPK0ri/+4aJafMb9FmbZR1Oii7grCT3imVJmRJb3QJsUjBodjFQFDapYr5n59XJzRg==, tarball: https://registry.npmjs.org/@shapediver/viewer.session/-/viewer.session-3.18.0.tgz}
+  '@shapediver/viewer.session@3.18.2':
+    resolution: {integrity: sha512-B4HSpkbr4+RtQ8Oxjo8yqES/vQp/SiAFHL+9UkPNghW0xcF/Mo4QySnTqr1iaXor/yxX/z1Cszhi19+QQSNfrA==}
 
   '@shapediver/viewer.settings@1.3.0':
-    resolution: {integrity: sha512-h5CtGDz94A97uEn2efE8U0lJ3Ah1sm4/RWEs/Yr6q3ShpljUKrbN4vQN9/qNNpj+OmnmifI5HLsy4+T8u+B1sg==, tarball: https://registry.npmjs.org/@shapediver/viewer.settings/-/viewer.settings-1.3.0.tgz}
+    resolution: {integrity: sha512-h5CtGDz94A97uEn2efE8U0lJ3Ah1sm4/RWEs/Yr6q3ShpljUKrbN4vQN9/qNNpj+OmnmifI5HLsy4+T8u+B1sg==}
 
-  '@shapediver/viewer.shared.build-data@3.18.0':
-    resolution: {integrity: sha512-UuM3XaMhoDIvlGEcnUW4Mzck58qDuu6ipui2RwXKT0m0KTEHoEmx0uuF6ADX86fAXpNtvxuo5+2Kc26+GINzsw==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.build-data/-/viewer.shared.build-data-3.18.0.tgz}
+  '@shapediver/viewer.shared.build-data@3.18.2':
+    resolution: {integrity: sha512-Dd16JG/B2MJJIfMYspRWj4QYQR1MN1seqt+HDGsEvlP0rRUGGW/FriVBZz3n+KDcgxxLekJXLSjnQ3QYJVhBdQ==}
 
-  '@shapediver/viewer.shared.global-access-objects@3.18.0':
-    resolution: {integrity: sha512-1l1VRTjVfOHR5ZXQXslDs/olv81kzYCzAmebL0AlFlnauWpqO/d3Z3VT2Fe/Ga3115nwjSzX1mySNpYbc0xZcQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.global-access-objects/-/viewer.shared.global-access-objects-3.18.0.tgz}
+  '@shapediver/viewer.shared.global-access-objects@3.18.2':
+    resolution: {integrity: sha512-idAudoB0IFkpX7htIMM4t5EaQarBP98bzFdZRFfCmuZm98KR1Ke3DSVuy9pa49XufoD1aXFhmr1BHQX0UnBv8w==}
 
-  '@shapediver/viewer.shared.math@3.18.0':
-    resolution: {integrity: sha512-rhoO+ilnT9aBex8zNjSIn/8IC3exgS+7cwZ/B0WsBp6RehpIePwlxJu9dekCsmDwJ0Fp6hwPua2YMIYWvJWAOQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.math/-/viewer.shared.math-3.18.0.tgz}
+  '@shapediver/viewer.shared.math@3.18.2':
+    resolution: {integrity: sha512-oUOgMIfHIrWuVcGFAan3Pvew/o+UE95QDJCv1SfVW51Umgux8KzKqw5b/aGahYyaW9rW7hm5qbNuiWM5OgTFFQ==}
 
-  '@shapediver/viewer.shared.node-tree@3.18.0':
-    resolution: {integrity: sha512-HLdrtCe0HQ7D2lm5wJa2SXmMTvXJ7qf/CrahdWma92KLAJ8PHzVqEL3wzWc7ScyYp+UOHKjIw8qIYvLKjeI1jw==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.node-tree/-/viewer.shared.node-tree-3.18.0.tgz}
+  '@shapediver/viewer.shared.node-tree@3.18.2':
+    resolution: {integrity: sha512-QjOCMGsPvW6bse0OetJqmNFvjjg6UwxhYbl57odHNexMfLRtha0cBsNadd7NQf1HwCNW+IwY2mznptU/2WufXw==}
 
-  '@shapediver/viewer.shared.services@3.18.0':
-    resolution: {integrity: sha512-5AbGJFj53uVyuyk7Qz5kJoHsE/gl5js6bs23diXkbPsjEx6JS6sWvLCJISTOZrQ9Vg7Rg1yAJBnpOxX0bBr23w==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.services/-/viewer.shared.services-3.18.0.tgz}
+  '@shapediver/viewer.shared.services@3.18.2':
+    resolution: {integrity: sha512-Y6a7ZdlomKdSz9LAac4ZuiHQTEVtGJMsAWiX19Pw7E8TxfaTy1mImdq7+Roc+/pY1mblMIQJeptXRzKd6zKNBA==}
 
-  '@shapediver/viewer.shared.types@3.18.0':
-    resolution: {integrity: sha512-YAquDsns1d5kdSII3h3Z9jdDTyVwqJ7wEpTEwxtL5yXMOX7wbRWBSgRLemPlvjiA5hPyHiBfokGDOLpo+bJkfg==, tarball: https://registry.npmjs.org/@shapediver/viewer.shared.types/-/viewer.shared.types-3.18.0.tgz}
+  '@shapediver/viewer.shared.types@3.18.2':
+    resolution: {integrity: sha512-e/1+Cr9/EnQNpKLgTMwXLwiKR5qBv4H+6z6lxZIYfybTFiDBU9SGkR7194RliwCcU+Vp+xq6cngq51UPD57fcw==}
 
   '@shapediver/viewer.utils.mime-type@1.1.0':
-    resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==, tarball: https://registry.npmjs.org/@shapediver/viewer.utils.mime-type/-/viewer.utils.mime-type-1.1.0.tgz}
+    resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==}
 
-  '@shapediver/viewer.viewport@3.18.0':
-    resolution: {integrity: sha512-O55UbSlYk1a/gIR7h0nObb1jpbyyalkyRsT7foxWlmyt19F8jSga9XfXbKMt28nah6H8cgrA1cHBlK4WUGl/jQ==, tarball: https://registry.npmjs.org/@shapediver/viewer.viewport/-/viewer.viewport-3.18.0.tgz}
+  '@shapediver/viewer.viewport@3.18.2':
+    resolution: {integrity: sha512-PyuJ8i7b2q+VfdYlwZ8DBkQq5I7viyfON2jWELVMIbSkeqs7cyq/sR5+qPIEo5J4/Z3eN5i6baT/27Hu8L7/YA==}
 
-  '@shapediver/viewer@3.18.0':
-    resolution: {integrity: sha512-lt0bNtsBpxGRfG5J/Z8QzK2T4bnsCNyccgeyY6jZp8SAHrmPguGbyDoILu2KFAFioaRi0OVvGSb5IqQeEvBAuA==, tarball: https://registry.npmjs.org/@shapediver/viewer/-/viewer-3.18.0.tgz}
+  '@shapediver/viewer@3.18.2':
+    resolution: {integrity: sha512-coT3PT+GTufoCURevmcgk+K/7Vkxj9YJVguXmipIgWVOgGqOekB4xGxa3Fw2CARvkxzpIAKJvfz6pehiRW10SQ==}
 
   '@shikijs/engine-oniguruma@3.23.0':
     resolution: {integrity: sha512-1nWINwKXxKKLqPibT5f4pAFLej9oZzQTsby8942OTlsJzOBZ0MWKiwzMsd+jhzu8YPCHAswGnnN1YtQfirL35g==}
@@ -5392,10 +5392,10 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@boundaries/elements@1.2.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))':
+  '@boundaries/elements@1.2.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)':
     dependencies:
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
       handlebars: 4.7.8
       is-core-module: 2.16.1
       micromatch: 4.0.8
@@ -5577,14 +5577,14 @@ snapshots:
   '@esbuild/win32-x64@0.28.1':
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.1(eslint@9.39.4(supports-color@8.1.1))':
+  '@eslint-community/eslint-utils@4.9.1(eslint@9.39.4)':
     dependencies:
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/config-array@0.21.2(supports-color@8.1.1)':
+  '@eslint/config-array@0.21.2':
     dependencies:
       '@eslint/object-schema': 2.1.7
       debug: 4.4.3(supports-color@8.1.1)
@@ -5623,10 +5623,10 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@feature-sliced/eslint-config@0.1.1(eslint-plugin-boundaries@5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1)))(eslint-plugin-import@2.32.0)':
+  '@feature-sliced/eslint-config@0.1.1(eslint-plugin-boundaries@5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4))(eslint-plugin-import@2.32.0)':
     dependencies:
-      eslint-plugin-boundaries: 5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+      eslint-plugin-boundaries: 5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
 
   '@floating-ui/core@1.7.5':
     dependencies:
@@ -6129,7 +6129,7 @@ snapshots:
 
   '@sentry/cli@2.39.1':
     dependencies:
-      https-proxy-agent: 5.0.1(supports-color@8.1.1)
+      https-proxy-agent: 5.0.1
       node-fetch: 2.7.0
       progress: 2.0.3
       proxy-from-env: 1.1.0
@@ -6146,9 +6146,9 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/cli@2.58.4(supports-color@8.1.1)':
+  '@sentry/cli@2.58.4':
     dependencies:
-      https-proxy-agent: 5.0.1(supports-color@8.1.1)
+      https-proxy-agent: 5.0.1
       node-fetch: 2.7.0
       progress: 2.0.3
       proxy-from-env: 1.1.0
@@ -6246,189 +6246,189 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@shapediver/viewer.api.general@3.18.0':
+  '@shapediver/viewer.api.general@3.18.2':
     dependencies:
-      '@shapediver/viewer.data-engine.geometry-engine': 3.18.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
+      '@shapediver/viewer.data-engine.geometry-engine': 3.18.2
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.creation-control-center.session@3.18.0':
+  '@shapediver/viewer.creation-control-center.session@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.session-engine.session-engine': 3.18.0
+      '@shapediver/viewer.session-engine.session-engine': 3.18.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.creation-control-center.viewport@3.18.0':
+  '@shapediver/viewer.creation-control-center.viewport@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.data-engine@3.18.0':
+  '@shapediver/viewer.data-engine.data-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.geometry-engine': 3.18.0
-      '@shapediver/viewer.data-engine.html-element-anchor-engine': 3.18.0
-      '@shapediver/viewer.data-engine.material-database-engine': 3.18.0
-      '@shapediver/viewer.data-engine.material-engine': 3.18.0
-      '@shapediver/viewer.data-engine.sdtf-engine': 3.18.0
-      '@shapediver/viewer.data-engine.tag3d-engine': 3.18.0
-      '@shapediver/viewer.shared.global-access-objects': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.geometry-engine': 3.18.2
+      '@shapediver/viewer.data-engine.html-element-anchor-engine': 3.18.2
+      '@shapediver/viewer.data-engine.material-database-engine': 3.18.2
+      '@shapediver/viewer.data-engine.material-engine': 3.18.2
+      '@shapediver/viewer.data-engine.sdtf-engine': 3.18.2
+      '@shapediver/viewer.data-engine.tag3d-engine': 3.18.2
+      '@shapediver/viewer.shared.global-access-objects': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.geometry-engine@3.18.0':
+  '@shapediver/viewer.data-engine.geometry-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.material-engine': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.light-engine': 3.18.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.material-engine': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.light-engine': 3.18.2
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.gltf-converter@3.18.0':
+  '@shapediver/viewer.data-engine.gltf-converter@3.18.2':
     dependencies:
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.global-access-objects': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.global-access-objects': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.18.0':
-    dependencies:
-      '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
-      gl-matrix: 3.4.4
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  '@shapediver/viewer.data-engine.material-database-engine@3.18.0':
+  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.material-engine': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.global-access-objects': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.material-engine@3.18.0':
+  '@shapediver/viewer.data-engine.material-database-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.material-engine': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.global-access-objects': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.sdtf-engine@3.18.0':
+  '@shapediver/viewer.data-engine.material-engine@3.18.2':
+    dependencies:
+      '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
+      gl-matrix: 3.4.4
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
+  '@shapediver/viewer.data-engine.sdtf-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
       '@shapediver/sdk.sdtf-primitives': 1.7.3
       '@shapediver/sdk.sdtf-v1': 1.7.3
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.shared-types@3.18.0':
+  '@shapediver/viewer.data-engine.shared-types@3.18.2':
     dependencies:
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.data-engine.tag3d-engine@3.18.0':
+  '@shapediver/viewer.data-engine.tag3d-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.geometry-engine': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.global-access-objects': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.geometry-engine': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.global-access-objects': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.features.attribute-visualization@3.18.0':
+  '@shapediver/viewer.features.attribute-visualization@3.18.2':
     dependencies:
-      '@shapediver/viewer': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       detect-it: 4.0.1
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.features.drawing-tools@3.18.0':
+  '@shapediver/viewer.features.drawing-tools@3.18.2':
     dependencies:
-      '@shapediver/viewer': 3.18.0
-      '@shapediver/viewer.features.interaction': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer': 3.18.2
+      '@shapediver/viewer.features.interaction': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/three': 0.162.0
       gl-matrix: 3.4.4
       three: 0.162.0
@@ -6436,16 +6436,16 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.features.interaction@3.18.0':
+  '@shapediver/viewer.features.interaction@3.18.2':
     dependencies:
-      '@shapediver/viewer': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/three': 0.162.0
       detect-it: 4.0.1
       gl-matrix: 3.4.4
@@ -6454,16 +6454,16 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.features.transformation-tools@3.18.0':
+  '@shapediver/viewer.features.transformation-tools@3.18.2':
     dependencies:
-      '@shapediver/viewer': 3.18.0
-      '@shapediver/viewer.features.drawing-tools': 3.18.0
-      '@shapediver/viewer.features.interaction': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer': 3.18.2
+      '@shapediver/viewer.features.drawing-tools': 3.18.2
+      '@shapediver/viewer.features.interaction': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/three': 0.162.0
       gl-matrix: 3.4.4
       three: 0.162.0
@@ -6471,36 +6471,36 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.animation-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.animation-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@tweenjs/tween.js': 25.0.0
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
       '@tweenjs/tween.js': 25.0.0
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.camera-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.camera-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@tweenjs/tween.js': 25.0.0
       detect-it: 4.0.1
       gl-matrix: 3.4.4
@@ -6508,22 +6508,22 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.canvas-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.canvas-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.intersection-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.intersection-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/three': 0.162.0
       detect-it: 4.0.1
       gl-matrix: 3.4.4
@@ -6532,15 +6532,15 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/three': 0.162.0
       gl-matrix: 3.4.4
       three: 0.162.0
@@ -6548,35 +6548,35 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.light-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.light-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.18.0':
+  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.18.2':
     dependencies:
-      '@shapediver/viewer.data-engine.gltf-converter': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.data-engine.tag3d-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.animation-frame-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.canvas-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.light-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.shared.global-access-objects': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.data-engine.gltf-converter': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.data-engine.tag3d-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.animation-frame-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.canvas-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.light-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.shared.global-access-objects': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@tweenjs/tween.js': 25.0.0
       '@types/stats.js': 0.17.4
       '@types/three': 0.162.0
@@ -6588,45 +6588,45 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.rendering-engine.rendering-engine@3.18.0':
+  '@shapediver/viewer.rendering-engine.rendering-engine@3.18.2':
     dependencies:
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.session-engine.session-engine@3.18.0':
+  '@shapediver/viewer.session-engine.session-engine@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.global-access-objects': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.global-access-objects': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@shapediver/viewer.utils.mime-type': 1.1.0
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.session@3.18.0':
+  '@shapediver/viewer.session@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.api.general': 3.18.0
-      '@shapediver/viewer.creation-control-center.session': 3.18.0
-      '@shapediver/viewer.data-engine.gltf-converter': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.session-engine.session-engine': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.api.general': 3.18.2
+      '@shapediver/viewer.creation-control-center.session': 3.18.2
+      '@shapediver/viewer.data-engine.gltf-converter': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.session-engine.session-engine': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -6636,46 +6636,46 @@ snapshots:
       uuid: 14.0.0
       zod: 4.4.3
 
-  '@shapediver/viewer.shared.build-data@3.18.0': {}
+  '@shapediver/viewer.shared.build-data@3.18.2': {}
 
-  '@shapediver/viewer.shared.global-access-objects@3.18.0':
+  '@shapediver/viewer.shared.global-access-objects@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.shared.math@3.18.0':
+  '@shapediver/viewer.shared.math@3.18.2':
     dependencies:
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.shared.node-tree@3.18.0':
+  '@shapediver/viewer.shared.node-tree@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
       '@shapediver/sdk.sdtf-primitives': 1.7.3
       '@shapediver/sdk.sdtf-v1': 1.7.3
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       gl-matrix: 3.4.4
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@shapediver/viewer.shared.services@3.18.0':
+  '@shapediver/viewer.shared.services@3.18.2':
     dependencies:
       '@ctrl/tinycolor': 4.2.0
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/ua-parser-js': 0.7.39
       axios: 1.16.1
       dompurify: 3.4.6
@@ -6686,7 +6686,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer.shared.types@3.18.0':
+  '@shapediver/viewer.shared.types@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
       '@shapediver/sdk.sdtf-primitives': 1.7.3
@@ -6699,27 +6699,27 @@ snapshots:
 
   '@shapediver/viewer.utils.mime-type@1.1.0': {}
 
-  '@shapediver/viewer.viewport@3.18.0':
+  '@shapediver/viewer.viewport@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.api.general': 3.18.0
-      '@shapediver/viewer.creation-control-center.viewport': 3.18.0
-      '@shapediver/viewer.data-engine.data-engine': 3.18.0
-      '@shapediver/viewer.data-engine.geometry-engine': 3.18.0
-      '@shapediver/viewer.data-engine.gltf-converter': 3.18.0
-      '@shapediver/viewer.data-engine.material-engine': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.light-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.0
+      '@shapediver/viewer.api.general': 3.18.2
+      '@shapediver/viewer.creation-control-center.viewport': 3.18.2
+      '@shapediver/viewer.data-engine.data-engine': 3.18.2
+      '@shapediver/viewer.data-engine.geometry-engine': 3.18.2
+      '@shapediver/viewer.data-engine.gltf-converter': 3.18.2
+      '@shapediver/viewer.data-engine.material-engine': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.light-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.2
       '@shapediver/viewer.settings': 1.3.0
-      '@shapediver/viewer.shared.build-data': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
+      '@shapediver/viewer.shared.build-data': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
       '@types/qrcode': 1.5.6
       '@types/three': 0.162.0
       gl-matrix: 3.4.4
@@ -6729,27 +6729,27 @@ snapshots:
       - debug
       - supports-color
 
-  '@shapediver/viewer@3.18.0':
+  '@shapediver/viewer@3.18.2':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 3.4.2
-      '@shapediver/viewer.api.general': 3.18.0
-      '@shapediver/viewer.creation-control-center.session': 3.18.0
-      '@shapediver/viewer.creation-control-center.viewport': 3.18.0
-      '@shapediver/viewer.data-engine.data-engine': 3.18.0
-      '@shapediver/viewer.data-engine.geometry-engine': 3.18.0
-      '@shapediver/viewer.data-engine.material-engine': 3.18.0
-      '@shapediver/viewer.data-engine.shared-types': 3.18.0
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.light-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.0
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.0
-      '@shapediver/viewer.session': 3.18.0
-      '@shapediver/viewer.session-engine.session-engine': 3.18.0
-      '@shapediver/viewer.shared.math': 3.18.0
-      '@shapediver/viewer.shared.node-tree': 3.18.0
-      '@shapediver/viewer.shared.services': 3.18.0
-      '@shapediver/viewer.shared.types': 3.18.0
-      '@shapediver/viewer.viewport': 3.18.0
+      '@shapediver/viewer.api.general': 3.18.2
+      '@shapediver/viewer.creation-control-center.session': 3.18.2
+      '@shapediver/viewer.creation-control-center.viewport': 3.18.2
+      '@shapediver/viewer.data-engine.data-engine': 3.18.2
+      '@shapediver/viewer.data-engine.geometry-engine': 3.18.2
+      '@shapediver/viewer.data-engine.material-engine': 3.18.2
+      '@shapediver/viewer.data-engine.shared-types': 3.18.2
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.light-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.18.2
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.18.2
+      '@shapediver/viewer.session': 3.18.2
+      '@shapediver/viewer.session-engine.session-engine': 3.18.2
+      '@shapediver/viewer.shared.math': 3.18.2
+      '@shapediver/viewer.shared.node-tree': 3.18.2
+      '@shapediver/viewer.shared.services': 3.18.2
+      '@shapediver/viewer.shared.types': 3.18.2
+      '@shapediver/viewer.viewport': 3.18.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -7083,15 +7083,15 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.55.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/eslint-plugin@8.55.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.55.0
-      '@typescript-eslint/type-utils': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)
+      '@typescript-eslint/type-utils': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.55.0
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       ignore: 7.0.5
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -7099,15 +7099,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/eslint-plugin@8.61.1(@typescript-eslint/parser@8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/eslint-plugin@8.61.1(@typescript-eslint/parser@8.61.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.61.1(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.61.1
-      '@typescript-eslint/type-utils': 8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.61.1(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)
+      '@typescript-eslint/type-utils': 8.61.1(eslint@9.39.4)(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.61.1(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.61.1
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       ignore: 7.0.5
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -7115,31 +7115,31 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.55.0
       '@typescript-eslint/types': 8.55.0
-      '@typescript-eslint/typescript-estree': 8.55.0(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/typescript-estree': 8.55.0(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.55.0
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/parser@8.61.1(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.61.1
       '@typescript-eslint/types': 8.61.1
       '@typescript-eslint/typescript-estree': 8.61.1(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.61.1
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.55.0(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/project-service@8.55.0(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.55.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.55.0
@@ -7175,25 +7175,25 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  '@typescript-eslint/type-utils@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/type-utils@8.55.0(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/types': 8.55.0
-      '@typescript-eslint/typescript-estree': 8.55.0(supports-color@8.1.1)(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)
+      '@typescript-eslint/typescript-estree': 8.55.0(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/type-utils@8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/type-utils@8.61.1(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/types': 8.61.1
       '@typescript-eslint/typescript-estree': 8.61.1(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.61.1(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.61.1(eslint@9.39.4)(typescript@5.9.3)
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -7203,9 +7203,9 @@ snapshots:
 
   '@typescript-eslint/types@8.61.1': {}
 
-  '@typescript-eslint/typescript-estree@8.55.0(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript-eslint/typescript-estree@8.55.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/project-service': 8.55.0(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/project-service': 8.55.0(typescript@5.9.3)
       '@typescript-eslint/tsconfig-utils': 8.55.0(typescript@5.9.3)
       '@typescript-eslint/types': 8.55.0
       '@typescript-eslint/visitor-keys': 8.55.0
@@ -7233,24 +7233,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.55.0(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)':
+  '@typescript-eslint/utils@8.55.0(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4(supports-color@8.1.1))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4)
       '@typescript-eslint/scope-manager': 8.55.0
       '@typescript-eslint/types': 8.55.0
-      '@typescript-eslint/typescript-estree': 8.55.0(supports-color@8.1.1)(typescript@5.9.3)
-      eslint: 9.39.4(supports-color@8.1.1)
+      '@typescript-eslint/typescript-estree': 8.55.0(typescript@5.9.3)
+      eslint: 9.39.4
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.61.1(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)':
+  '@typescript-eslint/utils@8.61.1(eslint@9.39.4)(typescript@5.9.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4(supports-color@8.1.1))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4)
       '@typescript-eslint/scope-manager': 8.61.1
       '@typescript-eslint/types': 8.61.1
       '@typescript-eslint/typescript-estree': 8.61.1(typescript@5.9.3)
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -7265,7 +7265,7 @@ snapshots:
       '@typescript-eslint/types': 8.61.1
       eslint-visitor-keys: 5.0.1
 
-  '@typescript/vfs@1.6.4(supports-color@8.1.1)(typescript@5.9.3)':
+  '@typescript/vfs@1.6.4(typescript@5.9.3)':
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       typescript: 5.9.3
@@ -7373,7 +7373,7 @@ snapshots:
 
   acorn@8.17.0: {}
 
-  agent-base@6.0.2(supports-color@8.1.1):
+  agent-base@6.0.2:
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
@@ -7513,7 +7513,7 @@ snapshots:
     dependencies:
       follow-redirects: 1.16.0
       form-data: 4.0.6
-      https-proxy-agent: 5.0.1(supports-color@8.1.1)
+      https-proxy-agent: 5.0.1
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
@@ -8155,9 +8155,9 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-prettier@10.1.8(eslint@9.39.4(supports-color@8.1.1)):
+  eslint-config-prettier@10.1.8(eslint@9.39.4):
     dependencies:
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
 
   eslint-import-context@0.1.9(unrs-resolver@1.12.2):
     dependencies:
@@ -8182,10 +8182,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1):
+  eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       eslint-import-context: 0.1.9(unrs-resolver@1.12.2)
       get-tsconfig: 4.14.0
       is-bun-module: 2.0.0
@@ -8193,39 +8193,39 @@ snapshots:
       tinyglobby: 0.2.17
       unrs-resolver: 1.12.2
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
-      eslint: 9.39.4(supports-color@8.1.1)
+      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
+      eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)
+      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.13.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1)):
+  eslint-module-utils@2.13.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
-      eslint: 9.39.4(supports-color@8.1.1)
+      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
+      eslint: 9.39.4
       eslint-import-resolver-node: 0.3.10
-      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)
+      eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-boundaries@5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1)):
+  eslint-plugin-boundaries@5.4.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4):
     dependencies:
-      '@boundaries/elements': 1.2.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+      '@boundaries/elements': 1.2.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
       chalk: 4.1.2
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
       micromatch: 4.0.8
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
@@ -8233,7 +8233,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -8242,9 +8242,9 @@ snapshots:
       array.prototype.flatmap: 1.3.3
       debug: 3.2.7
       doctrine: 2.1.0
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       eslint-import-resolver-node: 0.3.10
-      eslint-module-utils: 2.13.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(supports-color@8.1.1))
+      eslint-module-utils: 2.13.0(@typescript-eslint/parser@8.55.0(eslint@9.39.4)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4)
       hasown: 2.0.4
       is-core-module: 2.16.2
       is-glob: 4.0.3
@@ -8256,22 +8256,22 @@ snapshots:
       string.prototype.trimend: 1.0.10
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.55.0(eslint@9.39.4)(typescript@5.9.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4(supports-color@8.1.1)))(eslint@9.39.4(supports-color@8.1.1))(prettier@3.8.1):
+  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.4))(eslint@9.39.4)(prettier@3.8.1):
     dependencies:
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       prettier: 3.8.1
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.13
     optionalDependencies:
-      eslint-config-prettier: 10.1.8(eslint@9.39.4(supports-color@8.1.1))
+      eslint-config-prettier: 10.1.8(eslint@9.39.4)
 
-  eslint-plugin-react@7.37.5(eslint@9.39.4(supports-color@8.1.1)):
+  eslint-plugin-react@7.37.5(eslint@9.39.4):
     dependencies:
       array-includes: 3.1.9
       array.prototype.findlast: 1.2.5
@@ -8279,7 +8279,7 @@ snapshots:
       array.prototype.tosorted: 1.1.4
       doctrine: 2.1.0
       es-iterator-helpers: 1.3.3
-      eslint: 9.39.4(supports-color@8.1.1)
+      eslint: 9.39.4
       estraverse: 5.3.0
       hasown: 2.0.4
       jsx-ast-utils: 3.3.5
@@ -8304,11 +8304,11 @@ snapshots:
 
   eslint-visitor-keys@5.0.1: {}
 
-  eslint@9.39.4(supports-color@8.1.1):
+  eslint@9.39.4:
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4(supports-color@8.1.1))
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.4)
       '@eslint-community/regexpp': 4.12.2
-      '@eslint/config-array': 0.21.2(supports-color@8.1.1)
+      '@eslint/config-array': 0.21.2
       '@eslint/config-helpers': 0.4.2
       '@eslint/core': 0.17.0
       '@eslint/eslintrc': 3.3.5
@@ -8639,17 +8639,17 @@ snapshots:
 
   html-url-attributes@3.0.1: {}
 
-  http-proxy-agent@5.0.0(supports-color@8.1.1):
+  http-proxy-agent@5.0.0:
     dependencies:
       '@tootallnate/once': 2.0.1
-      agent-base: 6.0.2(supports-color@8.1.1)
+      agent-base: 6.0.2
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
-  https-proxy-agent@5.0.1(supports-color@8.1.1):
+  https-proxy-agent@5.0.1:
     dependencies:
-      agent-base: 6.0.2(supports-color@8.1.1)
+      agent-base: 6.0.2
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
@@ -9016,7 +9016,7 @@ snapshots:
       jest-util: 29.7.0
       pretty-format: 29.7.0
 
-  jest-environment-jsdom@29.7.0(supports-color@8.1.1):
+  jest-environment-jsdom@29.7.0:
     dependencies:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
@@ -9025,7 +9025,7 @@ snapshots:
       '@types/node': 22.19.11
       jest-mock: 29.7.0
       jest-util: 29.7.0
-      jsdom: 20.0.3(supports-color@8.1.1)
+      jsdom: 20.0.3
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -9250,7 +9250,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@20.0.3(supports-color@8.1.1):
+  jsdom@20.0.3:
     dependencies:
       abab: 2.0.6
       acorn: 8.17.0
@@ -9263,8 +9263,8 @@ snapshots:
       escodegen: 2.1.0
       form-data: 4.0.6
       html-encoding-sniffer: 3.0.0
-      http-proxy-agent: 5.0.0(supports-color@8.1.1)
-      https-proxy-agent: 5.0.1(supports-color@8.1.1)
+      http-proxy-agent: 5.0.0
+      https-proxy-agent: 5.0.1
       is-potential-custom-element-name: 1.0.1
       nwsapi: 2.2.24
       parse5: 7.3.0
@@ -9474,7 +9474,7 @@ snapshots:
       '@types/unist': 3.0.3
       ccount: 2.0.1
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
       parse-entities: 4.0.2
       stringify-entities: 4.0.4
@@ -9489,14 +9489,14 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit-parents: 6.0.2
 
-  mdast-util-from-markdown@2.0.3(supports-color@8.1.1):
+  mdast-util-from-markdown@2.0.3:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
       decode-named-character-reference: 1.3.0
       devlop: 1.1.0
       mdast-util-to-string: 4.0.0
-      micromark: 4.0.2(supports-color@8.1.1)
+      micromark: 4.0.2
       micromark-util-decode-numeric-character-reference: 2.0.2
       micromark-util-decode-string: 2.0.1
       micromark-util-normalize-identifier: 2.0.1
@@ -9518,7 +9518,7 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
       micromark-util-normalize-identifier: 2.0.1
     transitivePeerDependencies:
@@ -9527,7 +9527,7 @@ snapshots:
   mdast-util-gfm-strikethrough@2.0.0:
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9537,7 +9537,7 @@ snapshots:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
       markdown-table: 3.0.4
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9546,14 +9546,14 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
 
   mdast-util-gfm@3.1.0:
     dependencies:
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-gfm-autolink-literal: 2.0.1
       mdast-util-gfm-footnote: 2.1.0
       mdast-util-gfm-strikethrough: 2.0.0
@@ -9569,7 +9569,7 @@ snapshots:
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9582,7 +9582,7 @@ snapshots:
       '@types/unist': 3.0.3
       ccount: 2.0.1
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
       parse-entities: 4.0.2
       stringify-entities: 4.0.4
@@ -9597,7 +9597,7 @@ snapshots:
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9820,7 +9820,7 @@ snapshots:
 
   micromark-util-types@2.0.2: {}
 
-  micromark@4.0.2(supports-color@8.1.1):
+  micromark@4.0.2:
     dependencies:
       '@types/debug': 4.1.13
       debug: 4.4.3(supports-color@8.1.1)
@@ -10183,7 +10183,7 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-markdown@9.1.0(@types/react@18.3.28)(react@19.2.4)(supports-color@8.1.1):
+  react-markdown@9.1.0(@types/react@18.3.28)(react@19.2.4):
     dependencies:
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.4
@@ -10193,7 +10193,7 @@ snapshots:
       html-url-attributes: 3.0.1
       mdast-util-to-hast: 13.2.1
       react: 19.2.4
-      remark-parse: 11.0.0(supports-color@8.1.1)
+      remark-parse: 11.0.0
       remark-rehype: 11.1.2
       unified: 11.0.5
       unist-util-visit: 5.1.0
@@ -10349,16 +10349,16 @@ snapshots:
       '@types/mdast': 4.0.4
       mdast-util-gfm: 3.1.0
       micromark-extension-gfm: 3.0.0
-      remark-parse: 11.0.0(supports-color@8.1.1)
+      remark-parse: 11.0.0
       remark-stringify: 11.0.0
       unified: 11.0.5
     transitivePeerDependencies:
       - supports-color
 
-  remark-parse@11.0.0(supports-color@8.1.1):
+  remark-parse@11.0.0:
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
+      mdast-util-from-markdown: 2.0.3
       micromark-util-types: 2.0.2
       unified: 11.0.5
     transitivePeerDependencies:
@@ -10868,11 +10868,11 @@ snapshots:
       esbuild: 0.28.1
       jest-util: 29.7.0
 
-  ts-to-zod@5.1.0(supports-color@8.1.1):
+  ts-to-zod@5.1.0:
     dependencies:
       '@clack/prompts': 1.0.0-alpha.4
       '@oclif/core': 4.11.6
-      '@typescript/vfs': 1.6.4(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript/vfs': 1.6.4(typescript@5.9.3)
       chokidar: 4.0.3
       listr2: 9.0.5
       slash: 5.1.0
@@ -10962,13 +10962,13 @@ snapshots:
       typescript: 5.9.3
       yaml: 2.9.0
 
-  typescript-eslint@8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3):
+  typescript-eslint@8.61.1(eslint@9.39.4)(typescript@5.9.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.61.1(@typescript-eslint/parser@8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
-      '@typescript-eslint/parser': 8.61.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/eslint-plugin': 8.61.1(@typescript-eslint/parser@8.61.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.61.1(eslint@9.39.4)(typescript@5.9.3)
       '@typescript-eslint/typescript-estree': 8.61.1(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.61.1(eslint@9.39.4(supports-color@8.1.1))(typescript@5.9.3)
-      eslint: 9.39.4(supports-color@8.1.1)
+      '@typescript-eslint/utils': 8.61.1(eslint@9.39.4)(typescript@5.9.3)
+      eslint: 9.39.4
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
