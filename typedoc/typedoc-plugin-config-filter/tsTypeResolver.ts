@@ -38,6 +38,12 @@ const MAX_CACHED_PROGRAMS = 6;
 /** Mantine types that must stay expandable (responsive/style props). */
 const MANTINE_TS_EXPAND_ALLOWLIST = new Set(["MantineStyleProps"]);
 
+export function isMantineTsExpandAllowlisted(
+	qualifiedName: string,
+): boolean {
+	return MANTINE_TS_EXPAND_ALLOWLIST.has(qualifiedName);
+}
+
 const MANTINE_BREAKPOINT_KEYS = new Set(["xs", "sm", "md", "lg", "xl", "base"]);
 
 function stringLiteralKeysFromType(type: ts.Type): string[] {
@@ -226,6 +232,7 @@ export function shouldStubMantineExpandedProps(
 	target?: {packageName?: string; fileName?: string},
 ): boolean {
 	if (!isMantineCoreTarget(target)) return false;
+	if (isMantineTsExpandAllowlisted(qualifiedName)) return false;
 	if (propCount > 80) return true;
 	if (qualifiedName.endsWith("Props") && propCount > 50) return true;
 	return false;

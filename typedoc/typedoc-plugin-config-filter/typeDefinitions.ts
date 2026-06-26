@@ -21,6 +21,7 @@ import {
 	deepSimplifySchema,
 	isDomEventHandlerTypeName,
 	isMantineCorePackageTarget,
+	isMantineTsExpandAllowlisted,
 	mergeMirrorDefinitionOverlay,
 	normalizeUnknownTypeName,
 	shouldStubMantineExpandedProps,
@@ -894,7 +895,8 @@ export function createDefinitionsContext(
 					propCount,
 					stubTarget,
 				) ||
-				propCount > 50
+				(propCount > 50 &&
+					!isMantineTsExpandAllowlisted(qualifiedForMirror))
 			) {
 				return {
 					type: "unknown",
