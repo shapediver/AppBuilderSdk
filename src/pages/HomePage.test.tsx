@@ -1,10 +1,12 @@
 /**
  * @jest-environment jsdom
  */
-import {render, screen} from "@testing-library/react";
+import {expect, test} from "@jest/globals";
 import {MantineProvider} from "@mantine/core";
+import "@testing-library/jest-dom";
+import {render, screen} from "@testing-library/react";
 import {HashRouter} from "react-router-dom";
-import HomePage from "~/pages/HomePage";
+import HomePage from "./HomePage";
 
 test("renders home page heading", () => {
 	render(

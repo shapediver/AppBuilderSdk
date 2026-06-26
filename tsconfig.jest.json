@@ -14,7 +14,10 @@
 		"src/**/*.test.ts",
 		"src/**/*.test.tsx",
 		"src/**/*.spec.ts",
-		"src/**/*.spec.tsx"
+		"src/**/*.spec.tsx",
+		"tests/jest.setup.ts",
+		"tests/mocks/**/*.ts",
+		"tests/mocks/**/*.tsx"
 	],
 	"exclude": []
 }

@@ -1,8 +1,8 @@
 import {
 	mantineCorePropsDocKeyForMirrorName,
 	resolveMantineCorePropsMirrorForDocKey,
-} from "./mantineMirrorParser.ts";
-import type {DefinitionsContext, DocTypeSchema} from "./typeDefinitions.ts";
+} from "./mantineMirrorParser";
+import type {DefinitionsContext, DocTypeSchema} from "./typeDefinitions";
 import {
 	createDefinitionsContext,
 	entryPropertiesFromDefinition,
@@ -10,7 +10,7 @@ import {
 	postProcessFlatEntries,
 	wrapDocFlatEntries,
 	type DocFlatDocument,
-} from "./typeDefinitions.ts";
+} from "./typeDefinitions";
 
 export {
 	createDefinitionsContext,

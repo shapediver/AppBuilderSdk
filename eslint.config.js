@@ -119,7 +119,10 @@ export default tseslint.config(
 		},
 	},
 	{
-		files: ["src/**/*.{test,spec}.{ts,tsx}"],
+		files: [
+			"src/**/*.{test,spec}.{ts,tsx}",
+			"src/*.{test,spec}.{ts,tsx}",
+		],
 		languageOptions: {
 			globals: {
 				...globals.node,
@@ -129,6 +132,12 @@ export default tseslint.config(
 				project: "./tsconfig.jest.json",
 				tsconfigRootDir: __dirname,
 			},
+		},
+	},
+	{
+		files: ["tests/jest.setup.ts", "tests/mocks/**/*.{ts,tsx}"],
+		languageOptions: {
+			globals: globals.node,
 		},
 	},
 );

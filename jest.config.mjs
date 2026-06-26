@@ -3,7 +3,7 @@ export default {
 	preset: "ts-jest",
 	testEnvironment: "node",
 
-	setupFiles: ["<rootDir>/tests/jest.setup.cjs"],
+	setupFiles: ["<rootDir>/tests/jest.setup.ts"],
 	setupFilesAfterEnv: ["@testing-library/jest-dom"],
 
 	testMatch: ["**/*.(test|spec).(ts|tsx)"],
@@ -20,10 +20,10 @@ export default {
 	},
 
 	moduleNameMapper: {
-		"^uuid$": "<rootDir>/tests/mocks/uuid.cjs",
-		"^react-markdown$": "<rootDir>/tests/mocks/reactMarkdown.cjs",
-		"\\.module\\.css$": "<rootDir>/tests/mocks/cssModule.cjs",
-		"\\.css$": "<rootDir>/tests/mocks/cssModule.cjs",
+		"^uuid$": "<rootDir>/tests/mocks/uuid.ts",
+		"^react-markdown$": "<rootDir>/tests/mocks/reactMarkdown.tsx",
+		"\\.module\\.css$": "<rootDir>/tests/mocks/cssModule.ts",
+		"\\.css$": "<rootDir>/tests/mocks/cssModule.ts",
 		"^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",
 		"^@AppBuilderShared/(.*)$": "<rootDir>/src/shared/$1",
 		"^~/(.*)$": "<rootDir>/src/$1",

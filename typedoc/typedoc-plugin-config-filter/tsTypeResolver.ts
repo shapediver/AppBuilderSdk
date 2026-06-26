@@ -35,12 +35,20 @@ type TypeDocTypeNode = {
 const MAX_RESOLVE_DEPTH = 12;
 const MAX_CACHED_PROGRAMS = 6;
 
-/** Mantine types that must stay expandable (responsive/style props). */
+/**
+ * Mantine @mantine/core types that must stay fully expanded in doc-flat.json
+ * even when they exceed the usual prop-count stub threshold (see
+ * shouldStubMantineExpandedProps).
+ *
+ * MantineStyleProps: responsive layout/style keys (m, p, fz, w, …) used in theme
+ * defaultProps. Mantine 9 grew this interface past 50 fields; without the
+ * allowlist the doc plugin would replace it with an opaque "see Mantine docs"
+ * stub and break $ref resolution (e.g. fz → MantineResponsiveCssSize).
+ */
 const MANTINE_TS_EXPAND_ALLOWLIST = new Set(["MantineStyleProps"]);
 
-export function isMantineTsExpandAllowlisted(
-	qualifiedName: string,
-): boolean {
+/** True when a Mantine type must not be stubbed despite a high property count. */
+export function isMantineTsExpandAllowlisted(qualifiedName: string): boolean {
 	return MANTINE_TS_EXPAND_ALLOWLIST.has(qualifiedName);
 }
 
@@ -232,8 +240,10 @@ export function shouldStubMantineExpandedProps(
 	target?: {packageName?: string; fileName?: string},
 ): boolean {
 	if (!isMantineCoreTarget(target)) return false;
+	// Keep allowlisted types expandable for doc-flat / theme JSON schema refs.
 	if (isMantineTsExpandAllowlisted(qualifiedName)) return false;
 	if (propCount > 80) return true;
+	// Most Mantine *Props bags are huge; stub them and link to mantine.dev instead.
 	if (qualifiedName.endsWith("Props") && propCount > 50) return true;
 	return false;
 }

@@ -895,6 +895,7 @@ export function createDefinitionsContext(
 					propCount,
 					stubTarget,
 				) ||
+				// Fallback stub for large Mantine types without a dedicated allowlist entry.
 				(propCount > 50 &&
 					!isMantineTsExpandAllowlisted(qualifiedForMirror))
 			) {
