@@ -231,4 +231,35 @@ describe("parseSchemaInputInterface", () => {
 			$ref: "#/definitions/MantineFloatingPosition",
 		});
 	});
+
+	it("parses MantineThemeOverrideProps.other as AppBuilderThemeOtherProps ref", () => {
+		const parsed = parseInterfaceFromSourceFile(
+			projectRoot,
+			"src/shared/shared/mantine-props/themeOverride.schema-input.ts",
+			"MantineThemeOverrideProps",
+		);
+		expect(parsed).toHaveProperty("properties");
+		const props = (parsed as {properties: Record<string, unknown>})
+			.properties;
+		expect(props.other).toEqual({
+			$ref: "#/definitions/AppBuilderThemeOtherProps",
+		});
+	});
+});
+
+describe("AppBuilderThemeOtherProps", () => {
+	it("has v8ThemeSupport boolean and forceColorScheme union", () => {
+		const parsed = parseSchemaInputTypeDefinition(
+			projectRoot,
+			"AppBuilderThemeOtherProps",
+		);
+		expect(parsed).toHaveProperty("properties");
+		const props = (parsed as {properties: Record<string, unknown>})
+			.properties;
+		expect(props.v8ThemeSupport).toMatchObject({type: "boolean"});
+		expect(props.forceColorScheme).toMatchObject({
+			type: "string",
+			enum: ["light", "dark"],
+		});
+	});
 });
