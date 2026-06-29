@@ -1,16 +1,61 @@
 {
-  "columns": ["id", "name", "imageUrl", "category", "color", "materials"],
+  "columns": ["value", "title", "imageUrl", "category", "color", "tags"],
   "rows": [
-    ["T001", "Red Cotton", "https://placehold.co/100x100/ff0000/fff?text=R", "Fabric", "Red", "Cotton"],
-    ["T002", "Blue Wool", "", "Fabric", "Blue", "Wool"],
-    ["T003", "Red Silk", "https://placehold.co/100x100/ff0000/fff?text=RS", "Fabric", "Red", "Silk"],
-    ["T004", "Green Linen", "", "Fabric", "Green", "Linen"],
-    ["T005", "Navy Blend", "", "Blend", "Navy", "Cotton;Linen"],
-    ["T006", "Charcoal Polyester", "https://placehold.co/100x100/333333/fff?text=CP", "Synthetic", "Gray", "Polyester"],
-    ["T007", "Cream Silk-Wool", "https://placehold.co/100x100/ffffcc/333?text=SW", "Blend", "Cream", "Silk;Wool"],
-    ["T008", "Orange Cotton", "https://placehold.co/100x100/ff8800/fff?text=OC", "Fabric", "Orange", "Cotton"],
-    ["T009", "Black Denim", "", "Fabric", "Black", "Cotton;Polyester"],
-    ["T010", "White Linen", "", "Fabric", "White", "Linen"],
-    ["T011", "Plaid Wool", "", "Fabric", "Red", "Wool;Polyester"]
+    {
+      "value": "Option 1",
+      "title": "Red Cotton",
+      "imageUrl": "https://placehold.co/100x100/ff0000/fff?text=R",
+      "category": "Fabric",
+      "color": "Red",
+      "tags": ["Cotton"]
+    },
+    {
+      "value": "Option 2",
+      "title": "Blue Wool",
+      "imageUrl": "",
+      "category": "Fabric",
+      "color": "Blue",
+      "tags": ["Wool"]
+    },
+    {
+      "value": "Option 3",
+      "title": "Red Silk",
+      "imageUrl": "https://placehold.co/100x100/ff0000/fff?text=RS",
+      "category": "Fabric",
+      "color": "Red",
+      "tags": ["Silk"]
+    },
+    {
+      "value": "Option 4",
+      "title": "Green Linen",
+      "imageUrl": "",
+      "category": "Fabric",
+      "color": "Green",
+      "tags": ["Linen"]
+    },
+    {
+      "value": "Option 5",
+      "title": "Navy Blend",
+      "imageUrl": "",
+      "category": "Blend",
+      "color": "Navy",
+      "tags": ["Cotton", "Linen"]
+    },
+    {
+      "value": "Option 6",
+      "title": "Charcoal Polyester",
+      "imageUrl": "https://placehold.co/100x100/333333/fff?text=CP",
+      "category": "Synthetic",
+      "color": "Gray",
+      "tags": ["Polyester"]
+    },
+    {
+      "value": "Option 7",
+      "title": "Cream Silk-Wool",
+      "imageUrl": "https://placehold.co/100x100/ffffcc/333?text=SW",
+      "category": "Blend",
+      "color": "Cream",
+      "tags": ["Silk", "Wool"]
+    }
   ]
 }
