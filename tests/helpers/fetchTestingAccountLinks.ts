@@ -89,5 +89,7 @@ export async function fetchTestingAccountLinks(): Promise<AppLink[]> {
 		offset = response.data.pagination.next_offset;
 	} while (offset);
 
-	return [...ownedLinks.values()].sort((a, b) => a.slug.localeCompare(b.slug));
+	return [...ownedLinks.values()].sort((a, b) =>
+		a.slug.localeCompare(b.slug),
+	);
 }
