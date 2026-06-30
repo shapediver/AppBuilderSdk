@@ -1,8 +1,9 @@
 /**
  * Per-slug interaction definitions for the AppBuilder E2E test suite.
+ * See tests/README.md for the overall setup and workflow.
  *
  * ─── HOW TO ADD A TEST ───────────────────────────────────────────────────────
- * Add an entry to `testConfigs` below. Every slug in this array gets:
+ * Add an entry to `scenarioActions` below. Every slug in this array gets:
  *   • smoke test    — page loads, canvas is visible, no JS errors
  *   • visual test   — full-page screenshot matches the stored baseline
  *   • interaction   — runs the `actions` callback (only when `actions` is set)
@@ -15,14 +16,14 @@
  *   Sliders have no aria-label of their own; scope to the parameter container
  *   first. The companion number textbox also works (fill + Enter).
  *
- *     await waitForSessionCustomized(page, async () => {
+ *     await waitForModelRecomputed(page, async () => {
  *       await getParameterElement(page, "Count").getByRole("slider").fill("4");
  *     });
  *
  * TEXT INPUT PARAMETER
  *   Single-line Mantine TextInput — fill the textbox and press Enter to commit.
  *
- *     await waitForSessionCustomized(page, async () => {
+ *     await waitForModelRecomputed(page, async () => {
  *       const input = getParameterElement(page, "Label").getByRole("textbox");
  *       await input.fill("hello");
  *       await input.press("Enter");
@@ -32,7 +33,7 @@
  *   Mantine Textarea — use \n for newlines; press Tab to blur and trigger
  *   the Grasshopper recompute.
  *
- *     await waitForSessionCustomized(page, async () => {
+ *     await waitForModelRecomputed(page, async () => {
  *       const ta = getParameterElement(page, "Notes").getByRole("textbox");
  *       await ta.fill("line1\nline2\nline3");
  *       await ta.press("Tab");
@@ -43,7 +44,7 @@
  *   Click it to open the dropdown portal, then click the option.
  *   Options render outside the parameter container, so use page.getByRole.
  *
- *     await waitForSessionCustomized(page, async () => {
+ *     await waitForModelRecomputed(page, async () => {
  *       await getParameterElement(page, "Material").getByRole("textbox").click();
  *       await page.getByRole("option", { name: "Wood" }).click();
  *     });
@@ -55,7 +56,7 @@
  *
  *     await getParameterElement(page, "Floor Plan")
  *       .locator('input[type="file"]')
- *       .setInputFiles(path.resolve("tests/fixtures/files/plan.3dm"));
+ *       .setInputFiles(path.resolve("tests/config/files/plan.3dm"));
  *
  * ACTIVATION BUTTON (selection / gumball / points input)
  *   These controls expose a plain "activate" button with no specific label.
@@ -64,7 +65,7 @@
  *
  * ACTION BUTTON (fires a Grasshopper script immediately)
  *
- *     await waitForSessionCustomized(page, async () => {
+ *     await waitForModelRecomputed(page, async () => {
  *       await page.getByRole("button", { name: "Run Script" }).click();
  *     });
  *
@@ -95,17 +96,22 @@ import * as path from "path";
 import {getParameterElement} from "../helpers/getParameterElement";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
-import {waitForSessionCustomized} from "../helpers/waitForSessionCustomized";
+import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 
-export interface TestConfig {
+export interface ScenarioActionConfig {
 	slug: string;
 	/**
 	 * Optional pre-load setup steps executed after navigation but BEFORE
-	 * waitForModelLoaded. Use this for anything the model needs to start
+	 * waitForAppReady. Use this for anything the model needs to start
 	 * loading at all — e.g. uploading a required input file.
 	 * Runs in every test (smoke, visual, and interaction).
 	 */
 	setup?: (page: Page) => Promise<void>;
+	/**
+	 * Additional URL query parameters such as modelStateId or g (theme).
+	 * These are appended to the test URL after the branch rewrite.
+	 */
+	params?: Record<string, string>;
 	/**
 	 * Per-example interaction steps executed after the model has fully loaded.
 	 * When defined, an interaction test is generated in addition to the smoke
@@ -116,7 +122,7 @@ export interface TestConfig {
 	actions?: (page: Page, slug: string) => Promise<void>;
 }
 
-export const testConfigs: TestConfig[] = [
+export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// The "Floor Plan" file parameter must be set before the model can load,
 		// so it belongs in `setup` rather than `actions`.
@@ -126,7 +132,7 @@ export const testConfigs: TestConfig[] = [
 				.locator('input[type="file"]')
 				.setInputFiles(
 					path.resolve(
-						"tests/fixtures/files/11B-AppBuilder_Tutorial2_ExampleInput.3dm",
+						"tests/config/files/11B-AppBuilder_Tutorial2_ExampleInput.3dm",
 					),
 				);
 		},
@@ -136,11 +142,11 @@ export const testConfigs: TestConfig[] = [
 		// Image upload: FILE INPUT PARAMETER pattern.
 		slug: "appbuilder-tutorial3-imagewidget",
 		actions: async (page, slug) => {
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await getParameterElement(page, "Upload Your Image")
 					.locator('input[type="file"]')
 					.setInputFiles(
-						path.resolve("tests/fixtures/files/logo.png"),
+						path.resolve("tests/config/files/logo.png"),
 					);
 			});
 			await takeSnapshot(page, `${slug}-after-upload`);
@@ -155,7 +161,7 @@ export const testConfigs: TestConfig[] = [
 			const input = getParameterElement(page, "Block to Edit").getByRole(
 				"textbox",
 			);
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await input.fill("2");
 				await input.press("Enter");
 			});
@@ -180,14 +186,14 @@ export const testConfigs: TestConfig[] = [
 		// ACTION BUTTON pattern: two buttons, each triggering a recompute.
 		slug: "11f-actioncontrol",
 		actions: async (page, slug) => {
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await page
 					.getByRole("button", {name: "Small and blue"})
 					.click();
 			});
 			await takeSnapshot(page, `${slug}-small-blue`);
 
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await page
 					.getByRole("button", {name: "Tall and green"})
 					.click();
@@ -224,7 +230,7 @@ export const testConfigs: TestConfig[] = [
 				.click();
 
 			const pos = await viewportCoords(page, 0.35, 0.5);
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await page.mouse.click(pos.x, pos.y);
 			});
 			await takeSnapshot(page, `${slug}-selection`);
@@ -240,7 +246,7 @@ export const testConfigs: TestConfig[] = [
 				.click();
 
 			const pos = await viewportCoords(page, 0.6, 0.7);
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await page.mouse.click(pos.x, pos.y);
 			});
 			await takeSnapshot(page, `${slug}-selection`);
@@ -275,7 +281,7 @@ export const testConfigs: TestConfig[] = [
 			await page.mouse.move(to.x, to.y, {steps: 10});
 			await page.mouse.up();
 
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await getParameterElement(page, "GumballInput")
 					.getByRole("button", {name: "Confirm"})
 					.click();
@@ -314,7 +320,7 @@ export const testConfigs: TestConfig[] = [
 			const input = getParameterElement(page, "SphereCount").getByRole(
 				"textbox",
 			);
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await input.fill("6");
 				await input.press("Enter");
 			});
@@ -328,7 +334,7 @@ export const testConfigs: TestConfig[] = [
 		// so options must be queried on `page`, not on the container.
 		slug: "beta-dynamicvalueliststutorial",
 		actions: async (page, slug) => {
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await getParameterElement(page, "FoodType")
 					.getByRole("textbox")
 					.click();
@@ -347,7 +353,7 @@ export const testConfigs: TestConfig[] = [
 				page,
 				"MultilineText",
 			).getByRole("textbox");
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await textarea.fill("Default\nExample\nTest");
 				await textarea.press("Tab");
 			});
@@ -362,7 +368,7 @@ export const testConfigs: TestConfig[] = [
 			const input = getParameterElement(page, "Count").getByRole(
 				"textbox",
 			);
-			await waitForSessionCustomized(page, async () => {
+			await waitForModelRecomputed(page, async () => {
 				await input.fill("4");
 				await input.press("Enter");
 			});
@@ -398,6 +404,6 @@ export const testConfigs: TestConfig[] = [
 ];
 
 /** Fast lookup by slug */
-export const testConfigBySlug = new Map<string, TestConfig>(
-	testConfigs.map((c) => [c.slug, c]),
+export const scenarioActionById = new Map<string, ScenarioActionConfig>(
+	scenarioActions.map((c) => [c.slug, c]),
 );

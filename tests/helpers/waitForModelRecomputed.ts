@@ -1,22 +1,25 @@
 import {Page} from "@playwright/test";
 
 /**
- * Waits for the ShapeDiver SESSION_CUSTOMIZED event after an action that
- * triggers a recomputation (e.g. a file upload or parameter change).
+ * Performs an action and waits for the 3D model to finish recalculating.
+ *
+ * Use this when your action (slider change, text input, button click, etc.)
+ * triggers a Grasshopper recomputation. Without this, screenshots taken
+ * right after the action may show the old geometry.
  *
  * The listener is registered BEFORE the action runs so the event can never
- * be missed, even if the computation finishes synchronously.
+ * be missed, even if the computation finishes instantly.
  *
  * Usage:
- *   await waitForSessionCustomized(page, async () => {
- *     await page.locator('input[type="file"]').setInputFiles(filePath, {force: true});
+ *   await waitForModelRecomputed(page, async () => {
+ *     await page.getByRole("button", {name: "Update"}).click();
  *   });
  *
  * @param page    - Playwright Page
  * @param action  - async callback that triggers the computation
- * @param timeout - max time to wait for the event in ms (default 90 s)
+ * @param timeout - max time to wait in ms (default 90 s)
  */
-export async function waitForSessionCustomized(
+export async function waitForModelRecomputed(
 	page: Page,
 	action: () => Promise<void>,
 	timeout = 90_000,
