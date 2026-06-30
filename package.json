@@ -60,6 +60,7 @@
 		"test-e2e": "playwright test",
 		"test-e2e-ui": "playwright test --ui",
 		"test-e2e-update-snapshots": "playwright test --update-snapshots",
+		"pick-coords": "tsx ./scripts/pick-coords.ts",
 		"docs": "node --max-old-space-size=4096 ./node_modules/typedoc/bin/typedoc",
 		"convert-slug-data": "tsx ./scripts/convertSlugData.ts",
 		"build-appbuilder": "bash scripts/build-appbuilder.sh 0 v1/main",

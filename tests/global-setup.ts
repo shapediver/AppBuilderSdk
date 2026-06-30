@@ -27,7 +27,7 @@ export default async function globalSetup() {
 	// test.describe per slug — enabling full parallelism across all examples.
 	console.log("[global-setup] Fetching app links from tutorial markdown...");
 	const links = await fetchAppLinks();
-	const linksPath = path.resolve("tests/fixtures/.app-links.json");
+	const linksPath = path.resolve("tests/config/.app-links.json");
 	fs.writeFileSync(linksPath, JSON.stringify(links, null, 2));
 	console.log(
 		`[global-setup] Cached ${links.length} app links to ${linksPath}`,
