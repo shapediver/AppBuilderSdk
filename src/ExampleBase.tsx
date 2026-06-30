@@ -40,7 +40,10 @@ export default function App() {
 			theme={theme}
 			cssVariablesResolver={resolver}
 		>
-			<Notifications notificationMaxHeight={1000} />
+			<Notifications
+				notificationMaxHeight={1000}
+				pauseResetOnHover="notification"
+			/>
 			<NotificationWrapper>
 				<HashRouter>
 					<Routes>
