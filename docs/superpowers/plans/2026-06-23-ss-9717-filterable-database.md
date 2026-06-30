@@ -8,13 +8,16 @@
 
 **Tech Stack:** React 19, TypeScript, Mantine v8 (Accordion, Checkbox, Pill), Zustand (existing scrolling store bypassed — local adapter), Jest, Zod.
 
-**Status (2026-06-24):** Tasks 1–12, Phases 2–3, and Phase 4 (Tasks 25–31) complete in submodule. **71 tests** (`pnpm test --testPathPattern=filterableDatabase`). Parent repo: `SS-9717.json` fixture (Name `inline: true`, text filter), plan updates; submodule pointer commit pending. Manual QA recommended before PR.
+**Status (2026-06-30):** Phases 1–5 Tasks 32–36 done. **Phase 6** (flicker + value serialization) done in working tree, **uncommitted**. **79 tests** pass (`filterableDatabase` + `resolveStringSelectEmitValue`). Task 37 manual QA pending. Parent fixture `SS-9717.json` + submodule pointer may still need commit.
+
+**Manual test URLs:**
+- Full fixture: `http://localhost:3001/?g=SS-9717.json` (GridCards, TenCards, SevenCards)
+- Minimal session (Settings textarea): `http://localhost:3001/?g=SS-9717--2.json`
+- Dev server may use port **3001** when 3000 is busy
 
 **Spec:** `docs/superpowers/specs/2026-06-23-ss-9717-filterable-database-design.md`
 
 **Branch:** `task/SS-9717-Filterable-database-component` (parent + `src/shared` submodule)
-
-**Manual test URL:** `http://localhost:3000/?g=SS-9717.json` (parameter **TenCards**; dev server may use port 3001)
 
 ---
 
@@ -887,7 +890,10 @@ Post-implementation review (`fdf3cb2..a82481e` + follow-up commit `3cf9008`).
 | CSV header row | **Done** (Task 21) | First row always skipped; v2 could add `hasHeaderRow` setting |
 | `SelectComponentAsync` reset effect | **Done** (Task 21) | Clears only when value ∉ filtered items |
 | Jest ESM | **Done** (Task 21) | Viewer mocks in settings test |
-| String param value display | **Done** (Task 21) | JSON value resolved to item key for UI |
+| String param value display | **Done** (Task 21 + Task 40 `emitValue`) |
+| **Card/grid flicker on execute** | **Done** (Task 39 — local `busy`; see failures F1, F4) |
+| **Filter grid remount flicker** | **Done** (Task 38 `useCustomHeight`; failure F3) |
+| **CSV reload on commit flicker** | **Done** (Task 41 stable deps; failure F5) |
 | **Search scope** | Open | `matchesSearchTerms` only checks `item` + `displayname` — not `description` / `data` columns |
 | **Fetch error UX** | Open | Inline `Text c="red"` only; spec also mentions notification |
 | **Theme registry** | Open | `FilterableSelectComponentThemeProps` not registered in `useCustomTheme.ts` |
@@ -1103,7 +1109,7 @@ Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) un
 | Type definitions PR 318 | Task 1 |
 | Zod validation | Task 2, 14–15 |
 | Theme `componentSettings` pattern | Task 13–14 |
-| Unit tests | Tasks 2, 4–7, 16 (`buildActiveFilterTags`), 21, 22–23, 25–31 (**71** total) |
+| Unit tests | Tasks 2, 4–7, 16 (`buildActiveFilterTags`), 21, 22–23, 25–31, 40 (**79** total) |
 | Manual fixture | Task 11, 13 |
 | Search + filter pills | Task 16–17 |
 | Code review blockers | Task 21 |
@@ -1117,7 +1123,8 @@ Omit unrelated parent changes (`package.json`, `scripts/build-appbuilder.sh`) un
 | Text filter (`type: "text"`) | Task 28 — **Done** |
 | Combobox focus / dropdown interaction fixes | Task 29 — **Done** |
 | Inline filter (`inline: true`) | Task 30 — **Done** |
-| Option row padding / Stack gap | Task 31 — **Done** |
+| Flicker + value serialization | Phase 6 Tasks 38–42 — **Done** (uncommitted) |
+| Manual QA (Phase 6) | Task 37 items 14–21 — **Pending** |
 
 ---
 
@@ -1326,4 +1333,250 @@ UI (Radio vs Checkbox): manual QA on Category (`multiple: false`); no RTL in rep
 
 - Task 25 owns layout/orchestration; Task 26 owns `FilterOption` control type.
 - If both touch `FilterableSelectComponent.tsx`, merge `defaultStyleProps` (filter select props + `radioProps`).
-- Run after Phase 4: `pnpm test --testPathPattern=filterableDatabase` (**71 tests**)
+- Run after Phase 4: `pnpm test --testPathPattern=filterableDatabase` (**79 tests** as of 2026-06-30)
+
+---
+
+## Phase 5: Jira compliance review + fixture hardening (2026-06-29)
+
+**Trigger:** Jira SS-9717 canonical test case + full CSV attachment (`TextileDatabase - databaseFULL.csv`, ~302 kB).
+
+**Reference settings (must not break default case):**
+
+```json
+{
+  "selectSettings": {
+    "type": "grid",
+    "source": "graphics",
+    "searchable": true,
+    "limit": 5,
+    "height": "400px"
+  }
+}
+```
+
+**Canonical database adaptation:**
+
+```json
+{
+  "selectSettings": {
+    "type": "grid",
+    "source": "graphics",
+    "searchable": true,
+    "limit": 5,
+    "height": "400px",
+    "database": {
+      "dataSource": { "href": "/textile-database-full.csv" },
+      "itemDataDefinition": {
+        "value": 0,
+        "displayname": 1,
+        "imageUrl": 2,
+        "data": { "category": 3, "color": 4, "materials": 5 }
+      },
+      "filters": [
+        { "column": 1, "label": "Name", "type": "text", "inline": true },
+        { "column": 3, "label": "Category", "multiple": true, "inline": true },
+        { "column": 4, "label": "Color", "type": "color", "multiple": true },
+        { "column": 5, "label": "Materials", "multivalued": true, "multiple": true }
+      ]
+    }
+  }
+}
+```
+
+**JSON row format:** top-level `value`, `displayname`, `imageUrl`; custom fields under `"data"` (keys match `itemDataDefinition.data`).
+
+### Compliance review summary (code-reviewer subagent, 2026-06-29 — superseded)
+
+> See **Phase 6 compliance table** (2026-06-30) for current status.
+
+| Area | Status |
+|------|--------|
+| Database block (`itemDataDefinition`, filters) | ✅ TenCards + GridCards |
+| `jsonEngine` object rows + nested `data` | ✅ Done |
+| Unit tests | ✅ **79** passed |
+| Canonical `grid` + `limit: 5` in fixture | ✅ GridCards (Task 34) |
+| Full Jira CSV in repo | ⚠️ 150-row generated |
+| `limit` → database paging | ✅ Task 32 |
+| Flicker / `emitValue` | ✅ Phase 6 Tasks 38–40 |
+
+### Task 32: Wire `selectSettings.limit` to database paging — DONE
+
+**Files:** `useFilterableDatabase.ts`, `FilterableSelectComponent.tsx`, `createScrollingApi.test.ts`
+
+- [x] Pass `limit` from `SelectComponentProps` into `useFilterableDatabase(database, { pageSize: limit })`
+- [x] `createFilterableDatabaseScrollingApi({ pageSize: limit ?? 20 })`
+- [x] Test: initial `api.items.length` respects `pageSize: 5`
+
+### Task 33: Debounce text filters (`type: "text"`) — DONE
+
+**Files:** `useFilterableDatabase.ts`, `FilterableDatabaseFilterGroup.tsx`
+
+- [x] Debounce `setFilterText` (~300ms) before `setSelection` to reduce card flicker during Name filter typing
+- [x] Checkbox/color filters remain immediate
+- [x] **Phase 6:** Local draft in `FilterableDatabaseTextFilterField` so input shows keystrokes before debounce fires
+- [x] Clear pending timer when text filter pill removed
+
+### Task 34: Canonical regression fixture + full CSV — DONE (generated)
+
+**Files:** `public/SS-9717.json`, `public/textile-database-full.csv`, `public/textile-database-full.json`
+
+- [x] **GridCards** with canonical `selectSettings` (`grid`, `source: "graphics"`, `limit: 5`)
+- [x] TenCards / GridCards href → `/textile-database-full.csv`
+- [x] `textile-database-sample.csv` regenerated from `textile-database-sample.json` via `scripts/textile-database-json-to-csv.mjs`
+- [x] Full dataset: **150 rows** in `textile-database-full.json` + `.csv` via `scripts/generate-textile-database-full.mjs` (same schema: top-level + `data.*`)
+- [ ] Replace with Jira `TextileDatabase - databaseFULL.csv` when available (~302 kB production file)
+
+### Task 35: Reduce redundant re-renders (flicker follow-up) — DONE
+
+- [x] `applySelection` in `useFilterableDatabase` — no `setScrollingApi({...api})` per selection
+- [x] Removed redundant `onSyncScrollingApiState` after search (`searchRevision` + `resetState` sufficient)
+- [x] **Phase 6:** Stable `useFilterableDatabase` effect deps; `selectionRef` on reload (see failures F5)
+
+### Task 36: Pass `source` when database absent — DONE
+
+- [x] `source={settings.source}` on `ParameterSelectComponent` → `SelectComponent`
+
+### Task 37: Manual QA — see Phase 6
+
+> Full checklist: **Phase 6 → Task 37** (items 14–21). Combobox UX items 1–13: **Task 19**.
+
+- [ ] Run Phase 6 manual QA on `http://localhost:3001/?g=SS-9717.json`
+- [ ] Commit submodule + parent fixture when QA passes
+
+---
+
+## Phase 6: Flicker fixes + value serialization (2026-06-30)
+
+**Trigger:** Manual QA — visible flicker on filter checkbox change and **double flicker** on card click (filterable database grid).
+
+**Goal:** Stable card grid during filter/search/execute; correct String-parameter value per SS-9717 spec (`JSON.stringify(itemData.data)` when `itemDataDefinition.data` is set).
+
+### Failures & dead ends — do not repeat
+
+| # | What we tried | Why it failed | Correct approach |
+|---|---------------|---------------|------------------|
+| F1 | **`interactionDisabled` in `useParameterComponentCommons`** — split `disabled` vs `executing` globally | Touches every parameter component; unrelated inputs regressed; user rejected global hook change | Keep hook `disabled` unchanged; fix **only** filterable-database card path |
+| F2 | **`emitValue="itemKey"` for all `database` / `source`** on String params | Stopped flicker briefly but **violates Jira/spec** — Southern Sewing expects `JSON.stringify(data)` in String value when `itemDataDefinition.data` is configured | `resolveStringSelectEmitValue`: `itemData` for `database`; `itemKey` only for `source` without `database`; StringList always `itemKey` |
+| F3 | **`useCustomHeight` memo on `[children, height]`** | New wrapper identity on every filter update → **full remount** of scroll area + cards (image flash) | Do **not** memoize wrapper with `children` in deps; reconcile in place |
+| F4 | **`suppressDisabledStyleWhileBusy` without `executing` prop** | Cards showed **no** disabled/busy feedback during session execute — looked broken | Pass `executing` from parent **only when `database`**; compute `busy` state in `SelectComponentAsync` |
+| F5 | **`settings` object in `useFilterableDatabase` effect deps** | New object reference after session commit → **full CSV reload** + Loader flash | Stable deps: `href`, export fields, `format`, `JSON.stringify(filters)`, `JSON.stringify(itemDataDefinition)`, `pageSize`; read latest settings via ref |
+| F6 | **`setScrollingApi({...api})` on every filter change** (early Phase 5) | Extra React state clone + full subtree re-render | `applySelection` mutates `scrollingApiRef` in place; consumers watch `resetState` only |
+| F7 | **Assuming filters appear from CSV `href` alone** | Filters UI requires `selectSettings.database` with `filters[]` — not inferred from file | Document: GH Settings / theme `componentSettings` must include full `database` block |
+| F8 | **Settings textarea on `SS-9717--2.json` without model round-trip** | Pasting JSON in Settings param does not instantly reconfigure TextInput until GH commits | Use `SS-9717.json` themeOverrides for QA, or commit Settings and wait for session |
+
+### Task 38: `useCustomHeight` remount fix — DONE
+
+**File:** `entities/parameter/model/useCustomHeight.tsx`
+
+- [x] Remove `useMemo` on scroll wrapper that depended on `children`
+- [x] Wrapper reconciles in place when card list updates (filter/search)
+
+### Task 39: Local busy state during session execute — DONE (simplified 2026-06-30)
+
+**Problem:** Global `disabled` during `execute` applies `cardDisabled` (`opacity: 0.6`) per card → **two** visible flashes (enable → disable → enable) on each card click.
+
+**Solution (filterable database only — KISS):**
+
+| Layer | Change |
+|-------|--------|
+| `useParameterComponentCommons` | Export `executing` only (no change to `disabled` formula) |
+| `ParameterStringComponent` / `ParameterSelectComponent` | Pass `executing` to `SelectComponent` **only when `settings.database`** |
+| `SelectComponent` | `executing?:` on `SelectComponentProps` (plumbs signal; undefined for e-commerce path) |
+| `SelectComponentAsync` | `busy = Boolean(executing)`; `cardDisabled = busy ? false : interactionBlocked` |
+| `SelectGridComponent` / `SelectFullWidthCards` | `busy` → Stack `opacity: 0.88`, `cursor: wait`, `pointer-events: none`, `aria-busy` (single container overlay; clicks blocked at DOM level) |
+
+**Simplification (2026-06-30):** Removed the redundant `suppressDisabledStyleWhileBusy` prop (the e-commerce path never passes `executing`, so `Boolean(executing)` alone is the trigger) and the `blockInteraction` prop on grid/fullwidth cards (the `busy` container `pointer-events: none` already blocks clicks/search, so the per-component guard was duplicate logic). `busy` no longer ANDs `disabled` because `executing` always implies `disabled` via the commons formula.
+
+**Do not** reintroduce global `interactionDisabled` — use this path instead.
+
+### Task 40: String value serialization (`emitValue`) — DONE
+
+**Files:** `lib/select/resolveStringSelectEmitValue.ts`, `ParameterStringComponent.tsx`, `FilterableSelectComponent.tsx`, `SelectComponentAsync.tsx`
+
+- [x] `database` → `emitValue="itemData"` (JSON of `itemDataDefinition.data`)
+- [x] `source` without `database` → `emitValue="itemKey"`
+- [x] `FilterableSelectComponent` does **not** override parent `emitValue`
+- [x] No-op `onChange` when value unchanged (card re-click, JSON match)
+- [x] Tests: `resolveStringSelectEmitValue.test.ts` (3 cases)
+
+### Task 41: Text filter UX + stability — DONE
+
+**Files:** `FilterableDatabaseFilterGroup.tsx` (`FilterableDatabaseTextFilterField`), `useFilterableDatabase.ts`
+
+- [x] Local draft state for Name `TextInput` (characters visible immediately; 300ms debounce to apply)
+- [x] Clear debounce timer on `removeFilterValue` for `type: "text"` (avoid stale filter after pill remove)
+- [x] `useFilterableDatabase` stable load deps + `selectionRef` preserved on reload
+
+### Task 42: Card render stability — DONE
+
+**Files:** `ButtonImageCard.tsx` (`React.memo`), `SelectComponentAsync.tsx`, `ParameterStringComponent.tsx`, `ParameterSelectComponent.tsx`
+
+- [x] `memo(ButtonImageCard)` — fewer image re-renders when parent updates
+- [x] Skip `handleChange` when serialized value unchanged
+- [x] `ParameterSelectComponent`: skip re-select when index unchanged
+
+### Task 37: Manual QA (updated checklist) — PENDING
+
+**URLs:** `http://localhost:3001/?g=SS-9717.json` and/or `SS-9717--2.json` + Settings textarea
+
+| # | Check | Expected |
+|---|-------|----------|
+| 14 | **GridCards canonical** | `grid`, `source: "graphics"`, `limit: 5` — only 5 cards initially; Load more via scroll |
+| 15 | **Full CSV** | Filters show realistic cardinality on `textile-database-full.csv` |
+| 16 | **Filter flicker** | Toggling Category/Color/Materials does not remount entire grid |
+| 17 | **Card click** | Single card select: **no double flash**; brief busy state (`wait` cursor, slight dim) during execute OK |
+| 18 | **Name filter** | Typing shows characters immediately; debounced filter apply |
+| 19 | **String value** | String param with `database` + `data` stores JSON (`category`, `color`, `materials`), not raw item key |
+| 20 | **Default case** | StringList with `source: "graphics"` without `database` still works (`emitValue=itemKey`) |
+| 21 | **Hard disabled** | When param disabled by another interaction param — cards still show `cardDisabled` (0.6), not just busy |
+
+**Automated:** `pnpm test --testPathPattern="filterableDatabase|resolveStringSelectEmitValue"` (**79 tests**)
+
+### Phase 6 file map
+
+| File | Action | Status |
+|------|--------|--------|
+| `model/useCustomHeight.tsx` | No child memo on scroll wrapper | Done |
+| `model/useParameterComponentCommons.ts` | Export `executing` only | Done |
+| `lib/select/resolveStringSelectEmitValue.ts` | String `emitValue` helper | Done |
+| `lib/select/__tests__/resolveStringSelectEmitValue.test.ts` | Unit tests | Done |
+| `ui/ParameterStringComponent.tsx` | `executing` + `emitValue` for database | Done |
+| `ui/ParameterSelectComponent.tsx` | `executing` when `database` | Done |
+| `ui/select/SelectComponent.tsx` | `executing?:` on props | Done |
+| `ui/select/FilterableSelectComponent.tsx` | Passes `executing` via spread (no extra prop) | Done |
+| `ui/select/SelectComponentAsync.tsx` | `busy` / no-op guards (no `suppressDisabledStyleWhileBusy`) | Done |
+| `ui/select/SelectGridComponent.tsx` | `busy` only (no `blockInteraction`) | Done |
+| `ui/select/SelectFullWidthCards.tsx` | `busy` only (no `blockInteraction`) | Done |
+| `ui/select/ButtonImageCard.tsx` | `memo` | Done |
+| `model/filterableDatabase/useFilterableDatabase.ts` | Stable deps, text debounce clear | Done |
+| `ui/filterableDatabase/FilterableDatabaseFilterGroup.tsx` | Text filter draft field | Done |
+| `lib/filterableDatabase/jsonEngine.ts` | Object rows + nested `data` | Done (Phase 5) |
+
+### Compliance review summary (updated 2026-06-30)
+
+| Area | Status |
+|------|--------|
+| Database block (`itemDataDefinition`, filters) | ✅ GridCards + TenCards in fixture |
+| `jsonEngine` object rows + nested `data` | ✅ Done |
+| `limit` → database paging | ✅ Done (Task 32) |
+| String param JSON serialization | ✅ Task 40 (`emitValue=itemData` for database) |
+| Flicker on filter change | ✅ Task 38 (`useCustomHeight`) |
+| Flicker on card click | ✅ Task 39 (`busy` — not global `interactionDisabled`) |
+| Unit tests | ✅ **79** passed |
+| Uncommitted working tree | ❌ Submodule + parent fixture need commit |
+| Full Jira CSV | ❌ 150-row generated; replace when Jira attachment available |
+| Task 37 manual QA | ❌ Pending |
+
+---
+
+### Task 37 (legacy pointer)
+
+Legacy combobox checklist items 1–13: **Task 19**. Phase 6 QA items 14–21: section **Task 37** above.
+
+**Automated (legacy):**
+
+```bash
+pnpm test --testPathPattern=filterableDatabase
+```
+

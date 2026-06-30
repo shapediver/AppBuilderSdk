@@ -12,13 +12,15 @@
 			"ParameterSelectComponent": {
 				"defaultProps": {
 					"componentSettings": {
-						"TenCards": {
-							"type": "fullwidthcards",
-							"height": "400px",
+						"GridCards": {
+							"type": "grid",
+							"source": "graphics",
 							"searchable": true,
+							"limit": 5,
+							"height": "400px",
 							"database": {
 								"dataSource": {
-									"href": "/textile-database-sample.csv"
+									"href": "/textile-database-full.csv"
 								},
 								"itemDataDefinition": {
 									"value": 0,
@@ -27,11 +29,16 @@
 									"data": {
 										"category": 3,
 										"color": 4,
-										"tags": 5
+										"materials": 5
 									}
 								},
 								"filters": [
-									{"column": 1, "label": "Name", "type": "text", "inline": true},
+									{
+										"column": 1,
+										"label": "Name",
+										"type": "text",
+										"inline": true
+									},
 									{
 										"column": 3,
 										"label": "Category",
@@ -46,7 +53,53 @@
 									},
 									{
 										"column": 5,
-										"label": "Tags",
+										"label": "Materials",
+										"multivalued": true,
+										"multiple": true
+									}
+								]
+							}
+						},
+						"TenCards": {
+							"type": "fullwidthcards",
+							"height": "400px",
+							"searchable": true,
+							"database": {
+								"dataSource": {
+									"href": "/textile-database-full.csv"
+								},
+								"itemDataDefinition": {
+									"value": 0,
+									"displayname": 1,
+									"imageUrl": 2,
+									"data": {
+										"category": 3,
+										"color": 4,
+										"materials": 5
+									}
+								},
+								"filters": [
+									{
+										"column": 1,
+										"label": "Name",
+										"type": "text",
+										"inline": true
+									},
+									{
+										"column": 3,
+										"label": "Category",
+										"multiple": true,
+										"inline": true
+									},
+									{
+										"column": 4,
+										"label": "Color",
+										"type": "color",
+										"multiple": true
+									},
+									{
+										"column": 5,
+										"label": "Materials",
 										"multivalued": true,
 										"multiple": true
 									}
@@ -69,7 +122,7 @@
 									"data": {
 										"category": 3,
 										"color": 4,
-										"tags": 5
+										"materials": 5
 									}
 								},
 								"filters": [
@@ -88,7 +141,7 @@
 									},
 									{
 										"column": 5,
-										"label": "Tags",
+										"label": "Materials",
 										"multivalued": true,
 										"multiple": true
 									}
