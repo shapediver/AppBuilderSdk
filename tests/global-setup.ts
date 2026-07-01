@@ -35,7 +35,7 @@ export default async function globalSetup() {
 	const links = new Map(markdownLinks.map((link) => [link.slug, link]));
 	for (const link of testingAccountLinks) links.set(link.slug, link);
 	const allLinks = [...links.values()];
-	const linksPath = path.resolve("tests/fixtures/.app-links.json");
+	const linksPath = path.resolve("tests/config/.app-links.json");
 	fs.writeFileSync(linksPath, JSON.stringify(allLinks, null, 2));
 	console.log(
 		`[global-setup] Cached ${allLinks.length} app links to ${linksPath} ` +
