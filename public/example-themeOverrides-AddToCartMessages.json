@@ -1,0 +1,13 @@
+{
+	"version": "1.0",
+	"themeOverrides": {
+		"components": {
+			"AddToCartAction": {
+				"defaultProps": {
+					"successMessage": "Yay! Configuration {modelStateId} added to the cart!",
+					"errorMessage": "Oh no :( could not add configuration {modelStateId} to the cart."
+				}
+			}
+		}
+	}
+}
