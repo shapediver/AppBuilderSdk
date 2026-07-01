@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "themeOverrides": {
+    "components": {
+      "CreateModelStateHook": {
+        "defaultProps": {
+          "successMessage": "Oh wow! Look at this model state: {modelStateId} !",
+          "errorMessage": "Oh no :( issue with this one: {modelStateId}."
+        }
+      }
+    }
+  }
+}
