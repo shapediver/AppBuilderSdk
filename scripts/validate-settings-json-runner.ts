@@ -2,18 +2,15 @@
  * Fast settings JSON validation (no Jest). Used by validate-settings-json.mjs.
  */
 import {readFileSync} from "node:fs";
-import {register} from "node:module";
 import process from "node:process";
 
-/** Minimal surface from appbuildertypecheck.ts (dynamic import — loader must register first). */
+/** Minimal surface from appbuildertypecheck.ts (dynamic import). */
 interface AppBuilderTypecheckModule {
 	validateAppBuilderSettingsJson: (
 		value: unknown,
 	) => {success: true; data: unknown} | {success: false; error: unknown};
 	formatAppBuilderZodError: (error: unknown) => string;
 }
-
-register(import.meta.resolve("./validate-settings-json-loader.mjs"));
 
 const file = process.env.VALIDATE_SETTINGS_FILE;
 if (!file) {
