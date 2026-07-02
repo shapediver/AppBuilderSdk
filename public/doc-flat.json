@@ -1197,6 +1197,13 @@
             }
           }
         },
+        "fontWeights": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
         "radius": {
           "properties": {
             "[string]": {
@@ -1226,12 +1233,8 @@
           }
         },
         "headings": {
-          "properties": {
-            "[string]": {
-              "type": "unknown",
-              "name": "unknown"
-            }
-          }
+          "type": "unknown",
+          "name": "AppBuilderThemeOtherProps"
         },
         "defaultGradient": {
           "properties": {
@@ -2913,7 +2916,7 @@
     {
       "configPath": "themeOverrides.components.CreateModelStateHook.defaultProps",
       "name": "CreateModelStateHook",
-      "summary": "Theme defaults for useCreateModelState parameter filtering.",
+      "summary": "Theme defaults for useCreateModelState parameter filtering and notifications.",
       "source": "src/shared/features/model-state/model/useCreateModelState.types.ts",
       "category": "feature",
       "properties": [
@@ -2944,6 +2947,20 @@
             }
           },
           "default": "[]"
+        },
+        {
+          "name": "successMessage",
+          "description": "Default success message shown after a model state has been created.\r\nSupports the optional placeholder `{modelStateId}`.",
+          "type": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "errorMessage",
+          "description": "Default error message shown when creating a model state fails.\r\nSupports the optional placeholder `{modelStateId}` when available.",
+          "type": {
+            "type": "string"
+          }
         }
       ]
     },
