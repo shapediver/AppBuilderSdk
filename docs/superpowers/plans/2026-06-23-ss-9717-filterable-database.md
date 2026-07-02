@@ -10,10 +10,12 @@
 
 **Status (2026-06-30):** Phases 1–5 Tasks 32–36 done. **Phase 6** (flicker + value serialization) done in working tree, **uncommitted**. **79 tests** pass (`filterableDatabase` + `resolveStringSelectEmitValue`). Task 37 manual QA pending. Parent fixture `SS-9717.json` + submodule pointer may still need commit.
 
+**Status (2026-06-25):** **Phase 7** (lazy-load scrolling fixes + `database-full.csv` fixture) done in working tree, **uncommitted**. `createScrollingApi` tests: **10** passed. `tsc --noEmit` clean. Task 37 manual QA still pending (re-verify lazy scroll after Phase 7).
+
 **Manual test URLs:**
-- Full fixture: `http://localhost:3001/?g=SS-9717.json` (GridCards, TenCards, SevenCards)
-- Minimal session (Settings textarea): `http://localhost:3001/?g=SS-9717--2.json`
-- Dev server may use port **3001** when 3000 is busy
+- Full fixture: `http://localhost:3000/?g=/SS-9717.json&redirect=0` (prefer leading `/` on `g`)
+- Legacy port note: dev server may use **3001** when 3000 is busy
+- Minimal session (Settings textarea): `http://localhost:3000/?g=/SS-9717--2.json`
 
 **Spec:** `docs/superpowers/specs/2026-06-23-ss-9717-filterable-database-design.md`
 
@@ -1580,3 +1582,153 @@ Legacy combobox checklist items 1–13: **Task 19**. Phase 6 QA items 14–21: s
 pnpm test --testPathPattern=filterableDatabase
 ```
 
+---
+
+## Phase 7: Lazy-scroll fixes + production CSV fixture (2026-06-25)
+
+**Trigger:** Manual QA on `http://localhost:3000/?g=/SS-9717.json` — filterable database shows values but **infinite scroll / lazy loading broken**; after partial fix, scroll required **end-then-back** gesture; **burst page loads** (many cards at once).
+
+**Goal:** Reliable client-side paging for `createFilterableDatabaseScrollingApi` → `useSelectAsync` → `SelectComponentAsync` → grid/fullwidth cards inside fixed `height` scroll panel.
+
+**Scope:** Scrolling / paging path only — **not** filter value extraction (filters still load all unique values from full CSV in memory; **not** virtual list windowing).
+
+### Task 43: Wire `public/database-full.csv` in parent fixture — DONE
+
+**Files:** `public/SS-9717.json`, `public/database-full.csv` (763 rows, Jira production schema)
+
+- [x] **GridCards** + **TenCards** `database.dataSource.href` → `/database-full.csv` (was `/textile-database-full.csv`)
+- [x] **`itemDataDefinition`** remapped to 10-column CSV:
+
+| Col | Field | Maps to |
+|-----|-------|---------|
+| 0 | id | `value` |
+| 1 | slug name | `displayname` |
+| 2 | brand | `data.materials` |
+| 3 | color name | `data.color` |
+| 4 | hex | `data.colorHex` |
+| 5 | pattern | `data.category` |
+| 7 | thumbnail 128px | `imageUrl` |
+| 8 | usage (`;`) | `data.usage` |
+| 9 | tags (`;`) | `data.tags` |
+
+- [x] **Filters:** Name (text), Materials, Category, Color (`type: "color"` on hex col 4), Usage + Tags (`multivalued`)
+- [ ] **SevenCards** still uses `/textile-database-sample.json` (small JSON fixture) — intentional
+
+**Preview URL:** `http://localhost:3000/?g=/SS-9717.json&redirect=0` — use **`/SS-9717.json`** (leading slash), not `g=SS-9717.json`.
+
+### Failures & root causes — lazy scroll (do not repeat)
+
+| # | Symptom | Root cause | Fix |
+|---|---------|------------|-----|
+| L1 | Scroll does nothing; cards never grow | `loadMore` mutates `api.items` in place but **did not** `bumpResetState()` → `useSelectAsync` `useMemo` cached stale `items` | `bumpResetState()` at end of `loadMore` |
+| L2 | Must scroll to bottom **and back** to trigger load | `useCustomHeight` **memoized** scroll wrapper on `[children]` → remounted scroll div + sentinel; IO observer reset | Remove `useMemo` on scroll wrapper; stable `overflowY: auto` div |
+| L3 | IO never fires on inner scroll | `useInfiniteScroll` without **`rootRef`** — observer used **viewport**, not 400px panel | Pass `rootRef` from hook → `scrollRootRef` → `useCustomHeight` scroll div |
+| L4 | Loads **many pages at once** | `rootMargin: "0px 0px 400px 0px"` inside ~400px panel → sentinel always intersecting; `scrollingApi.loading` always `false` for filterable API | `rootMargin: "0px 0px 48px 0px"`; `loadingMore` state + ref in `useSelectAsync`; `delayInMs: 150` |
+| L5 | User expects cards above fold to **unmount** | **By design:** `IScrollingApi` uses **append paging** (`slice(0, loadedCount)`), not virtual windowing — all loaded cards stay in DOM | Document; virtual list is out of v1 scope |
+
+### Task 44: `createScrollingApi` — `loadMore` re-render signal — DONE
+
+**File:** `entities/parameter/lib/filterableDatabase/createScrollingApi.ts`
+
+- [x] `loadMore` calls `bumpResetState()` after updating `api.items` / `api.hasNextPage`
+- [x] Guard `if (!api.hasNextPage || api.loading) return` (sync `loading` flip — see review nit)
+- [x] Test: `loadMore bumps resetState so consumers can re-render`
+
+### Task 45: `useSelectAsync` — IO root + burst guard — DONE
+
+**File:** `entities/parameter/model/select/useSelectAsync.ts`
+
+- [x] `const [infiniteRef, { rootRef }] = useInfiniteScroll(...)`
+- [x] Return `scrollRootRef: rootRef`
+- [x] `loading: scrollingApi?.loading || loadingMore`
+- [x] `handleLoadMore`: `loadingMoreRef` + `setLoadingMore(true)`; unlock in `finally`
+- [x] **Double `requestAnimationFrame`** before unlock — heuristic: wait for layout/paint so sentinel moves down before `loading` goes false (prevents chained `loadMore` when sentinel still intersecting)
+- [x] `rootMargin` 400px → **48px**; `delayInMs: 150`
+
+**Alternatives considered (if burst returns after QA):**
+
+| Approach | Trade-off |
+|----------|-----------|
+| Single `rAF` | Simpler; may be enough after L2–L4 fixes |
+| No `rAF`, only `loadingMore` | Try after QA; may cascade if sentinel stays visible |
+| Edge-trigger (reload only after sentinel leaves viewport) | Most correct; more code |
+| `delayInMs` only | Debounces every load; does not fix instant re-fire |
+| Virtual list (`@tanstack/react-virtual`) | Scales DOM; separate feature |
+
+### Task 46: Scroll container wiring — DONE
+
+| File | Change |
+|------|--------|
+| `model/useCustomHeight.tsx` | Optional `scrollRootRef` on scroll div; **no** `useMemo` wrapping `children` |
+| `ui/select/SelectComponentAsync.tsx` | Destructure `scrollRootRef` from `useSelectAsync`; pass `scrollRootRef={scrollRootRef}` to grid/fullwidth (**minimal diff** — no change to public props API) |
+| `ui/select/SelectGridComponent.tsx` | `SelectGridComponentProps` type; destructure `scrollRootRef`; `useCustomHeight(..., scrollRootRef)`; `multiselect ?? false` |
+| `ui/select/SelectFullWidthCards.tsx` | Same as grid |
+| `ui/select/SelectComponent.tsx` | `scrollRootRef?: React.Ref<HTMLDivElement>` on `SelectComponentProps` |
+
+**Call-site note:** `SelectComponentAsync` is used only from `SelectComponent.tsx` (ecommerce `source` + shared async path). Filterable database uses `FilterableSelectComponent` → same `SelectComponentAsync` internally. **No new external API** — `scrollRootRef` is internal plumbing.
+
+### Task 47: TypeScript errors — FIXED
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `Property 'scrollRootRef' does not exist` on `SelectComponentAsync` JSX | `UniversalMultiSelectComponentProps` union + `Partial<StyleProps>` did not surface `scrollRootRef` to IDE/tsc in inline JSX | Export `SelectGridComponentProps` / `SelectFullWidthCardsComponentProps` with explicit `scrollRootRef?`; add to `SelectComponentProps` |
+| `Type 'true' is not assignable to type 'false'` (transient) | Narrowed props to `multiselect?: false` only — broke `MultiSelectComponent` | Revert to `UniversalMultiSelectComponentProps & … & { scrollRootRef? }` |
+| `multiselect` possibly `undefined` | Stricter props | `multiselect ?? false` in `parameterMultiSelect` |
+
+**Verify:** `pnpm exec tsc --noEmit` — exit 0.
+
+### Code review (scrollingApi scope only) — 2026-06-25
+
+**Verdict:** Approve with nits.
+
+| Severity | Finding | Action |
+|----------|---------|--------|
+| Important | `bottomSection` hides sentinel when `scrollingApi.loading` — bad for ecommerce async path (sentinel remounts) | [ ] Consider: render sentinel whenever `hasNextPage` (drop `!loading` guard) |
+| Important | `resetState` on every `loadMore` re-runs selection-clear effect in `SelectComponentAsync` | OK today (`isValueInAvailableItems`); fragile — future: separate `itemsVersion` vs `resetState` |
+| Minor | Sync `api.loading` in filterable `loadMore` does not block concurrent calls | Real guard is `loadingMoreRef` |
+| Minor | `setPageSize` still no `bumpResetState` | Pre-existing; follow-up |
+| Test gap | No `useSelectAsync` tests (burst guard, `scrollRootRef`, item refresh) | [ ] Optional follow-up |
+
+### Phase 7 file map
+
+| File | Action | Status |
+|------|--------|--------|
+| `lib/filterableDatabase/createScrollingApi.ts` | `bumpResetState` in `loadMore`; loading guard | Done |
+| `lib/filterableDatabase/__tests__/createScrollingApi.test.ts` | `loadMore` resetState test | Done |
+| `model/select/useSelectAsync.ts` | `rootRef`, `loadingMore`, `rootMargin`, double rAF | Done |
+| `model/useCustomHeight.tsx` | Stable scroll wrapper + `scrollRootRef` | Done |
+| `ui/select/SelectComponentAsync.tsx` | Pass `scrollRootRef` (2 lines) | Done |
+| `ui/select/SelectGridComponent.tsx` | Props type + `scrollRootRef` plumbing | Done |
+| `ui/select/SelectFullWidthCards.tsx` | Same | Done |
+| `ui/select/SelectComponent.tsx` | `scrollRootRef?` on props | Done |
+| `public/SS-9717.json` | `/database-full.csv` + column/filter mapping | Done (parent repo) |
+
+### Task 37: Manual QA — update after Phase 7
+
+Re-run items **14–15** with new URL and CSV:
+
+| # | Check | Expected |
+|---|-------|----------|
+| 14 | **GridCards lazy scroll** | Initial **5** cards (`limit: 5`); scroll **inside** 400px panel loads **5 more** per gesture; no burst |
+| 15 | **Full CSV** | **763** rows in `/database-full.csv`; filters show realistic cardinality (Materials, Category, Color, Usage, Tags) |
+| 22 | **URL shape** | `?g=/SS-9717.json` loads theme; `g=SS-9717.json` (no slash) may resolve incorrectly |
+| 23 | **Ecommerce `source` path** | `SelectComponent` → `SelectComponentAsync` with Zustand scrolling API still paginates (no regression) |
+
+**Automated:**
+
+```bash
+pnpm test -- --testPathPattern="filterableDatabase|createScrollingApi"
+pnpm exec tsc --noEmit
+```
+
+### Phase 7 compliance summary
+
+| Area | Status |
+|------|--------|
+| Lazy scroll (filterable database) | ✅ Fixed in working tree (L1–L4) |
+| Production CSV in fixture | ✅ `database-full.csv` wired |
+| `SelectComponentAsync` API surface | ✅ Unchanged for callers |
+| Virtual list / DOM unmount above fold | ❌ Out of scope (append paging by design) |
+| Code review nits (sentinel `loading` guard) | ❌ Optional follow-up |
+| `useSelectAsync` unit tests | ❌ Optional follow-up |
+| Task 37 manual QA | ❌ Pending re-run |
