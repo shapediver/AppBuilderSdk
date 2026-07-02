@@ -21,6 +21,7 @@ import {
 	deepSimplifySchema,
 	isDomEventHandlerTypeName,
 	isMantineCorePackageTarget,
+	isMantineTsExpandAllowlisted,
 	mergeMirrorDefinitionOverlay,
 	normalizeUnknownTypeName,
 	shouldStubMantineExpandedProps,
@@ -894,7 +895,9 @@ export function createDefinitionsContext(
 					propCount,
 					stubTarget,
 				) ||
-				propCount > 50
+				// Fallback stub for large Mantine types without a dedicated allowlist entry.
+				(propCount > 50 &&
+					!isMantineTsExpandAllowlisted(qualifiedForMirror))
 			) {
 				return {
 					type: "unknown",

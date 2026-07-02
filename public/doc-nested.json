@@ -203,6 +203,49 @@
         }
       ]
     },
+    "AppBuilderThemeOtherProps": {
+      "properties": {
+        "v8ThemeSupport": {
+          "type": "boolean",
+          "description": "When `true`, merges Mantine's `v8CssVariablesResolver` with AppBuilder CSS\nvariables (v8 `light` variant colors). Default in product theme: `false`."
+        },
+        "forceColorScheme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ],
+          "description": "Force light or dark color scheme on `MantineProvider`."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "Single favicon URL when `iconDarkUrl` / `iconLightUrl` are not both set."
+        },
+        "iconDarkUrl": {
+          "type": "string",
+          "description": "Dark-scheme favicon; pair with `iconLightUrl`."
+        },
+        "iconLightUrl": {
+          "type": "string",
+          "description": "Light-scheme favicon; pair with `iconDarkUrl`."
+        },
+        "defaultFontWeightThin": {
+          "type": "string"
+        },
+        "defaultFontWeightLight": {
+          "type": "string"
+        },
+        "defaultFontWeight": {
+          "type": "string"
+        },
+        "defaultFontWeightMedium": {
+          "type": "string"
+        },
+        "defaultFontWeightBold": {
+          "type": "string"
+        }
+      }
+    },
     "string_or_number": {
       "oneOf": [
         {
@@ -426,6 +469,143 @@
         },
         "stroke": {
           "type": "string"
+        }
+      }
+    },
+    "Record_string_IStringParameterSelectSettings": {
+      "properties": {
+        "[string]": {
+          "properties": {
+            "items": {
+              "items": {
+                "type": "string"
+              }
+            },
+            "source": {
+              "type": "string",
+              "description": "Name of the optional \"data source\" to fetch \"items\" and \"itemData\" from.\r\nThis is used for connecting to data sources via the e-commerce API.\r\nCurrently, this is only supported for type \"fullwidthcards\" and \"grid\"."
+            },
+            "database": {
+              "properties": {
+                "dataSource": {
+                  "properties": {
+                    "export": {
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "sessionId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "href": {
+                      "type": "string"
+                    },
+                    "format": {
+                      "type": "string",
+                      "enum": [
+                        "csv",
+                        "json"
+                      ]
+                    }
+                  }
+                },
+                "itemDataDefinition": {
+                  "properties": {
+                    "value": {
+                      "type": "number"
+                    },
+                    "displayname": {
+                      "type": "number"
+                    },
+                    "tooltip": {
+                      "type": "number"
+                    },
+                    "description": {
+                      "type": "number"
+                    },
+                    "imageUrl": {
+                      "type": "number"
+                    },
+                    "color": {
+                      "type": "number"
+                    },
+                    "data": {
+                      "type": "unknown",
+                      "name": "Record<string, number>"
+                    }
+                  }
+                },
+                "filters": {
+                  "items": {
+                    "properties": {
+                      "column": {
+                        "type": "number"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "multivalued": {
+                        "type": "boolean"
+                      },
+                      "multiple": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "color",
+                          "text"
+                        ]
+                      },
+                      "inline": {
+                        "type": "boolean"
+                      },
+                      "filterValues": {
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "color",
+                "buttonflex",
+                "buttongroup",
+                "chipgroup",
+                "dropdown",
+                "imagedropdown",
+                "fullwidthcards",
+                "carousel",
+                "grid",
+                "multiselect-checkboxes"
+              ],
+              "description": "Type of select component to use."
+            },
+            "itemData": {
+              "type": "unknown",
+              "name": "Record<string, ISelectComponentItemDataType>",
+              "description": "Record containing optional further item data per item name."
+            },
+            "searchable": {
+              "type": "boolean",
+              "description": "Enable search for string list inputs (only for type==\"dropdown\")."
+            },
+            "limit": {
+              "type": "number",
+              "description": "Max number of options rendered at the same time (only for type==\"dropdown\"). Default: 5 if searchable is enabled"
+            },
+            "height": {
+              "type": "string",
+              "description": "Optional CSS controlling the absolute height of the widget.\r\nIn case this is not specified, the default behavior of the widget\r\nis to adapt its height according to the items."
+            }
+          }
         }
       }
     },
@@ -897,7 +1077,7 @@
     },
     "Pick_Unknown": {
       "type": "unknown",
-      "name": "Pick<ComponentProp<\"a\"> & Omit<Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLA…"
+      "name": "Pick<ComponentProp<\"a\"> & Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchor…"
     },
     "Unknown_and_Pick_Unknown": {
       "type": "unknown",
@@ -1010,6 +1190,20 @@
             }
           }
         },
+        "fontWeights": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
+        "fontWeights": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
         "radius": {
           "properties": {
             "[string]": {
@@ -1039,12 +1233,8 @@
           }
         },
         "headings": {
-          "properties": {
-            "[string]": {
-              "type": "unknown",
-              "name": "unknown"
-            }
-          }
+          "type": "unknown",
+          "name": "AppBuilderThemeOtherProps"
         },
         "defaultGradient": {
           "properties": {
@@ -1068,12 +1258,7 @@
           }
         },
         "other": {
-          "properties": {
-            "[string]": {
-              "type": "unknown",
-              "name": "unknown"
-            }
-          }
+          "$ref": "#/definitions/AppBuilderThemeOtherProps"
         }
       }
     },
@@ -1558,6 +1743,20 @@
               "description": "",
               "type": {
                 "$ref": "#/definitions/IconProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "ParameterStringComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "componentSettings",
+              "description": "Select settings per parameter name, displayname, or id (see ParameterSelectComponent).",
+              "type": {
+                "$ref": "#/definitions/Record_string_IStringParameterSelectSettings"
               }
             }
           ],
@@ -2687,6 +2886,20 @@
                 }
               },
               "default": "[]"
+            },
+            {
+              "name": "successMessage",
+              "description": "Default success message shown after a model state has been created.\r\nSupports the optional placeholder `{modelStateId}`.",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "errorMessage",
+              "description": "Default error message shown when creating a model state fails.\r\nSupports the optional placeholder `{modelStateId}` when available.",
+              "type": {
+                "type": "string"
+              }
             }
           ],
           "category": "feature"

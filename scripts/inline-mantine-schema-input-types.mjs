@@ -52,6 +52,45 @@ export function extractExportedTypes(source) {
 	return types;
 }
 
+/**
+ * Extract `export interface Name { … }` blocks.
+ */
+export function extractExportedInterfaces(source) {
+	const interfaces = new Map();
+	const marker = "export interface ";
+	let index = 0;
+
+	while (index < source.length) {
+		const start = source.indexOf(marker, index);
+		if (start === -1) break;
+
+		const brace = source.indexOf("{", start);
+		if (brace === -1) break;
+
+		let depth = 0;
+		let i = brace;
+		for (; i < source.length; i++) {
+			const ch = source[i];
+			if (ch === "{") depth++;
+			if (ch === "}") depth--;
+			if (depth === 0) {
+				i++;
+				break;
+			}
+		}
+
+		const body = source.slice(start, i).trimEnd();
+		const name = source
+			.slice(start + marker.length, brace)
+			.trim()
+			.split(/\s/)[0];
+		interfaces.set(name, body.endsWith("}") ? `${body};` : body);
+		index = i;
+	}
+
+	return interfaces;
+}
+
 function loadCanonicalTypes(dir = mantinePropsDir) {
 	const merged = new Map();
 	for (const fileName of CANONICAL_TYPE_FILES) {
@@ -65,8 +104,7 @@ function loadCanonicalTypes(dir = mantinePropsDir) {
 
 function parseTypeImports(source) {
 	const imports = [];
-	const re =
-		/^import type \{([^}]+)\} from ["'](\.\/[^"']+)["'];\r?\n/gm;
+	const re = /^import type \{([^}]+)\} from ["'](\.\/[^"']+)["'];\r?\n/gm;
 	let match;
 	while ((match = re.exec(source)) !== null) {
 		const names = match[1]
@@ -109,7 +147,30 @@ export function inlineMantineSchemaInputTypes(
 	const canonical = loadCanonicalTypes(dir);
 	const imports = parseTypeImports(source);
 	const needed = new Set();
-	for (const {names} of imports) {
+	const interfacePrelude = [];
+
+	for (const {names, from} of imports) {
+		if (
+			from.startsWith("./") &&
+			from.includes(".schema-input") &&
+			!CANONICAL_TYPE_FILES.includes(`${from.slice(2)}.ts`)
+		) {
+			const fileName = `${from.slice(2)}.ts`;
+			const fileInterfaces = extractExportedInterfaces(
+				fs.readFileSync(path.join(dir, fileName), "utf8"),
+			);
+			for (const name of names) {
+				const decl = fileInterfaces.get(name);
+				if (!decl) {
+					throw new Error(
+						`${baseName}: interface "${name}" not found in ${fileName}`,
+					);
+				}
+				interfacePrelude.push(`// from ${fileName}`, decl, "");
+			}
+			continue;
+		}
+
 		for (const name of names) needed.add(name);
 	}
 
@@ -117,6 +178,7 @@ export function inlineMantineSchemaInputTypes(
 
 	const preludeLines = [
 		"// @generated prelude — types inlined for ts-to-zod (see inline-mantine-schema-input-types.mjs)",
+		...interfacePrelude,
 	];
 	for (const name of ordered) {
 		const entry = canonical.get(name);
@@ -163,7 +225,9 @@ function orderTypesWithDependencies(seed, canonical) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
 	const input = process.argv[2];
 	if (!input) {
-		console.error("Usage: node inline-mantine-schema-input-types.mjs <schema-input.ts>");
+		console.error(
+			"Usage: node inline-mantine-schema-input-types.mjs <schema-input.ts>",
+		);
 		process.exit(1);
 	}
 	process.stdout.write(inlineMantineSchemaInputTypes(input));
