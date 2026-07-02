@@ -203,6 +203,49 @@
         }
       ]
     },
+    "AppBuilderThemeOtherProps": {
+      "properties": {
+        "v8ThemeSupport": {
+          "type": "boolean",
+          "description": "When `true`, merges Mantine's `v8CssVariablesResolver` with AppBuilder CSS\nvariables (v8 `light` variant colors). Default in product theme: `false`."
+        },
+        "forceColorScheme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ],
+          "description": "Force light or dark color scheme on `MantineProvider`."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "Single favicon URL when `iconDarkUrl` / `iconLightUrl` are not both set."
+        },
+        "iconDarkUrl": {
+          "type": "string",
+          "description": "Dark-scheme favicon; pair with `iconLightUrl`."
+        },
+        "iconLightUrl": {
+          "type": "string",
+          "description": "Light-scheme favicon; pair with `iconDarkUrl`."
+        },
+        "defaultFontWeightThin": {
+          "type": "string"
+        },
+        "defaultFontWeightLight": {
+          "type": "string"
+        },
+        "defaultFontWeight": {
+          "type": "string"
+        },
+        "defaultFontWeightMedium": {
+          "type": "string"
+        },
+        "defaultFontWeightBold": {
+          "type": "string"
+        }
+      }
+    },
     "string_or_number": {
       "oneOf": [
         {
@@ -1034,7 +1077,7 @@
     },
     "Pick_Unknown": {
       "type": "unknown",
-      "name": "Pick<ComponentProp<\"a\"> & Omit<Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLA…"
+      "name": "Pick<ComponentProp<\"a\"> & Omit<DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchor…"
     },
     "Unknown_and_Pick_Unknown": {
       "type": "unknown",
@@ -1147,6 +1190,13 @@
             }
           }
         },
+        "fontWeights": {
+          "properties": {
+            "[string]": {
+              "type": "string"
+            }
+          }
+        },
         "radius": {
           "properties": {
             "[string]": {
@@ -1205,12 +1255,7 @@
           }
         },
         "other": {
-          "properties": {
-            "[string]": {
-              "type": "unknown",
-              "name": "unknown"
-            }
-          }
+          "$ref": "#/definitions/AppBuilderThemeOtherProps"
         }
       }
     },

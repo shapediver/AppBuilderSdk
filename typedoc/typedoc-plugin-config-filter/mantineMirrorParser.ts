@@ -21,6 +21,8 @@ export const MANTINE_SCHEMA_INPUT_TYPE_SOURCES: Record<string, string> = {
 	MantineResponsiveCssSize: PRIMITIVES_SCHEMA_INPUT,
 	MantineSpacing: SPACING_SCHEMA_INPUT,
 	MantineSizeToken: SPACING_SCHEMA_INPUT,
+	AppBuilderThemeOtherProps:
+		"src/shared/shared/mantine-props/appBuilderThemeOther.schema-input.ts",
 };
 
 export const MANTINE_SCHEMA_INPUT_TYPE_NAMES = new Set(

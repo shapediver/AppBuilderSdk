@@ -1,11 +1,11 @@
 import {expect, test} from "@playwright/test";
 import * as fs from "fs";
 import * as path from "path";
-import {testConfigBySlug, testConfigs} from "../fixtures/testConfigs";
+import {scenarioActionById, scenarioActions} from "../config/scenarioActions";
 import {AppLink} from "../helpers/fetchAppLinks";
-import {rewriteToTestBranch} from "../helpers/rewriteUrl";
+import {applyUrlParams, rewriteToTestBranch} from "../helpers/resolveTargetUrl";
 import {takeSnapshot} from "../helpers/takeSnapshot";
-import {waitForModelLoaded} from "../helpers/waitForModelLoaded";
+import {waitForAppReady} from "../helpers/waitForAppReady";
 
 // ---------------------------------------------------------------------------
 // Branch to test — set TEST_BRANCH env var before running, e.g.:
@@ -19,17 +19,17 @@ const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
 // Falls back to empty array if the file doesn't exist (shouldn't happen in
 // normal usage since globalSetup always runs first).
 // ---------------------------------------------------------------------------
-const linksPath = path.resolve("tests/fixtures/.app-links.json");
+const linksPath = path.resolve("tests/config/.app-links.json");
 const allLinks: AppLink[] = fs.existsSync(linksPath)
 	? (JSON.parse(fs.readFileSync(linksPath, "utf-8")) as AppLink[])
 	: [];
 
-// Merge fetched links with testConfigs entries so that slugs listed in
-// testConfigs but absent from the markdown still get tests.
+// Merge fetched links with scenarioActions entries so that slugs listed in
+// scenarioActions but absent from the markdown still get tests.
 const allEntries = new Map(
 	allLinks.map((l) => [l.slug, {slug: l.slug, url: l.url}]),
 );
-for (const config of testConfigs) {
+for (const config of scenarioActions) {
 	if (!allEntries.has(config.slug)) {
 		allEntries.set(config.slug, {
 			slug: config.slug,
@@ -58,7 +58,7 @@ async function runSmoke(
 	page.on("pageerror", (err) => jsErrors.push(err.message));
 
 	await page.goto(url, {waitUntil: "domcontentloaded"});
-	await waitForModelLoaded(page, {interstitial: setup});
+	await waitForAppReady(page, {interstitial: setup});
 
 	const canvas = page.locator("canvas").first();
 	await expect(canvas).toBeVisible();
@@ -77,13 +77,14 @@ async function runSmoke(
 // One describe block per discovered slug. Generated at module load time from
 // the JSON written by global-setup.ts so Playwright's discovery step sees all
 // tests before any run — enabling full parallelism across all examples.
-// testConfigs supplies optional setup/actions for slugs that need them.
+// scenarioActions supplies optional setup/actions for slugs that need them.
 // ---------------------------------------------------------------------------
 for (const {slug, url} of allEntries.values()) {
-	const config = testConfigBySlug.get(slug);
+	const config = scenarioActionById.get(slug);
 	const setup = config?.setup;
+	const params = config?.params;
 	const actions = config?.actions;
-	const resolvedUrl = testUrl(url);
+	const resolvedUrl = applyUrlParams(testUrl(url), params);
 
 	test.describe(slug, () => {
 		test("smoke: loads without error", async ({page}) => {
@@ -92,7 +93,7 @@ for (const {slug, url} of allEntries.values()) {
 
 		test("visual: matches baseline", async ({page}) => {
 			await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
-			await waitForModelLoaded(page, {interstitial: setup});
+			await waitForAppReady(page, {interstitial: setup});
 			await takeSnapshot(page, slug);
 		});
 
@@ -101,7 +102,7 @@ for (const {slug, url} of allEntries.values()) {
 				page,
 			}) => {
 				await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
-				await waitForModelLoaded(page, {interstitial: setup});
+				await waitForAppReady(page, {interstitial: setup});
 				await actions(page, slug);
 			});
 		}

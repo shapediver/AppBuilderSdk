@@ -64,7 +64,10 @@ export default function LibraryBase() {
 			theme={theme}
 			cssVariablesResolver={resolver}
 		>
-			<Notifications notificationMaxHeight={1000} />
+			<Notifications
+				notificationMaxHeight={1000}
+				pauseResetOnHover="notification"
+			/>
 			<NotificationWrapper>
 				{hasSlug ? (
 					<AppBuilderPage />

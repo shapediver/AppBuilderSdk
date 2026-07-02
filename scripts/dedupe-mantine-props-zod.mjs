@@ -18,6 +18,7 @@ const SHARED_SCHEMAS = {
 	mantineStylesApiValueSchema: "primitives.zod.ts",
 	mantineStylesApiSchema: "primitives.zod.ts",
 	mantineResponsiveCssSizeSchema: "primitives.zod.ts",
+	appBuilderThemeOtherPropsSchema: "appBuilderThemeOther.zod.ts",
 };
 
 /**
