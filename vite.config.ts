@@ -8,7 +8,23 @@ import svgrPlugin from "vite-plugin-svgr";
 import {CONFIG} from "./sentryconfig";
 
 const isDev = process.env.NODE_ENV === "development";
-const plugins = [react(), svgrPlugin()];
+const plugins = [
+	react(),
+	{
+		name: "webmcp-origin-trial-guard",
+		transformIndexHtml(html) {
+			const token = process.env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN;
+			if (!token) {
+				return html.replace(
+					/<meta\s+http-equiv="origin-trial"\s+content="%VITE_WEBMCP_ORIGIN_TRIAL_TOKEN%"\s*\/?>/i,
+					"",
+				);
+			}
+			return html;
+		},
+	},
+	svgrPlugin(),
+];
 if (CONFIG.SENTRY_ORG && CONFIG.SENTRY_PROJECT) {
 	plugins.push(
 		sentryVitePlugin({
@@ -82,9 +98,21 @@ export default defineConfig(async () => {
 		server: {
 			open: true,
 			port: 3000,
+			// WebMCP requires origin-isolated documents (SS-9745).
+			headers: {
+				"Cross-Origin-Opener-Policy": "same-origin",
+				"Cross-Origin-Embedder-Policy": "credentialless",
+			},
 			fs: {
 				// Allow serving files from the local Viewer monorepo when viewer.local.ts exists
 				allow: useLocalViewer ? [".."] : ["."],
+			},
+		},
+		preview: {
+			port: 3000,
+			headers: {
+				"Cross-Origin-Opener-Policy": "same-origin",
+				"Cross-Origin-Embedder-Policy": "credentialless",
 			},
 		},
 		build: {
