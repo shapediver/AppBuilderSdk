@@ -116,6 +116,9 @@ build_and_deploy() {
 
     echo "Building AppBuilder ${MAIN_TARGET_CAP} version $version with prefix $prefix"
     vite build --base=$prefix/$version/
+    if [ $? -ne 0 ]; then
+        fail "Build failed."
+    fi
 
     if [ "$deploy" -eq 0 ]; then
         echo "Skipping deployment."
