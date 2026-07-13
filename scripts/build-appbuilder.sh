@@ -6,9 +6,6 @@ SENTRY_PROJECT="app-builder"
 MAIN_TARGET="main"
 MAIN_TARGET_CAP="$(echo "${MAIN_TARGET:0:1}" | tr '[:lower:]' '[:upper:]')${MAIN_TARGET:1}"
 
-build_timestamp=$(date +'%Y-%m-%d_%H:%M')
-sentry_release=""
-sentry_timestamp="${build_timestamp}"
 sentry_configured=0
 
 restore_sentry_config() {
@@ -75,18 +72,22 @@ push_branch_head() {
     git push "$remote" "HEAD:$branch"
 }
 
-configure_sentry_for_build() {
-    if [ ! -f "sentryconfig.local.ts" ]; then
+create_sentry_release() {
+    local release=$1
+
+    if [ -z "$release" ]; then
         return
     fi
 
-    if [ "$sentry_configured" -eq 0 ]; then
-        mv sentryconfig.ts sentryconfig.ts.bak
-        sentry_configured=1
+    if $SENTRY_CLI releases info --org $SENTRY_ORG "$release" >/dev/null 2>&1; then
+        echo "Using existing Sentry release $release"
+    else
+        echo "Creating Sentry release $release"
+        $SENTRY_CLI releases new -p $SENTRY_PROJECT --org $SENTRY_ORG "$release"
     fi
 
-    echo "Configuring sentry for build timestamp: ${sentry_timestamp}"
-    sed -e "s/BUILD_TIMESTAMP/${sentry_timestamp}/g" sentryconfig.local.ts > sentryconfig.ts
+    echo "Associating commits with Sentry release $release"
+    $SENTRY_CLI releases set-commits --org $SENTRY_ORG --auto "$release"
 }
 
 # Function to build and deploy the app
@@ -99,9 +100,18 @@ build_and_deploy() {
     local prefix=$2
     local version=$3
     local deploying_branch=$4
+    local build_timestamp=$(date +'%Y-%m-%d_%H:%M')
 
     if [ "$deploy" -eq 1 ]; then
-        configure_sentry_for_build
+        if [ -f "sentryconfig.local.ts" ]; then
+            if [ "$sentry_configured" -eq 0 ]; then
+                mv sentryconfig.ts sentryconfig.ts.bak
+                sentry_configured=1
+            fi
+
+            echo "Configuring sentry for build timestamp: ${build_timestamp}"
+            sed -e "s/BUILD_TIMESTAMP/${build_timestamp}/g" sentryconfig.local.ts > sentryconfig.ts
+        fi
     fi
 
     echo "Building AppBuilder ${MAIN_TARGET_CAP} version $version with prefix $prefix"
@@ -144,24 +154,10 @@ build_and_deploy() {
     else
         fail "Unsupported prefix for deployment."
     fi
-}
 
-create_sentry_release() {
-    local release=$1
-
-    if [ -z "$release" ]; then
-        return
-    fi
-
-    if $SENTRY_CLI releases info --org $SENTRY_ORG "$release" >/dev/null 2>&1; then
-        echo "Using existing Sentry release $release"
-    else
-        echo "Creating Sentry release $release"
-        $SENTRY_CLI releases new -p $SENTRY_PROJECT --org $SENTRY_ORG "$release"
-    fi
-
-    echo "Associating commits with Sentry release $release"
-    $SENTRY_CLI releases set-commits --org $SENTRY_ORG --auto "$release"
+    # Create sentry release after successful deploy
+    local sentry_release="${version}+${build_timestamp}"
+    create_sentry_release "$sentry_release"
 }
 
 compute_release_version() {
@@ -251,14 +247,12 @@ declare -a tag_force=()
 if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [ "$branch" == "testing" ]; then
     deploying_branch=1
     version=$branch
-    sentry_release="${version}+${build_timestamp}"
     tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@$branch")
     tag_force+=("1")
 elif [[ $branch == task/* ]]; then
     deploying_branch=1
     # In this case we have to remove the "task/" prefix
     version=${branch#task/}
-    sentry_release="${version}+${build_timestamp}"
 elif [[ $branch == "master" ]]; then
     # Ask if we want to deploy to "latest" or a specific version, unless CI provided the answer.
     version_type=${APPBUILDER_RELEASE_TARGET:-}
@@ -270,7 +264,6 @@ elif [[ $branch == "master" ]]; then
     if [ "$version_type" == "latest" ]; then
         version="latest"
         deploying_branch=1
-        sentry_release="${version}+${build_timestamp}"
         tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@latest")
         tag_force+=("1")
     elif [ "$version_type" == "version" ]; then
@@ -286,7 +279,6 @@ elif [[ $branch == "master" ]]; then
             npm version "$version" --no-git-tag-version --ignore-scripts
             deploying_branch=0
             push_version_commit=1
-            sentry_release="${version}+${build_timestamp}"
 
             echo "New npm version: $version"
 
@@ -334,8 +326,6 @@ for i in "${!versions[@]}"; do
 done
 
 if [ "$deploy" -eq 1 ]; then
-    create_sentry_release "$sentry_release"
-
     if [ "$push_version_commit" -eq 1 ]; then
         push_branch_head "$branch_to_push"
     fi
