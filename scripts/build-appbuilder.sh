@@ -225,11 +225,11 @@ if [ "$deploy" -eq 1 ]; then
     fi
 fi
 
-# If we are deploying, check for tracked git changes. Untracked files are ignored
-# because CI writes gitignored secret/config files and local Pi artifacts may exist.
+# If we are deploying, check for uncommitted or untracked non-ignored files.
 if [ "$deploy" -eq 1 ]; then
-    git diff --quiet || fail "There are uncommitted tracked changes."
-    git diff --cached --quiet || fail "There are staged changes."
+    if [ -n "$(git status --porcelain)" ]; then
+        fail "There are uncommitted or untracked non-ignored files."
+    fi
 fi
 
 # Get the current branch
