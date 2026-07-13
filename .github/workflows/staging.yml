@@ -1,0 +1,279 @@
+name: staging
+
+on:
+    push:
+        branches:
+            - staging
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: staging-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    validate-and-e2e:
+        if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            packages: read
+            id-token: write
+        environment: staging
+
+        steps:
+            - name: Create GitHub App token
+              id: app-token
+              uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+              with:
+                  client-id: ${{ secrets.BOT_APP_CLIENT_ID }}
+                  private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+                  permission-contents: write
+
+            - name: Checkout
+              uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+              with:
+                  fetch-depth: 0
+                  submodules: recursive
+                  persist-credentials: false
+                  token: ${{ steps.app-token.outputs.token }}
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+              with:
+                  version: 11.3.0
+
+            - name: Setup Node.js for GitHub Packages
+              uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+              with:
+                  node-version: 24.12.0
+                  cache: pnpm
+                  scope: "@shapediver"
+                  registry-url: https://npm.pkg.github.com
+
+            - name: Configure GitHub Packages registry
+              run: |
+                  pnpm config set @shapediver:registry https://npm.pkg.github.com
+                  pnpm config set //npm.pkg.github.com/:_authToken "${NODE_AUTH_TOKEN}"
+              env:
+                  NODE_AUTH_TOKEN: ${{ github.token }}
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+              env:
+                  NODE_AUTH_TOKEN: ${{ github.token }}
+
+            - name: Configure git user
+              shell: bash
+              run: |
+                  APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+                  USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+                  git config user.name "${APP_SLUG}[bot]"
+                  git config user.email "${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+              env:
+                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+            - name: Write Sentry config
+              run: printf '%s' "${{ secrets.SENTRY_CONFIG_LOCAL_TS }}" > sentryconfig.local.ts
+
+            - name: Export deployment env
+              run: |
+                  echo "APPBUILDER_BUCKET=${{ secrets.APPBUILDER_BUCKET }}" >> "$GITHUB_ENV"
+                  echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> "$GITHUB_ENV"
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+              with:
+                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+                  aws-region: us-east-1
+
+            - name: Notify Slack deployment started
+              continue-on-error: true
+              shell: bash
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                  WORKFLOW: ${{ github.workflow }}
+                  BRANCH: ${{ github.ref_name }}
+                  SHA: ${{ github.sha }}
+                  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                  COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+              run: |
+                  if [[ -z "${SLACK_WEBHOOK_URL}" ]]; then
+                    echo "SLACK_WEBHOOK_URL not configured; skipping Slack notification."
+                    exit 0
+                  fi
+                  SHORT_SHA="${SHA:0:7}"
+                  PAYLOAD="$(jq -cn --arg workflow "$WORKFLOW" --arg branch "$BRANCH" --arg commitUrl "$COMMIT_URL" --arg shortSha "$SHORT_SHA" --arg runUrl "$RUN_URL" '{attachments:[{color:"#1d9bf0",blocks:[{type:"section",text:{type:"mrkdwn",text:":rocket: *AppBuilder staging deployment started*"}},{type:"section",fields:[{type:"mrkdwn",text:"*Status:*\nIn progress"},{type:"mrkdwn",text:("*Workflow:*\n" + $workflow)},{type:"mrkdwn",text:("*Branch:*\n`" + $branch + "`")},{type:"mrkdwn",text:("*Commit:*\n<" + $commitUrl + "|`" + $shortSha + "`>")} ]},{type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"View Run"},url:$runUrl,style:"primary"}]}]}]}')"
+                  curl -sS --max-time 15 -X POST -H "Content-type: application/json" --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" >/dev/null || echo "Slack notification failed."
+
+            - name: Build
+              run: pnpm run build
+
+            - name: Run unit tests
+              run: pnpm test
+
+            - name: Run Playwright E2E with explicit testing deploy
+              run: pnpm test-e2e
+              env:
+                  APPBUILDER_E2E_DEPLOY: "1"
+                  APPBUILDER_E2E_SKIP_INSTALL: "1"
+                  APPBUILDER_ASSUME_YES: "1"
+                  APPBUILDER_PUSH_TOKEN: ${{ steps.app-token.outputs.token }}
+                  PLATFORM_CLIENT_ID: ${{ secrets.PLATFORM_CLIENT_ID }}
+                  PLATFORM_ACCESS_TOKEN_KEY: ${{ secrets.PLATFORM_ACCESS_TOKEN_KEY }}
+                  PLATFORM_ACCESS_TOKEN_SECRET: ${{ secrets.PLATFORM_ACCESS_TOKEN_SECRET }}
+
+            - name: Collect validation failure artifacts
+              if: failure()
+              shell: bash
+              run: |
+                  rm -rf .github-artifacts/failure
+                  mkdir -p .github-artifacts/failure
+                  for path in playwright-report test-results dist; do
+                    if [[ -e "$path" ]]; then cp -R "$path" .github-artifacts/failure/; fi
+                  done
+
+            - name: Upload validation failure artifacts
+              if: failure()
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+              with:
+                  name: staging-validation-failure-artifacts
+                  if-no-files-found: ignore
+                  compression-level: 0
+                  path: .github-artifacts/failure/
+
+    deploy:
+        needs: validate-and-e2e
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            packages: read
+            id-token: write
+        environment: staging
+
+        steps:
+            - name: Create GitHub App token
+              id: app-token
+              uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+              with:
+                  client-id: ${{ secrets.BOT_APP_CLIENT_ID }}
+                  private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+                  permission-contents: write
+
+            - name: Checkout
+              uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+              with:
+                  fetch-depth: 0
+                  submodules: recursive
+                  persist-credentials: false
+                  token: ${{ steps.app-token.outputs.token }}
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+              with:
+                  version: 11.3.0
+
+            - name: Setup Node.js for GitHub Packages
+              uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+              with:
+                  node-version: 24.12.0
+                  cache: pnpm
+                  scope: "@shapediver"
+                  registry-url: https://npm.pkg.github.com
+
+            - name: Configure GitHub Packages registry
+              run: |
+                  pnpm config set @shapediver:registry https://npm.pkg.github.com
+                  pnpm config set //npm.pkg.github.com/:_authToken "${NODE_AUTH_TOKEN}"
+              env:
+                  NODE_AUTH_TOKEN: ${{ github.token }}
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+              env:
+                  NODE_AUTH_TOKEN: ${{ github.token }}
+
+            - name: Configure git user
+              shell: bash
+              run: |
+                  APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+                  USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+                  git config user.name "${APP_SLUG}[bot]"
+                  git config user.email "${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+              env:
+                  GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+            - name: Write Sentry config
+              run: printf '%s' "${{ secrets.SENTRY_CONFIG_LOCAL_TS }}" > sentryconfig.local.ts
+
+            - name: Export deployment env
+              run: |
+                  echo "APPBUILDER_BUCKET=${{ secrets.APPBUILDER_BUCKET }}" >> "$GITHUB_ENV"
+                  echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> "$GITHUB_ENV"
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+              with:
+                  role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+                  aws-region: us-east-1
+
+            - name: Deploy staging
+              run: pnpm run publish
+              env:
+                  APPBUILDER_ASSUME_YES: "1"
+                  APPBUILDER_PUSH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+            - name: Collect deploy failure artifacts
+              if: failure()
+              shell: bash
+              run: |
+                  rm -rf .github-artifacts/failure
+                  mkdir -p .github-artifacts/failure
+                  for path in playwright-report test-results dist; do
+                    if [[ -e "$path" ]]; then cp -R "$path" .github-artifacts/failure/; fi
+                  done
+
+            - name: Upload deploy failure artifacts
+              if: failure()
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+              with:
+                  name: staging-deploy-failure-artifacts
+                  if-no-files-found: ignore
+                  compression-level: 0
+                  path: .github-artifacts/failure/
+
+    notify:
+        needs:
+            - validate-and-e2e
+            - deploy
+        if: always() && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]'))
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        environment: staging
+
+        steps:
+            - name: Notify Slack
+              continue-on-error: true
+              shell: bash
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                  VALIDATE_RESULT: ${{ needs['validate-and-e2e'].result }}
+                  DEPLOY_RESULT: ${{ needs.deploy.result }}
+                  WORKFLOW: ${{ github.workflow }}
+                  BRANCH: ${{ github.ref_name }}
+                  SHA: ${{ github.sha }}
+                  RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                  COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+              run: |
+                  if [[ -z "${SLACK_WEBHOOK_URL}" ]]; then
+                    echo "SLACK_WEBHOOK_URL not configured; skipping Slack notification."
+                    exit 0
+                  fi
+                  if [[ "${VALIDATE_RESULT}" == "success" && "${DEPLOY_RESULT}" == "success" ]]; then STATUS="success"; elif [[ "${VALIDATE_RESULT}" == "cancelled" || "${DEPLOY_RESULT}" == "cancelled" ]]; then STATUS="cancelled"; else STATUS="failure"; fi
+                  case "$STATUS" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Succeeded";; failure) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; esac
+                  SHORT_SHA="${SHA:0:7}"
+                  PAYLOAD="$(jq -cn --arg color "$COLOR" --arg emoji "$EMOJI" --arg statusLabel "$STATUS_LABEL" --arg workflow "$WORKFLOW" --arg branch "$BRANCH" --arg commitUrl "$COMMIT_URL" --arg shortSha "$SHORT_SHA" --arg runUrl "$RUN_URL" '{attachments:[{color:$color,blocks:[{type:"section",text:{type:"mrkdwn",text:($emoji + " *AppBuilder staging deployment finished*")}},{type:"section",fields:[{type:"mrkdwn",text:("*Status:*\n" + $statusLabel)},{type:"mrkdwn",text:("*Workflow:*\n" + $workflow)},{type:"mrkdwn",text:("*Branch:*\n`" + $branch + "`")},{type:"mrkdwn",text:("*Commit:*\n<" + $commitUrl + "|`" + $shortSha + "`>")} ]},{type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"View Run"},url:$runUrl}]}]}]}')"
+                  curl -sS --max-time 15 -X POST -H "Content-type: application/json" --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" >/dev/null || echo "Slack notification failed."
