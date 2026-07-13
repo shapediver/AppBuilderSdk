@@ -9,6 +9,7 @@ MAIN_TARGET_CAP="$(echo "${MAIN_TARGET:0:1}" | tr '[:lower:]' '[:upper:]')${MAIN
 build_timestamp=$(date +'%Y-%m-%d_%H:%M')
 sentry_release=""
 sentry_timestamp="${build_timestamp}"
+sentry_release_override=""
 sentry_configured=0
 
 restore_sentry_config() {
@@ -87,6 +88,26 @@ configure_sentry_for_build() {
 
     echo "Configuring sentry for build timestamp: ${sentry_timestamp:-<canonical>}"
     sed -e "s/BUILD_TIMESTAMP/${sentry_timestamp}/g" sentryconfig.local.ts > sentryconfig.ts
+
+    if [ -n "$sentry_release_override" ]; then
+        SENTRY_RELEASE_OVERRIDE="$sentry_release_override" node <<'NODE'
+const fs = require("fs");
+const path = "sentryconfig.ts";
+const release = JSON.stringify(process.env.SENTRY_RELEASE_OVERRIDE);
+let text = fs.readFileSync(path, "utf8");
+
+if (/SENTRY_RELEASE\s*:/.test(text)) {
+  text = text.replace(/SENTRY_RELEASE\s*:\s*["'`][\s\S]*?["'`]\s*,?/, `SENTRY_RELEASE: ${release},`);
+} else {
+  text = text.replace(
+    /(SENTRY_RELEASE_TIMESTAMP\s*:\s*["'`][^"'`]*["'`])\s*,?/,
+    `$1,\n\tSENTRY_RELEASE: ${release},`,
+  );
+}
+
+fs.writeFileSync(path, text);
+NODE
+    fi
 }
 
 # Function to build and deploy the app
@@ -273,6 +294,7 @@ elif [[ $branch == "master" ]]; then
         # latest is the current package version in Sentry; do not create a separate latest release.
         sentry_release="$npm_version"
         sentry_timestamp=""
+        sentry_release_override="$sentry_release"
         tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@latest")
         tag_force+=("1")
     elif [ "$version_type" == "version" ]; then
@@ -290,6 +312,7 @@ elif [[ $branch == "master" ]]; then
             push_version_commit=1
             sentry_release="$version"
             sentry_timestamp=""
+            sentry_release_override="$sentry_release"
 
             echo "New npm version: $version"
 
