@@ -2,51 +2,59 @@ import {execFileSync, execSync} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import {fetchAppLinks} from "./helpers/fetchAppLinks";
-import {fetchTestingAccountLinks} from "./helpers/fetchTestingAccountLinks";
 
 /**
  * Playwright global setup — runs once before all tests.
  *
- * 1. Checks whether the current HEAD commit is already deployed by inspecting
- *    the git tag "AppBuilderMain@<TEST_BRANCH>" created by build-appbuilder.sh.
- *    If the tag points to HEAD, the deploy is skipped entirely.
+ * 1. Fetches public App Builder links from the rendered
+ *    GrasshopperExampleModels definition pages and caches them to
+ *    tests/config/.app-links.json.
  *
- * 2. Otherwise: installs dependencies (pnpm i), creates/resets the testing
- *    branch to HEAD, runs the publish script to deploy both AppBuilder prefixes,
- *    then restores the original branch.
+ * 2. Optionally deploys the current HEAD to TEST_BRANCH (default: testing).
+ *    Deployment is explicit in CI via APPBUILDER_E2E_DEPLOY=1. For local
+ *    backwards compatibility, deployment still runs by default unless
+ *    SKIP_DEPLOY=1 is set.
  *
  * Requirements when deploying:
- *   - Working tree must be clean (enforced by the publish script).
+ *   - Working tree tracked files must be clean (enforced by publish script).
  *   - AWS credentials and APPBUILDER_BUCKET must be set in the environment.
  *
- * Override: set SKIP_DEPLOY=1 to bypass all of the above unconditionally.
+ * Overrides:
+ *   - SKIP_DEPLOY=1 bypasses deployment unconditionally.
+ *   - APPBUILDER_E2E_DEPLOY=1 opts into deployment explicitly (required in CI).
+ *   - APPBUILDER_E2E_SKIP_INSTALL=1 prevents global setup from running pnpm i.
  */
 export default async function globalSetup() {
-	// Fetch app links from tutorial markdown and cache to a JSON file.
+	// Fetch app links from public rendered documentation and cache to a JSON file.
 	// globalSetup runs before Playwright evaluates spec files, so the spec can
 	// read the JSON synchronously at module load time to generate one
 	// test.describe per slug — enabling full parallelism across all examples.
-	console.log("[global-setup] Fetching app links from tutorial markdown...");
-	const markdownLinks = await fetchAppLinks();
-	console.log(
-		"[global-setup] Fetching owned app links from the ShapeDiver testing account...",
-	);
-	const testingAccountLinks = await fetchTestingAccountLinks();
-	const links = new Map(markdownLinks.map((link) => [link.slug, link]));
-	for (const link of testingAccountLinks) links.set(link.slug, link);
-	const allLinks = [...links.values()];
+	console.log("[global-setup] Fetching public App Builder links...");
+	const allLinks = await fetchAppLinks();
 	const linksPath = path.resolve("tests/config/.app-links.json");
 	fs.writeFileSync(linksPath, JSON.stringify(allLinks, null, 2));
 	console.log(
-		`[global-setup] Cached ${allLinks.length} app links to ${linksPath} ` +
-			`(${markdownLinks.length} markdown, ${testingAccountLinks.length} testing-account).`,
+		`[global-setup] Cached ${allLinks.length} public app links to ${linksPath}.`,
 	);
 
 	if (process.env.SKIP_DEPLOY === "1") {
+		console.log("[global-setup] SKIP_DEPLOY=1 — skipping deploy.");
+		return;
+	}
+
+	const explicitDeploy = process.env.APPBUILDER_E2E_DEPLOY === "1";
+	const isCi = process.env.CI === "true" || process.env.CI === "1";
+	if (isCi && !explicitDeploy) {
 		console.log(
-			"[global-setup] SKIP_DEPLOY=1 — skipping branch creation and deploy.",
+			"[global-setup] CI detected without APPBUILDER_E2E_DEPLOY=1 — skipping deploy.",
 		);
 		return;
+	}
+
+	if (!explicitDeploy && !isCi) {
+		console.log(
+			"[global-setup] Local run without SKIP_DEPLOY=1 — preserving legacy deploy behavior.",
+		);
 	}
 
 	const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
@@ -58,7 +66,7 @@ export default async function globalSetup() {
 		encoding: "utf8",
 	}).trim();
 
-	// Fetch the tag from remote so we don't miss a deploy done on another machine
+	// Fetch the tag from remote so we don't miss a deploy done on another machine.
 	try {
 		execFileSync(
 			"git",
@@ -71,7 +79,7 @@ export default async function globalSetup() {
 			{stdio: "pipe"},
 		);
 	} catch {
-		// Tag may not exist on remote yet — that's fine, we'll deploy below
+		// Tag may not exist on remote yet — that's fine, we'll deploy below.
 	}
 
 	// Check if the tag already points to the current commit.
@@ -90,7 +98,7 @@ export default async function globalSetup() {
 			},
 		).trim();
 	} catch {
-		// Tag doesn't exist locally
+		// Tag doesn't exist locally.
 	}
 
 	if (taggedCommit === currentCommit) {
@@ -100,7 +108,7 @@ export default async function globalSetup() {
 		return;
 	}
 
-	// Remember where we started so we can restore afterwards
+	// Remember where we started so we can restore afterwards.
 	const originalBranch = execSync("git rev-parse --abbrev-ref HEAD", {
 		encoding: "utf8",
 	}).trim();
@@ -118,7 +126,7 @@ export default async function globalSetup() {
 		});
 		testingBranchExists = true;
 	} catch {
-		// Branch doesn't exist yet — safe to create
+		// Branch doesn't exist yet — safe to create.
 	}
 
 	if (testingBranchExists) {
@@ -142,22 +150,33 @@ export default async function globalSetup() {
 	}
 
 	try {
-		// Create or force-reset the testing branch to the current commit
+		// Create or force-reset the testing branch to the current commit.
 		execFileSync("git", ["checkout", "-B", TEST_BRANCH], {
 			stdio: "inherit",
 		});
 
-		// Install dependencies so the build uses the correct package versions
-		console.log("[global-setup] Installing dependencies...");
-		execSync("pnpm i", {stdio: "inherit"});
+		if (process.env.APPBUILDER_E2E_SKIP_INSTALL === "1" || isCi) {
+			console.log("[global-setup] Skipping dependency install in global setup.");
+		} else {
+			// Install dependencies so the build uses the correct package versions for
+			// local legacy runs. CI installs dependencies in the workflow before tests.
+			console.log("[global-setup] Installing dependencies...");
+			execSync("pnpm i", {stdio: "inherit"});
+		}
 
-		// Deploy both URL prefixes (v1/main and app/builder/v1/main)
+		// Deploy both URL prefixes (v1/main and app/builder/v1/main).
 		console.log(`[global-setup] Deploying branch '${TEST_BRANCH}'...`);
-		execSync("pnpm run publish", {stdio: "inherit"});
+		execSync("pnpm run publish", {
+			stdio: "inherit",
+			env: {
+				...process.env,
+				APPBUILDER_ASSUME_YES: process.env.APPBUILDER_ASSUME_YES ?? "1",
+			},
+		});
 
 		console.log("[global-setup] Deploy complete.");
 	} finally {
-		// Always restore the original branch, even if deploy failed
+		// Always restore the original branch, even if deploy failed.
 		execFileSync("git", ["checkout", originalBranch], {stdio: "inherit"});
 		console.log(`[global-setup] Restored branch '${originalBranch}'.`);
 	}
