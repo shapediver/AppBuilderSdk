@@ -2,21 +2,25 @@ import {execFileSync, execSync} from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import {fetchAppLinks} from "./helpers/fetchAppLinks";
+import {fetchTestingAccountLinks} from "./helpers/fetchTestingAccountLinks";
 
 /**
  * Playwright global setup — runs once before all tests.
  *
- * 1. Fetches public App Builder links from the rendered
- *    GrasshopperExampleModels definition pages and caches them to
- *    tests/config/.app-links.json.
+ * 1. Fetches public App Builder links from rendered GrasshopperExampleModels
+ *    pages and testing-account links from the Platform API, then caches them
+ *    to tests/config/.app-links.json.
  *
  * 2. Optionally deploys the current HEAD to TEST_BRANCH (default: testing).
  *    Deployment is explicit in CI via APPBUILDER_E2E_DEPLOY=1. For local
  *    backwards compatibility, deployment still runs by default unless
  *    SKIP_DEPLOY=1 is set.
  *
- * Requirements when deploying:
- *   - Working tree tracked files must be clean (enforced by publish script).
+ * Requirements:
+ *   - PLATFORM_CLIENT_ID, PLATFORM_ACCESS_TOKEN_KEY, and
+ *     PLATFORM_ACCESS_TOKEN_SECRET must be set for testing-account discovery.
+ *   - When deploying, working tree tracked files must be clean (enforced by
+ *     publish script).
  *   - AWS credentials and APPBUILDER_BUCKET must be set in the environment.
  *
  * Overrides:
@@ -30,11 +34,19 @@ export default async function globalSetup() {
 	// read the JSON synchronously at module load time to generate one
 	// test.describe per slug — enabling full parallelism across all examples.
 	console.log("[global-setup] Fetching public App Builder links...");
-	const allLinks = await fetchAppLinks();
+	const publicLinks = await fetchAppLinks();
+	console.log(
+		"[global-setup] Fetching owned app links from the ShapeDiver testing account...",
+	);
+	const testingAccountLinks = await fetchTestingAccountLinks();
+	const links = new Map(publicLinks.map((link) => [link.slug, link]));
+	for (const link of testingAccountLinks) links.set(link.slug, link);
+	const allLinks = [...links.values()];
 	const linksPath = path.resolve("tests/config/.app-links.json");
 	fs.writeFileSync(linksPath, JSON.stringify(allLinks, null, 2));
 	console.log(
-		`[global-setup] Cached ${allLinks.length} public app links to ${linksPath}.`,
+		`[global-setup] Cached ${allLinks.length} app links to ${linksPath} ` +
+			`(${publicLinks.length} public, ${testingAccountLinks.length} testing-account).`,
 	);
 
 	if (process.env.SKIP_DEPLOY === "1") {

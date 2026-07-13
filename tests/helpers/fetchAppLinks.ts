@@ -8,7 +8,7 @@
  *   - source = which definition page the link came from
  */
 
-export type AppLinkSource = "11-AppBuilder" | "BETA";
+export type AppLinkSource = "11-AppBuilder" | "BETA" | "TESTING_ACCOUNT";
 
 export interface AppLink {
 	slug: string;
@@ -16,7 +16,10 @@ export interface AppLink {
 	source: AppLinkSource;
 }
 
-const PUBLIC_DEFINITION_URLS: Record<AppLinkSource, string> = {
+const PUBLIC_DEFINITION_URLS: Record<
+	Exclude<AppLinkSource, "TESTING_ACCOUNT">,
+	string
+> = {
 	"11-AppBuilder":
 		"https://shapediver.github.io/GrasshopperExampleModels/11-AppBuilder/definitions.html",
 	BETA: "https://shapediver.github.io/GrasshopperExampleModels/BETA/definitions.html",
@@ -32,7 +35,10 @@ function normalizeHtmlUrl(url: string): string {
 		.replaceAll("%26amp%3B", "&");
 }
 
-function extractLinks(html: string, source: AppLinkSource): AppLink[] {
+function extractLinks(
+	html: string,
+	source: Exclude<AppLinkSource, "TESTING_ACCOUNT">,
+): AppLink[] {
 	const links = new Map<string, AppLink>();
 	let match: RegExpExecArray | null;
 
@@ -50,7 +56,12 @@ function extractLinks(html: string, source: AppLinkSource): AppLink[] {
 
 export async function fetchAppLinks(): Promise<AppLink[]> {
 	const results = await Promise.all(
-		(Object.entries(PUBLIC_DEFINITION_URLS) as [AppLinkSource, string][]).map(
+		(
+			Object.entries(PUBLIC_DEFINITION_URLS) as [
+				Exclude<AppLinkSource, "TESTING_ACCOUNT">,
+				string,
+			][]
+		).map(
 			async ([source, pageUrl]) => {
 				const res = await fetch(pageUrl);
 				if (!res.ok)
