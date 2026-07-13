@@ -100,7 +100,9 @@ build_and_deploy() {
     local version=$3
     local deploying_branch=$4
 
-    configure_sentry_for_build
+    if [ "$deploy" -eq 1 ]; then
+        configure_sentry_for_build
+    fi
 
     echo "Building AppBuilder ${MAIN_TARGET_CAP} version $version with prefix $prefix"
     vite build --base=$prefix/$version/
