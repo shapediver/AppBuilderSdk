@@ -61,7 +61,7 @@ async function runSmoke(
 	await waitForAppReady(page, {interstitial: setup});
 
 	const canvas = page.locator("canvas").first();
-	await expect(canvas).toBeVisible();
+	await expect(canvas).toBeVisible({timeout: 15_000});
 	const box = await canvas.boundingBox();
 	expect(box, `Canvas has no bounding box for ${slug}`).not.toBeNull();
 	expect(box!.width, `Canvas width is 0 for ${slug}`).toBeGreaterThan(0);

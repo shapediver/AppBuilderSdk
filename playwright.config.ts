@@ -18,8 +18,9 @@ export default defineConfig({
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: 2,
-	// Limit concurrency — too many parallel sessions may hit ShapeDiver API rate limits
-	workers: process.env.CI ? 5 : 3,
+	maxFailures: 1,
+	// Run serially to avoid ShapeDiver API rate limits / 429 responses.
+	workers: 1,
 	reporter: [["html", {open: "never"}], ["list"]],
 	timeout: 120_000,
 	// Baseline PNGs are stored here and committed to git.
@@ -27,6 +28,7 @@ export default defineConfig({
 	snapshotDir: "./tests/snapshots",
 	snapshotPathTemplate: "{snapshotDir}/{arg}{ext}",
 	expect: {
+		timeout: 15_000,
 		toHaveScreenshot: {
 			// Allow up to 2% pixel difference — accounts for WebGL/GPU variation
 			// across machines and OS. Tighten per-test via takeSnapshot options.
