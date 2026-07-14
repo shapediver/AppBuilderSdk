@@ -30,7 +30,7 @@ export default defineConfig({
 	expect: {
 		timeout: 15_000,
 		toHaveScreenshot: {
-			// Allow up to 2% pixel difference — accounts for WebGL/GPU variation
+			// Allow up to 4% pixel difference — accounts for WebGL/GPU variation
 			// across machines and OS. Tighten per-test via takeSnapshot options.
 			maxDiffPixelRatio: 0.04,
 		},
