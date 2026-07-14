@@ -76,7 +76,9 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Write Sentry config
-        run: printf '%s' "${{ secrets.SENTRY_CONFIG_LOCAL_TS }}" > sentryconfig.local.ts
+        env:
+          SENTRY_CONFIG_LOCAL_TS: ${{ secrets.SENTRY_CONFIG_LOCAL_TS }}
+        run: printf '%s' "$SENTRY_CONFIG_LOCAL_TS" > sentryconfig.local.ts
 
       - name: Export deployment env
         run: |
@@ -206,7 +208,9 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Write Sentry config
-        run: printf '%s' "${{ secrets.SENTRY_CONFIG_LOCAL_TS }}" > sentryconfig.local.ts
+        env:
+          SENTRY_CONFIG_LOCAL_TS: ${{ secrets.SENTRY_CONFIG_LOCAL_TS }}
+        run: printf '%s' "$SENTRY_CONFIG_LOCAL_TS" > sentryconfig.local.ts
 
       - name: Export deployment env
         run: |
