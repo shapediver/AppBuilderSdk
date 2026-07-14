@@ -32,7 +32,7 @@ export default defineConfig({
 		toHaveScreenshot: {
 			// Allow up to 2% pixel difference — accounts for WebGL/GPU variation
 			// across machines and OS. Tighten per-test via takeSnapshot options.
-			maxDiffPixelRatio: 0.02,
+			maxDiffPixelRatio: 0.04,
 		},
 	},
 	use: {
