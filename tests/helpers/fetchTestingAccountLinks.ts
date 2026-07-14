@@ -4,27 +4,28 @@ import {
 	type SdPlatformResponseModelPublic,
 	create as createSdk,
 } from "@shapediver/sdk.platform-api-sdk-v1";
+import dotenv from "dotenv";
+import {AppLink} from "./fetchAppLinks";
 
 /**
- * Fetch all models owned by the dedicated production ShapeDiver testing account
+ * Fetch all public models owned by the dedicated ShapeDiver testing account
  * and convert them into App Builder URLs for Playwright discovery.
  *
- * Required in .env.platform-access:
+ * Required environment variables, provided locally through .env.platform-access
+ * or in CI through GitHub secrets:
  * - PLATFORM_CLIENT_ID
- * - TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_KEY
- * - TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_SECRET
+ * - PLATFORM_ACCESS_TOKEN_KEY (preferred) or TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_KEY
+ * - PLATFORM_ACCESS_TOKEN_SECRET (preferred) or TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_SECRET
  */
-
-import dotenv from "dotenv";
-
-import {AppLink} from "./fetchAppLinks";
 
 dotenv.config({path: ".env.platform-access"});
 
 const PLATFORM_CLIENT_ID = process.env.PLATFORM_CLIENT_ID;
 const PLATFORM_ACCESS_TOKEN_KEY =
+	process.env.PLATFORM_ACCESS_TOKEN_KEY ??
 	process.env.TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_KEY;
 const PLATFORM_ACCESS_TOKEN_SECRET =
+	process.env.PLATFORM_ACCESS_TOKEN_SECRET ??
 	process.env.TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_SECRET;
 const PLATFORM_BASE_URL = "https://app.shapediver.com";
 const APP_BUILDER_LATEST_URL =
@@ -45,11 +46,11 @@ export async function fetchTestingAccountLinks(): Promise<AppLink[]> {
 	const clientId = requireEnv(PLATFORM_CLIENT_ID, "PLATFORM_CLIENT_ID");
 	const accessTokenKey = requireEnv(
 		PLATFORM_ACCESS_TOKEN_KEY,
-		"TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_KEY",
+		"PLATFORM_ACCESS_TOKEN_KEY",
 	);
 	const accessTokenSecret = requireEnv(
 		PLATFORM_ACCESS_TOKEN_SECRET,
-		"TESTING_ACCOUNT_PLATFORM_ACCESS_TOKEN_SECRET",
+		"PLATFORM_ACCESS_TOKEN_SECRET",
 	);
 
 	const client = createSdk({
