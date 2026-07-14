@@ -58,12 +58,12 @@ jobs:
                   pnpm config set @shapediver:registry https://npm.pkg.github.com
                   pnpm config set //npm.pkg.github.com/:_authToken "${NODE_AUTH_TOKEN}"
               env:
-                  NODE_AUTH_TOKEN: ${{ github.token }}
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_PACKAGES_TOKEN }}
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
               env:
-                  NODE_AUTH_TOKEN: ${{ github.token }}
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_PACKAGES_TOKEN }}
 
             - name: Configure git user
               shell: bash
@@ -188,12 +188,12 @@ jobs:
                   pnpm config set @shapediver:registry https://npm.pkg.github.com
                   pnpm config set //npm.pkg.github.com/:_authToken "${NODE_AUTH_TOKEN}"
               env:
-                  NODE_AUTH_TOKEN: ${{ github.token }}
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_PACKAGES_TOKEN }}
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
               env:
-                  NODE_AUTH_TOKEN: ${{ github.token }}
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_PACKAGES_TOKEN }}
 
             - name: Configure git user
               shell: bash
