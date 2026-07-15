@@ -1,0 +1,58 @@
+{
+	"version": "1.0",
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "3bd22727fc17c982fe39efb39ba2bef2624cc32e72bf07b6dd349aa5a21231b52ed21a5b77a43bb4480b6ff5446806a3cfc1350ae93d59c34b8f3b9a5d5f4e1ee012a7c355f3582e768a9a565e4a26d5adc5e4ec299ecf041a111a00172c3aaca863ba78a7c2f6-0a771e465d563959300591950dfd004c",
+			"modelViewUrl": "https://sddev3.eu-central-1.shapediver.com"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "right",
+				"tabs": [
+					{
+						"name": "Stack tab",
+						"icon": "settings",
+						"widgets": [
+							{
+								"type": "text",
+								"props": {
+									"text": "Tab 1 — open Settings stack to verify stack-in-tabs fix"
+								}
+							},
+							{
+								"type": "stackUi",
+								"props": {
+									"name": "Settings",
+									"widgets": [
+										{
+											"type": "text",
+											"props": {
+												"text": "Inside Settings stack — back button should close this panel"
+											}
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"name": "Other tab",
+						"icon": "adjustments-horizontal",
+						"widgets": [
+							{
+								"type": "text",
+								"props": {
+									"text": "Tab 2 — no stack here. Switch tabs while Tab 1 stack is open; this tab must not show Tab 1 stack."
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
