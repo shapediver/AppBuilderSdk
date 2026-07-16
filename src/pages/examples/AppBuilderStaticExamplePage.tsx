@@ -9,9 +9,9 @@ import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptReje
 import useDefaultSessionDto from "@AppBuilderLib/entities/session/model/useDefaultSessionDto";
 import {useSession} from "@AppBuilderLib/entities/session/model/useSession";
 import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
-import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
+import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import useAppBuilderSettings from "@AppBuilderLib/features/appbuilder/model/useAppBuilderSettings";
 import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import AppBuilderImage from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderImage";
@@ -283,7 +283,7 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 		>
 			<ViewportComponent>
 				<ViewportOverlayWrapper>
-					<ViewportIcons namespace={sessionId} />
+					<AppBuilderToolbarLayer namespace={sessionId} sessionSettings={sessionDto} />
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</AppBuilderTemplateSelector>

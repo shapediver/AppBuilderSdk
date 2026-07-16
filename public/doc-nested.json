@@ -207,7 +207,7 @@
       "properties": {
         "v8ThemeSupport": {
           "type": "boolean",
-          "description": "When `true`, merges Mantine's `v8CssVariablesResolver` with AppBuilder CSS\nvariables (v8 `light` variant colors). Default in product theme: `false`."
+          "description": "When `true`, merges Mantine's `v8CssVariablesResolver` with AppBuilder CSS\r\nvariables (v8 `light` variant colors). Default in product theme: `false`."
         },
         "forceColorScheme": {
           "type": "string",
@@ -425,6 +425,10 @@
     },
     "ActionIconProps": {
       "properties": {
+        "color": {
+          "type": "string",
+          "description": "ActionIcon color. Use \"default\" for neutral hover (Mantine v8 parity)."
+        },
         "variant": {
           "type": "string"
         },
@@ -814,6 +818,49 @@
         }
       }
     },
+    "CSSProperties": {
+      "type": "unknown",
+      "name": "CSSProperties"
+    },
+    "MantineStyleProp": {
+      "type": "unknown",
+      "name": "MantineStyleProp"
+    },
+    "unknown": {
+      "type": "unknown",
+      "name": "unknown"
+    },
+    "DividerProps": {
+      "properties": {
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "TransitionProps": {
+      "properties": {
+        "transition": {
+          "type": "unknown",
+          "name": "MantineTransitionName"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "timingFunction": {
+          "type": "string"
+        },
+        "keepMounted": {
+          "type": "boolean"
+        }
+      }
+    },
     "HTMLCanvasElement": {
       "type": "unknown",
       "name": "HTMLCanvasElement"
@@ -862,128 +909,6 @@
       "type": "unknown",
       "name": "object"
     },
-    "CSSProperties": {
-      "type": "unknown",
-      "name": "CSSProperties"
-    },
-    "MantineStyleProp": {
-      "type": "unknown",
-      "name": "MantineStyleProp"
-    },
-    "ViewportOverlayWrapperProps_and_Partial_OverlayStyleProps": {
-      "properties": {
-        "children": {
-          "type": "unknown",
-          "name": "ReactNode"
-        },
-        "position": {
-          "type": "unknown",
-          "name": "ResponsiveValueType<OverlayPositionType>"
-        },
-        "offset": {
-          "type": "string"
-        },
-        "offsetX": {
-          "type": "string"
-        },
-        "offsetY": {
-          "type": "string"
-        },
-        "className": {
-          "type": "string"
-        }
-      }
-    },
-    "DividerProps": {
-      "properties": {
-        "orientation": {
-          "type": "string",
-          "enum": [
-            "horizontal",
-            "vertical"
-          ]
-        },
-        "color": {
-          "type": "string"
-        }
-      }
-    },
-    "TransitionProps": {
-      "properties": {
-        "transition": {
-          "type": "unknown",
-          "name": "MantineTransitionName"
-        },
-        "duration": {
-          "type": "number"
-        },
-        "timingFunction": {
-          "type": "string"
-        },
-        "keepMounted": {
-          "type": "boolean"
-        }
-      }
-    },
-    "MantineActionIconProps_and_Unknown": {
-      "properties": {
-        "variant": {
-          "type": "string"
-        },
-        "size": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/MantineSizeToken"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        },
-        "style": {
-          "$ref": "#/definitions/MantineCssStyleRecord"
-        },
-        "styles": {
-          "$ref": "#/definitions/MantineStylesApi"
-        },
-        "loaderProps": {
-          "properties": {
-            "type": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "color_string_colorDisabled_string": {
-      "properties": {
-        "color": {
-          "type": "string",
-          "description": ""
-        },
-        "colorDisabled": {
-          "type": "string",
-          "description": ""
-        }
-      }
-    },
-    "MenuProps": {
-      "properties": {
-        "shadow": {
-          "type": "string"
-        },
-        "position": {
-          "$ref": "#/definitions/MantineFloatingPosition"
-        }
-      }
-    },
-    "MenuDropdownProps": {
-      "properties": {
-        "style": {
-          "$ref": "#/definitions/MantineCssStyleRecord"
-        }
-      }
-    },
     "base_T_xs_T_sm_T_md_T_lg_T_xl_T_[key_string]_T_or_undefined": {
       "properties": {
         "base": {
@@ -1025,6 +950,52 @@
           "$ref": "#/definitions/T"
         }
       ]
+    },
+    "MantineActionIconProps_and_Unknown": {
+      "properties": {
+        "color": {
+          "type": "string",
+          "description": "ActionIcon color. Use \"default\" for neutral hover (Mantine v8 parity)."
+        },
+        "variant": {
+          "type": "string"
+        },
+        "size": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/MantineSizeToken"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "style": {
+          "$ref": "#/definitions/MantineCssStyleRecord"
+        },
+        "styles": {
+          "$ref": "#/definitions/MantineStylesApi"
+        },
+        "loaderProps": {
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "color_string_colorDisabled_string": {
+      "properties": {
+        "color": {
+          "type": "string",
+          "description": ""
+        },
+        "colorDisabled": {
+          "type": "string",
+          "description": ""
+        }
+      }
     },
     "number_or_boolean": {
       "oneOf": [
@@ -1197,13 +1168,6 @@
             }
           }
         },
-        "fontWeights": {
-          "properties": {
-            "[string]": {
-              "type": "string"
-            }
-          }
-        },
         "radius": {
           "properties": {
             "[string]": {
@@ -1233,8 +1197,12 @@
           }
         },
         "headings": {
-          "type": "unknown",
-          "name": "AppBuilderThemeOtherProps"
+          "properties": {
+            "[string]": {
+              "type": "unknown",
+              "name": "unknown"
+            }
+          }
         },
         "defaultGradient": {
           "properties": {
@@ -2089,6 +2057,13 @@
               }
             },
             {
+              "name": "hideDefaultToolbar",
+              "description": "Whether to hide the default viewport toolbar. Defaults to false.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
               "name": "loadPlatformSettingsFromViewer",
               "description": "In case we cannot connect to the platform, load settings from the viewer, if they were stored there. (default: undefined)",
               "type": {
@@ -2385,6 +2360,167 @@
           "category": "entity"
         }
       },
+      "ViewportIcons": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "style",
+              "description": "Style properties for the container",
+              "type": {
+                "$ref": "#/definitions/MantineCssStyleRecord"
+              }
+            },
+            {
+              "name": "fullscreenId",
+              "description": "ID of the fullscreen area",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "color",
+              "description": "color of the icons",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "colorDisabled",
+              "description": "color of the icons when disabled",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "variant",
+              "description": "variant of the icons",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "variantDisabled",
+              "description": "variant of the icons when disabled",
+              "type": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "iconStyle",
+              "description": "style of the icons",
+              "type": {
+                "$ref": "#/definitions/MantineStyleProp"
+              }
+            },
+            {
+              "name": "size",
+              "description": "size of the icons",
+              "type": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "enableHistoryButtons",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableModelStateButtons",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableImportExportButtons",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableResetButton",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableArBtn",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableCamerasBtn",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableFullscreenBtn",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableFullscreenBtn3States",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableZoomBtn",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enableHistoryMenuButton",
+              "description": "Legacy visibility flag mapped to default toolbar options.",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "viewportOverlayProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/unknown"
+              }
+            },
+            {
+              "name": "paperProps",
+              "description": "paper props",
+              "type": {
+                "$ref": "#/definitions/PaperProps"
+              }
+            },
+            {
+              "name": "dividerProps",
+              "description": "divider props",
+              "type": {
+                "$ref": "#/definitions/DividerProps"
+              }
+            },
+            {
+              "name": "transitionProps",
+              "description": "transition props",
+              "type": {
+                "$ref": "#/definitions/TransitionProps"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
       "ViewportComponent": {
         "defaultProps": {
           "properties": [
@@ -2493,216 +2629,6 @@
               "description": "Branding settings for light scheme",
               "type": {
                 "$ref": "#/definitions/ViewportBranding"
-              }
-            }
-          ],
-          "category": "entity"
-        }
-      },
-      "ViewportIcons": {
-        "defaultProps": {
-          "properties": [
-            {
-              "name": "style",
-              "description": "Style properties for the container",
-              "type": {
-                "$ref": "#/definitions/MantineCssStyleRecord"
-              }
-            },
-            {
-              "name": "fullscreenId",
-              "description": "ID of the fullscreen area",
-              "type": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "enableHistoryButtons",
-              "description": "enable/disable the \"parameter history\" buttons",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableModelStateButtons",
-              "description": "enable/disable the \"model state\" buttons",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableImportExportButtons",
-              "description": "enable/disable the \"import/export JSON file\" buttons",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableResetButton",
-              "description": "enable/disable the \"reset parameter values\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableArBtn",
-              "description": "enable/disable the \"AR\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableCamerasBtn",
-              "description": "enable/disable the \"cameras\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableFullscreenBtn",
-              "description": "enable/disable the \"fullscreen\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableFullscreenBtn3States",
-              "description": "enable/disable the \"fullscreen 3 states (normal | fullscreen with inputs | viewer only fullscreen)\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableZoomBtn",
-              "description": "enable/disable the \"zoom\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "enableHistoryMenuButton",
-              "description": "enable/disable the \"history menu\" button",
-              "type": {
-                "type": "boolean"
-              }
-            },
-            {
-              "name": "color",
-              "description": "color of the icons",
-              "type": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "colorDisabled",
-              "description": "color of the icons when disabled",
-              "type": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "variant",
-              "description": "variant of the icons",
-              "type": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "variantDisabled",
-              "description": "variant of the icons when disabled",
-              "type": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "iconStyle",
-              "description": "style of the icons",
-              "type": {
-                "$ref": "#/definitions/MantineStyleProp"
-              }
-            },
-            {
-              "name": "size",
-              "description": "size of the icons",
-              "type": {
-                "type": "number"
-              }
-            },
-            {
-              "name": "viewportOverlayProps",
-              "description": "viewport overlay props",
-              "type": {
-                "$ref": "#/definitions/ViewportOverlayWrapperProps_and_Partial_OverlayStyleProps"
-              }
-            },
-            {
-              "name": "paperProps",
-              "description": "paper props",
-              "type": {
-                "$ref": "#/definitions/PaperProps"
-              }
-            },
-            {
-              "name": "dividerProps",
-              "description": "divider props",
-              "type": {
-                "$ref": "#/definitions/DividerProps"
-              }
-            },
-            {
-              "name": "transitionProps",
-              "description": "transition props",
-              "type": {
-                "$ref": "#/definitions/TransitionProps"
-              }
-            }
-          ],
-          "category": "entity"
-        }
-      },
-      "ViewportIconButton": {
-        "defaultProps": {
-          "properties": [
-            {
-              "name": "actionIconProps",
-              "description": "",
-              "type": {
-                "$ref": "#/definitions/MantineActionIconProps_and_Unknown"
-              }
-            },
-            {
-              "name": "iconProps",
-              "description": "",
-              "type": {
-                "$ref": "#/definitions/IconProps"
-              }
-            },
-            {
-              "name": "tooltipWrapperProps",
-              "description": "",
-              "type": {
-                "$ref": "#/definitions/TooltipProps"
-              }
-            }
-          ],
-          "category": "entity"
-        }
-      },
-      "ViewportIconButtonDropdowns": {
-        "defaultProps": {
-          "properties": [
-            {
-              "name": "menuProps",
-              "description": "",
-              "type": {
-                "$ref": "#/definitions/MenuProps"
-              }
-            },
-            {
-              "name": "menuDropdownProps",
-              "description": "",
-              "type": {
-                "$ref": "#/definitions/MenuDropdownProps"
               }
             }
           ],
@@ -2854,6 +2780,34 @@
             }
           ],
           "category": "feature"
+        }
+      },
+      "AppBuilderToolbarIconButton": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "actionIconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/MantineActionIconProps_and_Unknown"
+              }
+            },
+            {
+              "name": "iconProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "tooltipWrapperProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TooltipProps"
+              }
+            }
+          ],
+          "category": "appbuilder"
         }
       },
       "CreateModelStateHook": {

@@ -9,19 +9,8 @@ import ViewportAnchor2d, {
 import ViewportAnchor3d, {
 	ViewportAnchor3dThemeProps,
 } from "@AppBuilderLib/entities/viewport-anchor/ui/ViewportAnchor3d";
-import {ViewportIconButtonEnum} from "@AppBuilderLib/entities/viewport/config/viewportIcons";
-import ArButton from "@AppBuilderLib/entities/viewport/ui/ArButton";
-import CamerasButton from "@AppBuilderLib/entities/viewport/ui/CamerasButton";
-import FullscreenButton from "@AppBuilderLib/entities/viewport/ui/FullscreenButton";
-import FullscreenButton3States from "@AppBuilderLib/entities/viewport/ui/FullscreenButton3States";
-import HistoryMenuButton from "@AppBuilderLib/entities/viewport/ui/HistoryMenuButton";
-import RedoButton from "@AppBuilderLib/entities/viewport/ui/RedoButton";
-import ReloadButton from "@AppBuilderLib/entities/viewport/ui/ReloadButton";
-import UndoButton from "@AppBuilderLib/entities/viewport/ui/UndoButton";
 import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
-import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
-import ZoomButton from "@AppBuilderLib/entities/viewport/ui/ZoomButton";
 import {IComponentContext} from "@AppBuilderLib/features/appbuilder/config/ComponentContext.types";
 import {
 	AppBuilderContainerNameType,
@@ -30,6 +19,7 @@ import {
 	isSceneTreeExplorerWidget,
 } from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
+import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
 import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
 import AppBuilderContainerComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderContainerComponent";
@@ -62,20 +52,7 @@ const components: IComponentContext = {
 	},
 	viewportComponent: {component: ViewportComponent},
 	viewportOverlayWrapper: {component: ViewportOverlayWrapper},
-	viewportIcons: {component: ViewportIcons},
-	viewportIconButtons: {
-		[ViewportIconButtonEnum.Ar]: {component: ArButton},
-		[ViewportIconButtonEnum.Zoom]: {component: ZoomButton},
-		[ViewportIconButtonEnum.Cameras]: {component: CamerasButton},
-		[ViewportIconButtonEnum.Fullscreen]: {component: FullscreenButton},
-		[ViewportIconButtonEnum.Fullscreen3States]: {
-			component: FullscreenButton3States,
-		},
-		[ViewportIconButtonEnum.Undo]: {component: UndoButton},
-		[ViewportIconButtonEnum.Redo]: {component: RedoButton},
-		[ViewportIconButtonEnum.Reload]: {component: ReloadButton},
-		[ViewportIconButtonEnum.HistoryMenu]: {component: HistoryMenuButton},
-	},
+	appBuilderToolbarLayer: {component: AppBuilderToolbarLayer},
 	parameters: {
 		[PARAMETER_TYPE.DRAWING]: {
 			component: ParameterDrawingComponent,

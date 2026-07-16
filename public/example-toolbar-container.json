@@ -1,0 +1,1011 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
+			"hideDefaultToolbar": false
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "manual-default-toolbar",
+					"side": "bottom",
+					"align": "center",
+					"order": 0,
+					"visibility": "onMouseActivity",
+					"groups": [
+						[
+							{
+								"id": "manual-default-ar",
+								"type": "action",
+								"label": "View in AR",
+								"icon": "tabler:augmented-reality",
+								"props": {
+									"definition": {
+										"type": "ar",
+										"props": {}
+									}
+								}
+							},
+							{
+								"id": "manual-default-zoom",
+								"type": "action",
+								"label": "Zoom extents",
+								"icon": "tabler:zoom-in",
+								"props": {
+									"definition": {
+										"type": "camera",
+										"props": {
+											"type": "zoomTo",
+											"props": {}
+										}
+									}
+								}
+							},
+							{
+								"id": "bottom-camera-menu",
+								"label": "Camera matrix",
+								"tooltip": "All implemented camera action variants",
+								"icon": "video",
+								"items": [
+									[
+										{
+											"id": "camera-assign-by-name-top",
+											"type": "action",
+											"presentation": "item",
+											"label": "Top",
+											"icon": "video",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "assign",
+														"props": {
+															"camera": {
+																"name": "top"
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-assign-by-name.bottom",
+											"type": "action",
+											"presentation": "item",
+											"label": "Bottom",
+											"icon": "video",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "assign",
+														"props": {
+															"camera": {
+																"name": "bottom"
+															}
+														}
+													}
+												}
+											}
+										}
+									]
+								]
+							},
+							{
+								"id": "manual-default-fullscreen-3-states",
+								"type": "action",
+								"label": "Fullscreen",
+								"icon": "tabler:maximize",
+								"props": {
+									"definition": {
+										"type": "fullscreen",
+										"props": {
+											"type": "fullscreen3States"
+										}
+									}
+								}
+							}
+						],
+						[
+							{
+								"id": "manual-default-undo",
+								"type": "action",
+								"label": "Undo",
+								"icon": "tabler:arrow-back-up",
+								"props": {
+									"definition": {
+										"type": "undo",
+										"props": {}
+									}
+								}
+							},
+							{
+								"id": "manual-default-redo",
+								"type": "action",
+								"label": "Redo",
+								"icon": "tabler:arrow-forward-up",
+								"props": {
+									"definition": {
+										"type": "redo",
+										"props": {}
+									}
+								}
+							},
+							{
+								"id": "manual-default-reset",
+								"type": "action",
+								"label": "Reset to default parameters",
+								"icon": "tabler:reload",
+								"props": {
+									"definition": {
+										"type": "resetParameterValues",
+										"props": {}
+									}
+								}
+							},
+							{
+								"id": "manual-default-more-options",
+								"label": "More options",
+								"icon": "tabler:dots-vertical",
+								"items": [
+									[
+										{
+											"id": "manual-default-import-parameter-values",
+											"type": "action",
+											"presentation": "item",
+											"label": "Import parameter values",
+											"icon": "tabler:upload",
+											"props": {
+												"definition": {
+													"type": "importParameterValues",
+													"props": {}
+												}
+											}
+										},
+										{
+											"id": "manual-default-export-parameter-values",
+											"type": "action",
+											"presentation": "item",
+											"label": "Export parameter values",
+											"icon": "tabler:download",
+											"props": {
+												"definition": {
+													"type": "exportParameterValues",
+													"props": {}
+												}
+											}
+										}
+									],
+									[
+										{
+											"id": "manual-default-create-model-state",
+											"type": "action",
+											"presentation": "item",
+											"label": "Create model state",
+											"icon": "tabler:device-floppy",
+											"props": {
+												"definition": {
+													"type": "createModelState",
+													"props": {
+														"includeImage": true,
+														"includeGltf": false
+													}
+												}
+											}
+										},
+										{
+											"id": "manual-default-import-model-state",
+											"type": "action",
+											"presentation": "item",
+											"label": "Import model state",
+											"icon": "tabler:file-import",
+											"props": {
+												"definition": {
+													"type": "importModelState",
+													"props": {}
+												}
+											}
+										}
+									]
+								]
+							}
+						]
+					]
+				}
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "left-toolbar",
+					"side": "left",
+					"align": "start",
+					"order": 0,
+					"visibility": "always",
+					"groups": [
+						[
+							{
+								"id": "top-length-parameter",
+								"type": "parameter",
+								"label": "Length",
+								"tooltip": "Open Length parameter in a toolbar popover",
+								"icon": "ruler",
+								"presentation": "button",
+								"props": {
+									"name": "Length",
+									"sessionId": "default",
+									"disableIfDirty": false,
+									"acceptRejectMode": true,
+									"overrides": {
+										"displayname": "Length override",
+										"tooltip": "Parameter ref with overrides, accept/reject mode, and explicit session id",
+										"hidden": false,
+										"step": 1
+									}
+								}
+							},
+							{
+								"id": "top-image-export",
+								"type": "export",
+								"label": "Image export",
+								"tooltip": "Export ref with overrides and parameter values",
+								"icon": "download",
+								"props": {
+									"name": "Image Export",
+									"sessionId": "default",
+									"overrides": {
+										"displayname": "Image Export override",
+										"tooltip": "Toolbar export ref override",
+										"hidden": false
+									},
+									"parameterValues": [
+										{
+											"parameter": {
+												"name": "Length",
+												"sessionId": "default"
+											},
+											"value": "42"
+										}
+									]
+								}
+							}
+						],
+						[
+							{
+								"id": "flat-menu-button-presentation",
+								"label": "Flat menu",
+								"tooltip": "Flat item array; entries render as regular buttons",
+								"icon": "list",
+								"items": [
+									{
+										"id": "flat-set-single-value",
+										"type": "action",
+										"presentation": "item",
+										"label": "Set Hide Door true",
+										"tooltip": "setParameterValue action rendered as a button in a popover",
+										"icon": "toggle-right",
+										"props": {
+											"definition": {
+												"type": "setParameterValue",
+												"props": {
+													"parameter": {
+														"name": "Hide Door",
+														"sessionId": "default"
+													},
+													"value": "true",
+													"label": "Set single value",
+													"icon": "toggle-right",
+													"tooltip": "Set one parameter value"
+												}
+											}
+										}
+									},
+									{
+										"id": "flat-set-multiple-values",
+										"type": "action",
+										"presentation": "item",
+										"label": "Set multiple values",
+										"tooltip": "setParameterValues action with multiple parameter entries",
+										"icon": "adjustments-horizontal",
+										"props": {
+											"definition": {
+												"type": "setParameterValues",
+												"props": {
+													"message": "Toolbar test: setting multiple parameter values",
+													"parameterValues": [
+														{
+															"parameter": {
+																"name": "Length",
+																"sessionId": "default"
+															},
+															"value": "25"
+														},
+														{
+															"parameter": {
+																"name": "Material Color",
+																"sessionId": "default"
+															},
+															"value": "#ff8800"
+														}
+													]
+												}
+											}
+										}
+									}
+								]
+							},
+							{
+								"id": "left-sound-action",
+								"type": "action",
+								"label": "Sound",
+								"tooltip": "Play/pause a sound action",
+								"icon": "volume",
+								"props": {
+									"definition": {
+										"type": "sound",
+										"props": {
+											"href": "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg",
+											"autoplay": false,
+											"loop": false,
+											"labelPlaying": "Stop sound",
+											"iconPlaying": "player-stop"
+										}
+									}
+								}
+							}
+						],
+						[
+							{
+								"id": "left-parameter-panel",
+								"label": "Parameters",
+								"tooltip": "Open parameter controls in a toolbar popover",
+								"icon": "adjustments-horizontal",
+								"widgets": [
+									{
+										"type": "controls",
+										"props": {
+											"controls": [
+												{
+													"type": "parameter",
+													"props": {
+														"name": "Hide Door",
+														"sessionId": "default",
+														"disableIfDirty": true,
+														"acceptRejectMode": false,
+														"overrides": {
+															"displayname": "Hide Door override",
+															"tooltip": "Boolean parameter shown from a toolbar item",
+															"hidden": false
+														}
+													}
+												},
+												{
+													"type": "parameter",
+													"props": {
+														"name": "Material Color",
+														"sessionId": "default",
+														"overrides": {
+															"displayname": "Material Color override",
+															"tooltip": "Color parameter shown from a toolbar item",
+															"hidden": false
+														}
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						]
+					]
+				}
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "top-camera-matrix-toolbar",
+					"side": "top",
+					"align": "end",
+					"order": 4,
+					"visibility": "always",
+					"groups": [
+						[
+							{
+								"id": "left-sound-action",
+								"type": "action",
+								"label": "Sound",
+								"tooltip": "Play/pause a sound action",
+								"icon": "volume",
+								"props": {
+									"definition": {
+										"type": "sound",
+										"props": {
+											"href": "https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg",
+											"autoplay": false,
+											"loop": false,
+											"labelPlaying": "Stop sound",
+											"iconPlaying": "player-stop"
+										}
+									}
+								}
+							},
+							{
+								"id": "bottom-camera-menu-items",
+								"label": "Camera matrix",
+								"tooltip": "All implemented camera action variants",
+								"icon": "video",
+								"items": [
+									[
+										{
+											"id": "camera-assign-by-name",
+											"type": "action",
+											"presentation": "item",
+											"label": "Assign named/default camera",
+											"tooltip": "Assign an existing camera by name or id fallback",
+											"icon": "camera",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "assign",
+														"props": {
+															"camera": {
+																"name": "top"
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-assign-new-perspective",
+											"type": "action",
+											"presentation": "item",
+											"label": "Assign new perspective camera",
+											"tooltip": "Create and assign a perspective camera",
+											"icon": "video",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "assign",
+														"props": {
+															"camera": {
+																"type": "perspective",
+																"position": [
+																	8,
+																	6,
+																	8
+																],
+																"target": [
+																	0,
+																	0,
+																	0
+																]
+															},
+															"options": {
+																"duration": 800
+															}
+														}
+													}
+												}
+											}
+										}
+									],
+									[
+										{
+											"id": "camera-set-position",
+											"type": "action",
+											"presentation": "item",
+											"label": "Set camera position",
+											"icon": "focus-centered",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "set",
+														"props": {
+															"position": [
+																5,
+																4,
+																5
+															],
+															"target": [
+																0,
+																0,
+																0
+															],
+															"options": {
+																"duration": 600
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-reset",
+											"type": "action",
+											"presentation": "item",
+											"label": "Reset camera",
+											"icon": "camera",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "reset",
+														"props": {
+															"options": {
+																"duration": 600
+															}
+														}
+													}
+												}
+											}
+										}
+									],
+									[
+										{
+											"id": "camera-zoom-with-filter",
+											"type": "action",
+											"presentation": "item",
+											"label": "Zoom with filter",
+											"icon": "zoom-in",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "zoomTo",
+														"props": {
+															"initialPosition": [
+																10,
+																10,
+																10
+															],
+															"initialTarget": [
+																0,
+																0,
+																0
+															],
+															"nameFilter": [
+																"Door",
+																"Frame"
+															],
+															"options": {
+																"duration": 700
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-animate-path",
+											"type": "action",
+											"presentation": "item",
+											"label": "Animate camera path",
+											"icon": "route",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "animate",
+														"props": {
+															"startFromCurrent": true,
+															"path": [
+																{
+																	"position": [
+																		8,
+																		8,
+																		8
+																	],
+																	"target": [
+																		0,
+																		0,
+																		0
+																	]
+																},
+																{
+																	"position": [
+																		-8,
+																		6,
+																		8
+																	],
+																	"target": [
+																		0,
+																		0,
+																		0
+																	]
+																}
+															],
+															"options": {
+																"duration": 1200
+															}
+														}
+													}
+												}
+											}
+										}
+									]
+								]
+							},
+							{
+								"id": "bottom-camera-menu",
+								"label": "Camera matrix",
+								"tooltip": "All implemented camera action variants",
+								"icon": "video",
+								"items": [
+									[
+										{
+											"id": "camera-assign-by-name",
+											"type": "action",
+											"presentation": "button",
+											"label": "Assign named/default camera",
+											"tooltip": "Assign an existing camera by name or id fallback",
+											"icon": "camera",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "assign",
+														"props": {
+															"camera": {
+																"name": "default"
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-assign-new-perspective",
+											"type": "action",
+											"presentation": "button",
+											"label": "Assign new perspective camera",
+											"tooltip": "Create and assign a perspective camera",
+											"icon": "video",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "assign",
+														"props": {
+															"camera": {
+																"type": "perspective",
+																"position": [
+																	8,
+																	6,
+																	8
+																],
+																"target": [
+																	0,
+																	0,
+																	0
+																]
+															},
+															"options": {
+																"duration": 800
+															}
+														}
+													}
+												}
+											}
+										}
+									],
+									[
+										{
+											"id": "camera-set-position",
+											"type": "action",
+											"presentation": "button",
+											"label": "Set camera position",
+											"icon": "focus-centered",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "set",
+														"props": {
+															"position": [
+																5,
+																4,
+																5
+															],
+															"target": [
+																0,
+																0,
+																0
+															],
+															"options": {
+																"duration": 600
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-reset",
+											"type": "action",
+											"presentation": "button",
+											"label": "Reset camera",
+											"icon": "camera",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "reset",
+														"props": {
+															"options": {
+																"duration": 600
+															}
+														}
+													}
+												}
+											}
+										}
+									],
+									[
+										{
+											"id": "camera-zoom-with-filter",
+											"type": "action",
+											"presentation": "button",
+											"label": "Zoom with filter",
+											"icon": "zoom-in",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "zoomTo",
+														"props": {
+															"initialPosition": [
+																10,
+																10,
+																10
+															],
+															"initialTarget": [
+																0,
+																0,
+																0
+															],
+															"nameFilter": [
+																"Door",
+																"Frame"
+															],
+															"options": {
+																"duration": 700
+															}
+														}
+													}
+												}
+											}
+										},
+										{
+											"id": "camera-animate-path",
+											"type": "action",
+											"presentation": "button",
+											"label": "Animate camera path",
+											"icon": "route",
+											"props": {
+												"definition": {
+													"type": "camera",
+													"props": {
+														"type": "animate",
+														"props": {
+															"startFromCurrent": true,
+															"path": [
+																{
+																	"position": [
+																		8,
+																		8,
+																		8
+																	],
+																	"target": [
+																		0,
+																		0,
+																		0
+																	]
+																},
+																{
+																	"position": [
+																		-8,
+																		6,
+																		8
+																	],
+																	"target": [
+																		0,
+																		0,
+																		0
+																	]
+																}
+															],
+															"options": {
+																"duration": 1200
+															}
+														}
+													}
+												}
+											}
+										}
+									]
+								]
+							}
+						]
+					]
+				}
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "bottom-end-refs-toolbar",
+					"side": "bottom",
+					"align": "end",
+					"order": 6,
+					"visibility": "always",
+					"groups": [
+						[
+							{
+								"id": "bottom-image-export-minimal",
+								"type": "export",
+								"label": "Minimal export",
+								"tooltip": "Export ref with only the required name",
+								"icon": "download",
+								"props": {
+									"name": "Image Export"
+								}
+							},
+							{
+								"id": "bottom-length-minimal",
+								"type": "parameter",
+								"label": "Minimal parameter",
+								"tooltip": "Parameter ref with only the required name",
+								"icon": "hash",
+								"props": {
+									"name": "Length"
+								}
+							}
+						]
+					]
+				}
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "right-widget-panel-toolbar",
+					"side": "right",
+					"align": "center",
+					"order": 7,
+					"visibility": "always",
+					"groups": [
+						[
+							{
+								"id": "right-widget-panel-test",
+								"icon": "layout-dashboard",
+								"label": "Widgets",
+								"tooltip": "Open a toolbar panel containing widgets",
+								"widgets": [
+									{
+										"type": "text",
+										"props": {
+											"markdown": "### Toolbar widget panel\nThis panel is rendered from a toolbar item for testing."
+										}
+									},
+									{
+										"type": "controls",
+										"props": {
+											"controls": [
+												{
+													"type": "parameter",
+													"props": {
+														"name": "Length"
+													}
+												},
+												{
+													"type": "parameter",
+													"props": {
+														"name": "Hide Door"
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						]
+					]
+				}
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "right-tabbed-panel-toolbar",
+					"side": "right",
+					"align": "end",
+					"order": 8,
+					"visibility": "onMouseActivity",
+					"groups": [
+						[
+							{
+								"id": "right-sticky-tabs-test",
+								"icon": "tabler:bookmark",
+								"label": "Sticky tabs",
+								"tooltip": "Open a toolbar panel containing tabs with stickyTabs true",
+								"stickyTabs": true,
+								"tabs": [
+									{
+										"name": "Info",
+										"icon": "info-circle",
+										"tooltip": "Test tab with simple text widgets",
+										"widgets": [
+											{
+												"type": "text",
+												"props": {
+													"markdown": "### Toolbar tabbed panel\nThis item exercises `tabs` and `stickyTabs: true`."
+												}
+											}
+										]
+									},
+									{
+										"name": "Controls",
+										"icon": "adjustments-horizontal",
+										"tooltip": "Test tab with controls",
+										"widgets": [
+											{
+												"type": "controls",
+												"props": {
+													"controls": [
+														{
+															"type": "parameter",
+															"props": {
+																"name": "Length"
+															}
+														},
+														{
+															"type": "parameter",
+															"props": {
+																"name": "Material Color"
+															}
+														}
+													]
+												}
+											}
+										]
+									}
+								]
+							},
+							{
+								"id": "right-non-sticky-tabs-test",
+								"icon": "columns",
+								"label": "Non-sticky tabs",
+								"tooltip": "Open a toolbar panel containing tabs with stickyTabs false",
+								"stickyTabs": false,
+								"tabs": [
+									{
+										"name": "Notes",
+										"icon": "notes",
+										"widgets": [
+											{
+												"type": "text",
+												"props": {
+													"text": "This item exercises stickyTabs: false."
+												}
+											}
+										]
+									}
+								]
+							}
+						]
+					]
+				}
+			}
+		]
+	}
+}
