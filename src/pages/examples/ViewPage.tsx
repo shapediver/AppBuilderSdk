@@ -8,10 +8,10 @@ import {useDefineGenericParameters} from "@AppBuilderLib/entities/parameter/mode
 import {useSessionPropsParameter} from "@AppBuilderLib/entities/parameter/model/useSessionPropsParameter";
 import AcceptRejectButtons from "@AppBuilderLib/entities/parameter/ui/AcceptRejectButtons";
 import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
-import ViewportIcons from "@AppBuilderLib/entities/viewport/ui/ViewportIcons";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
 import {useSessionWithAppBuilder} from "@AppBuilderLib/features/appbuilder/model/useSessionWithAppBuilder";
+import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import TabsComponent, {
 	ITabsComponentProps,
@@ -111,7 +111,7 @@ export default function ViewPage(_props: Partial<Props>) {
 	const sessionId = sessionCreateDto?.id ?? "";
 
 	// use a session with a ShapeDiver model and register its parameters
-	const {sessionApi} = useSessionWithAppBuilder(sessionCreateDto);
+	const {sessionApi, sessionSettings} = useSessionWithAppBuilder(sessionCreateDto);
 	useEffect(() => {
 		if (sessionApi)
 			Logger.debug(
@@ -288,7 +288,7 @@ export default function ViewPage(_props: Partial<Props>) {
 					sessionSettingsId={sessionId}
 				>
 					<ViewportOverlayWrapper>
-						<ViewportIcons />
+						<AppBuilderToolbarLayer namespace={sessionId} sessionSettings={sessionSettings} />
 					</ViewportOverlayWrapper>
 				</ViewportComponent>
 			</ExamplePage>
