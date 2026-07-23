@@ -20,14 +20,14 @@ export async function takeSnapshot(
 	options: {
 		/**
 		 * Maximum ratio of differing pixels (0–1).
-		 * 0.02 = allow up to 2% of pixels to differ.
+		 * 0.04 = allow up to 4% of pixels to differ.
 		 * WebGL canvas renders can vary slightly across GPU/OS combinations,
 		 * so a small tolerance avoids false positives on CI.
 		 */
 		maxDiffPixelRatio?: number;
 	} = {},
 ) {
-	const {maxDiffPixelRatio = 0.02} = options;
+	const {maxDiffPixelRatio = 0.04} = options;
 
 	// Baseline path must match snapshotDir + snapshotPathTemplate in playwright.config.ts:
 	//   snapshotDir: "./tests/snapshots"

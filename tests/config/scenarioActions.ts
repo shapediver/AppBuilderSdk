@@ -40,12 +40,12 @@
  *     });
  *
  * SELECT / DROPDOWN PARAMETER
- *   Mantine Select renders the input as a textbox (role="textbox").
+ *   Mantine Select renders the input as a combobox (role="combobox").
  *   Click it to open the dropdown portal, then click the option.
  *   Options render outside the parameter container, so use page.getByRole.
  *
  *     await waitForModelRecomputed(page, async () => {
- *       await getParameterElement(page, "Material").getByRole("textbox").click();
+ *       await getParameterElement(page, "Material").getByRole("combobox").click();
  *       await page.getByRole("option", { name: "Wood" }).click();
  *     });
  *
@@ -145,9 +145,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await waitForModelRecomputed(page, async () => {
 				await getParameterElement(page, "Upload Your Image")
 					.locator('input[type="file"]')
-					.setInputFiles(
-						path.resolve("tests/config/files/logo.png"),
-					);
+					.setInputFiles(path.resolve("tests/config/files/logo.png"));
 			});
 			await takeSnapshot(page, `${slug}-after-upload`);
 		},
@@ -330,14 +328,16 @@ export const scenarioActions: ScenarioActionConfig[] = [
 
 	{
 		// SELECT / DROPDOWN PARAMETER pattern (Mantine Select).
-		// The dropdown portal renders outside the parameter container,
-		// so options must be queried on `page`, not on the container.
+		// The select trigger is exposed as a combobox, and the dropdown portal
+		// renders outside the parameter container, so options must be queried
+		// on `page`, not on the container.
 		slug: "beta-dynamicvalueliststutorial",
 		actions: async (page, slug) => {
+			const input = getParameterElement(page, "FoodType").getByRole(
+				"combobox",
+			);
 			await waitForModelRecomputed(page, async () => {
-				await getParameterElement(page, "FoodType")
-					.getByRole("textbox")
-					.click();
+				await input.click();
 				await page.getByRole("option", {name: "Vegetables"}).click();
 			});
 			await takeSnapshot(page, `${slug}-vegetables`);

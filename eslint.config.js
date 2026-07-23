@@ -119,6 +119,29 @@ export default tseslint.config(
 		},
 	},
 	{
+		files: ["src/**/*.{ts,tsx}"],
+		ignores: ["src/shared/shared/lib/zod.ts"],
+		rules: {
+			"no-restricted-imports": [
+				"error",
+				{
+					paths: [
+						{
+							name: "zod",
+							message:
+								"Import Zod from @AppBuilderLib/shared/lib/zod so jitless is configured before schemas are created.",
+						},
+						{
+							name: "zod/v4",
+							message:
+								"Import Zod helpers from @AppBuilderLib/shared/lib/zod so jitless is configured before schemas are created.",
+						},
+					],
+				},
+			],
+		},
+	},
+	{
 		files: ["src/**/*.{test,spec}.{ts,tsx}"],
 		languageOptions: {
 			globals: {
