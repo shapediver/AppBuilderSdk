@@ -2,29 +2,27 @@ import {sentryVitePlugin} from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
 import path, {resolve} from "path";
-import {defineConfig} from "vite";
+import {defineConfig, loadEnv} from "vite";
 import {analyzer} from "vite-bundle-analyzer";
 import svgrPlugin from "vite-plugin-svgr";
 import {CONFIG} from "./sentryconfig";
 
 const isDev = process.env.NODE_ENV === "development";
-const plugins = [
-	react(),
-	{
-		name: "webmcp-origin-trial-guard",
-		transformIndexHtml(html) {
-			const token = process.env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN;
-			if (!token) {
-				return html.replace(
-					/<meta\s+http-equiv="origin-trial"\s+content="%VITE_WEBMCP_ORIGIN_TRIAL_TOKEN%"\s*\/?>/i,
-					"",
-				);
-			}
-			return html;
-		},
-	},
-	svgrPlugin(),
-];
+
+function getWebmcpResponseHeaders(mode: string): Record<string, string> {
+	const env = loadEnv(mode, process.cwd(), "");
+	const webmcpOriginTrialToken = env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN?.trim();
+
+	return {
+		"Cross-Origin-Opener-Policy": "same-origin",
+		"Cross-Origin-Embedder-Policy": "credentialless",
+		...(webmcpOriginTrialToken
+			? {"Origin-Trial": webmcpOriginTrialToken}
+			: {}),
+	};
+}
+
+const plugins = [react(), svgrPlugin()];
 if (CONFIG.SENTRY_ORG && CONFIG.SENTRY_PROJECT) {
 	plugins.push(
 		sentryVitePlugin({
@@ -56,7 +54,8 @@ const useLocalViewer =
 	isDev && fs.existsSync(path.resolve(__dirname, "./viewer.local.ts"));
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => {
+export default defineConfig(async ({mode}) => {
+	const webmcpResponseHeaders = getWebmcpResponseHeaders(mode);
 	// Use an absolute file:// URL so dynamic import resolves correctly even when
 	// Vite moves the compiled config to a temp directory during builds.
 	const {pathToFileURL} = await import("url");
@@ -98,11 +97,8 @@ export default defineConfig(async () => {
 		server: {
 			open: true,
 			port: 3000,
-			// WebMCP requires origin-isolated documents (SS-9745).
-			headers: {
-				"Cross-Origin-Opener-Policy": "same-origin",
-				"Cross-Origin-Embedder-Policy": "credentialless",
-			},
+			// WebMCP requires origin-isolated documents + Origin-Trial token (SS-9745).
+			headers: webmcpResponseHeaders,
 			fs: {
 				// Allow serving files from the local Viewer monorepo when viewer.local.ts exists
 				allow: useLocalViewer ? [".."] : ["."],
@@ -110,10 +106,7 @@ export default defineConfig(async () => {
 		},
 		preview: {
 			port: 3000,
-			headers: {
-				"Cross-Origin-Opener-Policy": "same-origin",
-				"Cross-Origin-Embedder-Policy": "credentialless",
-			},
+			headers: webmcpResponseHeaders,
 		},
 		build: {
 			rolldownOptions: {
