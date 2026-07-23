@@ -3908,6 +3908,54 @@
           "category": "widget"
         }
       },
+      "AppBuilderPdfEmbed": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "fit",
+              "description": "Object-fit-like sizing for the embed box.",
+              "type": {
+                "type": "string",
+                "enum": [
+                  "contain",
+                  "scale-down"
+                ]
+              },
+              "default": "contain"
+            },
+            {
+              "name": "withBorder",
+              "description": "When true, applies bordered embed styling.",
+              "type": {
+                "type": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "name": "radius",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              }
+            },
+            {
+              "name": "mah",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              }
+            },
+            {
+              "name": "maw",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              }
+            }
+          ],
+          "category": "widget"
+        }
+      },
       "AppBuilderRoundChartWidgetComponent": {
         "defaultProps": {
           "properties": [

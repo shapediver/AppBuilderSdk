@@ -2838,7 +2838,7 @@
     {
       "configPath": "themeOverrides.components.AppBuilderToolbarIconButton.defaultProps",
       "name": "AppBuilderToolbarIconButton",
-      "summary": "Theme defaults for App Builder toolbar icon triggers.\n\n`ViewportIconButton` remains supported as a legacy theme override key and is\napplied as a fallback before `AppBuilderToolbarIconButton` defaults.",
+      "summary": "Theme defaults for App Builder toolbar icon triggers.\r\n\r\n`ViewportIconButton` remains supported as a legacy theme override key and is\r\napplied as a fallback before `AppBuilderToolbarIconButton` defaults.",
       "source": "src/shared/features/appbuilder/ui/AppBuilderToolbarIconButton.tsx",
       "category": "appbuilder",
       "properties": [
@@ -4012,6 +4012,56 @@
       ]
     },
     {
+      "configPath": "themeOverrides.components.AppBuilderPdfEmbed.defaultProps",
+      "name": "AppBuilderPdfEmbed",
+      "summary": "",
+      "source": "src/shared/widgets/appbuilder/ui/AppBuilderPdfEmbed.tsx",
+      "category": "widget",
+      "properties": [
+        {
+          "name": "fit",
+          "description": "Object-fit-like sizing for the embed box.",
+          "type": {
+            "type": "string",
+            "enum": [
+              "contain",
+              "scale-down"
+            ]
+          },
+          "default": "contain"
+        },
+        {
+          "name": "withBorder",
+          "description": "When true, applies bordered embed styling.",
+          "type": {
+            "type": "boolean"
+          },
+          "default": "false"
+        },
+        {
+          "name": "radius",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          }
+        },
+        {
+          "name": "mah",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          }
+        },
+        {
+          "name": "maw",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          }
+        }
+      ]
+    },
+    {
       "configPath": "themeOverrides.components.AppBuilderRoundChartWidgetComponent.defaultProps",
       "name": "AppBuilderRoundChartWidgetComponent",
       "summary": "",
@@ -4488,6 +4538,7 @@
       "themeOverrides.components.AppBuilderFormWidgetComponent.defaultProps",
       "themeOverrides.components.AppBuilderImage.defaultProps",
       "themeOverrides.components.AppBuilderLineChartWidgetComponent.defaultProps",
+      "themeOverrides.components.AppBuilderPdfEmbed.defaultProps",
       "themeOverrides.components.AppBuilderRoundChartWidgetComponent.defaultProps",
       "themeOverrides.components.AppBuilderSavedStatesWidgetComponent.defaultProps",
       "themeOverrides.components.AppBuilderStackUiWidgetComponent.defaultProps",
