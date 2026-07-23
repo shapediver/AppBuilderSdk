@@ -96,7 +96,7 @@ For each file in the plan:
 3. Update internal imports within the moved file (use `@AppBuilderLib/` alias)
 4. Find ALL files that import the moved file (search the entire `src/` tree)
 5. Update imports in every dependent file to point to the new path
-6. **Create or update barrel `index.ts` files** (see Barrel Index Rules below)
+6. **Do not create barrel `index.ts` files** — import concrete modules directly (see "No Public API / No Barrel Index Files" below); if the old location had a barrel re-exporting the moved file, remove that stale export only
 7. Clean up empty directories and stale barrel exports from the old location
 
 After each file, briefly report:
@@ -110,32 +110,14 @@ Moved 1/2: ComponentName.tsx
 
 After all files are moved, check that there are no broken imports referencing the old paths.
 
-## Barrel Index Rules
+## No Public API / No Barrel Index Files
 
-Every FSD slice must have a public API exposed through `index.ts` files. Create them at two levels:
+Do **NOT** create `index.ts` barrel files that re-export a slice's or segment's internals (no "public API" facade). This applies to both new slices and migrations.
 
-### Segment level: `{layer}/{slice}/{segment}/index.ts`
-Re-exports everything from files in that segment:
-```ts
-// entities/parameter/config/index.ts
-export * from "./propsParameter";
-```
-
-### Slice level: `{layer}/{slice}/index.ts`
-Re-exports everything from all segments of the slice:
-```ts
-// entities/parameter/index.ts
-export * from "./config";
-export * from "./model";
-export * from "./ui";
-```
-
-### Rules
-- Always create both levels when migrating into a new slice
-- If the segment `index.ts` already exists, **add** the new export — do not overwrite
-- If the slice `index.ts` already exists, **add** the new segment export if missing
-- After creating barrel files, also check if the old source had a barrel that re-exported the moved file — remove that stale export
-- Consumers should prefer importing from the slice level: `@AppBuilderLib/entities/parameter` instead of `@AppBuilderLib/entities/parameter/config/propsParameter`
+- Do not create `{layer}/{slice}/index.ts` or `{layer}/{slice}/{segment}/index.ts` re-export files.
+- Consumers import the concrete module directly: `@AppBuilderLib/entities/parameter/config/propsParameter` — not `@AppBuilderLib/entities/parameter` or `.../config`.
+- If a slice you are migrating into already has `index.ts` barrel files, do not extend them. Prefer direct module imports in new code; leave existing barrels untouched unless the user asks to remove them.
+- When moving a file that was re-exported from an old barrel, remove the stale re-export line from that old barrel (so the barrel does not reference a deleted path), but do not add a new barrel at the destination.
 
 ## Import Path Rules
 
@@ -155,3 +137,4 @@ export * from "./ui";
 4. **Update ALL imports** — search the entire codebase for references
 5. **Use @AppBuilderLib alias** — never use relative paths crossing slice boundaries
 6. **One file at a time** — move, update imports, verify, then proceed to next
+7. **No `index.ts` barrels / public API** — do not re-export slice internals via `index.ts`; import concrete modules directly (see "No Public API / No Barrel Index Files" above)
