@@ -613,6 +613,93 @@
         }
       }
     },
+    "FlexProps": {
+      "properties": {
+        "justify": {
+          "type": "string"
+        },
+        "align": {
+          "type": "string"
+        },
+        "gap": {
+          "$ref": "#/definitions/MantineSpacing"
+        },
+        "wrap": {
+          "$ref": "#/definitions/MantineFlexWrap"
+        },
+        "direction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "row",
+                "column",
+                "row-reverse",
+                "column-reverse"
+              ]
+            },
+            {
+              "properties": {
+                "base": {
+                  "type": "string",
+                  "enum": [
+                    "row",
+                    "column",
+                    "row-reverse",
+                    "column-reverse"
+                  ]
+                },
+                "xs": {
+                  "type": "string",
+                  "enum": [
+                    "row",
+                    "column",
+                    "row-reverse",
+                    "column-reverse"
+                  ]
+                },
+                "sm": {
+                  "type": "string",
+                  "enum": [
+                    "row",
+                    "column",
+                    "row-reverse",
+                    "column-reverse"
+                  ]
+                },
+                "md": {
+                  "type": "string",
+                  "enum": [
+                    "row",
+                    "column",
+                    "row-reverse",
+                    "column-reverse"
+                  ]
+                },
+                "lg": {
+                  "type": "string",
+                  "enum": [
+                    "row",
+                    "column",
+                    "row-reverse",
+                    "column-reverse"
+                  ]
+                },
+                "xl": {
+                  "type": "string",
+                  "enum": [
+                    "row",
+                    "column",
+                    "row-reverse",
+                    "column-reverse"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
     "ImageProps": {
       "properties": {
         "fit": {
@@ -1270,22 +1357,6 @@
       "type": "unknown",
       "name": "Partial<SelectComponentPropsExt> & { type: SavedStatesVisualization; }"
     },
-    "FlexProps": {
-      "properties": {
-        "justify": {
-          "type": "string"
-        },
-        "align": {
-          "type": "string"
-        },
-        "gap": {
-          "$ref": "#/definitions/MantineSpacing"
-        },
-        "wrap": {
-          "$ref": "#/definitions/MantineFlexWrap"
-        }
-      }
-    },
     "BoxProps": {
       "properties": {
         "p": {
@@ -1725,6 +1796,27 @@
               "description": "Select settings per parameter name, displayname, or id (see ParameterSelectComponent).",
               "type": {
                 "$ref": "#/definitions/Record_string_IStringParameterSelectSettings"
+              }
+            }
+          ],
+          "category": "entity"
+        }
+      },
+      "SelectButtonFlexComponent": {
+        "defaultProps": {
+          "properties": [
+            {
+              "name": "flexProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/FlexProps"
+              }
+            },
+            {
+              "name": "buttonProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/Omit_SelectButtonStyleProps"
               }
             }
           ],
