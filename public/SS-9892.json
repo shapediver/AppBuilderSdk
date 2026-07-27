@@ -1,0 +1,57 @@
+{
+	"version": "1.0",
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "0f921aa310480f9196c977f63af2ca1ff26220204ea95c0be2b15b2843a480edb759d07317164a1e37e9b8ac983ddae6938b3ffe30fc7e3f3150b9f8ae79bf153d1c3e3f51bf50b02773e7e15e86c14de26e799a376e7821b1dd09a9d0c777aa166cbced200a4a6c482f948b7e319ed74ac1c16937f8ff0e-c6c2b11ae05ad82367e728dda97c4ce6",
+			"modelViewUrl": "https://sddev2.eu-central-1.shapediver.com"
+		}
+	],
+	"themeOverrides": {
+		"components": {
+			"AppBuilderPdfEmbed": {
+				"defaultProps": {
+					"fit": "contain",
+					"withBorder": true,
+					"radius": "md"
+				}
+			}
+		}
+	},
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "right",
+				"widgets": [
+					{
+						"type": "image",
+						"props": {
+							"export": {
+								"name": "PDF Export"
+							},
+							"alt": "PDF from model export"
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "export",
+									"props": {
+										"name": "PDF Export",
+										"overrides": {
+											"displayname": "PDF Export",
+											"tooltip": "Download PDF Export"
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
+}
