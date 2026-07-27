@@ -4046,6 +4046,14 @@
           }
         },
         {
+          "name": "mih",
+          "description": "Minimum height of the PDF embed box (PDF has no intrinsic size).",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          },
+          "default": "50vh"
+        },
+        {
           "name": "mah",
           "description": "",
           "type": {
