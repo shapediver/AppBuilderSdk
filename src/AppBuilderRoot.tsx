@@ -14,11 +14,15 @@ import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/Viewport
 import {IComponentContext} from "@AppBuilderLib/features/appbuilder/config/ComponentContext.types";
 import {
 	AppBuilderContainerNameType,
+	isArAction,
 	isAttributeVisualizationWidget,
 	isCameraAction,
+	isFullscreenAction,
 	isSceneTreeExplorerWidget,
 } from "@AppBuilderLib/features/appbuilder/config/appbuilder";
+import AppBuilderActionArComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionArComponent";
 import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
+import AppBuilderActionFullscreenComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionFullscreenComponent";
 import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
 import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
@@ -92,9 +96,17 @@ const components: IComponentContext = {
 		},
 	},
 	actions: {
+		ar: {
+			isAction: isArAction,
+			component: AppBuilderActionArComponent,
+		},
 		camera: {
 			isAction: isCameraAction,
 			component: AppBuilderActionCameraComponent,
+		},
+		fullscreen: {
+			isAction: isFullscreenAction,
+			component: AppBuilderActionFullscreenComponent,
 		},
 	},
 	containerComponent: AppBuilderContainerComponent,
