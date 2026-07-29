@@ -1,14 +1,16 @@
 import {Page} from "@playwright/test";
 
 /**
- * Performs an action and waits for the 3D model to finish recalculating.
+ * Performs an action and waits for the 3D model to finish recalculating and
+ * for its final beauty render to complete.
  *
  * Use this when your action (slider change, text input, button click, etc.)
  * triggers a Grasshopper recomputation. Without this, screenshots taken
  * right after the action may show the old geometry.
  *
- * The listener is registered BEFORE the action runs so the event can never
- * be missed, even if the computation finishes instantly.
+ * Both listeners are registered BEFORE the action runs. The beauty-render
+ * event is only accepted after `session.customized`, so a render already in
+ * progress cannot make the helper resolve early.
  *
  * Usage:
  *   await waitForModelRecomputed(page, async () => {
@@ -24,26 +26,52 @@ export async function waitForModelRecomputed(
 	action: () => Promise<void>,
 	timeout = 90_000,
 ): Promise<void> {
-	// Plant a flag on window BEFORE triggering the action so the event can't
-	// be missed if the computation completes before waitForFunction starts polling.
 	await page.evaluate(() => {
-		(window as any).__sdvSessionCustomized = false;
 		const SDV = (window as any).SDV;
-		const token = SDV.addListener("session.customized", () => {
-			(window as any).__sdvSessionCustomized = true;
-			SDV.removeListener(token);
+		const state = {
+			customized: false,
+			beautyRenderFinished: false,
+			customizationToken: "",
+			beautyRenderToken: "",
+		};
+
+		(window as any).__sdvModelRecomputed = state;
+
+		state.customizationToken = SDV.addListener(
+			SDV.EVENTTYPE?.SESSION?.SESSION_CUSTOMIZED ?? "session.customized",
+			() => {
+				state.customized = true;
+			},
+		);
+		state.beautyRenderToken = SDV.addListener(
+			SDV.EVENTTYPE?.RENDERING?.BEAUTY_RENDERING_FINISHED ??
+				"rendering.beautyRenderingFinished",
+			() => {
+				if (state.customized) state.beautyRenderFinished = true;
+			},
+		);
+	});
+
+	try {
+		await action();
+
+		await page.waitForFunction(
+			() => {
+				const state = (window as any).__sdvModelRecomputed;
+				return state?.customized === true && state?.beautyRenderFinished === true;
+			},
+			{timeout},
+		);
+	} finally {
+		await page.evaluate(() => {
+			const SDV = (window as any).SDV;
+			const state = (window as any).__sdvModelRecomputed;
+
+			if (state) {
+				SDV.removeListener(state.customizationToken);
+				SDV.removeListener(state.beautyRenderToken);
+			}
+			delete (window as any).__sdvModelRecomputed;
 		});
-	});
-
-	await action();
-
-	await page.waitForFunction(
-		() => (window as any).__sdvSessionCustomized === true,
-		{timeout},
-	);
-
-	// Clean up the flag
-	await page.evaluate(() => {
-		delete (window as any).__sdvSessionCustomized;
-	});
+	}
 }
