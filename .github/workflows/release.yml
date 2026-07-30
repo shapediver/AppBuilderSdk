@@ -198,7 +198,7 @@ jobs:
           tag_name: AppBuilderMain@${{ steps.version.outputs.version }}
           name: ${{ steps.release-notes.outputs.title }}
           generate_release_notes: true
-          body_path: ${{ steps.release-notes.outputs.body_path }}
+          body: ${{ steps.release-notes.outputs.body }}
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Collect release failure artifacts

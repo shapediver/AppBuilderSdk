@@ -56,5 +56,12 @@ if (!title) {
 	fail("release_notes_file first-level Markdown heading must not be empty.");
 }
 
+// The H1 is used as the GitHub Release title. Exclude it from the release body
+// so the title is not rendered twice.
+const releaseBody = body
+	.replace(/^#\s+.+?\s*\r?$/m, "")
+	.replace(/^\s*\r?\n/, "");
+
 setOutput("title", title);
 setOutput("body_path", file);
+setOutput("body", releaseBody);
