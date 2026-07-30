@@ -96,6 +96,12 @@ jobs:
         run: |
           if grep -q "npm.pkg.github.com" pnpm-lock.yaml 2>/dev/null; then
             echo "Production release must install from npmjs.org only; lockfile references npm.pkg.github.com." >&2
+            echo "This usually means the lockfile was generated while @shapediver was routed to GitHub Packages." >&2
+            echo "Regenerate the production lockfile using only public @shapediver versions:" >&2
+            echo "  pnpm config set @shapediver:registry https://registry.npmjs.org/ --location=project" >&2
+            echo "  pnpm update '@shapediver/*' --lockfile-only --force" >&2
+            echo "Then verify no npm.pkg.github.com entries remain and commit pnpm-lock.yaml." >&2
+            echo "Packages with -dev or -next versions are GitHub-only and cannot be part of a production release." >&2
             exit 1
           fi
           if [ -f .npmrc ] && grep -v '^#' .npmrc | grep -q 'npm.pkg.github.com'; then
