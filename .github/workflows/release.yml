@@ -227,8 +227,81 @@ jobs:
           compression-level: 0
           path: .github-artifacts/failure/
 
-  notify:
+  post-release:
     needs: release
+    if: >-
+      always() &&
+      needs.release.result == 'success' &&
+      (inputs.release_target == 'version' || inputs.release_target == 'version-and-latest') &&
+      inputs.version_bump != 'patch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: production
+
+    steps:
+      - name: Create cross-repo contents GitHub App token
+        id: cross-repo-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.BOT_APP_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          owner: shapediver
+          repositories: |
+            Newsfeed
+          permission-contents: write
+
+      - name: Create newsfeed entry
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.cross-repo-token.outputs.token }}
+          VERSION: ${{ needs.release.outputs.version }}
+        run: |
+          DATE="$(date -u +%Y-%m-%d)"
+          GITHUB_URL="https://github.com/shapediver/AppBuilderSdk/releases/tag/AppBuilderMain@${VERSION}"
+          FILENAME="appbuilder-release-${VERSION}.md"
+          TARGET_PATH="src/content/news/${FILENAME}"
+
+          cat > "/tmp/${FILENAME}" << EOF
+          ---
+          title: "App Builder Release ${VERSION}"
+          description: "App Builder version ${VERSION} has been released."
+          pubDate: ${DATE}
+          category: release-notes
+          tags:
+            - App Builder
+          author: "Michael Oppitz"
+          externalUrl: "${GITHUB_URL}"
+          ---
+
+          App Builder version ${VERSION} has been released. Read the full [App Builder ${VERSION} release notes](${GITHUB_URL}).
+          EOF
+
+          CONTENT="$(base64 -w0 "/tmp/${FILENAME}")"
+
+          EXISTING_SHA="$(gh api "repos/shapediver/Newsfeed/contents/${TARGET_PATH}?ref=development" --jq '.sha' 2>/dev/null || true)"
+
+          if [[ -n "${EXISTING_SHA}" ]]; then
+            gh api "repos/shapediver/Newsfeed/contents/${TARGET_PATH}" \
+              --method PUT \
+              -f message="Update app builder release ${VERSION} newsfeed entry" \
+              -f content="${CONTENT}" \
+              -f branch="development" \
+              -f sha="${EXISTING_SHA}"
+            echo "Updated newsfeed entry: ${FILENAME}"
+          else
+            gh api "repos/shapediver/Newsfeed/contents/${TARGET_PATH}" \
+              --method PUT \
+              -f message="Add app builder release ${VERSION} newsfeed entry" \
+              -f content="${CONTENT}" \
+              -f branch="development"
+            echo "Created newsfeed entry: ${FILENAME}"
+          fi
+
+  notify:
+    needs:
+      - release
+      - post-release
     if: always()
     runs-on: ubuntu-latest
     permissions:
@@ -242,6 +315,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           RELEASE_RESULT: ${{ needs.release.result }}
+          POST_RELEASE_RESULT: ${{ needs.post-release.result }}
           VERSION: ${{ needs.release.outputs.version }}
           WORKFLOW: ${{ github.workflow }}
           TARGET: ${{ inputs.release_target }}
@@ -254,7 +328,14 @@ jobs:
             echo "SLACK_WEBHOOK_URL not configured; skipping Slack notification."
             exit 0
           fi
-          case "$RELEASE_RESULT" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Succeeded";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; *) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; esac
+          if [[ "${RELEASE_RESULT}" == "success" && ("${POST_RELEASE_RESULT}" == "success" || "${POST_RELEASE_RESULT}" == "skipped") ]]; then
+            STATUS="success"
+          elif [[ "${RELEASE_RESULT}" == "cancelled" || "${POST_RELEASE_RESULT}" == "cancelled" ]]; then
+            STATUS="cancelled"
+          else
+            STATUS="failure"
+          fi
+          case "$STATUS" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Succeeded";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; *) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; esac
           SHORT_SHA="${SHA:0:7}"
           LABEL="$TARGET${BUMP:+/$BUMP}${VERSION:+ ($VERSION)}"
           PAYLOAD="$(jq -cn --arg color "$COLOR" --arg emoji "$EMOJI" --arg statusLabel "$STATUS_LABEL" --arg workflow "$WORKFLOW" --arg label "$LABEL" --arg commitUrl "$COMMIT_URL" --arg shortSha "$SHORT_SHA" --arg runUrl "$RUN_URL" '{attachments:[{color:$color,blocks:[{type:"section",text:{type:"mrkdwn",text:($emoji + " *AppBuilder production release finished*")}},{type:"section",fields:[{type:"mrkdwn",text:("*Status:*\n" + $statusLabel)},{type:"mrkdwn",text:("*Workflow:*\n" + $workflow)},{type:"mrkdwn",text:("*Release:*\n`" + $label + "`")},{type:"mrkdwn",text:("*Commit:*\n<" + $commitUrl + "|`" + $shortSha + "`>")} ]},{type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"View Run"},url:$runUrl}]}]}]}')"
