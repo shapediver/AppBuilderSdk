@@ -61,9 +61,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          pnpm install --frozen-lockfile && exit 0
+          echo "GitHub Packages install failed, falling back to npmjs.org..."
+          pnpm config set @shapediver:registry https://registry.npmjs.org
+          pnpm install --frozen-lockfile
 
       - name: Configure git user
         shell: bash
@@ -193,9 +198,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          pnpm install --frozen-lockfile && exit 0
+          echo "GitHub Packages install failed, falling back to npmjs.org..."
+          pnpm config set @shapediver:registry https://registry.npmjs.org
+          pnpm install --frozen-lockfile
 
       - name: Configure git user
         shell: bash
