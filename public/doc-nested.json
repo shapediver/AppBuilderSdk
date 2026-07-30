@@ -209,6 +209,10 @@
           "type": "boolean",
           "description": "When `true`, merges Mantine's `v8CssVariablesResolver` with AppBuilder CSS\r\nvariables (v8 `light` variant colors). Default in product theme: `false`."
         },
+        "stateProtection": {
+          "type": "boolean",
+          "description": "When `true`, installs a `beforeunload` handler that prompts before\r\nclosing/navigating away with unsaved parameter changes. Default in\r\nproduct theme: `false` (opt-in, to avoid breaking existing configurators)."
+        },
         "forceColorScheme": {
           "type": "string",
           "enum": [
