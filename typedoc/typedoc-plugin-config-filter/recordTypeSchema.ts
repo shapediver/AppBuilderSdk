@@ -58,12 +58,21 @@ export function isStringOrNumberUnionSchema(schema: DocTypeSchema): boolean {
 	return kinds.includes("string") && kinds.includes("number");
 }
 
+/**
+ * CSS size value: string, number, or a union of those.
+ * Mantine v9 StyleProp values (e.g. `fz`) also emit string enums
+ * (`xs`|`sm`|…|`h6`) beside plain string|number — still a size union.
+ */
 function isStringOrNumberSchema(schema: DocTypeSchema): boolean {
-	return (
-		schema.type === "string" ||
-		schema.type === "number" ||
-		isStringOrNumberUnionSchema(schema)
+	if (schema.type === "string" || schema.type === "number") return true;
+	if (isStringOrNumberUnionSchema(schema)) return true;
+	if (!("oneOf" in schema) || !schema.oneOf?.length) return false;
+	const hasString = schema.oneOf.some((member) => member.type === "string");
+	const hasNumber = schema.oneOf.some((member) => member.type === "number");
+	const onlySizePrimitives = schema.oneOf.every(
+		(member) => member.type === "string" || member.type === "number",
 	);
+	return hasString && hasNumber && onlySizePrimitives;
 }
 
 /** Object with only Mantine breakpoint keys (`base`, `xs`, …) and string/number values. */

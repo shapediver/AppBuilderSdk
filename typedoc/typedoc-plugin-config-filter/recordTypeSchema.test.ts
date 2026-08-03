@@ -85,6 +85,34 @@ describe("recordTypeSchema", () => {
 		).toBe(true);
 	});
 
+	it("detects Mantine v9 fz StyleProp unions with font-size enums", () => {
+		const sizeValue = {
+			oneOf: [
+				{
+					enum: ["xs", "sm", "md", "lg", "xl", "h1", "h2", "h3", "h4", "h5", "h6"],
+					type: "string",
+				},
+				{type: "number"},
+				{type: "string"},
+			],
+		};
+		const breakpointObject = {
+			properties: {
+				xs: sizeValue,
+				sm: sizeValue,
+				md: sizeValue,
+				lg: sizeValue,
+				xl: sizeValue,
+			},
+		};
+		expect(isBreakpointSizeObjectSchema(breakpointObject)).toBe(true);
+		expect(
+			matchesMantineResponsiveCssSize({
+				oneOf: [...sizeValue.oneOf, breakpointObject],
+			}),
+		).toBe(true);
+	});
+
 	it("stubs Record<string, ISelectComponentOverrides> with top-level keys only", () => {
 		const compact = compactRecordStringISelectComponentOverrides();
 		const value = (
