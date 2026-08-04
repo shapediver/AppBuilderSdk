@@ -32,6 +32,8 @@ pnpm test-e2e-update-snapshots           # update baseline screenshots
 Without it, the suite deploys the current commit to the `testing/local` branch first.
 CI sets `TEST_BRANCH=testing/<source-branch>` so concurrent workflows use
 isolated deployments.
+Their Git tags use `testing+<source-branch>` because tags cannot be nested
+beneath the legacy `AppBuilderMain@testing` tag.
 
 ## Adding a test
 

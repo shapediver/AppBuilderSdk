@@ -70,9 +70,10 @@ export default async function globalSetup() {
 	}
 
 	const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing/local";
-	// Tag name written by build-appbuilder.sh: "AppBuilder${MAIN_TARGET^}@$branch"
-	// MAIN_TARGET="main" → "AppBuilderMain@testing/local"
-	const DEPLOY_TAG = `AppBuilderMain@${TEST_BRANCH}`;
+	// Tag name written by build-appbuilder.sh. Slashes in the deployment path
+	// become '+' because Git tags cannot be nested below an existing tag.
+	// MAIN_TARGET="main" → "AppBuilderMain@testing+local"
+	const DEPLOY_TAG = `AppBuilderMain@${TEST_BRANCH.replaceAll("/", "+")}`;
 
 	const currentCommit = execFileSync("git", ["rev-parse", "HEAD"], {
 		encoding: "utf8",
