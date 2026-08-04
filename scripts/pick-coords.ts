@@ -12,7 +12,7 @@
 import {chromium} from "@playwright/test";
 
 const DEFAULT_HOST = "https://appbuilder.shapediver.com/v1/main";
-const DEFAULT_BRANCH = "testing";
+const DEFAULT_BRANCH = "testing/local";
 
 function resolveUrl(slug: string): string {
 	const branch = process.env.TEST_BRANCH?.trim() || DEFAULT_BRANCH;

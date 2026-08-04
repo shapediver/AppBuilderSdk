@@ -11,7 +11,7 @@ import {fetchTestingAccountLinks} from "./helpers/fetchTestingAccountLinks";
  *    pages and testing-account links from the Platform API, then caches them
  *    to tests/config/.app-links.json.
  *
- * 2. Optionally deploys the current HEAD to TEST_BRANCH (default: testing).
+ * 2. Optionally deploys the current HEAD to TEST_BRANCH (default: testing/local).
  *    Deployment is explicit in CI via APPBUILDER_E2E_DEPLOY=1. For local
  *    backwards compatibility, deployment still runs by default unless
  *    SKIP_DEPLOY=1 is set.
@@ -69,9 +69,9 @@ export default async function globalSetup() {
 		);
 	}
 
-	const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
+	const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing/local";
 	// Tag name written by build-appbuilder.sh: "AppBuilder${MAIN_TARGET^}@$branch"
-	// MAIN_TARGET="main" → "AppBuilderMain@testing"
+	// MAIN_TARGET="main" → "AppBuilderMain@testing/local"
 	const DEPLOY_TAG = `AppBuilderMain@${TEST_BRANCH}`;
 
 	const currentCommit = execFileSync("git", ["rev-parse", "HEAD"], {

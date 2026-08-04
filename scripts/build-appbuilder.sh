@@ -246,8 +246,9 @@ branch_to_push="$branch"
 declare -a tags_to_push=()
 declare -a tag_force=()
 
-# If the branch is "development", "staging" or "testing", we use the branch name as the version
-if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [ "$branch" == "testing" ]; then
+# If the branch is "development", "staging", or a branch in the testing
+# namespace, use the branch name as the deployment version.
+if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [[ "$branch" == testing/* ]]; then
     deploying_branch=1
     version=$branch
     tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@$branch")
