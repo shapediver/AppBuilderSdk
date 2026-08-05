@@ -4,13 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       release_target:
-        description: Choose whether to deploy only latest, only a version, or both.
+        description: Choose whether to deploy latest or only a version.
         required: true
         type: choice
         options:
           - latest
           - version
-          - version-and-latest
       version_bump:
         description: Version increment for version releases. If the current package version is a prerelease, its stable base version is released.
         required: false
@@ -49,8 +48,8 @@ jobs:
           VERSION_BUMP: ${{ inputs.version_bump }}
           RELEASE_NOTES_FILE: ${{ inputs.release_notes_file }}
         run: |
-          case "$RELEASE_TARGET" in latest|version|version-and-latest) ;; *) echo "Invalid release_target: $RELEASE_TARGET" >&2; exit 1;; esac
-          if [[ "$RELEASE_TARGET" == "version" || "$RELEASE_TARGET" == "version-and-latest" ]]; then
+          case "$RELEASE_TARGET" in latest|version) ;; *) echo "Invalid release_target: $RELEASE_TARGET" >&2; exit 1;; esac
+          if [[ "$RELEASE_TARGET" == "version" ]]; then
             case "$VERSION_BUMP" in patch|minor|major) ;; *) echo "version_bump is required for version releases." >&2; exit 1;; esac
             if [[ "$VERSION_BUMP" != "patch" && -z "$RELEASE_NOTES_FILE" ]]; then
               echo "release_notes_file is required for minor and major AppBuilder releases." >&2
@@ -140,7 +139,7 @@ jobs:
 
       - name: Parse release notes
         id: release-notes
-        if: (inputs.release_target == 'version' || inputs.release_target == 'version-and-latest') && inputs.version_bump != 'patch'
+        if: inputs.release_target == 'version' && inputs.version_bump != 'patch'
         env:
           RELEASE_NOTES_FILE: ${{ inputs.release_notes_file }}
         run: node scripts/release/read-appbuilder-release-notes.mjs "$RELEASE_NOTES_FILE"
@@ -200,7 +199,7 @@ jobs:
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Publish GitHub release
-        if: (inputs.release_target == 'version' || inputs.release_target == 'version-and-latest') && inputs.version_bump != 'patch'
+        if: inputs.release_target == 'version' && inputs.version_bump != 'patch'
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           tag_name: AppBuilderMain@${{ steps.version.outputs.version }}
@@ -233,7 +232,7 @@ jobs:
     if: >-
       always() &&
       needs.release.result == 'success' &&
-      (inputs.release_target == 'version' || inputs.release_target == 'version-and-latest') &&
+      inputs.release_target == 'version' &&
       inputs.version_bump != 'patch'
     runs-on: ubuntu-latest
     permissions:

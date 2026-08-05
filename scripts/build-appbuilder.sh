@@ -247,7 +247,6 @@ echo "Current npm version: $npm_version"
 
 deploying_branch=1
 version=""
-deploy_latest=0
 push_version_commit=0
 branch_to_push="$branch"
 declare -a tags_to_push=()
@@ -265,11 +264,11 @@ elif [[ $branch == task/* ]]; then
     # In this case we have to remove the "task/" prefix
     version=${branch#task/}
 elif [[ $branch == "master" ]]; then
-    # Ask whether to deploy latest, a version, or both, unless CI provided the answer.
+    # Ask whether to deploy latest or a version, unless CI provided the answer.
     version_type=${APPBUILDER_RELEASE_TARGET:-}
     if [ -z "$version_type" ]; then
-        echo "Do you want to deploy 'latest', a 'version', or 'version-and-latest'?"
-        read -p "Enter 'latest', 'version', or 'version-and-latest': " version_type
+        echo "Do you want to deploy 'latest' or a 'version'?"
+        read -p "Enter 'latest' or 'version': " version_type
     fi
 
     if [ "$version_type" == "latest" ]; then
@@ -277,10 +276,7 @@ elif [[ $branch == "master" ]]; then
         deploying_branch=1
         tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@latest")
         tag_force+=("1")
-    elif [ "$version_type" == "version" ] || [ "$version_type" == "version-and-latest" ]; then
-        if [ "$version_type" == "version-and-latest" ]; then
-            deploy_latest=1
-        fi
+    elif [ "$version_type" == "version" ]; then
         version_bump=${APPBUILDER_VERSION_BUMP:-}
         if [ -z "$version_bump" ]; then
             echo "Do you want to increase the major, minor or patch version?"
@@ -301,10 +297,6 @@ elif [[ $branch == "master" ]]; then
 
             tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@$version")
             tag_force+=("0")
-            if [ "$deploy_latest" -eq 1 ]; then
-                tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@latest")
-                tag_force+=("1")
-            fi
         else
             fail "Unsupported version type."
         fi
@@ -327,12 +319,6 @@ declare -a versions=()
 declare -a version_is_branch=()
 versions+=("$version")
 version_is_branch+=("$deploying_branch")
-
-# A version-and-latest release deploys the immutable version and latest.
-if [ "$deploy_latest" -eq 1 ]; then
-    versions+=("latest")
-    version_is_branch+=("1")
-fi
 
 for i in "${!versions[@]}"; do
     for deploy_prefix in "${prefixes[@]}"; do
