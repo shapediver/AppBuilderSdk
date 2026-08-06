@@ -10,7 +10,7 @@ import {CONFIG} from "./sentryconfig";
 const isDev = process.env.NODE_ENV === "development";
 
 function getWebmcpResponseHeaders(mode: string): Record<string, string> {
-	const env = loadEnv(mode, process.cwd(), "");
+	const env = loadEnv(mode, process.cwd(), "VITE_");
 	const webmcpOriginTrialToken = env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN?.trim();
 
 	return {
