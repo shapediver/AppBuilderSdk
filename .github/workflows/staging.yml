@@ -127,6 +127,7 @@ jobs:
           APPBUILDER_E2E_DEPLOY: "1"
           APPBUILDER_E2E_SKIP_INSTALL: "1"
           APPBUILDER_ASSUME_YES: "1"
+          TEST_BRANCH: testing/${{ github.ref_name }}
           APPBUILDER_PUSH_TOKEN: ${{ steps.app-token.outputs.token }}
           PLATFORM_CLIENT_ID: ${{ secrets.PLATFORM_CLIENT_ID }}
           PLATFORM_ACCESS_TOKEN_KEY: ${{ secrets.PLATFORM_ACCESS_TOKEN_KEY }}

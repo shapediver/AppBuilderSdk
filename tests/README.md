@@ -29,7 +29,11 @@ pnpm test-e2e-update-snapshots           # update baseline screenshots
 ```
 
 `SKIP_DEPLOY=1` skips the branch creation and deploy step in global setup.
-Without it, the suite deploys the current commit to the `testing` branch first.
+Without it, the suite deploys the current commit to the `testing/local` branch first.
+CI sets `TEST_BRANCH=testing/<source-branch>` so concurrent workflows use
+isolated deployments.
+Their Git tags use `testing+<source-branch>` because tags cannot be nested
+beneath the legacy `AppBuilderMain@testing` tag.
 
 ## Adding a test
 
@@ -77,6 +81,6 @@ Opens the app, lets you click the 3D scene, and prints normalized coordinates.
 
 ## Env vars
 
-- `TEST_BRANCH` — branch/version to test against (default: `testing`)
+- `TEST_BRANCH` — branch/version to test against (default: `testing/local`)
 - `SKIP_DEPLOY` — set to `1` to skip deploy
 - `APPBUILDER_BASE_URL` — override the base URL entirely

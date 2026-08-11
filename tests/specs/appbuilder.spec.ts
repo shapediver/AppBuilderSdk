@@ -10,9 +10,9 @@ import {waitForAppReady} from "../helpers/waitForAppReady";
 // ---------------------------------------------------------------------------
 // Branch to test — set TEST_BRANCH env var before running, e.g.:
 //   TEST_BRANCH=my-feature pnpm test:e2e
-// Defaults to "testing" which matches the pre-release deploy step.
+// Defaults to "testing/local" for isolated local pre-release deploys.
 // ---------------------------------------------------------------------------
-const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
+const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing/local";
 
 // ---------------------------------------------------------------------------
 // App links — written by global-setup.ts before spec files are evaluated.

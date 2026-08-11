@@ -72,6 +72,13 @@ push_branch_head() {
     git push "$remote" "HEAD:$branch"
 }
 
+# Deployment paths may contain slashes, but Sentry release versions may not and
+# Git tags cannot be nested below an existing tag. Keep deployment paths intact
+# and use a flat identifier for Sentry releases and Git tags.
+release_identifier() {
+    echo "${1//\//+}"
+}
+
 create_sentry_release() {
     local release=$1
 
@@ -159,7 +166,7 @@ build_and_deploy() {
     fi
 
     # Create sentry release after successful deploy
-    local sentry_release="${version}+${build_timestamp}"
+    local sentry_release="$(release_identifier "$version")+${build_timestamp}"
     create_sentry_release "$sentry_release"
 }
 
@@ -245,11 +252,12 @@ branch_to_push="$branch"
 declare -a tags_to_push=()
 declare -a tag_force=()
 
-# If the branch is "development", "staging" or "testing", we use the branch name as the version
-if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [ "$branch" == "testing" ]; then
+# If the branch is "development", "staging", or a branch in the testing
+# namespace, use the branch name as the deployment version.
+if [ "$branch" == "development" ] || [ "$branch" == "staging" ] || [[ "$branch" == testing/* ]]; then
     deploying_branch=1
     version=$branch
-    tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@$branch")
+    tags_to_push+=("AppBuilder${MAIN_TARGET_CAP}@$(release_identifier "$branch")")
     tag_force+=("1")
 elif [[ $branch == task/* ]]; then
     deploying_branch=1

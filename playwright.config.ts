@@ -5,7 +5,7 @@ import {defineConfig, devices} from "@playwright/test";
  * Corresponds to the version segment in the deployed URL:
  *   https://appbuilder.shapediver.com/v1/main/<branch>/
  */
-const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing";
+const TEST_BRANCH = process.env.TEST_BRANCH ?? "testing/local";
 
 export {TEST_BRANCH};
 
