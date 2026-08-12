@@ -4110,6 +4110,64 @@
       ]
     },
     {
+      "configPath": "themeOverrides.components.AppBuilderPdfEmbed.defaultProps",
+      "name": "AppBuilderPdfEmbed",
+      "summary": "",
+      "source": "src/shared/widgets/appbuilder/ui/AppBuilderPdfEmbed.tsx",
+      "category": "widget",
+      "properties": [
+        {
+          "name": "fit",
+          "description": "Object-fit-like sizing for the embed box.",
+          "type": {
+            "type": "string",
+            "enum": [
+              "contain",
+              "scale-down"
+            ]
+          },
+          "default": "contain"
+        },
+        {
+          "name": "withBorder",
+          "description": "When true, applies bordered embed styling.",
+          "type": {
+            "type": "boolean"
+          },
+          "default": "false"
+        },
+        {
+          "name": "radius",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          }
+        },
+        {
+          "name": "mih",
+          "description": "Minimum height of the PDF embed box (PDF has no intrinsic size).",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          },
+          "default": "50vh"
+        },
+        {
+          "name": "mah",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          }
+        },
+        {
+          "name": "maw",
+          "description": "",
+          "type": {
+            "$ref": "#/definitions/string_or_number"
+          }
+        }
+      ]
+    },
+    {
       "configPath": "themeOverrides.components.AppBuilderRoundChartWidgetComponent.defaultProps",
       "name": "AppBuilderRoundChartWidgetComponent",
       "summary": "",
@@ -4587,6 +4645,7 @@
       "themeOverrides.components.AppBuilderFormWidgetComponent.defaultProps",
       "themeOverrides.components.AppBuilderImage.defaultProps",
       "themeOverrides.components.AppBuilderLineChartWidgetComponent.defaultProps",
+      "themeOverrides.components.AppBuilderPdfEmbed.defaultProps",
       "themeOverrides.components.AppBuilderRoundChartWidgetComponent.defaultProps",
       "themeOverrides.components.AppBuilderSavedStatesWidgetComponent.defaultProps",
       "themeOverrides.components.AppBuilderStackUiWidgetComponent.defaultProps",
