@@ -1,20 +1,26 @@
 import {sentryVitePlugin} from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react";
+import type {IncomingMessage, ServerResponse} from "http";
 import fs from "fs";
 import path, {resolve} from "path";
 import {defineConfig, loadEnv} from "vite";
+import type {Connect, Plugin} from "vite";
 import {analyzer} from "vite-bundle-analyzer";
 import svgrPlugin from "vite-plugin-svgr";
 import {CONFIG} from "./sentryconfig";
 
 const isDev = process.env.NODE_ENV === "development";
 
+const COOP_HEADER = "Cross-Origin-Opener-Policy";
+const COOP_SAME_ORIGIN = "same-origin";
+const COOP_ALLOW_POPUPS = "same-origin-allow-popups";
+
 function getWebmcpResponseHeaders(mode: string): Record<string, string> {
 	const env = loadEnv(mode, process.cwd(), "VITE_");
 	const webmcpOriginTrialToken = env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN?.trim();
 
 	return {
-		"Cross-Origin-Opener-Policy": "same-origin",
+		[COOP_HEADER]: COOP_SAME_ORIGIN,
 		"Cross-Origin-Embedder-Policy": "credentialless",
 		...(webmcpOriginTrialToken
 			? {"Origin-Trial": webmcpOriginTrialToken}
@@ -22,7 +28,62 @@ function getWebmcpResponseHeaders(mode: string): Record<string, string> {
 	};
 }
 
-const plugins = [react(), svgrPlugin()];
+function requestHasAgentUrlQuery(req: IncomingMessage): boolean {
+	const url =
+		(req as IncomingMessage & {originalUrl?: string}).originalUrl ??
+		req.url;
+	if (!url) {
+		return false;
+	}
+	const queryStart = url.indexOf("?");
+	if (queryStart === -1) {
+		return false;
+	}
+	return new URLSearchParams(url.slice(queryStart + 1)).has("agentUrl");
+}
+
+/**
+ * Vite applies `server.headers` inside `send()`, after Connect middleware.
+ * Wrap `res.setHeader` so agentUrl documents keep opener for cross-origin
+ * `window.open` (ToolsApi handshake). Do not drop COOP globally: WebMCP /
+ * SharedArrayBuffer still need same-origin + COEP when agentUrl is absent.
+ */
+function coopAgentPopupMiddleware(
+	req: IncomingMessage,
+	res: ServerResponse,
+	next: Connect.NextFunction,
+): void {
+	if (!requestHasAgentUrlQuery(req)) {
+		next();
+		return;
+	}
+	const originalSetHeader = res.setHeader.bind(res);
+	res.setHeader = ((
+		name: string,
+		value: number | string | readonly string[],
+	) => {
+		if (String(name).toLowerCase() === COOP_HEADER.toLowerCase()) {
+			return originalSetHeader(name, COOP_ALLOW_POPUPS);
+		}
+		return originalSetHeader(name, value);
+	}) as ServerResponse["setHeader"];
+	res.setHeader(COOP_HEADER, COOP_ALLOW_POPUPS);
+	next();
+}
+
+function coopAgentPopupPlugin(): Plugin {
+	return {
+		name: "coop-agent-popup",
+		configureServer(server) {
+			server.middlewares.use(coopAgentPopupMiddleware);
+		},
+		configurePreviewServer(server) {
+			server.middlewares.use(coopAgentPopupMiddleware);
+		},
+	};
+}
+
+const plugins = [coopAgentPopupPlugin(), react(), svgrPlugin()];
 if (CONFIG.SENTRY_ORG && CONFIG.SENTRY_PROJECT) {
 	plugins.push(
 		sentryVitePlugin({
