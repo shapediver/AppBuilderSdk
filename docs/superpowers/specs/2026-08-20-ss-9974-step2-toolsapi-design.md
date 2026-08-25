@@ -8,6 +8,8 @@ Tool **handlers and Zod I/O** already exist. Step 2 is a transport, not a second
 
 ## Context
 
+**AppBuilderShared source of truth:** `ShapeDiverCreateReactAppExample/src/shared`. AppBuilderAgent `packages/app-builder-shared` is a consumer gitlink only.
+
 | Repo | Role in Step 2 |
 |---|---|
 | AppBuilderShared (`src/shared`, branch `task/SS-9974`) | **Implementation.** Contract, factory, connector, hook. |

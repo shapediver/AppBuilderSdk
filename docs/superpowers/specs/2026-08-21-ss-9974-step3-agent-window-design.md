@@ -8,6 +8,8 @@ Without App Builder `window.open` plus an agent client on `window.opener`, there
 
 ## Context
 
+**AppBuilderShared source of truth:** `ShapeDiverCreateReactAppExample/src/shared`. AppBuilderAgent `packages/app-builder-shared` only consumes a gitlink.
+
 | Repo | Role in Step 3 |
 |---|---|
 | AppBuilderShared (`src/shared`) | Small hook-up only: pass peer `Window`. Do not add LangChain. Do not move handlers. |

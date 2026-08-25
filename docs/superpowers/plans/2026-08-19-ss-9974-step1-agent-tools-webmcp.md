@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-08-19-ss-9974-step1-agent-tools-webmcp-design.md`
 
+**AppBuilderShared source of truth:** `ShapeDiverCreateReactAppExample/src/shared`. Do not author Shared in AppBuilderAgent `packages/app-builder-shared`.
+
 ## Global Constraints
 
 - Implement in AppBuilderShared (`src/shared`), branch from **`task/SS-9973`** (agent schema PR). Do not confuse that branch name with SS-9974.

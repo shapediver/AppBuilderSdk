@@ -13,6 +13,8 @@ WebMCP is beta: breaking the old list-filter input contract is acceptable.
 
 ## Context
 
+**AppBuilderShared source of truth:** `ShapeDiverCreateReactAppExample/src/shared` (not AppBuilderAgent `packages/app-builder-shared`). Author Shared on that checkout; Agents only bumps a gitlink.
+
 | Repo | Role in Step 1 |
 |---|---|
 | AppBuilderShared (`src/shared`, branch `task/SS-9973`) | **Implementation.** Schema `IAppBuilderAgent` already lives here. Do not confuse this branch name with SS-9974. |
