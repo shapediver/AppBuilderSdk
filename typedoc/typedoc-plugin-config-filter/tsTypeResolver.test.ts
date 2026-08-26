@@ -543,4 +543,34 @@ describe("createTsTypeResolver", () => {
 			},
 		});
 	});
+
+	it("resolves InteractionEffect union including outline and pulse", () => {
+		const expanded = resolver.tryResolveTypeDocNode({
+			type: "reference",
+			name: "InteractionEffect",
+			_target: {
+				packageName: "@shapediver/viewer.shared.types",
+				packagePath:
+					"dist/interfaces/parameter/IInteractionParameterSettings.d.ts",
+				qualifiedName: "InteractionEffect",
+			},
+		});
+		const serialized = JSON.stringify(expanded);
+		expect(serialized).toContain("outline");
+		expect(serialized).toContain("pulse");
+	});
+
+	it("resolves ISelectionParameterProps including inherited activeMode", () => {
+		const expanded = resolver.tryResolveLocalTypeName(
+			"ISelectionParameterProps",
+		);
+		expect(expanded).toHaveProperty("properties");
+		const props = (
+			expanded as {properties: Record<string, unknown>}
+		).properties;
+		expect(props).toHaveProperty("activeMode");
+		expect(props).toHaveProperty("autoClear");
+		expect(props).toHaveProperty("presentation");
+		expect(props).toHaveProperty("selectionColor");
+	});
 });

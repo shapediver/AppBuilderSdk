@@ -283,10 +283,97 @@ describe("collectDocFlatProperties", () => {
 		expect(props[0].type).toEqual({
 			$ref: `${DEFINITIONS_REF_PREFIX}InteractionEffect`,
 		});
-		expect(definitionsContext.definitions.InteractionEffect).toEqual({
-			type: "unknown",
-			name: "InteractionEffect",
-		});
+		const serialized = JSON.stringify(
+			definitionsContext.definitions.InteractionEffect,
+		);
+		expect(serialized).toContain("outline");
+		expect(serialized).toContain("pulse");
+	});
+
+	it("merges own children with extendedTypes heritage", () => {
+		const definitionsContext = createTestDefinitionsContext();
+		const interaction = {
+			name: "IInteractionParameterProps",
+			children: [
+				{
+					name: "activeMode",
+					type: {type: "intrinsic", name: "string"},
+					comment: {summary: []},
+				},
+				{
+					name: "autoClear",
+					type: {type: "intrinsic", name: "boolean"},
+					comment: {summary: []},
+				},
+			],
+		};
+		const selection = {
+			name: "ISelectionParameterProps",
+			children: [
+				{
+					name: "selectionColor",
+					type: {type: "intrinsic", name: "string"},
+					comment: {summary: []},
+				},
+			],
+			extendedTypes: [
+				{
+					type: "reference",
+					name: "IInteractionParameterProps",
+					reflection: interaction,
+				},
+			],
+		};
+		const reflection = {
+			name: "ParameterSelectionComponentThemeDefaultProps",
+			children: [],
+			extendedTypes: [
+				{
+					type: "reference",
+					name: "ISelectionParameterProps",
+					reflection: selection,
+				},
+			],
+		};
+		const props = collectDocFlatProperties(
+			reflection,
+			getText,
+			processTagValue,
+			definitionsContext,
+		);
+		expect(props.map((prop) => prop.name).sort()).toEqual([
+			"activeMode",
+			"autoClear",
+			"selectionColor",
+		]);
+	});
+
+	it("resolves ISelectionParameterProps heritage via ts fallback", () => {
+		const definitionsContext = createTestDefinitionsContext();
+		const reflection = {
+			name: "ParameterSelectionComponentThemeDefaultProps",
+			children: [],
+			extendedTypes: [
+				{
+					type: "reference",
+					name: "ISelectionParameterProps",
+				},
+			],
+		};
+		const props = collectDocFlatProperties(
+			reflection,
+			getText,
+			processTagValue,
+			definitionsContext,
+		);
+		expect(props.map((prop) => prop.name)).toEqual(
+			expect.arrayContaining([
+				"activeMode",
+				"autoClear",
+				"presentation",
+				"selectionColor",
+			]),
+		);
 	});
 });
 

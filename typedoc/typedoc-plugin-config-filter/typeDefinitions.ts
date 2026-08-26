@@ -994,6 +994,10 @@ export function createDefinitionsContext(
 				return resolved;
 			}
 		}
+		if (tsResolver && reflection.name) {
+			const local = tsResolver.tryResolveLocalTypeName(reflection.name);
+			if (local) return local;
+		}
 		return {type: "unknown", name: reflection.name ?? "unknown"};
 	}
 

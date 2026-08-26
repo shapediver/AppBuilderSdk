@@ -704,6 +704,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		if (aliasName && TYPE_DENYLIST_DOC_LINKS[aliasName]) {
 			return denylistedTypeSchema(aliasName)!;
 		}
+		if (aliasName === "IMaterialStandardDataPropertiesDefinition") {
+			return {type: "unknown", name: aliasName};
+		}
 		if (aliasName) {
 			const aliasRef = resolveDocRefForTypeName(projectRoot, aliasName);
 			if (aliasRef) return aliasRef;
@@ -1170,6 +1173,9 @@ export function createTsTypeResolver(projectRoot: string) {
 			};
 		}
 		if (!Object.keys(properties).length) {
+			if ("oneOf" in inlineSchema || isPrimitiveSchema(inlineSchema)) {
+				return inlineSchema;
+			}
 			return undefined;
 		}
 		const propCount = Object.keys(properties).length;
@@ -1386,6 +1392,30 @@ export function createTsTypeResolver(projectRoot: string) {
 		ViewportIconButtonThemeStyleProps: [
 			"src/shared/entities/viewport/ui/ViewportIconButton.tsx",
 		],
+		InteractionEffect: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/parameter/IInteractionParameterSettings.d.ts",
+		],
+		IInteractionParameterProps: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/parameter/IInteractionParameterSettings.d.ts",
+		],
+		ISelectionParameterProps: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/parameter/ISelectionParameterSettings.d.ts",
+		],
+		IDraggingParameterProps: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/parameter/IDraggingParameterSettings.d.ts",
+		],
+		IGumballTransformParameterProps: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/parameter/IGumballTransformParameterSettings.d.ts",
+		],
+		IRectangleTransformParameterProps: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/parameter/IRectangleTransformParameterSettings.d.ts",
+		],
+		IPulseEffectDefinition: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/renderingEngine/IPulseEffectDefinition.d.ts",
+		],
+		IOutlineEffectDefinition: [
+			"node_modules/@shapediver/viewer.shared.types/dist/interfaces/renderingEngine/IPostProcessingEffectDefinitions.d.ts",
+		],
 	};
 
 	function definitionFromIconPropsIntersection(
@@ -1435,6 +1465,9 @@ export function createTsTypeResolver(projectRoot: string) {
 		checker: ts.TypeChecker,
 		type: ts.Type,
 	): DocTypeDefinition | undefined {
+		if (type.isUnion()) {
+			return deepSimplifySchema(schemaFromTsType(checker, type, 0));
+		}
 		if (type.isIntersection()) {
 			const iconProps = definitionFromIconPropsIntersection(
 				checker,
@@ -1598,10 +1631,15 @@ export function createTsTypeResolver(projectRoot: string) {
 		if (!resolved) return undefined;
 
 		if (ts.isInterfaceDeclaration(resolved.node)) {
-			const properties = propertiesFromDeclarationMembers(
-				resolved.checker,
-				resolved.node,
-			);
+			const properties = resolved.node.heritageClauses?.length
+				? propertiesFromTsType(
+						resolved.checker,
+						resolved.checker.getTypeAtLocation(resolved.node),
+					)
+				: propertiesFromDeclarationMembers(
+						resolved.checker,
+						resolved.node,
+					);
 			if (!Object.keys(properties).length) return undefined;
 			return deepSimplifySchema({properties});
 		}

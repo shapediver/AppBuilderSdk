@@ -5,6 +5,7 @@ import {
 import type {DefinitionsContext, DocTypeSchema} from "./typeDefinitions.ts";
 import {
 	createDefinitionsContext,
+	DEFINITIONS_REF_PREFIX,
 	entryPropertiesFromDefinition,
 	postProcessDefinitions,
 	postProcessFlatEntries,
@@ -244,6 +245,9 @@ function collectPropertiesFromMirrorDocKey(docKey, definitionsContext) {
  * @param {DefinitionsContext} definitionsContext
  * @returns {DocProperty[]}
  */
+const VIEWER_INTERACTION_PROPS_NAME =
+	/^(ISelection|IDragging|IGumballTransform|IRectangleTransform|IInteraction)ParameterProps$/;
+
 export function collectDocFlatProperties(
 	reflection,
 	getText,
@@ -253,25 +257,6 @@ export function collectDocFlatProperties(
 	const mapChild = (child) =>
 		mapReflectionChild(child, getText, processTagValue, definitionsContext);
 
-	if (reflection.children?.length) {
-		return reflection.children.map(mapChild);
-	}
-
-	if (!reflection.type) {
-		return [];
-	}
-
-	const mirrorDocKey = detectMirroredMantinePropsDocKey(reflection.type);
-	if (mirrorDocKey) {
-		const mirrorProps = collectPropertiesFromMirrorDocKey(
-			mirrorDocKey,
-			definitionsContext,
-		);
-		if (mirrorProps.length) {
-			return mirrorProps;
-		}
-	}
-
 	/** @type {Map<string, DocProperty>} */
 	const merged = new Map();
 
@@ -279,6 +264,22 @@ export function collectDocFlatProperties(
 		if (!children?.length) return;
 		for (const child of children) {
 			merged.set(child.name, mapChild(child));
+		}
+	}
+
+	function mergeResolvedSchema(resolved) {
+		let definition = resolved;
+		if (resolved?.$ref && !resolved.properties) {
+			const defName = resolved.$ref.startsWith(DEFINITIONS_REF_PREFIX)
+				? resolved.$ref.slice(DEFINITIONS_REF_PREFIX.length)
+				: undefined;
+			definition = defName
+				? definitionsContext.definitions[defName]
+				: undefined;
+		}
+		if (!definition) return;
+		for (const prop of entryPropertiesFromDefinition(definition)) {
+			merged.set(prop.name, prop);
 		}
 	}
 
@@ -313,6 +314,14 @@ export function collectDocFlatProperties(
 			const refRefl = type.reflection;
 			if (refRefl?.children?.length) {
 				mergeChildren(refRefl.children);
+			}
+			for (const ext of refRefl?.extendedTypes ?? []) {
+				walk(ext, depth + 1);
+			}
+			if (refRefl?.type) {
+				walk(refRefl.type, depth + 1);
+			}
+			if (refRefl?.children?.length || refRefl?.extendedTypes?.length) {
 				return;
 			}
 			const refName = type.name ?? type.reflection?.name ?? "";
@@ -320,35 +329,36 @@ export function collectDocFlatProperties(
 				/^Mantine[A-Z]\w*Props$/.test(refName) ||
 				refName === "Pick" ||
 				refName === "Omit" ||
-				refName === "Partial";
+				refName === "Partial" ||
+				VIEWER_INTERACTION_PROPS_NAME.test(refName);
 			if (!needsTsFallback) {
 				return;
 			}
-			const resolved = definitionsContext.resolveType(type);
-			if (resolved && "properties" in resolved && resolved.properties) {
-				for (const [propName, propSchema] of Object.entries(
-					resolved.properties,
-				)) {
-					const {
-						description,
-						default: defaultValue,
-						...typeSchema
-					} = propSchema;
-					const prop = {
-						name: propName,
-						description: description ?? "",
-						type: typeSchema,
-					};
-					if (defaultValue !== undefined) {
-						prop.default = defaultValue;
-					}
-					merged.set(propName, prop);
-				}
-			}
+			mergeResolvedSchema(definitionsContext.resolveType(type));
 			return;
 		}
 	}
 
-	walk(reflection.type, 0);
+	if (reflection.children?.length) {
+		mergeChildren(reflection.children);
+	}
+	for (const ext of reflection.extendedTypes ?? []) {
+		walk(ext, 0);
+	}
+
+	if (reflection.type) {
+		const mirrorDocKey = detectMirroredMantinePropsDocKey(reflection.type);
+		if (mirrorDocKey) {
+			const mirrorProps = collectPropertiesFromMirrorDocKey(
+				mirrorDocKey,
+				definitionsContext,
+			);
+			if (mirrorProps.length) {
+				return mirrorProps;
+			}
+		}
+		walk(reflection.type, 0);
+	}
+
 	return Array.from(merged.values());
 }
