@@ -686,7 +686,12 @@ export function createDefinitionsContext(
 			return canonicalRef;
 		}
 		if ("$ref" in built && !("properties" in built)) {
-			delete definitions[key];
+			const refName = (built as {$ref: string}).$ref.slice(
+				DEFINITIONS_REF_PREFIX.length,
+			);
+			if (refName !== key) {
+				delete definitions[key];
+			}
 			return built as {$ref: string};
 		}
 		if (!("$ref" in built) || isResolvedDefinition(built)) {

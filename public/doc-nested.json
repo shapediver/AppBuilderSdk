@@ -617,6 +617,20 @@
         }
       }
     },
+    "ParameterStringInputMode": {
+      "properties": {
+        "Debounce": {
+          "type": "string",
+          "const": "debounce",
+          "description": ""
+        },
+        "Validate": {
+          "type": "string",
+          "const": "validate",
+          "description": ""
+        }
+      }
+    },
     "FlexProps": {
       "properties": {
         "justify": {
@@ -699,6 +713,109 @@
                   ]
                 }
               }
+            }
+          ]
+        }
+      }
+    },
+    "SelectCarouselStyleProps": {
+      "properties": {
+        "emblaOptions": {
+          "type": "unknown",
+          "name": "EmblaOptionsType",
+          "description": "Options passed down to embla carousel"
+        },
+        "controlSize": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "controlsOffset": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl"
+              ]
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "slideSize": {
+          "$ref": "#/definitions/MantineResponsiveCssSize",
+          "description": "Controls slide width based on viewport width"
+        },
+        "slideGap": {
+          "$ref": "#/definitions/MantineResponsiveCssSize",
+          "description": "Key of theme.spacing or number to set gap between slides"
+        },
+        "orientation": {
+          "type": "string",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ],
+          "description": "Carousel orientation"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "media",
+            "container"
+          ],
+          "description": "Determines type of queries used for responsive styles"
+        },
+        "height": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "includeGapInSize": {
+          "type": "boolean",
+          "description": "Determines whether gap between slides should be treated as part of the slide size"
+        },
+        "withControls": {
+          "type": "boolean",
+          "description": "Determines whether next/previous controls should be displayed"
+        },
+        "withIndicators": {
+          "type": "boolean",
+          "description": "Determines whether indicators should be displayed"
+        },
+        "withKeyboardEvents": {
+          "type": "boolean",
+          "description": "Determines whether arrow key should switch slides"
+        },
+        "draggable": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            },
+            {
+              "type": "boolean"
             }
           ]
         }
@@ -1039,6 +1156,80 @@
         },
         {
           "$ref": "#/definitions/T"
+        }
+      ]
+    },
+    "IAppBuilderImageRef": {
+      "properties": {
+        "export": {
+          "$ref": "#/definitions/Pick_IAppBuilderExportRef",
+          "description": "Optional reference to export which provides the image."
+        },
+        "href": {
+          "type": "string",
+          "description": "URL to image. Can be a data URL including a base 64 encoded image. Takes precedence over export reference."
+        }
+      }
+    },
+    "Pick_IAppBuilderExportRef": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Id or name or displayname of the referenced export (in that order)."
+        },
+        "sessionId": {
+          "type": "string",
+          "description": "Optional id of the session the referenced parameter belongs to."
+        }
+      }
+    },
+    "IAppBuilderParameterValueSourcePropsScreenshot": {
+      "properties": {
+        "contentType": {
+          "type": "string",
+          "description": "Optional type of the screenshot, defaults to \"image/png\"."
+        },
+        "quality": {
+          "type": "number",
+          "description": "Optional quality of the screenshot, between 0 and 1, defaults to 1."
+        },
+        "resolution": {
+          "$ref": "#/definitions/width_number_height_number",
+          "description": "Optional resolution of the screenshot, defaults to the current resolution of the viewport.\r\nTODO SS-8346 define type"
+        },
+        "camera": {
+          "$ref": "#/definitions/Partial_OrthographicCameraProperties_or_Partial_PerspectiveCameraProperties",
+          "description": "Optional camera settings to be used for the screenshot. Defaults to the current camera of the viewport.\r\nIf a \"name\" is provided, the settings of the camera with that name are used as a base."
+        }
+      }
+    },
+    "width_number_height_number": {
+      "properties": {
+        "width": {
+          "type": "number",
+          "description": ""
+        },
+        "height": {
+          "type": "number",
+          "description": ""
+        }
+      }
+    },
+    "Partial_OrthographicCameraProperties": {
+      "type": "unknown",
+      "name": "Partial<OrthographicCameraProperties>"
+    },
+    "Partial_PerspectiveCameraProperties": {
+      "type": "unknown",
+      "name": "Partial<PerspectiveCameraProperties>"
+    },
+    "Partial_OrthographicCameraProperties_or_Partial_PerspectiveCameraProperties": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/Partial_OrthographicCameraProperties"
+        },
+        {
+          "$ref": "#/definitions/Partial_PerspectiveCameraProperties"
         }
       ]
     },
@@ -1812,15 +2003,11 @@
             },
             {
               "name": "mode",
-              "description": "When `\"debounce\"`, recompute after the user stops typing.\r\nWhen `\"validate\"`, recompute on blur (and Enter for single-line input).",
+              "description": "When ParameterStringInputMode.Debounce, recompute after the user stops typing.\r\nWhen ParameterStringInputMode.Validate, recompute on blur (and Enter for single-line input).",
               "type": {
-                "type": "string",
-                "enum": [
-                  "debounce",
-                  "validate"
-                ]
+                "$ref": "#/definitions/ParameterStringInputMode"
               },
-              "default": "debounce"
+              "default": "ParameterStringInputMode.Debounce"
             }
           ],
           "category": "entity"
@@ -4485,6 +4672,75 @@
           ],
           "category": "widget"
         }
+      }
+    }
+  },
+  "actions": {
+    "createModelState": {
+      "props": {
+        "properties": [
+          {
+            "name": "includeImage",
+            "description": "Optional flag to control whether an image of the scene shall be\r\nincluded with the model state.",
+            "type": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "image",
+            "description": "Optional image to be included when creating the model state for the line item.\r\nIn case no image is provided here, a screenshot of the model will be used\r\nif",
+            "type": {
+              "$ref": "#/definitions/IAppBuilderImageRef"
+            }
+          },
+          {
+            "name": "includeGltf",
+            "description": "Optional flag to control whether a glTF export of the scene shall be\r\nincluded with the model state.",
+            "type": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "parameterNamesToInclude",
+            "description": "Names of parameters to include in the model state.",
+            "type": {
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "parameterNamesToExclude",
+            "description": "Names of parameters to exclude from the model state.",
+            "type": {
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "screenshotProps",
+            "description": "Optional screenshot settings applied when capturing the preview image\r\nautomatically (i.e. when includeImage is true and no explicit\r\nimage is provided).",
+            "type": {
+              "$ref": "#/definitions/IAppBuilderParameterValueSourcePropsScreenshot"
+            }
+          },
+          {
+            "name": "successMessage",
+            "description": "Optional success message shown after a model state has been created.\r\nSupports the optional placeholder `{modelStateId}`.",
+            "type": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "errorMessage",
+            "description": "Optional error message shown when creating a model state fails.\r\nSupports the optional placeholder `{modelStateId}` when available.",
+            "type": {
+              "type": "string"
+            }
+          }
+        ],
+        "category": "feature"
       }
     }
   }

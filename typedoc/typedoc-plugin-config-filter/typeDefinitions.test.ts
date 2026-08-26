@@ -84,6 +84,43 @@ describe("createDefinitionsContext", () => {
 			},
 		});
 	});
+
+	it("keeps a local interface definition when a property type $refs it", () => {
+		const screenshotReflection = {
+			name: "IAppBuilderParameterValueSourcePropsScreenshot",
+			children: [
+				{
+					name: "quality",
+					type: {type: "intrinsic", name: "number"},
+					comment: {summary: [{text: "JPEG quality 0–1"}]},
+				},
+				{
+					name: "contentType",
+					type: {type: "intrinsic", name: "string"},
+				},
+			],
+		};
+		const ctx = createDefinitionsContext({}, getText, processTagValue);
+		const schema = ctx.resolveType({
+			type: "reference",
+			name: "IAppBuilderParameterValueSourcePropsScreenshot",
+			reflection: screenshotReflection,
+		});
+		expect(schema).toEqual({
+			$ref: `${DEFINITIONS_REF_PREFIX}IAppBuilderParameterValueSourcePropsScreenshot`,
+		});
+		expect(
+			ctx.definitions.IAppBuilderParameterValueSourcePropsScreenshot,
+		).toEqual({
+			properties: {
+				quality: {
+					type: "number",
+					description: "JPEG quality 0–1",
+				},
+				contentType: {type: "string", description: ""},
+			},
+		});
+	});
 });
 
 describe("buildIntersectionDefinitionName", () => {
