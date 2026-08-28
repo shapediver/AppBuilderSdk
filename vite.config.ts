@@ -1,24 +1,74 @@
 import {sentryVitePlugin} from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
+import type {IncomingMessage, ServerResponse} from "node:http";
 import path, {resolve} from "path";
-import {defineConfig, loadEnv} from "vite";
+import {defineConfig, loadEnv, type Plugin} from "vite";
 import {analyzer} from "vite-bundle-analyzer";
 import svgrPlugin from "vite-plugin-svgr";
 import {CONFIG} from "./sentryconfig";
+import {
+	agentUrlFromRequestUrl,
+	crossOriginOpenerPolicy,
+} from "./src/shared/features/agent-tools/lib/crossOriginOpenerPolicy";
 
 const isDev = process.env.NODE_ENV === "development";
 
-function getWebmcpResponseHeaders(mode: string): Record<string, string> {
+function getWebmcpResponseHeaders(
+	mode: string,
+	requestUrl?: string,
+): Record<string, string> {
 	const env = loadEnv(mode, process.cwd(), "VITE_");
 	const webmcpOriginTrialToken = env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN?.trim();
 
 	return {
-		"Cross-Origin-Opener-Policy": "same-origin",
+		"Cross-Origin-Opener-Policy": crossOriginOpenerPolicy({
+			queryAgentUrl: agentUrlFromRequestUrl(requestUrl),
+			envAgentUrl: env.VITE_AGENT_URL,
+		}),
 		"Cross-Origin-Embedder-Policy": "credentialless",
 		...(webmcpOriginTrialToken
 			? {"Origin-Trial": webmcpOriginTrialToken}
 			: {}),
+	};
+}
+
+function applyCoopFromRequest(
+	req: IncomingMessage & {originalUrl?: string},
+	res: ServerResponse,
+	mode: string,
+) {
+	const coop = getWebmcpResponseHeaders(mode, req.originalUrl ?? req.url)[
+		"Cross-Origin-Opener-Policy"
+	];
+	const originalSetHeader = res.setHeader.bind(res);
+	res.setHeader = ((
+		name: string,
+		value: number | string | readonly string[],
+	) => {
+		if (String(name).toLowerCase() === "cross-origin-opener-policy") {
+			return originalSetHeader(name, coop);
+		}
+		return originalSetHeader(name, value);
+	}) as typeof res.setHeader;
+	originalSetHeader("Cross-Origin-Opener-Policy", coop);
+}
+
+function agentUrlCoopPlugin(mode: string): Plugin {
+	return {
+		name: "agent-url-coop",
+		configureServer(server) {
+			server.middlewares.use((req, res, next) => {
+				applyCoopFromRequest(req, res, mode);
+				next();
+			});
+		},
+		configurePreviewServer(server) {
+			server.middlewares.use((req, res, next) => {
+				applyCoopFromRequest(req, res, mode);
+				next();
+			});
+		},
 	};
 }
 
@@ -93,7 +143,7 @@ export default defineConfig(async ({mode}) => {
 	}
 
 	return {
-		plugins,
+		plugins: [...plugins, agentUrlCoopPlugin(mode)],
 		server: {
 			open: true,
 			port: 3000,
