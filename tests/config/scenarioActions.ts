@@ -401,6 +401,28 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await takeSnapshot(page, `${slug}-done`);
 		},
 	},
+
+	{
+		slug: "selectioninput-basic-alwaysactive-11-2",
+		actions: async (page, slug) => {
+			// click on an object
+			const pos = await viewportCoords(page, 0.701, 0.56);
+			await page.mouse.click(pos.x, pos.y);
+
+			await takeSnapshot(page, `${slug}-clicked`);
+
+			// change a slider maximumSelection
+			const slider = getParameterElement(
+				page,
+				"maximumSelection",
+			).getByRole("slider");
+			await waitForModelRecomputed(page, async () => {
+				await slider.fill("2");
+				await slider.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-slider-changed`);
+		},
+	},
 ];
 
 /** Fast lookup by slug */
