@@ -412,14 +412,15 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await takeSnapshot(page, `${slug}-clicked`);
 
 			// change a slider maximumSelection
-			const slider = getParameterElement(
-				page,
-				"maximumSelection",
-			).getByRole("slider");
 			await waitForModelRecomputed(page, async () => {
-				await slider.fill("2");
-				await slider.press("Enter");
+				const el = await getParameterElement(
+					page,
+					"maximumSelection",
+				).getByRole("textbox");
+				el.fill("2");
+				el.press("Enter");
 			});
+
 			await takeSnapshot(page, `${slug}-slider-changed`);
 		},
 	},
