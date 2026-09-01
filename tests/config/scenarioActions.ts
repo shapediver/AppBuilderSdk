@@ -401,6 +401,60 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await takeSnapshot(page, `${slug}-done`);
 		},
 	},
+
+	{
+		slug: "textinput-resetvalue-2",
+		actions: async (page, slug) => {
+			const input = getParameterElement(page, "textInput").getByRole(
+				"textbox",
+			);
+			await waitForModelRecomputed(page, async () => {
+				await input.fill("New Value");
+				await input.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-newValue`);
+		},
+	},
+
+	{
+		slug: "selectioninput-resetvalue-6",
+		actions: async (page, slug) => {
+			const pos = await viewportCoords(page, 0.64, 0.554);
+			await page.mouse.click(pos.x, pos.y);
+			await takeSnapshot(page, `${slug}-select`);
+
+			await waitForModelRecomputed(page, async () => {
+				// change one of the color params
+				const colorParam = getParameterElement(
+					page,
+					"Box Color",
+				).getByRole("textbox");
+				await colorParam.fill("#ff0000");
+				await colorParam.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-changedColor`);
+		},
+	},
+
+	{
+		slug: "selectioninput-resetvalue-dynamic-3",
+		actions: async (page, slug) => {
+			const pos = await viewportCoords(page, 0.64, 0.554);
+			await page.mouse.click(pos.x, pos.y);
+			await takeSnapshot(page, `${slug}-select`);
+
+			await waitForModelRecomputed(page, async () => {
+				// change one of the color params
+				const colorParam = getParameterElement(
+					page,
+					"Box Color",
+				).getByRole("textbox");
+				await colorParam.fill("#ff0000");
+				await colorParam.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-changedColor`);
+		},
+	},
 ];
 
 /** Fast lookup by slug */
