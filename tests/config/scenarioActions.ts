@@ -403,14 +403,14 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	},
 
 	{
-		slug: "textinput-resetvalue-2",
+		slug: "textinput-resetvalue-3",
 		actions: async (page, slug) => {
-			const input = getParameterElement(page, "textInput").getByRole(
+			const textarea = getParameterElement(page, "textInput").getByRole(
 				"textbox",
 			);
 			await waitForModelRecomputed(page, async () => {
-				await input.fill("New Value");
-				await input.press("Enter");
+				await textarea.fill("Default\nExample\nTest");
+				await textarea.press("Tab");
 			});
 			await takeSnapshot(page, `${slug}-newValue`);
 		},
@@ -420,7 +420,9 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "selectioninput-resetvalue-6",
 		actions: async (page, slug) => {
 			const pos = await viewportCoords(page, 0.64, 0.554);
-			await page.mouse.click(pos.x, pos.y);
+			await waitForModelRecomputed(page, async () => {
+				page.mouse.click(pos.x, pos.y);
+			});
 			await takeSnapshot(page, `${slug}-select`);
 
 			await waitForModelRecomputed(page, async () => {
@@ -440,7 +442,9 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "selectioninput-resetvalue-dynamic-3",
 		actions: async (page, slug) => {
 			const pos = await viewportCoords(page, 0.64, 0.554);
-			await page.mouse.click(pos.x, pos.y);
+			await waitForModelRecomputed(page, async () => {
+				page.mouse.click(pos.x, pos.y);
+			});
 			await takeSnapshot(page, `${slug}-select`);
 
 			await waitForModelRecomputed(page, async () => {
