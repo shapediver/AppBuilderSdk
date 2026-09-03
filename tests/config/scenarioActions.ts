@@ -401,6 +401,81 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await takeSnapshot(page, `${slug}-done`);
 		},
 	},
+
+	{
+		// The app has three unlabeled tabs; Playwright indices are zero-based.
+		slug: "7a-attributevisualization-3-2",
+		actions: async (page, slug) => {
+			// open the attributes tab (fourth tab in this model)
+			const fourthTab = page.getByRole("tab").nth(3);
+			await fourthTab.click();
+			await expect(fourthTab).toHaveAttribute("aria-selected", "true");
+
+			await takeSnapshot(page, `${slug}-attributes-visible`);
+
+			// click on one of the attributes
+			const pos = await viewportCoords(page, 0.872, 0.545);
+			await page.mouse.click(pos.x, pos.y);
+			await takeSnapshot(page, `${slug}-attribute-clicked`);
+		},
+	},
+	{
+		slug: "textinput-resetvalue-3",
+		actions: async (page, slug) => {
+			const textarea = getParameterElement(page, "textInput").getByRole(
+				"textbox",
+			);
+			await waitForModelRecomputed(page, async () => {
+				await textarea.fill("Default\nExample\nTest");
+				await textarea.press("Tab");
+			});
+			await takeSnapshot(page, `${slug}-newValue`);
+		},
+	},
+
+	{
+		slug: "selectioninput-resetvalue-6",
+		actions: async (page, slug) => {
+			const pos = await viewportCoords(page, 0.64, 0.554);
+			await waitForModelRecomputed(page, async () => {
+				page.mouse.click(pos.x, pos.y);
+			});
+			await takeSnapshot(page, `${slug}-select`);
+
+			await waitForModelRecomputed(page, async () => {
+				// change one of the color params
+				const colorParam = getParameterElement(
+					page,
+					"Box Color",
+				).getByRole("textbox");
+				await colorParam.fill("#ff0000");
+				await colorParam.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-changedColor`);
+		},
+	},
+
+	{
+		slug: "selectioninput-resetvalue-dynamic-3",
+		actions: async (page, slug) => {
+			const pos = await viewportCoords(page, 0.64, 0.554);
+			await waitForModelRecomputed(page, async () => {
+				page.mouse.click(pos.x, pos.y);
+			});
+			await takeSnapshot(page, `${slug}-select`);
+
+			await waitForModelRecomputed(page, async () => {
+				// change one of the color params
+				const colorParam = getParameterElement(
+					page,
+					"Box Color",
+				).getByRole("textbox");
+				await colorParam.fill("#ff0000");
+				await colorParam.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-changedColor`);
+		},
+	},
 ];
 
 /** Fast lookup by slug */
