@@ -1801,6 +1801,26 @@
               "type": {
                 "$ref": "#/definitions/Record_string_IStringParameterSelectSettings"
               }
+            },
+            {
+              "name": "debounce",
+              "description": "Debounce delay in milliseconds before recomputing after text changes.\r\nUsed when `mode` is `\"debounce\"`.",
+              "type": {
+                "type": "number"
+              },
+              "default": "2000"
+            },
+            {
+              "name": "mode",
+              "description": "When `\"debounce\"`, recompute after the user stops typing.\r\nWhen `\"validate\"`, recompute on blur (and Enter for single-line input).",
+              "type": {
+                "type": "string",
+                "enum": [
+                  "debounce",
+                  "validate"
+                ]
+              },
+              "default": "debounce"
             }
           ],
           "category": "entity"
@@ -2263,7 +2283,7 @@
             },
             {
               "name": "loadOutputs",
-              "description": "Option to load the outputs, or not load them until the first call of ISession.customize. (default: true)",
+              "description": "Option to load the outputs, or not load them until the first call of `ISessionApi.customize`. (default: true)",
               "type": {
                 "type": "boolean"
               }
@@ -2277,7 +2297,7 @@
             },
             {
               "name": "excludeViewports",
-              "description": "Option to exclude some viewports from the start. Can be accessed via ISession.excludeViewports.",
+              "description": "Option to exclude some viewports from the start. Can be accessed via `ISessionApi.excludeViewports`.",
               "type": {
                 "items": {
                   "type": "string"
@@ -2664,7 +2684,7 @@
             },
             {
               "name": "sessionSettingsId",
-              "description": "The id of the session of which the settings should be used. Only works when sessionSettingsMode is set to SESSION_SETTINGS_MODE.SESSION.",
+              "description": "The id of the session of which the settings should be used. Only works when `sessionSettingsMode` is set to `SESSION_SETTINGS_MODE.SESSION`.",
               "type": {
                 "type": "string"
               }
@@ -2685,7 +2705,7 @@
             },
             {
               "name": "visibilitySessionIds",
-              "description": "The ids of the sessions that should be displayed in the viewport. This only is considered if the visibility is set to VISIBILITY_MODE.SESSIONS.\nIt's recommended that with this workflow, the sessionSettingsMode is set to SESSION_SETTINGS_MODE.SESSION and a sessionSettingsId is provided.",
+              "description": "The ids of the sessions that should be displayed in the viewport. This only is considered if the `visibility` is set to `VISIBILITY_MODE.SESSIONS`.\nIt's recommended that with this workflow, the `sessionSettingsMode` is set to `SESSION_SETTINGS_MODE.SESSION` and a `sessionSettingsId` is provided.",
               "type": {
                 "items": {
                   "type": "string"
@@ -2980,6 +3000,13 @@
                 "type": "string"
               },
               "default": "red"
+            },
+            {
+              "name": "infoColor",
+              "description": "Optional color to use for info notifications.",
+              "type": {
+                "type": "string"
+              }
             },
             {
               "name": "autoClose",

@@ -1,0 +1,177 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
+			"hideDefaultToolbar": false
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "top",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "## Container open / close actions\nThis container stays open so it can control the other examples."
+						}
+					},
+					{
+						"type": "actions",
+						"props": {
+							"actions": [
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Open left container",
+										"container": {
+											"name": "left"
+										},
+										"mode": "open"
+									}
+								},
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Close left container",
+										"container": {
+											"name": "left"
+										},
+										"mode": "close"
+									}
+								},
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Open 2D anchor",
+										"container": {
+											"name": "anchor2d",
+											"props": {
+												"id": "info-anchor",
+												"location": [
+													24,
+													120
+												],
+												"justification": "TL"
+											}
+										},
+										"mode": "open"
+									}
+								},
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Close 2D anchor",
+										"container": {
+											"name": "anchor2d",
+											"props": {
+												"id": "info-anchor",
+												"location": [
+													24,
+													120
+												],
+												"justification": "TL"
+											}
+										},
+										"mode": "close"
+									}
+								},
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Open toolbar",
+										"container": {
+											"name": "toolbar",
+											"props": {
+												"id": "container-demo-toolbar"
+											}
+										},
+										"mode": "open"
+									}
+								},
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Close toolbar",
+										"container": {
+											"name": "toolbar",
+											"props": {
+												"id": "container-demo-toolbar"
+											}
+										},
+										"mode": "close"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Left container\nClose and reopen me from the top controls."
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "info-anchor",
+					"location": [
+						24,
+						120
+					],
+					"justification": "TL",
+					"previewIcon": "tabler:info-circle"
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### 2D anchor\nOpen and close me from the top controls."
+						}
+					}
+				]
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "container-demo-toolbar",
+					"side": "bottom",
+					"align": "center"
+				},
+				"groups": [
+					[
+						{
+							"type": "action",
+							"label": "Toggle left",
+							"props": {
+								"definition": {
+									"type": "setContainerVisibility",
+									"props": {
+										"container": {
+											"name": "left"
+										},
+										"mode": "toggle"
+									}
+								}
+							}
+						}
+					]
+				]
+			}
+		]
+	}
+}
