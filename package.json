@@ -59,6 +59,7 @@
 		"prettier": "prettier --write ./src/ ./*.ts ./*.html",
 		"test": "jest --config jest.config.mjs",
 		"test-e2e": "playwright test",
+		"test-e2e-deploy": "tsx ./scripts/deploy-e2e.ts",
 		"test-e2e-ui": "playwright test --ui",
 		"test-e2e-update-snapshots": "playwright test --update-snapshots",
 		"pick-coords": "tsx ./scripts/pick-coords.ts",

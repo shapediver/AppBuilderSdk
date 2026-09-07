@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate-and-e2e:
+  validate-and-prepare:
     if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ubuntu-latest
     permissions:
@@ -121,8 +121,8 @@ jobs:
       - name: Run unit tests
         run: pnpm test
 
-      - name: Run Playwright E2E with explicit testing deploy
-        run: pnpm test-e2e
+      - name: Deploy E2E test build
+        run: pnpm test-e2e-deploy
         env:
           APPBUILDER_E2E_DEPLOY: "1"
           APPBUILDER_E2E_SKIP_INSTALL: "1"
@@ -152,8 +152,18 @@ jobs:
           compression-level: 0
           path: .github-artifacts/failure/
 
+  e2e:
+    needs: validate-and-prepare
+    uses: ./.github/workflows/playwright-shards.yml
+    with:
+      test_branch: testing/${{ github.ref_name }}
+      environment: development
+    secrets: inherit
+
   deploy:
-    needs: validate-and-e2e
+    needs:
+      - validate-and-prepare
+      - e2e
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -261,7 +271,8 @@ jobs:
 
   notify:
     needs:
-      - validate-and-e2e
+      - validate-and-prepare
+      - e2e
       - deploy
     if: always() && (github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]'))
     runs-on: ubuntu-latest
@@ -275,7 +286,8 @@ jobs:
         shell: bash
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          VALIDATE_RESULT: ${{ needs['validate-and-e2e'].result }}
+          VALIDATE_RESULT: ${{ needs['validate-and-prepare'].result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
           DEPLOY_RESULT: ${{ needs.deploy.result }}
           WORKFLOW: ${{ github.workflow }}
           BRANCH: ${{ github.ref_name }}
@@ -287,7 +299,7 @@ jobs:
             echo "SLACK_WEBHOOK_URL not configured; skipping Slack notification."
             exit 0
           fi
-          if [[ "${VALIDATE_RESULT}" == "success" && "${DEPLOY_RESULT}" == "success" ]]; then STATUS="success"; elif [[ "${VALIDATE_RESULT}" == "cancelled" || "${DEPLOY_RESULT}" == "cancelled" ]]; then STATUS="cancelled"; else STATUS="failure"; fi
+          if [[ "${VALIDATE_RESULT}" == "success" && "${E2E_RESULT}" == "success" && "${DEPLOY_RESULT}" == "success" ]]; then STATUS="success"; elif [[ "${VALIDATE_RESULT}" == "cancelled" || "${E2E_RESULT}" == "cancelled" || "${DEPLOY_RESULT}" == "cancelled" ]]; then STATUS="cancelled"; else STATUS="failure"; fi
           case "$STATUS" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Succeeded";; failure) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; esac
           SHORT_SHA="${SHA:0:7}"
           PAYLOAD="$(jq -cn --arg color "$COLOR" --arg emoji "$EMOJI" --arg statusLabel "$STATUS_LABEL" --arg workflow "$WORKFLOW" --arg branch "$BRANCH" --arg commitUrl "$COMMIT_URL" --arg shortSha "$SHORT_SHA" --arg runUrl "$RUN_URL" '{attachments:[{color:$color,blocks:[{type:"section",text:{type:"mrkdwn",text:($emoji + " *AppBuilder development deployment finished*")}},{type:"section",fields:[{type:"mrkdwn",text:("*Status:*\n" + $statusLabel)},{type:"mrkdwn",text:("*Workflow:*\n" + $workflow)},{type:"mrkdwn",text:("*Branch:*\n`" + $branch + "`")},{type:"mrkdwn",text:("*Commit:*\n<" + $commitUrl + "|`" + $shortSha + "`>")} ]},{type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"View Run"},url:$runUrl}]}]}]}')"

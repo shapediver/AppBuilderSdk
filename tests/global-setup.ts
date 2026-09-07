@@ -49,6 +49,11 @@ export default async function globalSetup() {
 			`(${publicLinks.length} public, ${testingAccountLinks.length} testing-account).`,
 	);
 
+	deployCurrentHead();
+}
+
+/** Deploy the current commit for E2E tests when the environment opts in. */
+export function deployCurrentHead() {
 	if (process.env.SKIP_DEPLOY === "1") {
 		console.log("[global-setup] SKIP_DEPLOY=1 — skipping deploy.");
 		return;
@@ -169,7 +174,9 @@ export default async function globalSetup() {
 		});
 
 		if (process.env.APPBUILDER_E2E_SKIP_INSTALL === "1" || isCi) {
-			console.log("[global-setup] Skipping dependency install in global setup.");
+			console.log(
+				"[global-setup] Skipping dependency install in global setup.",
+			);
 		} else {
 			// Install dependencies so the build uses the correct package versions for
 			// local legacy runs. CI installs dependencies in the workflow before tests.
