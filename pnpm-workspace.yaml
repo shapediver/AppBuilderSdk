@@ -12,3 +12,6 @@ onlyBuiltDependencies:
   - unrs-resolver
 minimumReleaseAgeExclude:
   - '@shapediver/*'
+peerDependencyRules:
+  allowedVersions:
+    eslint-plugin-react>eslint: '10'
