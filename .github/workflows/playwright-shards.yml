@@ -1,0 +1,113 @@
+name: Playwright shards
+
+on:
+  workflow_call:
+    inputs:
+      test_branch:
+        description: Deployed AppBuilder branch/version to test
+        required: true
+        type: string
+      environment:
+        description: GitHub environment containing the test credentials
+        required: true
+        type: string
+      checkout_ref:
+        description: Optional Git ref to check out
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: Playwright (${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: 1/4
+            shard_name: 1-of-4
+          - shard: 2/4
+            shard_name: 2-of-4
+          - shard: 3/4
+            shard_name: 3-of-4
+          - shard: 4/4
+            shard_name: 4-of-4
+
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.BOT_APP_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          permission-contents: read
+
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          ref: ${{ inputs.checkout_ref }}
+          submodules: recursive
+          persist-credentials: false
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+        with:
+          version: 11.3.0
+
+      - name: Setup Node.js for GitHub Packages
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.12.0
+          cache: pnpm
+          scope: "@shapediver"
+          registry-url: https://npm.pkg.github.com
+
+      - name: Configure GitHub Packages registry
+        run: |
+          pnpm config set @shapediver:registry https://npm.pkg.github.com
+          pnpm config set //npm.pkg.github.com/:_authToken "${NODE_AUTH_TOKEN}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Install dependencies
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          pnpm install --frozen-lockfile && exit 0
+          echo "GitHub Packages install failed, falling back to npmjs.org..."
+          pnpm config set @shapediver:registry https://registry.npmjs.org
+          pnpm install --frozen-lockfile
+
+      - name: Run Playwright shard ${{ matrix.shard }}
+        run: pnpm test-e2e --shard=${{ matrix.shard }}
+        env:
+          SKIP_DEPLOY: "1"
+          TEST_BRANCH: ${{ inputs.test_branch }}
+          PLATFORM_CLIENT_ID: ${{ secrets.PLATFORM_CLIENT_ID }}
+          PLATFORM_ACCESS_TOKEN_KEY: ${{ secrets.PLATFORM_ACCESS_TOKEN_KEY }}
+          PLATFORM_ACCESS_TOKEN_SECRET: ${{ secrets.PLATFORM_ACCESS_TOKEN_SECRET }}
+
+      - name: Collect shard failure artifacts
+        if: failure()
+        shell: bash
+        run: |
+          mkdir -p .github-artifacts/failure
+          for path in playwright-report test-results; do
+            if [[ -e "$path" ]]; then cp -R "$path" .github-artifacts/failure/; fi
+          done
+
+      - name: Upload shard failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: playwright-shard-${{ matrix.shard_name }}-failure-artifacts
+          if-no-files-found: ignore
+          compression-level: 0
+          path: .github-artifacts/failure/

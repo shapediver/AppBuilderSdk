@@ -34,6 +34,8 @@ CI sets `TEST_BRANCH=testing/<source-branch>` so concurrent workflows use
 isolated deployments.
 Their Git tags use `testing+<source-branch>` because tags cannot be nested
 beneath the legacy `AppBuilderMain@testing` tag.
+CI deploys that test build once, then runs the Playwright suite across four
+parallel shards.
 
 ## Adding a test
 

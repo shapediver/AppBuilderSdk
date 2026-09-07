@@ -328,7 +328,7 @@ done
 
 if [ "$deploy" -eq 1 ]; then
     if [ "$push_version_commit" -eq 1 ]; then
-        push_branch_head "$branch_to_push"
+        push_branch_head "$branch_to_push" || fail "Failed to push the release commit to '$branch_to_push'."
     fi
 
     for i in "${!tags_to_push[@]}"; do
@@ -339,6 +339,6 @@ if [ "$deploy" -eq 1 ]; then
         else
             git tag -a "$tag" -m "Release of version ${tag#*@}"
         fi
-        push_ref "$tag" "$force"
+        push_ref "$tag" "$force" || fail "Failed to push release tag '$tag'."
     done
 fi

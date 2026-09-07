@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  release-task-branch:
+  prepare-task-branch:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -143,15 +143,6 @@ jobs:
           APPBUILDER_ASSUME_YES: "1"
           APPBUILDER_PUSH_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Run Playwright E2E against task branch deployment
-        run: pnpm test-e2e
-        env:
-          SKIP_DEPLOY: "1"
-          TEST_BRANCH: ${{ steps.task-version.outputs.task_version }}
-          PLATFORM_CLIENT_ID: ${{ secrets.PLATFORM_CLIENT_ID }}
-          PLATFORM_ACCESS_TOKEN_KEY: ${{ secrets.PLATFORM_ACCESS_TOKEN_KEY }}
-          PLATFORM_ACCESS_TOKEN_SECRET: ${{ secrets.PLATFORM_ACCESS_TOKEN_SECRET }}
-
       - name: Collect task release failure artifacts
         if: failure()
         shell: bash
@@ -171,8 +162,18 @@ jobs:
           compression-level: 0
           path: .github-artifacts/failure/
 
+  e2e:
+    needs: prepare-task-branch
+    uses: ./.github/workflows/playwright-shards.yml
+    with:
+      test_branch: ${{ needs.prepare-task-branch.outputs.task_version }}
+      environment: development
+    secrets: inherit
+
   notify:
-    needs: release-task-branch
+    needs:
+      - prepare-task-branch
+      - e2e
     if: always()
     runs-on: ubuntu-latest
     permissions:
@@ -185,8 +186,9 @@ jobs:
         shell: bash
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          RELEASE_RESULT: ${{ needs['release-task-branch'].result }}
-          TASK_VERSION: ${{ needs['release-task-branch'].outputs.task_version }}
+          RELEASE_RESULT: ${{ needs['prepare-task-branch'].result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
+          TASK_VERSION: ${{ needs['prepare-task-branch'].outputs.task_version }}
           WORKFLOW: ${{ github.workflow }}
           BRANCH: ${{ github.ref_name }}
           SHA: ${{ github.sha }}
@@ -197,7 +199,8 @@ jobs:
             echo "SLACK_WEBHOOK_URL not configured; skipping Slack notification."
             exit 0
           fi
-          case "$RELEASE_RESULT" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Succeeded";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; *) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; esac
+          if [[ "${RELEASE_RESULT}" == "success" && "${E2E_RESULT}" == "success" ]]; then STATUS="success"; elif [[ "${RELEASE_RESULT}" == "cancelled" || "${E2E_RESULT}" == "cancelled" ]]; then STATUS="cancelled"; else STATUS="failure"; fi
+          case "$STATUS" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Succeeded";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; *) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; esac
           SHORT_SHA="${SHA:0:7}"
           PAYLOAD="$(jq -cn --arg color "$COLOR" --arg emoji "$EMOJI" --arg statusLabel "$STATUS_LABEL" --arg workflow "$WORKFLOW" --arg branch "$BRANCH" --arg taskVersion "$TASK_VERSION" --arg commitUrl "$COMMIT_URL" --arg shortSha "$SHORT_SHA" --arg runUrl "$RUN_URL" '{attachments:[{color:$color,blocks:[{type:"section",text:{type:"mrkdwn",text:($emoji + " *AppBuilder task branch release finished*")}},{type:"section",fields:[{type:"mrkdwn",text:("*Status:*\n" + $statusLabel)},{type:"mrkdwn",text:("*Workflow:*\n" + $workflow)},{type:"mrkdwn",text:("*Branch:*\n`" + $branch + "`")},{type:"mrkdwn",text:("*Deploy version:*\n`" + $taskVersion + "`")},{type:"mrkdwn",text:("*Commit:*\n<" + $commitUrl + "|`" + $shortSha + "`>")} ]},{type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"View Run"},url:$runUrl}]}]}]}')"
           curl -sS --max-time 15 -X POST -H "Content-type: application/json" --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" >/dev/null || echo "Slack notification failed."
