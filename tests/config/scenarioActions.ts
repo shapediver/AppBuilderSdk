@@ -516,6 +516,74 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await takeSnapshot(page, `${slug}-added-second`);
 		},
 	},
+	{
+		slug: "260720-selectionparameters",
+		// Settings file (served from public/) replacing the pulsing interaction
+		// effects by plain colors, so that the snapshots are deterministic.
+		params: {g: "example-simple-interaction-colors.json"},
+		actions: async (page, slug) => {
+			// Coordinates refer to the 1280x720 viewport of the "Desktop Chrome"
+			// device used by the test project. Window rows from top to bottom:
+			// Floor_3 (y 0.181), Floor_1 (y 0.560), Floor_0 (y 0.751).
+			const toolbar = page.getByLabel("Interaction toolbar");
+			const menuButton = toolbar.getByRole("button", {
+				name: "Selection",
+				exact: true,
+			});
+			const confirmButton = toolbar.getByRole("button", {
+				name: "Confirm",
+			});
+			const menu = page.locator(".mantine-Popover-dropdown", {
+				hasText: /Selection \(/,
+			});
+			// Activates a selection parameter via the "Selection" menu of the
+			// interaction toolbar. While a selection is active, the menu can only
+			// be closed by clicking the canvas.
+			const activateSelection = async (name: string) => {
+				await menuButton.click();
+				await menu.getByText(new RegExp(`^${name}`)).click();
+				const canvas = await viewportCoords(page, 0.521, 0.417);
+				await page.mouse.click(canvas.x, canvas.y);
+				await menu.waitFor({state: "hidden"});
+			};
+
+			// Confirm/Cancel are not offered while no selection is being edited
+			await expect(confirmButton).toHaveCount(0);
+
+			// always-active "Window Selection" (max 1): the click is committed
+			// immediately
+			let pos = await viewportCoords(page, 0.395, 0.181);
+			await waitForModelRecomputed(page, async () => {
+				await page.mouse.click(pos.x, pos.y);
+			});
+			await takeSnapshot(page, `${slug}-window`);
+
+			// "Ground Floor Selection" (min 2, max 4) via the toolbar menu: two
+			// windows, confirmed explicitly
+			await activateSelection("Ground Floor Selection");
+			await expect(confirmButton).toBeDisabled();
+			pos = await viewportCoords(page, 0.395, 0.751);
+			await page.mouse.click(pos.x, pos.y);
+			pos = await viewportCoords(page, 0.603, 0.751);
+			await page.mouse.click(pos.x, pos.y);
+			await expect(confirmButton).toBeEnabled();
+			await waitForModelRecomputed(page, async () => {
+				await confirmButton.click();
+			});
+			// the selection is deactivated after the confirmation
+			await expect(confirmButton).toHaveCount(0);
+			await takeSnapshot(page, `${slug}-ground-floor`);
+
+			// "First Floor Selection" (min 1, max 1) via the toolbar menu: the
+			// click is committed immediately
+			await activateSelection("First Floor Selection");
+			pos = await viewportCoords(page, 0.395, 0.56);
+			await waitForModelRecomputed(page, async () => {
+				await page.mouse.click(pos.x, pos.y);
+			});
+			await takeSnapshot(page, `${slug}-first-floor`);
+		},
+	},
 ];
 
 /** Fast lookup by slug */
