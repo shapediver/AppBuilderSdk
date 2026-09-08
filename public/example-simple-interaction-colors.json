@@ -1,0 +1,35 @@
+{
+    "version": "1.0",
+    "themeOverrides": {
+        "components": {
+            "ParameterSelectionComponent": {
+                "defaultProps": {
+                    "selectionColor": "#ff0000",
+                    "availableColor": "#00ff00",
+                    "hoverColor": "#0000ff"
+                }
+            },
+            "ParameterGumballComponent": {
+                "defaultProps": {
+                    "selectionColor": "#ff0000",
+                    "availableColor": "#00ff00",
+                    "hoverColor": "#0000ff"
+                }
+            },
+            "ParameterRectangleTransformComponent": {
+                "defaultProps": {
+                    "selectionColor": "#ff0000",
+                    "availableColor": "#00ff00",
+                    "hoverColor": "#0000ff"
+                }
+            },
+            "ParameterDraggingComponent": {
+                "defaultProps": {
+                    "draggingColor": "#ff0000",
+                    "availableColor": "#00ff00",
+                    "hoverColor": "#0000ff"
+                }
+            }
+        }
+    }
+}

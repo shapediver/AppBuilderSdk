@@ -476,6 +476,46 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await takeSnapshot(page, `${slug}-changedColor`);
 		},
 	},
+
+	{
+		// Modular cabinets (testing account). The "Edit Cabinets" selection is
+		// driven by reset values: adding a cabinet via the "+" of the "Add
+		// Cabinets" selection selects the new cabinet (reset value defined by the
+		// overrides of the reference), changing a dimension keeps the selection
+		// (the model stops sending the reset value), and adding another cabinet
+		// selects the new one again.
+		slug: "modularcabinets-test",
+		// Settings file (served from public/) replacing the pulsing interaction
+		// effects by plain colors, so that the snapshots are deterministic.
+		params: {g: "example-simple-interaction-colors.json"},
+		actions: async (page, slug) => {
+			// Coordinates refer to the 1280x720 viewport of the "Desktop Chrome"
+			// device used by the test project.
+			// right "+" of the initial cabinet: the new cabinet gets selected
+			let pos = await viewportCoords(page, 0.591, 0.464);
+			await waitForModelRecomputed(page, async () => {
+				await page.mouse.click(pos.x, pos.y);
+			});
+			await takeSnapshot(page, `${slug}-added`);
+
+			// change the height of the selected cabinet: it stays selected
+			await waitForModelRecomputed(page, async () => {
+				const height = getParameterElement(page, "Height").getByRole(
+					"textbox",
+				);
+				await height.fill("600");
+				await height.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-height`);
+
+			// right "+" of the selected cabinet: the third cabinet gets selected
+			pos = await viewportCoords(page, 0.613, 0.169);
+			await waitForModelRecomputed(page, async () => {
+				await page.mouse.click(pos.x, pos.y);
+			});
+			await takeSnapshot(page, `${slug}-added-second`);
+		},
+	},
 ];
 
 /** Fast lookup by slug */
