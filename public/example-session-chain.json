@@ -1,0 +1,30 @@
+{
+    "version": "1.0",
+    "sessions": [
+        {
+            "id": "session-chain-step1",
+            "slug": "session-chain-step1"
+        },
+        {
+            "id": "session-chain-step2",
+            "slug": "session-chain-step2"
+        },
+        {
+            "id": "session-chain-step3",
+            "slug": "session-chain-step3"
+        },
+        {
+            "id": "session-chain-step4",
+            "slug": "session-chain-step4"
+        }
+    ],
+    "themeOverrides": {
+        "components": {
+            "ViewportComponent": {
+                "defaultProps": {
+                    "initialAutoAdjust": true
+                }
+            }
+        }
+    }
+}
