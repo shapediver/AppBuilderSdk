@@ -1,0 +1,17 @@
+---
+description: Bootstrap AppBuilderShared in new Cursor worktrees so Shared diffs show in Changes.
+alwaysApply: true
+---
+
+# Worktree + AppBuilderShared
+
+New Cursor worktrees often have an empty `src/shared` and hide Shared diffs in Changes (nested repo / Cursor `git.autoRepositoryDetection` default).
+
+**Do this first, before other work:**
+
+1. `git submodule update --init -- src/shared` if `src/shared` is empty or has no `.git`.
+2. Checkout `task/JIRA-ISSUE-ID` in **both** the root repo and `src/shared`.
+3. Connect Shared so it appears in Changes: keep `.vscode/settings.json` keys `git.autoRepositoryDetection: true`, `git.detectSubmodules: true`, `git.scanRepositories: ["src/shared"]`. If adding workspace folders, include the worktree root **and** `src/shared`.
+4. Shared git: `git -C src/shared ...`. Root only records the Shared pointer after Shared is committed.
+
+A `workspaceOpen` / `sessionStart` hook (`.cursor/hooks/bootstrap-shared-repo.mjs`) writes those Git settings and inits the submodule when the folder is empty. Reload the window if Shared still does not appear in Changes.

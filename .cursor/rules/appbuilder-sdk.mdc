@@ -8,8 +8,10 @@ alwaysApply: true
 ## Repository layout
 
 - **Two git repos.** Root `AppBuilderSdk` (usually `development`) contains `src/shared`, a separate clone of `AppBuilderShared`. Shared changes: `git -C src/shared ...`. Root only records the shared pointer ("shared update") plus app, tests, and `public/`.
+- **New worktrees:** follow `.cursor/rules/worktree-shared-repo.mdc` (init Shared, scan it in Changes). Hook: `.cursor/hooks/bootstrap-shared-repo.mjs`.
 - **Path alias:** `@AppBuilderLib/...` → `src/shared/...`. FSD: `entities/` (parameter, session, viewport), `features/`, `widgets/`, `shared/`. Tests live in `__tests__` next to the module (`jsdom` env header for store tests).
 - **App Builder actions:** executable logic lives in `features/appbuilder/model/useAppBuilderAction*.ts` (or `.tsx`). Each hook returns `{trigger, disabled, ...}`. UI components in `features/appbuilder/ui/AppBuilderAction*Component.tsx` only render. Call the hook to run an action without mounting the component. `ar` / `camera` / `fullscreen` are still registered from `src/AppBuilderRoot.tsx` via `componentContext.actions`.
+- **Icons:** `IAppBuilderIcon` / `iconType` accept Iconify names, image URLs (http(s), data URI, path; SVG and common rasters), or inline Iconify objects. Detection and `<img>` rendering are centralized in `shared/ui/icon/isIconImageUrl.ts` and `Icon.tsx`. Toolbar buttons must treat URLs as icons (not fallback text).
 - **Viewer:** `@shapediver/viewer.*`. `viewer.local.ts` can link `../Viewer`; viewer bugs are fixed there and need a **dev server restart**. Keep `node_modules` in sync (`pnpm install`) when versions differ.
 
 ## Git and commits
