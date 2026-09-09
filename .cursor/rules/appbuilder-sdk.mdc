@@ -9,6 +9,7 @@ alwaysApply: true
 
 - **Two git repos.** Root `AppBuilderSdk` (usually `development`) contains `src/shared`, a separate clone of `AppBuilderShared`. Shared changes: `git -C src/shared ...`. Root only records the shared pointer ("shared update") plus app, tests, and `public/`.
 - **Path alias:** `@AppBuilderLib/...` → `src/shared/...`. FSD: `entities/` (parameter, session, viewport), `features/`, `widgets/`, `shared/`. Tests live in `__tests__` next to the module (`jsdom` env header for store tests).
+- **App Builder actions:** executable logic lives in `features/appbuilder/model/useAppBuilderAction*.ts` (or `.tsx`). Each hook returns `{trigger, disabled, ...}`. UI components in `features/appbuilder/ui/AppBuilderAction*Component.tsx` only render. Call the hook to run an action without mounting the component. `ar` / `camera` / `fullscreen` are still registered from `src/AppBuilderRoot.tsx` via `componentContext.actions`.
 - **Viewer:** `@shapediver/viewer.*`. `viewer.local.ts` can link `../Viewer`; viewer bugs are fixed there and need a **dev server restart**. Keep `node_modules` in sync (`pnpm install`) when versions differ.
 
 ## Git and commits
