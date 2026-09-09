@@ -1,0 +1,21 @@
+---
+description: Playwright e2e for App Builder — scenarios, snapshots, deploy skip, and when to add entries.
+globs:
+  - "tests/**"
+  - "**/scenarioActions.ts"
+alwaysApply: false
+---
+
+# Playwright e2e
+
+- Scenarios: `tests/config/scenarioActions.ts` — one entry per slug: `params` (e.g. `g` for settings file), `actions(page, slug)`.
+- Helpers: `viewportCoords` (normalised to the canvas bounding box; canvas starts at **x=300** in the default layout), `waitForModelRecomputed`, `takeSnapshot`, `getParameterElement`.
+- Device: Desktop Chrome, **1280x720**.
+- Deterministic snapshots: `public/example-simple-interaction-colors.json` via `params: {g: ...}` instead of pixel tolerances.
+- New behaviours get a scenario entry; models not yet on the test server get the **entry without running it**.
+
+## Deploy / global setup
+
+Global setup deploys root HEAD to `testing/local` via `pnpm run publish` (needs a clean tree, tsc 0, sentry-cli, AWS credentials, `.env`). `SKIP_DEPLOY=1` skips it. A stale local `testing/local` branch **blocks** the deploy.
+
+**Do not deploy or rerun e2e unless the user asks.**

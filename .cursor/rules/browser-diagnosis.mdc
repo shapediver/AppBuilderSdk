@@ -1,0 +1,32 @@
+---
+description: Reproducing and diagnosing App Builder in the browser — SDV, Playwright scratch drivers, selection menu pitfalls, PUT counting. Use when debugging UI, selection, or interaction.
+alwaysApply: false
+---
+
+# Browser diagnosis (App Builder)
+
+## Dev server and models
+
+- `pnpm start --port 3000` → `http://localhost:3000/?slug=<slug>`. Slug data in `modelstorage.local.ts`.
+- Platform token expires **hourly**; run `pnpm run convert-slug-data` when a session fails to load.
+- Testing-account models do **not** whitelist localhost — use the deployed URL.
+- Settings/theme: `?g=<file>` from `public/`.
+
+## Throwaway Playwright
+
+Write drivers as `.mjs` under `test-results/scratch` (wiped by e2e; keep copies in the scratchpad). Run **from the project directory** so `@playwright/test` resolves. Viewport **1280x720**. Use Write/Edit for driver files (Python `"\n"` escapes have produced literal newlines inside string literals).
+
+## In-page (`window.SDV`)
+
+- `Object.values(SDV.sessions)[0]` — `parameters`, `outputs`, `customize`
+- `SDV.viewports` — `busy` for idle detection
+- `SDV.EVENTTYPE_INTERACTION` + `SDV.addListener` — `SELECT_ON/OFF`, `HOVER_ON`, `MULTI_SELECT_*`
+- Node `InteractionData`: `restrictedManagers`, `interactionTypes` (capability), `interactionStates` (current)
+
+Count computations with `page.on("request")` filtered to `PUT` and `/output`; diff the body's parameter values against the previous request.
+
+Pulse highlight effects make **pixel counting unreliable**; use events, parameter values, or `public/example-simple-interaction-colors.json` for snapshots.
+
+## Who committed? (async stacks)
+
+Debounce in `handleChange` breaks stacks. Temporary `console.log("[diag] ...", new Error().stack)` in `useParameterComponentCommons.handleChange`, the custom parameter executor, and `batchParameterValueUpdate`; capture `page.on("console")`; then `git checkout HEAD --` the instrumented files.

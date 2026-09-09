@@ -1,0 +1,46 @@
+---
+description: AppBuilderSdk / AppBuilderShared repo layout, git, line endings, checks, and how the user likes to work.
+alwaysApply: true
+---
+
+# Working in AppBuilderSdk / AppBuilderShared
+
+## Repository layout
+
+- **Two git repos.** Root `AppBuilderSdk` (usually `development`) contains `src/shared`, a separate clone of `AppBuilderShared`. Shared changes: `git -C src/shared ...`. Root only records the shared pointer ("shared update") plus app, tests, and `public/`.
+- **Path alias:** `@AppBuilderLib/...` → `src/shared/...`. FSD: `entities/` (parameter, session, viewport), `features/`, `widgets/`, `shared/`. Tests live in `__tests__` next to the module (`jsdom` env header for store tests).
+- **Viewer:** `@shapediver/viewer.*`. `viewer.local.ts` can link `../Viewer`; viewer bugs are fixed there and need a **dev server restart**. Keep `node_modules` in sync (`pnpm install`) when versions differ.
+
+## Git and commits
+
+- Branch names: `task/JIRA-ISSUE-ID`. Every commit message starts with the ticket (`SS-10004: ...`).
+- Commits are SSH-signed via 1Password; **signing fails from an agent shell**. Stage and describe; **let the user commit**.
+- `git checkout -- <file>` restores from the _index_; use `git checkout HEAD --` when files are staged.
+
+## Line endings and edits
+
+- Working tree is CRLF, git stores LF (`autocrlf`). eslint `linebreak-style: CRLF`.
+- **Never** `sed -i` or plain Python writes on source; they produce LF and hundreds of lint errors. Use the Edit tool, or Python with `newline=''` and `\r\n`.
+
+## Checks (judge only files you changed)
+
+```bash
+npx prettier --check <files>
+npx eslint <files>
+npx tsc --noEmit -p .          # root, covers shared
+npx jest --config jest.config.mjs src/shared/<path>
+```
+
+Some untouched tests have pre-existing prettier violations.
+
+## How the user likes to work
+
+- Explain the **root cause** before proposing a fix; then evaluate if a minimal fix makes sense.
+- Do **not** deploy or rerun e2e unless asked. Do not edit a file the user is currently editing; propose the change instead.
+- After a batch: prettier, eslint, tsc, affected jest, **one** browser verify per fix, then a regression review. Report what was verified and what was not.
+- Keep notes on models, coordinates, root causes, and driver pitfalls for later sessions.
+- Do not edit `src/` while a browser run is active (HMR reloads the page). One targeted browser run per hypothesis and per fix; no deploy-and-rerun loops unless asked.
+
+## Updating these agent rules
+
+Agents **may edit** files in `.cursor/rules/` or **create new** `.mdc` rules when they learn facts that are not already captured (models, coordinates, root causes, driver pitfalls, store semantics, workflow). Prefer adding to the existing rule that matches the topic (`appbuilder-sdk`, `parameters-and-selection`, `browser-diagnosis`, `e2e-playwright`) over duplicating. Do not invent process the user did not confirm; only record information that was missing.

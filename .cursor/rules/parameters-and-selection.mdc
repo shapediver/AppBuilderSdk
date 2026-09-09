@@ -1,0 +1,57 @@
+---
+description: Parameter store, reset values, selection stack, interaction ownership, and toolbar. Apply when changing parameters, selection, session nodes, or interaction UI.
+globs:
+    - "**/entities/parameter/**"
+    - "**/entities/session/**"
+    - "**/entities/viewport/**"
+    - "**/*[Ss]election*"
+    - "**/*[Ii]nteraction*"
+    - "**/*Toolbar*"
+    - "**/useParameterComponentCommons*"
+alwaysApply: false
+---
+
+# Parameters, selection, and interaction
+
+## Parameter store (`entities/parameter/model/useShapeDiverStoreParameters.ts`)
+
+One zustand store per parameter, per namespace (session id or generic namespace).
+
+| Field / action      | Role                                                                                                |
+| ------------------- | --------------------------------------------------------------------------------------------------- |
+| `uiValue`           | Draft                                                                                               |
+| `commitValue`       | Baseline for pending changes; used by the **next** execution                                        |
+| `execValue`         | Last executed value                                                                                 |
+| `setUiValue`        | Pending                                                                                             |
+| `execute`           | Queues into `parameterChanges[namespace]`; `changes.accept` sends **one PUT** for all queued values |
+| `setExecutedValue`  | Value executed elsewhere; applies the reset value                                                   |
+| `setCommittedValue` | Commit without execution (no reset value)                                                           |
+| `setResetValue`     | Dynamic reset override with "follow" rules                                                          |
+
+Every PUT carries **all** parameter values. A value committed without execution reaches the model on the **next** execution of any parameter (`param.value = value` for session params; commit callback into `customParameterValues` for custom params).
+
+**Reset values** (`settings.resetValue`, or `value` from the model via App Builder output) are committed after an execution **without** another execution. `execValue` and `commitValue` then differ **on purpose**.
+
+Effective interaction settings come from **AppBuilder JSON**, not viewer `param.settings` (min/max selection, `activeMode`, `presentation`, `nameFilter` may be overridden).
+
+## Session store (`entities/session/model/useShapeDiverStoreSession.ts`)
+
+Output update callbacks receive `(newNode, oldNode)`. `output.node` may lag or be `undefined` while the viewer processes a response. The store caches the latest node seen by the callback and **never** promotes `undefined` or a replaced node.
+
+Output processing order is **not deterministic**: candidates of one output may update before or after the store commits the response. Logic that depends on that order is a race.
+
+## Selection stack
+
+`useSelection` (candidates from name filters via `useNodesInteractionData`, restore by exact name, prune names removed by an output update, `onPrune`) → `ParameterSelectionComponent` (draft vs committed, automatic confirmation for max=1 / complete selections, Confirm/Cancel otherwise, `useCommittedSelectionAdoption`, `skipNextAutomaticConfirmationRef`).
+
+Gumball, rectangle transform, anchor, and attribute visualization reuse `useSelection` but commit only on **explicit Confirm**.
+
+## Ownership and requests
+
+- `interactionOwnership`: user-requested claims displace non-always-active owners; automatic claims retry on every ownership change.
+- `useInteractionRequestLifecycle` + `useShapeDiverStoreInteractionRequestManagement`: persistent = passive (suspend/resume); others = active (disable other parameters).
+- While an active request exists, the toolbar popover is dismissal-blocked: only **pointerdown on the canvas** closes it.
+
+## Toolbar
+
+`AppBuilderToolbar`, `resolveRuntimeToolbarGroups` (Confirm/Cancel aggregate by `aggregationId`; menu only with toggleable rows; trailing actions become commands otherwise). Buttons disabled while executing.
