@@ -43,6 +43,8 @@
 							"id": "manual-default-ar",
 							"type": "action",
 							"label": "View in AR",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:augmented-reality",
 							"props": {
 								"definition": {
@@ -55,6 +57,8 @@
 							"id": "manual-default-zoom",
 							"type": "action",
 							"label": "Zoom extents",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:zoom-in",
 							"props": {
 								"definition": {
@@ -69,6 +73,8 @@
 						{
 							"id": "bottom-camera-menu",
 							"label": "Camera matrix",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"tooltip": "All implemented camera action variants",
 							"icon": "video",
 							"type": "actionMenu",
@@ -123,6 +129,8 @@
 							"id": "manual-default-fullscreen-3-states",
 							"type": "action",
 							"label": "Fullscreen",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:maximize",
 							"props": {
 								"definition": {
@@ -139,6 +147,8 @@
 							"id": "manual-default-undo",
 							"type": "action",
 							"label": "Undo",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:arrow-back-up",
 							"props": {
 								"definition": {
@@ -151,6 +161,8 @@
 							"id": "manual-default-redo",
 							"type": "action",
 							"label": "Redo",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:arrow-forward-up",
 							"props": {
 								"definition": {
@@ -163,6 +175,8 @@
 							"id": "manual-default-reset",
 							"type": "action",
 							"label": "Reset to default parameters",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:reload",
 							"props": {
 								"definition": {
@@ -174,6 +188,8 @@
 						{
 							"id": "manual-default-more-options",
 							"label": "More options",
+							"labelSide": "bottom",
+							"labelAlign": "center",
 							"icon": "tabler:dots-vertical",
 							"type": "actionMenu",
 							"props": {
@@ -931,6 +947,8 @@
 							"id": "right-sticky-tabs-test",
 							"icon": "tabler:bookmark",
 							"label": "Sticky tabs",
+							"labelSide": "right",
+							"labelAlign": "center",
 							"tooltip": "Open a toolbar panel containing tabs with stickyTabs true",
 							"type": "tabs",
 							"props": {
@@ -982,6 +1000,8 @@
 							"id": "right-non-sticky-tabs-test",
 							"icon": "columns",
 							"label": "Non-sticky tabs",
+							"labelSide": "left",
+							"labelAlign": "center",
 							"tooltip": "Open a toolbar panel containing tabs with stickyTabs false",
 							"type": "tabs",
 							"props": {

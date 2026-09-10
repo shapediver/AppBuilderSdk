@@ -1,5 +1,22 @@
 {
   "definitions": {
+    "AppBuilderToolbarAlign": {
+      "type": "string",
+      "enum": [
+        "start",
+        "center",
+        "end"
+      ]
+    },
+    "AppBuilderToolbarSide": {
+      "type": "string",
+      "enum": [
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ]
+    },
     "MantineCssLength": {
       "oneOf": [
         {
@@ -2913,6 +2930,27 @@
               "description": "",
               "type": {
                 "$ref": "#/definitions/IconProps"
+              }
+            },
+            {
+              "name": "labelSide",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/AppBuilderToolbarSide"
+              }
+            },
+            {
+              "name": "labelAlign",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/AppBuilderToolbarAlign"
+              }
+            },
+            {
+              "name": "labelProps",
+              "description": "",
+              "type": {
+                "$ref": "#/definitions/TextProps"
               }
             },
             {
