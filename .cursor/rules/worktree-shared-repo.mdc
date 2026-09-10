@@ -5,13 +5,37 @@ alwaysApply: true
 
 # Worktree + AppBuilderShared
 
-New Cursor worktrees often have an empty `src/shared` and hide Shared diffs in Changes (nested repo / Cursor `git.autoRepositoryDetection` default).
+New Cursor worktrees often have an empty `src/shared` and hide Shared diffs in Changes (nested repo / Cursor `git.autoRepositoryDetection` default). Do not rely on hooks alone.
 
-**Do this first, before other work:**
+**Every agent MUST proactively perform these setup checks at the start of any task or when working in a worktree:**
 
-1. `git submodule update --init -- src/shared` if `src/shared` is empty or has no `.git`.
-2. Checkout `task/JIRA-ISSUE-ID` in **both** the root repo and `src/shared`.
-3. Connect Shared so it appears in Changes: keep `.vscode/settings.json` keys `git.autoRepositoryDetection: true`, `git.detectSubmodules: true`, `git.scanRepositories: ["src/shared"]`. If adding workspace folders, include the worktree root **and** `src/shared`.
-4. Shared git: `git -C src/shared ...`. Root only records the Shared pointer after Shared is committed.
-
-A `workspaceOpen` / `sessionStart` hook (`.cursor/hooks/bootstrap-shared-repo.mjs`) writes those Git settings and inits the submodule when the folder is empty. Reload the window if Shared still does not appear in Changes.
+1. **Verify and initialize submodule:**
+   - Check if `src/shared` has `.git`. If not or if submodule is uninitialized, run:
+     ```bash
+     git submodule init
+     git submodule update
+     ```
+     (or `git submodule update --init -- src/shared`).
+2. **Ensure `.vscode/settings.json` is created:**
+   - `.vscode/settings.json` is gitignored and is frequently missing in newly created worktrees.
+   - Agents MUST check if `.vscode/settings.json` exists. If missing or incomplete, immediately create/write it:
+     ```json
+     {
+     	"git.autoRepositoryDetection": true,
+     	"git.detectSubmodules": true,
+     	"git.repositoryScanMaxDepth": 2,
+     	"git.scanRepositories": [
+     		"src/shared"
+     	]
+     }
+     ```
+3. **Branch synchronization:**
+   - Ensure `task/JIRA-ISSUE-ID` is checked out in **both** the root repo and `src/shared` (`git -C src/shared checkout ...`).
+4. **Source Control / Changes visibility in the IDE:**
+   - If changes in `src/shared` do not appear in the Source Control panel:
+     a. Instruct/perform Source Control tab refresh (refresh icon in Source Control view).
+     b. If still not visible, reload the window (`Developer: Reload Window` via `Ctrl+Shift+P` / `F1`).
+     c. Or add `src/shared` as a multi-root workspace folder (**File > Add Folder to Workspace...**).
+5. **Git workflow for shared:**
+   - Shared git operations: `git -C src/shared ...`.
+   - The root repo only updates its submodule pointer (`src/shared`) after `src/shared` has been committed.
