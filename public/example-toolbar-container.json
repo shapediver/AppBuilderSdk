@@ -3,6 +3,20 @@
 	"settings": {
 		"disableFallbackUi": true
 	},
+	"themeOverrides": {
+		"components": {
+			"AppBuilderToolbarIconButton": {
+				"defaultProps": {
+					"actionIconProps": {
+						"size": 60
+					},
+					"iconProps": {
+						"size": 48
+					}
+				}
+			}
+		}
+	},
 	"sessions": [
 		{
 			"id": "default",
@@ -245,7 +259,7 @@
 							"type": "parameter",
 							"label": "Length",
 							"tooltip": "Open Length parameter in a toolbar popover",
-							"icon": "ruler",
+							"icon": "https://viewer.shapediver.com/v3/images/underConstructionPikachu.gif",
 							"presentation": "button",
 							"props": {
 								"name": "Length",
@@ -265,7 +279,7 @@
 							"type": "export",
 							"label": "Image export",
 							"tooltip": "Export ref with overrides and parameter values",
-							"icon": "download",
+							"icon": "https://viewer.shapediver.com/v3/images/me.png",
 							"props": {
 								"name": "Image Export",
 								"sessionId": "default",
@@ -291,7 +305,7 @@
 							"id": "flat-menu-button-presentation",
 							"label": "Single-section menu",
 							"tooltip": "Single menu section; entries render as regular buttons",
-							"icon": "list",
+							"icon": "https://viewer.shapediver.com/v3/graphics/cameraswitch.svg",
 							"type": "actionMenu",
 							"props": {
 								"sections": [
