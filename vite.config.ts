@@ -1,76 +1,13 @@
 import {sentryVitePlugin} from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
-import type {IncomingMessage, ServerResponse} from "node:http";
 import path, {resolve} from "path";
-import {defineConfig, loadEnv, type Plugin} from "vite";
+import {defineConfig} from "vite";
 import {analyzer} from "vite-bundle-analyzer";
 import svgrPlugin from "vite-plugin-svgr";
 import {CONFIG} from "./sentryconfig";
-import {
-	agentUrlFromRequestUrl,
-	crossOriginOpenerPolicy,
-} from "./src/shared/features/agent-tools/lib/crossOriginOpenerPolicy";
 
 const isDev = process.env.NODE_ENV === "development";
-
-function getWebmcpResponseHeaders(
-	mode: string,
-	requestUrl?: string,
-): Record<string, string> {
-	const env = loadEnv(mode, process.cwd(), "VITE_");
-	const webmcpOriginTrialToken = env.VITE_WEBMCP_ORIGIN_TRIAL_TOKEN?.trim();
-
-	return {
-		"Cross-Origin-Opener-Policy": crossOriginOpenerPolicy({
-			queryAgentUrl: agentUrlFromRequestUrl(requestUrl),
-			envAgentUrl: env.VITE_AGENT_URL,
-		}),
-		"Cross-Origin-Embedder-Policy": "credentialless",
-		...(webmcpOriginTrialToken
-			? {"Origin-Trial": webmcpOriginTrialToken}
-			: {}),
-	};
-}
-
-function applyCoopFromRequest(
-	req: IncomingMessage & {originalUrl?: string},
-	res: ServerResponse,
-	mode: string,
-) {
-	const coop = getWebmcpResponseHeaders(mode, req.originalUrl ?? req.url)[
-		"Cross-Origin-Opener-Policy"
-	];
-	const originalSetHeader = res.setHeader.bind(res);
-	res.setHeader = ((
-		name: string,
-		value: number | string | readonly string[],
-	) => {
-		if (String(name).toLowerCase() === "cross-origin-opener-policy") {
-			return originalSetHeader(name, coop);
-		}
-		return originalSetHeader(name, value);
-	}) as typeof res.setHeader;
-	originalSetHeader("Cross-Origin-Opener-Policy", coop);
-}
-
-function agentUrlCoopPlugin(mode: string): Plugin {
-	return {
-		name: "agent-url-coop",
-		configureServer(server) {
-			server.middlewares.use((req, res, next) => {
-				applyCoopFromRequest(req, res, mode);
-				next();
-			});
-		},
-		configurePreviewServer(server) {
-			server.middlewares.use((req, res, next) => {
-				applyCoopFromRequest(req, res, mode);
-				next();
-			});
-		},
-	};
-}
 
 const plugins = [react(), svgrPlugin()];
 if (CONFIG.SENTRY_ORG && CONFIG.SENTRY_PROJECT) {
@@ -104,8 +41,7 @@ const useLocalViewer =
 	isDev && fs.existsSync(path.resolve(__dirname, "./viewer.local.ts"));
 
 // https://vitejs.dev/config/
-export default defineConfig(async ({mode}) => {
-	const webmcpResponseHeaders = getWebmcpResponseHeaders(mode);
+export default defineConfig(async () => {
 	// Use an absolute file:// URL so dynamic import resolves correctly even when
 	// Vite moves the compiled config to a temp directory during builds.
 	const {pathToFileURL} = await import("url");
@@ -143,12 +79,10 @@ export default defineConfig(async ({mode}) => {
 	}
 
 	return {
-		plugins: [...plugins, agentUrlCoopPlugin(mode)],
+		plugins,
 		server: {
 			open: true,
 			port: 3000,
-			// WebMCP requires origin-isolated documents + Origin-Trial token (SS-9745).
-			headers: webmcpResponseHeaders,
 			fs: {
 				// Allow serving files from the local Viewer monorepo when viewer.local.ts exists
 				allow: useLocalViewer ? [".."] : ["."],
@@ -156,7 +90,6 @@ export default defineConfig(async ({mode}) => {
 		},
 		preview: {
 			port: 3000,
-			headers: webmcpResponseHeaders,
 		},
 		build: {
 			rolldownOptions: {
