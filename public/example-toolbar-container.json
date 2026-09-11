@@ -29,6 +29,94 @@
 		"version": "1.0",
 		"containers": [
 			{
+				"name": "anchor2d",
+				"props": {
+					"id": "geometry-anchor-panel",
+					"width": 450,
+					"maxHeight": 500,
+					"draggable": false,
+					"useCloseButton": false
+				},
+				"widgets": [
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Length"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Hide Door"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor3d",
+				"props": {
+					"id": "model-info-3d-panel",
+					"location": [0, 0, 50],
+					"width": 300,
+					"maxHeight": 300
+				},
+				"widgets": [
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Length"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "positioned-2d-anchor",
+					"location": [24, 120],
+					"justification": "TL",
+					"previewIcon": "tabler:map-pin",
+					"width": 320,
+					"maxHeight": 400,
+					"draggable": true
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Positioned 2D Anchor\nAnchored at fixed coordinates `[24, 120]` with justification `TL`."
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Length"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
 				"name": "toolbar",
 				"props": {
 					"id": "manual-default-toolbar",
@@ -38,6 +126,71 @@
 					"visibility": "onMouseActivity"
 				},
 				"groups": [
+					[
+						{
+							"id": "toolbar-geometry-anchor-toggle",
+							"type": "action",
+							"label": "Geometry Settings",
+							"icon": "tabler:settings",
+							"tooltip": "Configure model geometry (custom width 450)",
+							"props": {
+								"definition": {
+									"type": "setContainerVisibility",
+									"props": {
+										"container": {
+											"name": "anchor2d",
+											"props": {
+												"id": "geometry-anchor-panel"
+											}
+										},
+										"mode": "toggle"
+									}
+								}
+							}
+						},
+						{
+							"id": "toolbar-3d-anchor-toggle",
+							"type": "action",
+							"label": "3D Anchor Info",
+							"icon": "tabler:cube",
+							"tooltip": "Toggle 3D scene anchor panel",
+							"props": {
+								"definition": {
+									"type": "setContainerVisibility",
+									"props": {
+										"container": {
+											"name": "anchor3d",
+											"props": {
+												"id": "model-info-3d-panel"
+											}
+										},
+										"mode": "toggle"
+									}
+								}
+							}
+						},
+						{
+							"id": "toolbar-positioned-2d-anchor-toggle",
+							"type": "action",
+							"label": "2D Positioned Anchor",
+							"icon": "tabler:map-pin",
+							"tooltip": "Toggle 2D anchor positioned at [24, 120]",
+							"props": {
+								"definition": {
+									"type": "setContainerVisibility",
+									"props": {
+										"container": {
+											"name": "anchor2d",
+											"props": {
+												"id": "positioned-2d-anchor"
+											}
+										},
+										"mode": "toggle"
+									}
+								}
+							}
+						}
+					],
 					[
 						{
 							"id": "manual-default-ar",
