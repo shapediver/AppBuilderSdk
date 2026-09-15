@@ -25,7 +25,7 @@ const allLinks: AppLink[] = fs.existsSync(linksPath)
 	: [];
 
 // Merge fetched links with scenarioActions entries so that slugs listed in
-// scenarioActions but absent from the markdown still get tests.
+// scenarioActions but absent from the public definition pages still get tests.
 const allEntries = new Map(
 	allLinks.map((l) => [l.slug, {slug: l.slug, url: l.url}]),
 );

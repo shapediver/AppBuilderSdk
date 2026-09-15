@@ -59,7 +59,7 @@ Each slug gets:
 - **visual** — full-page screenshot matches baseline
 - **interaction** — runs `actions` (only when defined)
 
-Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automatically (discovered from the GrasshopperExampleModels markdown).
+Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automatically (discovered from the rendered GrasshopperExampleModels App Builder and BETA definition pages).
 
 ## Helpers
 

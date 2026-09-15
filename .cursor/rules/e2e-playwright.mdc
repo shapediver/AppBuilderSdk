@@ -8,6 +8,7 @@ alwaysApply: false
 
 # Playwright e2e
 
+- Discovery: `tests/helpers/fetchAppLinks.ts` crawls the rendered [App Builder](https://shapediver.github.io/GrasshopperExampleModels/11-AppBuilder/definitions.html) and [BETA](https://shapediver.github.io/GrasshopperExampleModels/BETA/definitions.html) pages. Do not parse `definitions.md` — those files are stubs filled from `examples.json` at docs build. Every discovered slug gets smoke + visual tests; `scenarioActions.ts` only adds interactions.
 - Scenarios: `tests/config/scenarioActions.ts` — one entry per slug: `params` (e.g. `g` for settings file), `actions(page, slug)`.
 - Helpers: `viewportCoords` (normalised to the canvas bounding box; canvas starts at **x=300** in the default layout), `waitForModelRecomputed`, `takeSnapshot`, `getParameterElement`.
 - Device: Desktop Chrome, **1280x720**.
