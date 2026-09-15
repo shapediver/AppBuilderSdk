@@ -191,7 +191,7 @@
 													"container": {
 														"name": "left"
 													},
-													"mode": "hide"
+													"mode": "close"
 												}
 											}
 										]
@@ -211,7 +211,8 @@
 										"mode": "parallel",
 										"actions": [
 											{
-												"type": "resetParameterValues"
+												"type": "resetParameterValues",
+												"props": {}
 											},
 											{
 												"type": "setContainerVisibility",
