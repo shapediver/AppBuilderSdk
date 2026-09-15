@@ -31,9 +31,12 @@ const allEntries = new Map(
 );
 for (const config of scenarioActions) {
 	if (!allEntries.has(config.slug)) {
+		const settingsUrl = config.params?.g;
 		allEntries.set(config.slug, {
 			slug: config.slug,
-			url: `https://appbuilder.shapediver.com/v1/main/latest/?slug=${config.slug}`,
+			url: settingsUrl
+				? `https://appbuilder.shapediver.com/v1/main/latest/?g=${encodeURIComponent(settingsUrl)}`
+				: `https://appbuilder.shapediver.com/v1/main/latest/?slug=${config.slug}`,
 		});
 	}
 }

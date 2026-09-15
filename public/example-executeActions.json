@@ -1,0 +1,235 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "top",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "## executeActions\nUse the bottom toolbar. **Sequential** waits for session work between actions. **Parallel** starts them together. **Nested** sequences can mix both."
+						}
+					}
+				]
+			},
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Parameters\nThe nested sequence toggles this panel, then updates values."
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Length"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Hide Door"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Material Color"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "execute-actions-toolbar",
+					"side": "bottom",
+					"align": "center"
+				},
+				"groups": [
+					[
+						{
+							"type": "action",
+							"label": "Sequential",
+							"icon": "tabler:door",
+							"tooltip": "Show door, then zoom extents",
+							"props": {
+								"definition": {
+									"type": "executeActions",
+									"props": {
+										"mode": "sequential",
+										"actions": [
+											{
+												"type": "setParameterValue",
+												"props": {
+													"parameter": {
+														"name": "Hide Door"
+													},
+													"value": "false"
+												}
+											},
+											{
+												"type": "camera",
+												"props": {
+													"type": "assign",
+													"props": {
+														"camera": {
+															"name": "Perspective"
+														}
+													}
+												}
+											},
+											{
+												"type": "camera",
+												"props": {
+													"type": "zoomTo",
+													"props": {}
+												}
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"type": "action",
+							"label": "Sequential",
+							"icon": "tabler:door-off",
+							"tooltip": "Hide door, then switch to front view",
+							"props": {
+								"definition": {
+									"type": "executeActions",
+									"props": {
+										"mode": "sequential",
+										"actions": [
+											{
+												"type": "setParameterValue",
+												"props": {
+													"parameter": {
+														"name": "Hide Door"
+													},
+													"value": "true"
+												}
+											},
+											{
+												"type": "camera",
+												"props": {
+													"type": "assign",
+													"props": {
+														"camera": {
+															"name": "Front"
+														}
+													}
+												}
+											},
+											{
+												"type": "camera",
+												"props": {
+													"type": "zoomTo",
+													"props": {}
+												}
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"type": "action",
+							"label": "Parallel",
+							"icon": "tabler:arrows-left",
+							"tooltip": "Set length and color together, and hide left panel",
+							"props": {
+								"definition": {
+									"type": "executeActions",
+									"props": {
+										"mode": "parallel",
+										"actions": [
+											{
+												"type": "setParameterValues",
+												"props": {
+													"parameterValues": [
+														{
+															"parameter": {
+																"name": "Length"
+															},
+															"value": "4"
+														},
+														{
+															"parameter": {
+																"name": "Material Color"
+															},
+															"value": "0x2288ccff"
+														}
+													]
+												}
+											},
+											{
+												"type": "setContainerVisibility",
+												"props": {
+													"container": {
+														"name": "left"
+													},
+													"mode": "hide"
+												}
+											}
+										]
+									}
+								}
+							}
+						},
+						{
+							"type": "action",
+							"label": "Parallel",
+							"icon": "tabler:arrows-right",
+							"tooltip": "Reset parameters and open left panel",
+							"props": {
+								"definition": {
+									"type": "executeActions",
+									"props": {
+										"mode": "parallel",
+										"actions": [
+											{
+												"type": "resetParameterValues"
+											},
+											{
+												"type": "setContainerVisibility",
+												"props": {
+													"container": {
+														"name": "left"
+													},
+													"mode": "open"
+												}
+											}
+										]
+									}
+								}
+							}
+						}
+					]
+				]
+			}
+		]
+	}
+}
