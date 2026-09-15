@@ -517,6 +517,29 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		},
 	},
 	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-executeActions",
+		params: {g: "example-executeActions.json"},
+		actions: async (page, slug) => {
+			const toolbar = page.getByLabel("execute-actions-toolbar");
+			const buttons = toolbar.getByRole("button");
+			const clickToolbar = async (oneBasedIndex: number) => {
+				const button = buttons.nth(oneBasedIndex - 1);
+				await waitForModelRecomputed(page, async () => {
+					await button.click();
+					await expect(button).toBeEnabled();
+				});
+				await takeSnapshot(page, `${slug}-toolbar-${oneBasedIndex}`);
+			};
+
+			await clickToolbar(2);
+			await clickToolbar(1);
+			await clickToolbar(3);
+			await clickToolbar(4);
+		},
+	},
+	{
 		slug: "selection-parameter-variations",
 		// Settings file (served from public/) replacing the pulsing interaction
 		// effects by plain colors, so that the snapshots are deterministic.
