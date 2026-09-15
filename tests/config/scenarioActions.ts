@@ -524,21 +524,12 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		actions: async (page, slug) => {
 			const toolbar = page.getByLabel("execute-actions-toolbar");
 			const buttons = toolbar.getByRole("button");
-			const dismissNotifications = async () => {
-				const closeButtons = page.locator(
-					".mantine-Notification-root button",
-				);
-				while ((await closeButtons.count()) > 0) {
-					await closeButtons.first().click();
-				}
-			};
 			const clickToolbar = async (oneBasedIndex: number) => {
 				const button = buttons.nth(oneBasedIndex - 1);
 				await waitForModelRecomputed(page, async () => {
 					await button.click();
 					await expect(button).toBeEnabled();
 				});
-				await dismissNotifications();
 				await takeSnapshot(page, `${slug}-toolbar-${oneBasedIndex}`);
 			};
 
