@@ -542,6 +542,17 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Self-contained settings JSON (`g`); session is in the file, so the
 		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-actionSlots-selection",
+		params: {g: "example-actionSlots-selection.json"},
+		actions: async (page) => {
+			const pos = await viewportCoords(page, 0.49, 0.58);
+			await page.mouse.click(pos.x, pos.y);
+			await expect(page.getByText("Selection changed")).toBeVisible();
+		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-actionSlots",
 		params: {g: "example-actionSlots.json"},
 		actions: async (page, slug) => {
