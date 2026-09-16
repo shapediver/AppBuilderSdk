@@ -544,10 +544,11 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-actionSlots-selection",
 		params: {g: "example-actionSlots-selection.json"},
-		actions: async (page) => {
+		actions: async (page, slug) => {
 			const pos = await viewportCoords(page, 0.49, 0.58);
 			await page.mouse.click(pos.x, pos.y);
 			await expect(page.getByText("Selection changed")).toBeVisible();
+			await takeSnapshot(page, `${slug}-selection-changed`);
 		},
 	},
 	{
