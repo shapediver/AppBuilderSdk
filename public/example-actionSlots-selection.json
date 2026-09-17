@@ -1,0 +1,146 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "e69e848d9e066201dd7fe1e3e8acb0db3aac1f69344a582a0f1a01f360e82aff0e64e871fc13e31e11f9cf39c40876f82f125fe479e0eacaa07a3ce0445a4576cd103441797ee11b88c7f8c87906814e0e028d590550949f4973f8b0b07e1c4cecad4cd54de86e-2ae502dea11cfaf407e19382b55f9324",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com",
+			"initialParameterValues": {
+				"Spacing horizontal": "500"
+			}
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"actionSlots": {
+			"selecton": {
+				"eventProps": {
+					"type": "selection",
+					"props": {
+						"nameFilter": ["*"],
+						"selectionColor": "#ff0000",
+						"availableColor": "#00ff00",
+						"hoverColor": "#0000ff"
+					}
+				},
+				"action": {
+					"type": "setContainerVisibility",
+					"props": {
+						"container": {
+							"name": "anchor2d",
+							"props": {
+								"id": "selection-changed"
+							}
+						},
+						"mode": "open"
+					}
+				}
+			},
+			"selectoff": {
+				"eventProps": {
+					"type": "selection",
+					"props": {
+						"nameFilter": ["*"]
+					}
+				},
+				"action": {
+					"type": "setContainerVisibility",
+					"props": {
+						"container": {
+							"name": "anchor2d",
+							"props": {
+								"id": "selection-changed"
+							}
+						},
+						"mode": "close"
+					}
+				}
+			},
+			"hoveron": {
+				"eventProps": {
+					"type": "selection",
+					"props": {
+						"nameFilter": ["*"]
+					}
+				},
+				"action": {
+					"type": "setContainerVisibility",
+					"props": {
+						"container": {
+							"name": "anchor2d",
+							"props": {
+								"id": "hover-changed"
+							}
+						},
+						"mode": "open"
+					}
+				}
+			},
+			"hoveroff": {
+				"eventProps": {
+					"type": "selection",
+					"props": {
+						"nameFilter": ["*"]
+					}
+				},
+				"action": {
+					"type": "setContainerVisibility",
+					"props": {
+						"container": {
+							"name": "anchor2d",
+							"props": {
+								"id": "hover-changed"
+							}
+						},
+						"mode": "close"
+					}
+				}
+			}
+		},
+		"containers": [
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "selection-changed",
+					"location": [24, 88],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": true,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Selection changed"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "hover-changed",
+					"location": [24, 160],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": true,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Hovered"
+						}
+					}
+				]
+			}
+		]
+	}
+}
