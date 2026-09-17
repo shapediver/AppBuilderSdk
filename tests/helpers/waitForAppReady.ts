@@ -1,8 +1,10 @@
-import {Page} from "@playwright/test";
+import {Frame, Page} from "@playwright/test";
+
+type PageOrFrame = Page | Frame;
 
 /** Waits until the standard ShapeDiver AppBuilder page is ready to use. */
 export async function waitForAppReady(
-	page: Page,
+	page: PageOrFrame,
 	options: {
 		timeout?: number;
 		interstitial?: (page: Page) => Promise<void>;
@@ -14,7 +16,12 @@ export async function waitForAppReady(
 		.locator('[data-component="Loader"]')
 		.waitFor({state: "hidden", timeout});
 
-	if (interstitial) await interstitial(page);
+	if (interstitial) {
+		if (!("goto" in page)) {
+			throw new Error("waitForAppReady setup requires a top-level page");
+		}
+		await interstitial(page);
+	}
 
 	await page.waitForFunction(
 		() => {

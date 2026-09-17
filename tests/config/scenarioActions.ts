@@ -88,6 +88,13 @@
  *     await page.getByRole("button", { name: "Section" }).click();
  *     await page.getByRole("region", { name: "Section" }).waitFor({ state: "visible" });
  *
+ * E-COMMERCE / TOOLS API
+ *   Dedicated specs, not this file. Each API method is a named `actions[]`
+ *   entry (one Playwright test per action):
+ *     tests/specs/ecommerceApi.spec.ts  + tests/config/scenarioECommerceApi.ts
+ *     tests/specs/toolsApi.spec.ts      + tests/config/scenarioToolsApi.ts
+ *   Helpers: tests/helpers/eCommerceApi.ts, tests/helpers/toolsApi.ts.
+ *
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -120,6 +127,22 @@ export interface ScenarioActionConfig {
 	 * @param slug - Use it to name snapshots: `${slug}-state-name`
 	 */
 	actions?: (page: Page, slug: string) => Promise<void>;
+}
+
+/** Fields needed to open a scenario URL (smoke/visual or a dedicated API spec). */
+export type ScenarioOpenConfig = Pick<
+	ScenarioActionConfig,
+	"slug" | "params" | "setup"
+>;
+
+/** Named interaction used by the e-commerce and tools API specs. */
+export interface ScenarioNamedAction {
+	name: string;
+	run: (page: Page, slug: string) => Promise<void>;
+}
+
+export interface ScenarioApiActionConfig extends ScenarioOpenConfig {
+	actions: ScenarioNamedAction[];
 }
 
 export const scenarioActions: ScenarioActionConfig[] = [
