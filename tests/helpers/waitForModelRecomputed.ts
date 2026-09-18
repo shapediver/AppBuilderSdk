@@ -1,4 +1,7 @@
-import {Page} from "@playwright/test";
+import {Frame, Page} from "@playwright/test";
+import {sdvTarget} from "./crossWindowParent";
+
+type PageOrFrame = Page | Frame;
 
 /**
  * Performs an action and waits for the resulting model computation to settle.
@@ -14,7 +17,8 @@ export async function waitForModelRecomputed(
 	action: () => Promise<void>,
 	timeout = 90_000,
 ): Promise<void> {
-	await page.evaluate(() => {
+	const target: PageOrFrame = sdvTarget(page);
+	await target.evaluate(() => {
 		const SDV = (window as any).SDV;
 		const state = {
 			customized: false,
@@ -90,7 +94,7 @@ export async function waitForModelRecomputed(
 	try {
 		await action();
 
-		await page.waitForFunction(
+		await target.waitForFunction(
 			() => {
 				const state = (window as any).__sdvModelRecomputed;
 				if (!state?.customized) return false;
@@ -144,7 +148,7 @@ export async function waitForModelRecomputed(
 			{timeout},
 		);
 	} finally {
-		await page.evaluate(() => {
+		await target.evaluate(() => {
 			const SDV = (window as any).SDV;
 			const state = (window as any).__sdvModelRecomputed;
 			if (state) {
