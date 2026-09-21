@@ -40,6 +40,13 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 					]),
 				);
 				expect(names).not.toContain("ask_user_question");
+				const screenshot = listed.find(
+					(tool) => tool.name === "get_screenshot",
+				);
+				expect(screenshot?.description).toMatch(/image_url/);
+				expect(screenshot?.description).not.toMatch(
+					/success:\s*true,\s*image\s*[},]/i,
+				);
 			},
 		},
 		{
@@ -186,7 +193,7 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 			},
 		},
 		{
-			name: "get_screenshot default and jpeg",
+			name: "get_screenshot default, jpeg options, and rejects unknown input",
 			run: async (page) => {
 				const screenshot = await toolsExecute(
 					page,
@@ -195,6 +202,7 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 				);
 				expect(screenshot.success).toBe(true);
 				expect(screenshot.hasImage).toBe(true);
+				expect(screenshot.mime).toBe("image/png");
 
 				const jpeg = await toolsExecute(page, "get_screenshot", {
 					contentType: "image/jpeg",
@@ -204,6 +212,16 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 				expect(jpeg.success).toBe(true);
 				expect(jpeg.hasImage).toBe(true);
 				expect(jpeg.mime).toBe("image/jpeg");
+
+				const webp = await toolsExecute(page, "get_screenshot", {
+					contentType: "image/webp",
+				});
+				expect(webp.success).toBe(false);
+
+				const withCamera = await toolsExecute(page, "get_screenshot", {
+					camera: {name: "Front"},
+				});
+				expect(withCamera.success).toBe(false);
 			},
 		},
 		{
