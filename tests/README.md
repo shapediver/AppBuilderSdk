@@ -60,25 +60,31 @@ Each slug gets:
 
 - **smoke** — page loads, canvas visible, no JS errors
 - **visual** — full-page screenshot matches baseline
-- **interaction** — runs `actions` (only when defined)
+- **interaction** — runs `actions` (one test) or each `namedActions` entry (one test per name)
+
+Use `namedActions` when a slug needs isolated cases on a fresh page (viewport sizes, independent asserts). See `tests/config/scenarioMobileFallback.ts`.
 
 Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automatically (discovered from the rendered GrasshopperExampleModels App Builder and BETA definition pages).
 
 ## Helpers
 
-| Helper                                  | Purpose                                                                                                                                |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `waitForAppReady(page)`                 | Wait until the app is fully loaded                                                                                                     |
-| `waitForModelRecomputed(page, action)`  | Run an action, wait for recompute                                                                                                      |
-| `takeSnapshot(page, name)`              | Screenshot + auto-create baseline if missing                                                                                           |
-| `getParameterElement(page, name)`       | Find a parameter by its label                                                                                                          |
-| `openCrossWindowScenario(page, config)` | Load App Builder in an iframe under an e-commerce CrossWindow parent (`tests/fixtures/cross-window`).                                  |
-| `openToolsApiScenario(page, config)`    | Same localhost parent/iframe as e-commerce (`?api=tools`). Stub Open agent to `window.parent`; parent owns Tools `getClientApi`.       |
-| `eCommerceTriggerAction(page, data)`    | Call parent `__connector` (`triggerAction`, `getOutput`, create/import, `updateParameterValues`). See `tests/helpers/eCommerceApi.ts`. |
-| `toolsExecute(page, name, input)`       | Call parent `__toolsApi` (`listTools`, `execute`, `getAgentConfig`, `getSessionInfo`). See `tests/helpers/toolsApi.ts`.                |
-| `viewportCoords(page, x, y)`            | Normalized (0–1) → pixel coordinates                                                                                                   |
-| `applyUrlParams(url, params)`           | Append query params to a URL                                                                                                           |
-| `rewriteToTestBranch(url, branch)`      | Rewrite `/latest/` → `/branch/`                                                                                                        |
+| Helper                                   | Purpose                                                                                                                                |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `waitForAppReady(page)`                  | Wait until the app is fully loaded                                                                                                     |
+| `waitForModelRecomputed(page, action)`   | Run an action, wait for recompute                                                                                                      |
+| `takeSnapshot(page, name)`               | Screenshot + auto-create baseline if missing                                                                                           |
+| `getParameterElement(page, name)`        | Find a parameter by its label                                                                                                          |
+| `openCrossWindowScenario(page, config)`  | Load App Builder in an iframe under an e-commerce CrossWindow parent (`tests/fixtures/cross-window`).                                  |
+| `openToolsApiScenario(page, config)`     | Same localhost parent/iframe as e-commerce (`?api=tools`). Stub Open agent to `window.parent`; parent owns Tools `getClientApi`.       |
+| `eCommerceTriggerAction(page, data)`     | Call parent `__connector` (`triggerAction`, `getOutput`, create/import, `updateParameterValues`). See `tests/helpers/eCommerceApi.ts`. |
+| `toolsExecute(page, name, input)`        | Call parent `__toolsApi` (`listTools`, `execute`, `getAgentConfig`, `getSessionInfo`). See `tests/helpers/toolsApi.ts`.                |
+| `viewportCoords(page, x, y)`             | Normalized (0–1) → pixel coordinates                                                                                                   |
+| `getStandardContainer(page, name)`       | AppShell slot by `data-app-builder-container` (`left` / `right` / `top` / `bottom`)                                                    |
+| `setViewportBelowNavbarBreakpoint(page)` | Resize below AppShell `md` (992px) and wait for the burger                                                                             |
+| `openAppShellNavbar(page)`               | Click the burger and wait for the navbar (`hidden` attribute removed)                                                                  |
+| `expectAppShellNavbarCollapsed(page)`    | Assert AppShell navbar `hidden` attribute (Mantine collapsed; Playwright `toBeHidden()` is unreliable)                                 |
+| `applyUrlParams(url, params)`            | Append query params to a URL                                                                                                           |
+| `rewriteToTestBranch(url, branch)`       | Rewrite `/latest/` → `/branch/`                                                                                                        |
 
 ## Picking 3D scene coordinates
 
