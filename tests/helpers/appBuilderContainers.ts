@@ -8,8 +8,8 @@ export type E2eStandardContainerName = "left" | "right" | "top" | "bottom";
 export const APP_BUILDER_E2E_VIEWPORT_DESKTOP = {width: 1280, height: 800};
 
 /**
- * Below AppShell `navbarBreakpoint` (`md`) in portrait. Right content moves under
- * the viewport; left/bottom live in the burger navbar.
+ * Below TemplateSelector `mobileBreakpoint` (`md`) in portrait. On AppShell,
+ * right content moves under the viewport; left/bottom live in the burger navbar.
  */
 export const APP_BUILDER_E2E_VIEWPORT_MOBILE_PORTRAIT = {
 	width: 390,
@@ -17,8 +17,10 @@ export const APP_BUILDER_E2E_VIEWPORT_MOBILE_PORTRAIT = {
 };
 
 /**
- * Below `md` in landscape. Bottom (and leftover left) stay in the burger;
- * right stays in the main grid.
+ * Below `md` (62em / 992px) in landscape. 900px is above `sm` (768px), so
+ * this size only enters mobile when the fixture uses `md` (TemplateSelector
+ * and ViewportAnchor2d `mobileBreakpoint` in example-mobileFallback.json).
+ * Bottom (and leftover left) stay in the burger; right stays in the main grid.
  */
 export const APP_BUILDER_E2E_VIEWPORT_MOBILE_LANDSCAPE = {
 	width: 900,
@@ -50,6 +52,18 @@ export async function expectTextInStandardContainer(
 	).toBeVisible();
 }
 
+/**
+ * Slot membership only. Grid left/right columns span the last row, so
+ * bottom overflow is clipped and Playwright `toBeVisible()` reports hidden.
+ */
+export async function expectTextPresentInStandardContainer(
+	page: Page,
+	name: E2eStandardContainerName,
+	text: string,
+): Promise<void> {
+	await expect(getStandardContainer(page, name)).toContainText(text);
+}
+
 export async function expectTextNotInStandardContainer(
 	page: Page,
 	name: E2eStandardContainerName,
@@ -60,6 +74,53 @@ export async function expectTextNotInStandardContainer(
 	);
 }
 
+export async function expectTabInStandardContainer(
+	page: Page,
+	name: E2eStandardContainerName,
+	tabName: string,
+): Promise<void> {
+	await expect(
+		getStandardContainer(page, name).getByRole("tab", {name: tabName}),
+	).toBeVisible();
+}
+
+export async function clickTabInStandardContainer(
+	page: Page,
+	name: E2eStandardContainerName,
+	tabName: string,
+): Promise<void> {
+	await getStandardContainer(page, name)
+		.getByRole("tab", {name: tabName})
+		.click();
+}
+
+/**
+ * Closed-anchor preview icons in example-mobileFallback-anchors.json:
+ * desktop = red circle (`#e03131`), mobile = green square (`#2f9e44`).
+ */
+export const MOBILE_FALLBACK_PREVIEW_ICON = {
+	desktop: "e03131",
+	mobile: "2f9e44",
+} as const;
+
+export function getPreviewIconImg(
+	page: Page,
+	kind: keyof typeof MOBILE_FALLBACK_PREVIEW_ICON,
+): Locator {
+	return page.locator(`img[src*="${MOBILE_FALLBACK_PREVIEW_ICON[kind]}"]`);
+}
+
+/** Resize below TemplateSelector `mobileBreakpoint` (`md`). */
+export async function setViewportBelowMobileBreakpoint(
+	page: Page,
+	size: {
+		width: number;
+		height: number;
+	} = APP_BUILDER_E2E_VIEWPORT_MOBILE_PORTRAIT,
+): Promise<void> {
+	await page.setViewportSize(size);
+}
+
 /** Resize below `navbarBreakpoint` and wait until the AppShell burger is shown. */
 export async function setViewportBelowNavbarBreakpoint(
 	page: Page,
@@ -68,7 +129,7 @@ export async function setViewportBelowNavbarBreakpoint(
 		height: number;
 	} = APP_BUILDER_E2E_VIEWPORT_MOBILE_PORTRAIT,
 ): Promise<void> {
-	await page.setViewportSize(size);
+	await setViewportBelowMobileBreakpoint(page, size);
 	await expect(getAppShellBurger(page)).toBeVisible();
 }
 
@@ -84,6 +145,13 @@ export async function setViewportAboveNavbarBreakpoint(
 export async function openAppShellNavbar(page: Page): Promise<void> {
 	await getAppShellBurger(page).click();
 	await expect(getAppShellNavbar(page)).not.toHaveAttribute("hidden");
+	await getAppShellNavbar(page).evaluate((element) =>
+		Promise.all(
+			element
+				.getAnimations({subtree: true})
+				.map((animation) => animation.finished.catch(() => undefined)),
+		),
+	);
 }
 
 /**

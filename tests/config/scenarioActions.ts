@@ -116,7 +116,13 @@ import {getParameterElement} from "../helpers/getParameterElement";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
-import {exampleMobileFallbackNamedActions} from "./scenarioMobileFallback";
+import {
+	exampleMobileFallbackAnchorsNamedActions,
+	exampleMobileFallbackGridNamedActions,
+	exampleMobileFallbackKeepBottomNamedActions,
+	exampleMobileFallbackNamedActions,
+	exampleMobileFallbackTabsNamedActions,
+} from "./scenarioMobileFallback";
 
 export interface ScenarioNamedAction {
 	name: string;
@@ -693,6 +699,27 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-mobileFallback",
 		params: {g: "example-mobileFallback.json"},
 		namedActions: exampleMobileFallbackNamedActions,
+	},
+	{
+		// Same remapping as example-mobileFallback; Grid has no burger.
+		slug: "example-mobileFallback-grid",
+		params: {g: "example-mobileFallback-grid.json"},
+		namedActions: exampleMobileFallbackGridNamedActions,
+	},
+	{
+		slug: "example-mobileFallback-tabs",
+		params: {g: "example-mobileFallback-tabs.json"},
+		namedActions: exampleMobileFallbackTabsNamedActions,
+	},
+	{
+		slug: "example-mobileFallback-anchors",
+		params: {g: "example-mobileFallback-anchors.json"},
+		namedActions: exampleMobileFallbackAnchorsNamedActions,
+	},
+	{
+		slug: "example-mobileFallback-keepBottom",
+		params: {g: "example-mobileFallback-keepBottom.json"},
+		namedActions: exampleMobileFallbackKeepBottomNamedActions,
 	},
 ];
 

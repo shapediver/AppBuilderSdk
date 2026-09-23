@@ -14,19 +14,7 @@
 		"components": {
 			"AppBuilderTemplateSelector": {
 				"defaultProps": {
-					"mobileBreakpoint": "md",
-					"mobileFallbacks": {
-						"left": {
-							"container": "right"
-						},
-						"right": {
-							"container": "bottom",
-							"position": "after"
-						},
-						"top": {
-							"container": "bottom"
-						}
-					}
+					"mobileBreakpoint": "md"
 				}
 			},
 			"ViewportAnchor2d": {
@@ -37,6 +25,11 @@
 						"position": "after"
 					}
 				}
+			},
+			"ViewportAnchor3d": {
+				"defaultProps": {
+					"mobileBreakpoint": "md"
+				}
 			}
 		}
 	},
@@ -44,58 +37,38 @@
 		"version": "1.0",
 		"containers": [
 			{
-				"name": "left",
+				"name": "anchor3d",
 				"props": {
+					"id": "mf-anchor-3d-default",
+					"location": [0, 0, 50],
+					"justification": "TL",
+					"defaultOpen": true
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "MF-A3D-DEFAULT"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor3d",
+				"props": {
+					"id": "mf-anchor-3d-json-bottom",
+					"location": [40, 0, 50],
+					"justification": "TL",
+					"defaultOpen": true,
 					"mobileFallback": {
-						"position": "before"
+						"container": "bottom"
 					}
 				},
 				"widgets": [
 					{
 						"type": "text",
 						"props": {
-							"markdown": "MF-LEFT-CHAIN"
-						}
-					}
-				]
-			},
-			{
-				"name": "right",
-				"widgets": [
-					{
-						"type": "text",
-						"props": {
-							"markdown": "MF-RIGHT-THEME"
-						}
-					}
-				]
-			},
-			{
-				"name": "bottom",
-				"props": {
-					"mobileFallback": {}
-				},
-				"widgets": [
-					{
-						"type": "text",
-						"props": {
-							"markdown": "MF-BOTTOM-NATIVE"
-						}
-					}
-				]
-			},
-			{
-				"name": "top",
-				"props": {
-					"mobileFallback": {
-						"disabled": true
-					}
-				},
-				"widgets": [
-					{
-						"type": "text",
-						"props": {
-							"markdown": "MF-TOP-DISABLED"
+							"markdown": "MF-A3D-JSON-BOTTOM"
 						}
 					}
 				]
@@ -103,7 +76,7 @@
 			{
 				"name": "anchor2d",
 				"props": {
-					"id": "mf-anchor-theme",
+					"id": "mf-anchor-2d-theme",
 					"location": [24, 80],
 					"justification": "TL",
 					"previewIcon": "tabler:info-circle",
@@ -113,7 +86,7 @@
 					{
 						"type": "text",
 						"props": {
-							"markdown": "MF-ANCHOR-THEME"
+							"markdown": "MF-A2D-THEME"
 						}
 					}
 				]
@@ -121,41 +94,20 @@
 			{
 				"name": "anchor2d",
 				"props": {
-					"id": "mf-anchor-json-left",
-					"location": [24, 160],
+					"id": "mf-anchor-preview",
+					"location": [24, 200],
 					"justification": "TL",
-					"previewIcon": "tabler:arrow-left",
-					"defaultOpen": true,
+					"previewIcon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23e03131'/%3E%3C/svg%3E",
+					"defaultOpen": false,
 					"mobileFallback": {
-						"container": "left"
+						"previewIcon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='2' y='2' width='12' height='12' fill='%232f9e44'/%3E%3C/svg%3E"
 					}
 				},
 				"widgets": [
 					{
 						"type": "text",
 						"props": {
-							"markdown": "MF-ANCHOR-JSON-LEFT"
-						}
-					}
-				]
-			},
-			{
-				"name": "anchor2d",
-				"props": {
-					"id": "mf-anchor-json-hide",
-					"location": [24, 240],
-					"justification": "TL",
-					"previewIcon": "tabler:eye-off",
-					"defaultOpen": true,
-					"mobileFallback": {
-						"disabled": true
-					}
-				},
-				"widgets": [
-					{
-						"type": "text",
-						"props": {
-							"markdown": "MF-ANCHOR-JSON-HIDE"
+							"markdown": "MF-PREVIEW-CLOSED"
 						}
 					}
 				]

@@ -62,7 +62,7 @@ Each slug gets:
 - **visual** — full-page screenshot matches baseline
 - **interaction** — runs `actions` (one test) or each `namedActions` entry (one test per name)
 
-Use `namedActions` when a slug needs isolated cases on a fresh page (viewport sizes, independent asserts). See `tests/config/scenarioMobileFallback.ts`.
+Use `namedActions` when a slug needs isolated cases on a fresh page (viewport sizes, independent asserts). See `tests/config/scenarioMobileFallback.ts` (AppShell and Grid).
 
 Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automatically (discovered from the rendered GrasshopperExampleModels App Builder and BETA definition pages).
 
@@ -79,7 +79,9 @@ Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automati
 | `eCommerceTriggerAction(page, data)`     | Call parent `__connector` (`triggerAction`, `getOutput`, create/import, `updateParameterValues`). See `tests/helpers/eCommerceApi.ts`. |
 | `toolsExecute(page, name, input)`        | Call parent `__toolsApi` (`listTools`, `execute`, `getAgentConfig`, `getSessionInfo`). See `tests/helpers/toolsApi.ts`.                |
 | `viewportCoords(page, x, y)`             | Normalized (0–1) → pixel coordinates                                                                                                   |
-| `getStandardContainer(page, name)`       | AppShell slot by `data-app-builder-container` (`left` / `right` / `top` / `bottom`)                                                    |
+| `getStandardContainer(page, name)`       | Template slot by `data-app-builder-container` (`left` / `right` / `top` / `bottom`)                                                    |
+| `expectTextPresentInStandardContainer`   | Assert slot text without Playwright visibility (Grid overflow clip)                                                                    |
+| `setViewportBelowMobileBreakpoint(page)` | Resize below TemplateSelector `md` (992px); no AppShell burger wait                                                            |
 | `setViewportBelowNavbarBreakpoint(page)` | Resize below AppShell `md` (992px) and wait for the burger                                                                             |
 | `openAppShellNavbar(page)`               | Click the burger and wait for the navbar (`hidden` attribute removed)                                                                  |
 | `expectAppShellNavbarCollapsed(page)`    | Assert AppShell navbar `hidden` attribute (Mantine collapsed; Playwright `toBeHidden()` is unreliable)                                 |
