@@ -87,6 +87,7 @@ for (const {slug, url} of allEntries.values()) {
 	const setup = config?.setup;
 	const params = config?.params;
 	const actions = config?.actions;
+	const namedActions = config?.namedActions;
 	const resolvedUrl = applyUrlParams(testUrl(url), params);
 
 	test.describe(slug, () => {
@@ -100,7 +101,17 @@ for (const {slug, url} of allEntries.values()) {
 			await takeSnapshot(page, slug);
 		});
 
-		if (actions) {
+		if (namedActions?.length) {
+			for (const action of namedActions) {
+				test(`interaction: ${action.name}`, async ({page}) => {
+					await page.goto(resolvedUrl, {
+						waitUntil: "domcontentloaded",
+					});
+					await waitForAppReady(page, {interstitial: setup});
+					await action.run(page, slug);
+				});
+			}
+		} else if (actions) {
 			test("interaction: user actions complete successfully", async ({
 				page,
 			}) => {
