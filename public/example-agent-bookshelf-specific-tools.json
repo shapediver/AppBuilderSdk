@@ -1,0 +1,176 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "9095de51f0839bc1dad6b93d347a19aad197488d074cfabc95be12c4f77d87cb1855d5856faa32e5f49b8bd8510dc44be4e844e18da291544c695adfdfe5cd3704e24fe85f91b067b6405e965439863a03311e3d1d8a7ed7b710505d009fdf65fa0e7a06367ee3-c51a4c34717482c64a2e02fd89424b5d",
+			"modelViewUrl": "https://sdr8euc1.eu-central-1.shapediver.com",
+			"acceptRejectMode": false
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"agents": [
+			{
+				"id": "bookshelf",
+				"name": "Bookshelf",
+				"message": "You configure a bookshelf. Use resize_compartment to set the size of one compartment. Use set_compartment_count to set how many compartments there are. Dimensions are millimeters.",
+				"specificTools": [
+					{
+						"name": "resize_compartment",
+						"description": "Set the width and height of one compartment, in millimeters.",
+						"inputSchema": {
+							"type": "object",
+							"properties": {
+								"width": {
+									"type": "number",
+									"description": "Compartment width in millimeters."
+								},
+								"height": {
+									"type": "number",
+									"description": "Compartment height in millimeters."
+								}
+							},
+							"required": ["width", "height"],
+							"additionalProperties": false
+						},
+						"actionSequence": [
+							{
+								"type": "setParameterValues",
+								"props": {
+									"parameterValues": [
+										{
+											"parameter": {
+												"name": "Compartment width"
+											},
+											"source": {
+												"type": "agentTool",
+												"props": {
+													"path": "width"
+												}
+											}
+										},
+										{
+											"parameter": {
+												"name": "Compartment height"
+											},
+											"source": {
+												"type": "agentTool",
+												"props": {
+													"path": "height"
+												}
+											}
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"name": "set_compartment_count",
+						"description": "Set how many compartments run across and down the shelf.",
+						"inputSchema": {
+							"type": "object",
+							"properties": {
+								"horizontal": {
+									"type": "number",
+									"description": "Number of compartments across."
+								},
+								"vertical": {
+									"type": "number",
+									"description": "Number of compartments down."
+								}
+							},
+							"required": ["horizontal", "vertical"],
+							"additionalProperties": false
+						},
+						"actionSequence": [
+							{
+								"type": "setParameterValues",
+								"props": {
+									"parameterValues": [
+										{
+											"parameter": {
+												"name": "Compartments horizontal"
+											},
+											"source": {
+												"type": "agentTool",
+												"props": {
+													"path": "horizontal"
+												}
+											}
+										},
+										{
+											"parameter": {
+												"name": "Compartments vertical"
+											},
+											"source": {
+												"type": "agentTool",
+												"props": {
+													"path": "vertical"
+												}
+											}
+										}
+									]
+								}
+							}
+						]
+					}
+				]
+			}
+		],
+		"containers": [
+			{
+				"name": "right",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Bookshelf\nAsk the agent to resize a compartment or change how many compartments there are."
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Compartment width"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Compartment height"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Compartments horizontal"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Compartments vertical"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "agent",
+						"props": {
+							"context": "Bookshelf configurator. Compartment size and count are set with the specific tools."
+						}
+					}
+				]
+			}
+		]
+	}
+}

@@ -63,6 +63,55 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 			},
 		},
 		{
+			name: "listTools includes set_length without its action sequence",
+			run: async (page) => {
+				const listed = await toolsListTools(page);
+				const setLength = listed.find(
+					(tool) => tool.name === "set_length",
+				);
+				expect(setLength?.description).toBe("Set the Length parameter");
+				expect(setLength?.inputSchema).toMatchObject({
+					type: "object",
+					properties: {length: {type: "number"}},
+				});
+				expect(JSON.stringify(setLength)).not.toContain(
+					"actionSequence",
+				);
+				expect(JSON.stringify(setLength)).not.toContain("agentTool");
+			},
+		},
+		{
+			name: "set_length writes Length from the tool input",
+			run: async (page) => {
+				const before = await toolsExecute(
+					page,
+					"get_parameter_values",
+					{
+						names: ["Length"],
+					},
+				);
+				const currentLength = (
+					before.values as {currentValue?: unknown}[]
+				)[0]?.currentValue;
+				const nextLength = Number(currentLength) === 4 ? 5 : 4;
+				const missing = await toolsExecute(page, "set_length", {});
+				expect(missing.success).toBe(false);
+				const setLength = await toolsExecuteAndRecompute(
+					page,
+					"set_length",
+					{length: nextLength},
+				);
+				expect(setLength).toEqual({success: true});
+				const after = await toolsExecute(page, "get_parameter_values", {
+					names: ["Length"],
+				});
+				expect(
+					(after.values as {currentValue?: unknown}[])[0]
+						?.currentValue,
+				).toBe(nextLength);
+			},
+		},
+		{
 			name: "execute unknown tool fails",
 			run: async (page) => {
 				const missingTool = await toolsExecute(page, "not_a_tool", {});

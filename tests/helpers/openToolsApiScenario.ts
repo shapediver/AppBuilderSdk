@@ -13,6 +13,30 @@ export const TOOLS_E2E_AGENT = {
 	id: "e2e-tools",
 	name: "E2E Tools",
 	message: "Playwright Tools API",
+	specificTools: [
+		{
+			name: "set_length",
+			description: "Set the Length parameter",
+			inputSchema: {
+				type: "object",
+				properties: {length: {type: "number"}},
+				required: ["length"],
+				additionalProperties: false,
+			},
+			actionSequence: [
+				{
+					type: "setParameterValue",
+					props: {
+						parameter: {name: "Length"},
+						source: {
+							type: "agentTool",
+							props: {path: "length"},
+						},
+					},
+				},
+			],
+		},
+	],
 } as const;
 
 /**
