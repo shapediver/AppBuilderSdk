@@ -37,37 +37,35 @@
 							"required": ["width", "height"],
 							"additionalProperties": false
 						},
-						"actionSequence": [
-							{
-								"type": "setParameterValues",
-								"props": {
-									"parameterValues": [
-										{
-											"parameter": {
-												"name": "Compartment width"
-											},
-											"source": {
-												"type": "agentTool",
-												"props": {
-													"path": "width"
-												}
-											}
+						"action": {
+							"type": "setParameterValues",
+							"props": {
+								"parameterValues": [
+									{
+										"parameter": {
+											"name": "Compartment width"
 										},
-										{
-											"parameter": {
-												"name": "Compartment height"
-											},
-											"source": {
-												"type": "agentTool",
-												"props": {
-													"path": "height"
-												}
+										"source": {
+											"type": "agentTool",
+											"props": {
+												"path": "width"
 											}
 										}
-									]
-								}
+									},
+									{
+										"parameter": {
+											"name": "Compartment height"
+										},
+										"source": {
+											"type": "agentTool",
+											"props": {
+												"path": "height"
+											}
+										}
+									}
+								]
 							}
-						]
+						}
 					},
 					{
 						"name": "set_compartment_count",
@@ -87,37 +85,35 @@
 							"required": ["horizontal", "vertical"],
 							"additionalProperties": false
 						},
-						"actionSequence": [
-							{
-								"type": "setParameterValues",
-								"props": {
-									"parameterValues": [
-										{
-											"parameter": {
-												"name": "Compartments horizontal"
-											},
-											"source": {
-												"type": "agentTool",
-												"props": {
-													"path": "horizontal"
-												}
-											}
+						"action": {
+							"type": "setParameterValues",
+							"props": {
+								"parameterValues": [
+									{
+										"parameter": {
+											"name": "Compartments horizontal"
 										},
-										{
-											"parameter": {
-												"name": "Compartments vertical"
-											},
-											"source": {
-												"type": "agentTool",
-												"props": {
-													"path": "vertical"
-												}
+										"source": {
+											"type": "agentTool",
+											"props": {
+												"path": "horizontal"
 											}
 										}
-									]
-								}
+									},
+									{
+										"parameter": {
+											"name": "Compartments vertical"
+										},
+										"source": {
+											"type": "agentTool",
+											"props": {
+												"path": "vertical"
+											}
+										}
+									}
+								]
 							}
-						]
+						}
 					}
 				]
 			}

@@ -63,7 +63,7 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 			},
 		},
 		{
-			name: "listTools includes set_length without its action sequence",
+			name: "listTools includes set_length without its action",
 			run: async (page) => {
 				const listed = await toolsListTools(page);
 				const setLength = listed.find(
@@ -75,7 +75,7 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 					properties: {length: {type: "number"}},
 				});
 				expect(JSON.stringify(setLength)).not.toContain(
-					"actionSequence",
+					"setParameterValue",
 				);
 				expect(JSON.stringify(setLength)).not.toContain("agentTool");
 			},

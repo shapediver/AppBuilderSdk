@@ -23,18 +23,16 @@ export const TOOLS_E2E_AGENT = {
 				required: ["length"],
 				additionalProperties: false,
 			},
-			actionSequence: [
-				{
-					type: "setParameterValue",
-					props: {
-						parameter: {name: "Length"},
-						source: {
-							type: "agentTool",
-							props: {path: "length"},
-						},
+			action: {
+				type: "setParameterValue",
+				props: {
+					parameter: {name: "Length"},
+					source: {
+						type: "agentTool",
+						props: {path: "length"},
 					},
 				},
-			],
+			},
 		},
 	],
 } as const;
