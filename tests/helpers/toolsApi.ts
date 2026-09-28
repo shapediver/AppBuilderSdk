@@ -9,6 +9,7 @@ import {waitForModelRecomputed} from "./waitForModelRecomputed";
 export type ToolsApiListedTool = {
 	name: string;
 	description: string;
+	inputSchema?: unknown;
 };
 
 export type ToolsApiExecuteResult = Record<string, unknown>;
@@ -27,6 +28,7 @@ export async function toolsListTools(
 		return reply.tools.map((tool) => ({
 			name: tool.name,
 			description: tool.description,
+			inputSchema: tool.inputSchema,
 		}));
 	});
 }

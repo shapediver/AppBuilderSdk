@@ -21,7 +21,11 @@ export type CrossWindowParentWindow = {
 	};
 	__toolsApi?: {
 		listTools: () => Promise<{
-			tools: {name: string; description: string}[];
+			tools: {
+				name: string;
+				description: string;
+				inputSchema?: unknown;
+			}[];
 		}>;
 		execute: (data: {name: string; input: unknown}) => Promise<unknown>;
 		getAgentConfig: () => Promise<unknown>;
