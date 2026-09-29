@@ -71,10 +71,10 @@
 					[
 						{
 							"type": "action",
-							"label": "Sequential",
-							"icon": "tabler:door",
-							"tooltip": "Show door, then zoom extents",
 							"props": {
+								"label": "Sequential",
+								"icon": "tabler:door",
+								"tooltip": "Show door, then zoom extents",
 								"definition": {
 									"type": "executeActions",
 									"props": {
@@ -114,10 +114,10 @@
 						},
 						{
 							"type": "action",
-							"label": "Sequential",
-							"icon": "tabler:door-off",
-							"tooltip": "Hide door, then switch to front view",
 							"props": {
+								"label": "Sequential",
+								"icon": "tabler:door-off",
+								"tooltip": "Hide door, then switch to front view",
 								"definition": {
 									"type": "executeActions",
 									"props": {
@@ -157,10 +157,10 @@
 						},
 						{
 							"type": "action",
-							"label": "Parallel",
-							"icon": "tabler:arrows-left",
-							"tooltip": "Set length and color together, and hide left panel",
 							"props": {
+								"label": "Parallel",
+								"icon": "tabler:arrows-left",
+								"tooltip": "Set length and color together, and hide left panel",
 								"definition": {
 									"type": "executeActions",
 									"props": {
@@ -201,10 +201,10 @@
 						},
 						{
 							"type": "action",
-							"label": "Parallel",
-							"icon": "tabler:arrows-right",
-							"tooltip": "Reset parameters and open left panel",
 							"props": {
+								"label": "Parallel",
+								"icon": "tabler:arrows-right",
+								"tooltip": "Reset parameters and open left panel",
 								"definition": {
 									"type": "executeActions",
 									"props": {

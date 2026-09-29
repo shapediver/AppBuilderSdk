@@ -130,10 +130,10 @@
 						{
 							"id": "toolbar-geometry-anchor-toggle",
 							"type": "action",
-							"label": "Geometry Settings",
-							"icon": "tabler:settings",
-							"tooltip": "Configure model geometry (custom width 450)",
 							"props": {
+								"label": "Geometry Settings",
+								"icon": "tabler:settings",
+								"tooltip": "Configure model geometry (custom width 450)",
 								"definition": {
 									"type": "setContainerVisibility",
 									"props": {
@@ -151,10 +151,10 @@
 						{
 							"id": "toolbar-3d-anchor-toggle",
 							"type": "action",
-							"label": "3D Anchor Info",
-							"icon": "tabler:cube",
-							"tooltip": "Toggle 3D scene anchor panel",
 							"props": {
+								"label": "3D Anchor Info",
+								"icon": "tabler:cube",
+								"tooltip": "Toggle 3D scene anchor panel",
 								"definition": {
 									"type": "setContainerVisibility",
 									"props": {
@@ -172,10 +172,10 @@
 						{
 							"id": "toolbar-positioned-2d-anchor-toggle",
 							"type": "action",
-							"label": "2D Positioned Anchor",
-							"icon": "tabler:map-pin",
-							"tooltip": "Toggle 2D anchor positioned at [24, 120]",
 							"props": {
+								"label": "2D Positioned Anchor",
+								"icon": "tabler:map-pin",
+								"tooltip": "Toggle 2D anchor positioned at [24, 120]",
 								"definition": {
 									"type": "setContainerVisibility",
 									"props": {
@@ -195,11 +195,11 @@
 						{
 							"id": "manual-default-ar",
 							"type": "action",
-							"label": "View in AR",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:augmented-reality",
 							"props": {
+								"label": "View in AR",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:augmented-reality",
 								"definition": {
 									"type": "ar",
 									"props": {}
@@ -209,11 +209,11 @@
 						{
 							"id": "manual-default-zoom",
 							"type": "action",
-							"label": "Zoom extents",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:zoom-in",
 							"props": {
+								"label": "Zoom extents",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:zoom-in",
 								"definition": {
 									"type": "camera",
 									"props": {
@@ -225,22 +225,22 @@
 						},
 						{
 							"id": "bottom-camera-menu",
-							"label": "Camera matrix",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"tooltip": "All implemented camera action variants",
-							"icon": "video",
 							"type": "actionMenu",
 							"props": {
+								"label": "Camera matrix",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"tooltip": "All implemented camera action variants",
+								"icon": "video",
 								"sections": [
 									[
 										{
 											"id": "camera-assign-by-name-top",
 											"type": "action",
 											"presentation": "item",
-											"label": "Top",
-											"icon": "video",
 											"props": {
+												"label": "Top",
+												"icon": "video",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -258,9 +258,9 @@
 											"id": "camera-assign-by-name.bottom",
 											"type": "action",
 											"presentation": "item",
-											"label": "Bottom",
-											"icon": "video",
 											"props": {
+												"label": "Bottom",
+												"icon": "video",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -281,11 +281,11 @@
 						{
 							"id": "manual-default-fullscreen-3-states",
 							"type": "action",
-							"label": "Fullscreen",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:maximize",
 							"props": {
+								"label": "Fullscreen",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:maximize",
 								"definition": {
 									"type": "fullscreen",
 									"props": {
@@ -299,11 +299,11 @@
 						{
 							"id": "manual-default-undo",
 							"type": "action",
-							"label": "Undo",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:arrow-back-up",
 							"props": {
+								"label": "Undo",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:arrow-back-up",
 								"definition": {
 									"type": "undo",
 									"props": {}
@@ -313,11 +313,11 @@
 						{
 							"id": "manual-default-redo",
 							"type": "action",
-							"label": "Redo",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:arrow-forward-up",
 							"props": {
+								"label": "Redo",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:arrow-forward-up",
 								"definition": {
 									"type": "redo",
 									"props": {}
@@ -327,11 +327,11 @@
 						{
 							"id": "manual-default-reset",
 							"type": "action",
-							"label": "Reset to default parameters",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:reload",
 							"props": {
+								"label": "Reset to default parameters",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:reload",
 								"definition": {
 									"type": "resetParameterValues",
 									"props": {}
@@ -340,21 +340,21 @@
 						},
 						{
 							"id": "manual-default-more-options",
-							"label": "More options",
-							"labelSide": "bottom",
-							"labelAlign": "center",
-							"icon": "tabler:dots-vertical",
 							"type": "actionMenu",
 							"props": {
+								"label": "More options",
+								"labelSide": "bottom",
+								"labelAlign": "center",
+								"icon": "tabler:dots-vertical",
 								"sections": [
 									[
 										{
 											"id": "manual-default-import-parameter-values",
 											"type": "action",
 											"presentation": "item",
-											"label": "Import parameter values",
-											"icon": "tabler:upload",
 											"props": {
+												"label": "Import parameter values",
+												"icon": "tabler:upload",
 												"definition": {
 													"type": "importParameterValues",
 													"props": {}
@@ -365,9 +365,9 @@
 											"id": "manual-default-export-parameter-values",
 											"type": "action",
 											"presentation": "item",
-											"label": "Export parameter values",
-											"icon": "tabler:download",
 											"props": {
+												"label": "Export parameter values",
+												"icon": "tabler:download",
 												"definition": {
 													"type": "exportParameterValues",
 													"props": {}
@@ -380,9 +380,9 @@
 											"id": "manual-default-create-model-state",
 											"type": "action",
 											"presentation": "item",
-											"label": "Create model state",
-											"icon": "tabler:device-floppy",
 											"props": {
+												"label": "Create model state",
+												"icon": "tabler:device-floppy",
 												"definition": {
 													"type": "createModelState",
 													"props": {
@@ -396,9 +396,9 @@
 											"id": "manual-default-import-model-state",
 											"type": "action",
 											"presentation": "item",
-											"label": "Import model state",
-											"icon": "tabler:file-import",
 											"props": {
+												"label": "Import model state",
+												"icon": "tabler:file-import",
 												"definition": {
 													"type": "importModelState",
 													"props": {}
@@ -426,11 +426,11 @@
 						{
 							"id": "top-length-parameter",
 							"type": "parameter",
-							"label": "Length",
-							"tooltip": "Open Length parameter in a toolbar popover",
-							"icon": "https://viewer.shapediver.com/v3/images/underConstructionPikachu.gif",
 							"presentation": "button",
 							"props": {
+								"label": "Length",
+								"tooltip": "Open Length parameter in a toolbar popover",
+								"icon": "https://viewer.shapediver.com/v3/images/underConstructionPikachu.gif",
 								"name": "Length",
 								"sessionId": "default",
 								"disableIfDirty": false,
@@ -446,10 +446,10 @@
 						{
 							"id": "top-image-export",
 							"type": "export",
-							"label": "Image export",
-							"tooltip": "Export ref with overrides and parameter values",
-							"icon": "https://viewer.shapediver.com/v3/images/me.png",
 							"props": {
+								"label": "Image export",
+								"tooltip": "Export ref with overrides and parameter values",
+								"icon": "https://viewer.shapediver.com/v3/images/me.png",
 								"name": "Image Export",
 								"sessionId": "default",
 								"overrides": {
@@ -472,21 +472,21 @@
 					[
 						{
 							"id": "flat-menu-button-presentation",
-							"label": "Single-section menu",
-							"tooltip": "Single menu section; entries render as regular buttons",
-							"icon": "https://viewer.shapediver.com/v3/graphics/cameraswitch.svg",
 							"type": "actionMenu",
 							"props": {
+								"label": "Single-section menu",
+								"tooltip": "Single menu section; entries render as regular buttons",
+								"icon": "https://viewer.shapediver.com/v3/graphics/cameraswitch.svg",
 								"sections": [
 									[
 										{
 											"id": "flat-set-single-value",
 											"type": "action",
 											"presentation": "item",
-											"label": "Set Hide Door true",
-											"tooltip": "setParameterValue action rendered as a button in a popover",
-											"icon": "toggle-right",
 											"props": {
+												"label": "Set Hide Door true",
+												"tooltip": "setParameterValue action rendered as a button in a popover",
+												"icon": "toggle-right",
 												"definition": {
 													"type": "setParameterValue",
 													"props": {
@@ -503,10 +503,10 @@
 											"id": "flat-set-multiple-values",
 											"type": "action",
 											"presentation": "item",
-											"label": "Set multiple values",
-											"tooltip": "setParameterValues action with multiple parameter entries",
-											"icon": "adjustments-horizontal",
 											"props": {
+												"label": "Set multiple values",
+												"tooltip": "setParameterValues action with multiple parameter entries",
+												"icon": "adjustments-horizontal",
 												"definition": {
 													"type": "setParameterValues",
 													"props": {
@@ -538,10 +538,10 @@
 						{
 							"id": "left-sound-action",
 							"type": "action",
-							"label": "Sound",
-							"tooltip": "Play/pause a sound action",
-							"icon": "volume",
 							"props": {
+								"label": "Sound",
+								"tooltip": "Play/pause a sound action",
+								"icon": "volume",
 								"definition": {
 									"type": "sound",
 									"props": {
@@ -558,11 +558,11 @@
 					[
 						{
 							"id": "left-parameter-panel",
-							"label": "Parameters",
-							"tooltip": "Open parameter controls in a toolbar popover",
-							"icon": "adjustments-horizontal",
 							"type": "widgets",
 							"props": {
+								"label": "Parameters",
+								"tooltip": "Open parameter controls in a toolbar popover",
+								"icon": "adjustments-horizontal",
 								"widgets": [
 									{
 										"type": "controls",
@@ -617,10 +617,10 @@
 						{
 							"id": "left-sound-action",
 							"type": "action",
-							"label": "Sound",
-							"tooltip": "Play/pause a sound action",
-							"icon": "volume",
 							"props": {
+								"label": "Sound",
+								"tooltip": "Play/pause a sound action",
+								"icon": "volume",
 								"definition": {
 									"type": "sound",
 									"props": {
@@ -635,21 +635,21 @@
 						},
 						{
 							"id": "bottom-camera-menu-items",
-							"label": "Camera matrix",
-							"tooltip": "All implemented camera action variants",
-							"icon": "video",
 							"type": "actionMenu",
 							"props": {
+								"label": "Camera matrix",
+								"tooltip": "All implemented camera action variants",
+								"icon": "video",
 								"sections": [
 									[
 										{
 											"id": "camera-assign-by-name",
 											"type": "action",
 											"presentation": "item",
-											"label": "Assign named/default camera",
-											"tooltip": "Assign an existing camera by name or id fallback",
-											"icon": "camera",
 											"props": {
+												"label": "Assign named/default camera",
+												"tooltip": "Assign an existing camera by name or id fallback",
+												"icon": "camera",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -667,10 +667,10 @@
 											"id": "camera-assign-new-perspective",
 											"type": "action",
 											"presentation": "item",
-											"label": "Assign new perspective camera",
-											"tooltip": "Create and assign a perspective camera",
-											"icon": "video",
 											"props": {
+												"label": "Assign new perspective camera",
+												"tooltip": "Create and assign a perspective camera",
+												"icon": "video",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -699,9 +699,9 @@
 											"id": "camera-set-position",
 											"type": "action",
 											"presentation": "item",
-											"label": "Set camera position",
-											"icon": "focus-centered",
 											"props": {
+												"label": "Set camera position",
+												"icon": "focus-centered",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -723,9 +723,9 @@
 											"id": "camera-reset",
 											"type": "action",
 											"presentation": "item",
-											"label": "Reset camera",
-											"icon": "camera",
 											"props": {
+												"label": "Reset camera",
+												"icon": "camera",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -745,9 +745,9 @@
 											"id": "camera-zoom-with-filter",
 											"type": "action",
 											"presentation": "item",
-											"label": "Zoom with filter",
-											"icon": "zoom-in",
 											"props": {
+												"label": "Zoom with filter",
+												"icon": "zoom-in",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -775,9 +775,9 @@
 											"id": "camera-animate-path",
 											"type": "action",
 											"presentation": "item",
-											"label": "Animate camera path",
-											"icon": "route",
 											"props": {
+												"label": "Animate camera path",
+												"icon": "route",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -816,21 +816,21 @@
 						},
 						{
 							"id": "bottom-camera-menu",
-							"label": "Camera matrix",
-							"tooltip": "All implemented camera action variants",
-							"icon": "video",
 							"type": "actionMenu",
 							"props": {
+								"label": "Camera matrix",
+								"tooltip": "All implemented camera action variants",
+								"icon": "video",
 								"sections": [
 									[
 										{
 											"id": "camera-assign-by-name",
 											"type": "action",
 											"presentation": "button",
-											"label": "Assign named/default camera",
-											"tooltip": "Assign an existing camera by name or id fallback",
-											"icon": "camera",
 											"props": {
+												"label": "Assign named/default camera",
+												"tooltip": "Assign an existing camera by name or id fallback",
+												"icon": "camera",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -848,10 +848,10 @@
 											"id": "camera-assign-new-perspective",
 											"type": "action",
 											"presentation": "button",
-											"label": "Assign new perspective camera",
-											"tooltip": "Create and assign a perspective camera",
-											"icon": "video",
 											"props": {
+												"label": "Assign new perspective camera",
+												"tooltip": "Create and assign a perspective camera",
+												"icon": "video",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -880,9 +880,9 @@
 											"id": "camera-set-position",
 											"type": "action",
 											"presentation": "button",
-											"label": "Set camera position",
-											"icon": "focus-centered",
 											"props": {
+												"label": "Set camera position",
+												"icon": "focus-centered",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -904,9 +904,9 @@
 											"id": "camera-reset",
 											"type": "action",
 											"presentation": "button",
-											"label": "Reset camera",
-											"icon": "camera",
 											"props": {
+												"label": "Reset camera",
+												"icon": "camera",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -926,9 +926,9 @@
 											"id": "camera-zoom-with-filter",
 											"type": "action",
 											"presentation": "button",
-											"label": "Zoom with filter",
-											"icon": "zoom-in",
 											"props": {
+												"label": "Zoom with filter",
+												"icon": "zoom-in",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -956,9 +956,9 @@
 											"id": "camera-animate-path",
 											"type": "action",
 											"presentation": "button",
-											"label": "Animate camera path",
-											"icon": "route",
 											"props": {
+												"label": "Animate camera path",
+												"icon": "route",
 												"definition": {
 													"type": "camera",
 													"props": {
@@ -1012,20 +1012,20 @@
 						{
 							"id": "bottom-image-export-minimal",
 							"type": "export",
-							"label": "Minimal export",
-							"tooltip": "Export ref with only the required name",
-							"icon": "download",
 							"props": {
+								"label": "Minimal export",
+								"tooltip": "Export ref with only the required name",
+								"icon": "download",
 								"name": "Image Export"
 							}
 						},
 						{
 							"id": "bottom-length-minimal",
 							"type": "parameter",
-							"label": "Minimal parameter",
-							"tooltip": "Parameter ref with only the required name",
-							"icon": "hash",
 							"props": {
+								"label": "Minimal parameter",
+								"tooltip": "Parameter ref with only the required name",
+								"icon": "hash",
 								"name": "Length"
 							}
 						}
@@ -1045,11 +1045,11 @@
 					[
 						{
 							"id": "right-widget-panel-test",
-							"icon": "layout-dashboard",
-							"label": "Widgets",
-							"tooltip": "Open a toolbar panel containing widgets",
 							"type": "widgets",
 							"props": {
+								"icon": "layout-dashboard",
+								"label": "Widgets",
+								"tooltip": "Open a toolbar panel containing widgets",
 								"widgets": [
 									{
 										"type": "text",
@@ -1095,13 +1095,13 @@
 					[
 						{
 							"id": "right-sticky-tabs-test",
-							"icon": "tabler:bookmark",
-							"label": "Sticky tabs",
-							"labelSide": "right",
-							"labelAlign": "center",
-							"tooltip": "Open a toolbar panel containing tabs with stickyTabs true",
 							"type": "tabs",
 							"props": {
+								"icon": "tabler:bookmark",
+								"label": "Sticky tabs",
+								"labelSide": "right",
+								"labelAlign": "center",
+								"tooltip": "Open a toolbar panel containing tabs with stickyTabs true",
 								"tabs": [
 									{
 										"name": "Info",
@@ -1148,13 +1148,13 @@
 						},
 						{
 							"id": "right-non-sticky-tabs-test",
-							"icon": "columns",
-							"label": "Non-sticky tabs",
-							"labelSide": "left",
-							"labelAlign": "center",
-							"tooltip": "Open a toolbar panel containing tabs with stickyTabs false",
 							"type": "tabs",
 							"props": {
+								"icon": "columns",
+								"label": "Non-sticky tabs",
+								"labelSide": "left",
+								"labelAlign": "center",
+								"tooltip": "Open a toolbar panel containing tabs with stickyTabs false",
 								"tabs": [
 									{
 										"name": "Notes",
