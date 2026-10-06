@@ -9,7 +9,7 @@ import {
 	DelayedTrackerPropsAwaiter,
 	setDefaultTrackerProps,
 } from "@AppBuilderLib/shared/lib/TrackerContext";
-import {ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
+import {type ITrackerContext} from "@AppBuilderLib/shared/lib/TrackerContext.types";
 import {
 	PlausibleConfig,
 	init as PlausibleInit,
@@ -57,6 +57,9 @@ function createPlausibleTracker(options: PlausibleConfig): ITrackerContext {
 			const {rating, ...props} = options?.props ?? {};
 			const {callback = undefined} = options ?? {};
 			if (type === "Web vitals") {
+				if (typeof value !== "number") {
+					return;
+				}
 				const name = metricName as
 					| "CLS"
 					| "FCP"
@@ -74,6 +77,14 @@ function createPlausibleTracker(options: PlausibleConfig): ITrackerContext {
 							mapMetricToBracket[name],
 						),
 						[propNameRating]: rating,
+					},
+					callback,
+				});
+			} else if (type === "Net Promoter Score") {
+				track(type, {
+					props: {
+						...props,
+						[metricName]: value,
 					},
 					callback,
 				});
