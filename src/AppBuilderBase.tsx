@@ -11,6 +11,7 @@ import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
 import "AppBuilderBase.css";
 import {useEffect} from "react";
+import NetPromoterScore from "~/shared/shared/ui/net-promoter-score/NetPromoterScore";
 import packagejson from "../package.json";
 
 // log the SDK version directly to the console
@@ -48,6 +49,7 @@ export default function AppBuilderBase() {
 			/>
 			<NotificationWrapper>
 				<AppBuilderPage />
+				<NetPromoterScore />
 			</NotificationWrapper>
 		</MantineProvider>
 	);
