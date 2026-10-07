@@ -34,7 +34,8 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 						"set_parameter_values",
 						"list_action_controls",
 						"trigger_action_control",
-						"set_camera_position",
+						"set_camera",
+						"get_camera",
 						"get_screenshot",
 						"get_metric",
 					]),
@@ -222,23 +223,43 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 			},
 		},
 		{
-			name: "set_camera_position requires target then applies",
+			name: "set_camera rejects a short position then applies",
 			run: async (page, slug) => {
 				const incompleteCamera = await toolsExecute(
 					page,
-					"set_camera_position",
+					"set_camera",
 					{
-						position: {x: 0, y: 0, z: 5},
+						position: [0, 0],
 					},
 				);
 				expect(incompleteCamera.success).toBe(false);
 
-				const camera = await toolsExecute(page, "set_camera_position", {
-					position: {x: 0, y: -8, z: 4},
-					target: {x: 0, y: 0, z: 1},
+				const camera = await toolsExecute(page, "set_camera", {
+					position: [0, -8, 4],
+					target: [0, 0, 1],
 				});
 				expect(camera.success).toBe(true);
 				await takeSnapshot(page, `${slug}-camera`);
+			},
+		},
+		{
+			name: "get_camera returns the active camera and rejects extra input",
+			run: async (page) => {
+				const camera = await toolsExecute(page, "get_camera", {});
+				expect(camera.success).toBe(true);
+				const document = camera.camera as {
+					type?: unknown;
+					position?: unknown;
+					target?: unknown;
+				};
+				expect(typeof document.type).toBe("string");
+				expect(document.position).toHaveLength(3);
+				expect(document.target).toHaveLength(3);
+
+				const extra = await toolsExecute(page, "get_camera", {
+					viewportId: "other",
+				});
+				expect(extra.success).toBe(false);
 			},
 		},
 		{
