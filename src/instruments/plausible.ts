@@ -57,9 +57,6 @@ function createPlausibleTracker(options: PlausibleConfig): ITrackerContext {
 			const {rating, ...props} = options?.props ?? {};
 			const {callback = undefined} = options ?? {};
 			if (type === "Web vitals") {
-				if (typeof value !== "number") {
-					return;
-				}
 				const name = metricName as
 					| "CLS"
 					| "FCP"
