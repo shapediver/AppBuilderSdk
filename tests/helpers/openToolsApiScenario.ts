@@ -75,6 +75,11 @@ export async function openToolsApiScenario(
 					response,
 					json: {
 						...json,
+						themeOverrides: {
+							components: {
+								AgentUi: {defaultProps: {mode: "window"}},
+							},
+						},
 						agentOverride: [TOOLS_E2E_AGENT],
 					},
 				});
@@ -83,7 +88,9 @@ export async function openToolsApiScenario(
 	});
 	await waitForAppReady(frame);
 
-	const openAgent = sdvTarget(page).getByRole("button", {name: "Open agent"});
+	const openAgent = sdvTarget(page).getByRole("button", {
+		name: TOOLS_E2E_AGENT.name,
+	});
 	await expect(openAgent).toBeEnabled({timeout: 90_000});
 	await openAgent.click();
 

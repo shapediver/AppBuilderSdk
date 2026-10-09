@@ -57,6 +57,8 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 					id: TOOLS_E2E_AGENT.id,
 					name: TOOLS_E2E_AGENT.name,
 					message: TOOLS_E2E_AGENT.message,
+					showThreadHistory: true,
+					createThreadOnLoad: true,
 				});
 				expect(await toolsGetSessionInfo(page)).toEqual(
 					expect.any(Object),
