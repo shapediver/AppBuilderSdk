@@ -9,8 +9,7 @@ import {Notifications} from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
-import {useEffect} from "react";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {useEffect, useState} from "react";
 import HomePage from "~/pages/HomePage";
 import AppBuilderStaticExamplePage from "~/pages/examples/AppBuilderStaticExamplePage";
 import ModelSelectPage from "~/pages/examples/ModelSelectPage";
@@ -23,6 +22,25 @@ declare global {
 	}
 }
 
+function getHashPathname() {
+	const pathname = window.location.hash.slice(1).split(/[?#]/, 1)[0];
+
+	if (!pathname) return "/";
+	return pathname.startsWith("/") ? pathname : `/${pathname}`;
+}
+
+function useHashPathname() {
+	const [pathname, setPathname] = useState(getHashPathname);
+
+	useEffect(() => {
+		const updatePathname = () => setPathname(getHashPathname());
+		window.addEventListener("hashchange", updatePathname);
+		return () => window.removeEventListener("hashchange", updatePathname);
+	}, []);
+
+	return pathname;
+}
+
 export default function App() {
 	useEffect(() => {
 		window.SDV = Object.assign(
@@ -33,6 +51,26 @@ export default function App() {
 	}, []);
 
 	const {theme, resolver} = useCustomTheme();
+	const pathname = useHashPathname();
+
+	const page = (() => {
+		switch (pathname) {
+			case "/":
+				return <HomePage />;
+			case "/view":
+				return <ViewPage example="Sideboard" />;
+			case "/appBuilder":
+				return <AppBuilderPage example="AppBuilderExampleDiagrid" />;
+			case "/appBuilderTest":
+				return <AppBuilderStaticExamplePage example="AR Cube" />;
+			case "/modelSelect":
+				return <ModelSelectPage />;
+			case "/multipleViewport":
+				return <MultipleViewportPage />;
+			default:
+				return <NoMatchPage />;
+		}
+	})();
 
 	return (
 		<MantineProvider
@@ -44,38 +82,7 @@ export default function App() {
 				notificationMaxHeight={1000}
 				pauseResetOnHover="notification"
 			/>
-			<NotificationWrapper>
-				<HashRouter>
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route
-							path="view"
-							element={<ViewPage example="Sideboard" />}
-						/>
-						<Route
-							path="appBuilder"
-							element={
-								<AppBuilderPage example="AppBuilderExampleDiagrid" />
-							}
-						/>
-						<Route
-							path="appBuilderTest"
-							element={
-								<AppBuilderStaticExamplePage example="AR Cube" />
-							}
-						/>
-						<Route
-							path="modelSelect"
-							element={<ModelSelectPage />}
-						/>
-						<Route
-							path="multipleViewport"
-							element={<MultipleViewportPage />}
-						/>
-						<Route path="*" element={<NoMatchPage />} />
-					</Routes>
-				</HashRouter>
-			</NotificationWrapper>
+			<NotificationWrapper>{page}</NotificationWrapper>
 		</MantineProvider>
 	);
 }
