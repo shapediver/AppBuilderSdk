@@ -17,8 +17,11 @@ export type ECommerceTriggerActionData = {
 export type ECommerceTriggerActionReply = {
 	success: boolean;
 	message?: string;
-	modelStateId?: string;
-	cartItemId?: string;
+	props?: {
+		modelStateId?: string;
+		cartItemId?: string;
+		results?: ECommerceTriggerActionReply[];
+	};
 };
 
 export type ECommerceGetOutputReply = {
