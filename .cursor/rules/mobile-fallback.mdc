@@ -1,0 +1,25 @@
+---
+description: Mobile fallback for containers and viewport anchors. Apply when changing mobileFallbacks, mobileBreakpoint, or anchor mobile layout.
+globs:
+    - "**/AppBuilderTemplateSelector*"
+    - "**/viewport-anchor/**"
+    - "**/useViewportAnchors*"
+    - "**/*mobileFallback*"
+    - "**/*MobileFallback*"
+alwaysApply: false
+---
+
+# Mobile fallback
+
+Theme is the general default. This is independent of AppShell vs grid.
+
+- Containers: `AppBuilderTemplateSelector.defaultProps.mobileFallbacks` and `mobileBreakpoint`.
+- Anchors: `ViewportAnchor2d` / `ViewportAnchor3d` `defaultProps.mobileFallback`. An anchor theme may set its own `mobileBreakpoint`.
+
+JSON overlays the defined fields of a single container or anchor. Omitted JSON keeps the theme. Omitted JSON and theme keep the previous behavior.
+
+Applied below TemplateSelector `mobileBreakpoint` (default `"md"`). AppShell `navbarBreakpoint` defaults to the same value.
+
+- `disabled` hides the content and does not move it. Otherwise the content moves.
+- A move is one hop of the original content. Content that arrived from somewhere else does not move again.
+- Merge uses the additional container's `position` and `order`. Omitted `position` / `order` means append.
