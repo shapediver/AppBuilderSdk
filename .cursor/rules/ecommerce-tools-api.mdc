@@ -20,6 +20,7 @@ Playwright parent/iframe setup is in `.cursor/rules/e2e-playwright.mdc`. Action-
 - Canonical action-prop Zod is `features/appbuilder/config/appbuilderActionsTypecheck.ts` (UI-free). It includes parameter-source schemas because `setParameterValue.source` and model-state sources share createModelState props.
 - Settings JSON (`appbuildertypecheck.ts`) and the e-commerce client (`ecommerceapitypecheck.ts`) import that file.
 - Do not import `appbuildertypecheck.ts` from the e-commerce client. That module pulls Mantine theme and widget validation.
+- `features/agent-tools/config` must not import `@mantine/` or `@shapediver/`. `IAgentTheme` is `MantineThemeOverrideProps`, the JSON theme mirror. `getTheme` still sends the published theme; functions are already stripped before it is stored.
 - `IAddItemToCartData` is the cart-plugin payload, not addToCart action props.
 - The screenshot tool schema is stricter than `viewportScreenshotPropsSchema`. Output is `image_url`. Input is `contentType`, `quality`, and `resolution`.
 - `getOutput` and `getMetric` share `getOutputContent`. Metric maps `content` to `value`.
