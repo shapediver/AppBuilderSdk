@@ -17,11 +17,15 @@ alwaysApply: false
 
 ## Table
 
-- One `{ isAction, component?, run? }` entry per action.
+- One `{ isAction, component?, run?, setup? }` entry per action.
 - Headless `run`s live in `features/appbuilder/model/appBuilderActionCatalog.ts` (`defaultAppBuilderActionRuns`). No UI imports.
 - `features/appbuilder/ui/sharedAppBuilderActions.ts` spreads those runs and adds shared components, including `executeActions`.
 - `AppBuilderActionFromType` and `runAppBuilderAction` overlay `componentContext.actions` by key. Host match wins. A host key with no `component` and no `run` does not fall through.
 - Toolbar buttons may still call typed `runAppBuilderAction*.ts` helpers on click.
+- `setup` runs when a rendered button owns the action. `executeActions` calls it for each nested action, including actions inside a nested `executeActions`, and passes its own button. `setContainerVisibility` setup registers that button as the 2D anchor position. A later selection opens the panel beside it because the position was stored at render, not on click.
+- The shared action button records the toolbar sibling list for the click. `executeActions` copies that note onto the run. The visibility run closes the other toolbar anchors when that click will open one, and keeps every anchor the action list names.
+- A controller update replaces the action list. Setup must run again without clearing a trigger the new setup still owns. Clearing it moves an open panel to the center.
+- A direct `setContainerVisibility` button clears its 2D trigger on unmount only when the registry still points at that button. Another button may have taken the same anchor.
 - There are no `useAppBuilderAction*` hooks.
 
 ## Host-only actions
