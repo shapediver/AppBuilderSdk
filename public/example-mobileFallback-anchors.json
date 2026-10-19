@@ -1,0 +1,117 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"themeOverrides": {
+		"components": {
+			"AppBuilderTemplateSelector": {
+				"defaultProps": {
+					"mobileBreakpoint": "md"
+				}
+			},
+			"ViewportAnchor2d": {
+				"defaultProps": {
+					"mobileBreakpoint": "md",
+					"mobileFallback": {
+						"container": "bottom",
+						"position": "after"
+					}
+				}
+			},
+			"ViewportAnchor3d": {
+				"defaultProps": {
+					"mobileBreakpoint": "md"
+				}
+			}
+		}
+	},
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "anchor3d",
+				"props": {
+					"id": "mf-anchor-3d-default",
+					"location": [0, 0, 50],
+					"justification": "TL",
+					"defaultOpen": true
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "MF-A3D-DEFAULT"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor3d",
+				"props": {
+					"id": "mf-anchor-3d-json-bottom",
+					"location": [40, 0, 50],
+					"justification": "TL",
+					"defaultOpen": true,
+					"mobileFallback": {
+						"container": "bottom"
+					}
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "MF-A3D-JSON-BOTTOM"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "mf-anchor-2d-theme",
+					"location": [24, 80],
+					"justification": "TL",
+					"previewIcon": "tabler:info-circle",
+					"defaultOpen": true
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "MF-A2D-THEME"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "mf-anchor-preview",
+					"location": [24, 200],
+					"justification": "TL",
+					"previewIcon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23e03131'/%3E%3C/svg%3E",
+					"defaultOpen": false,
+					"mobileFallback": {
+						"previewIcon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='2' y='2' width='12' height='12' fill='%232f9e44'/%3E%3C/svg%3E"
+					}
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "MF-PREVIEW-CLOSED"
+						}
+					}
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,435 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"actionSlots": {
+			"appready": {
+				"action": {
+					"type": "executeActions",
+					"props": {
+						"mode": "sequential",
+						"actions": [
+							{
+								"type": "setParameterValue",
+								"props": {
+									"parameter": {
+										"name": "Hide Door"
+									},
+									"value": "true"
+								}
+							},
+							{
+								"type": "camera",
+								"props": {
+									"type": "animate",
+									"props": {
+										"startFromCurrent": true,
+										"options": {
+											"duration": 5000
+										},
+										"path": [
+											{
+												"position": [80, 50, 100],
+												"target": [0, 0, -3]
+											},
+											{
+												"position": [0, 70, 120],
+												"target": [0, 0, -3]
+											},
+											{
+												"position": [-80, 50, 100],
+												"target": [0, 0, -3]
+											},
+											{
+												"position": [0, -88, 55],
+												"target": [0, 0, -3]
+											}
+										]
+									}
+								}
+							}
+						]
+					}
+				}
+			},
+			"computationstart": {
+				"action": {
+					"type": "executeActions",
+					"props": {
+						"mode": "parallel",
+						"actions": [
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "computation-end"
+										}
+									},
+									"mode": "close"
+								}
+							},
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "computation-start"
+										}
+									},
+									"mode": "open"
+								}
+							}
+						]
+					}
+				}
+			},
+			"computationend": {
+				"action": {
+					"type": "executeActions",
+					"props": {
+						"mode": "parallel",
+						"actions": [
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "computation-start"
+										}
+									},
+									"mode": "close"
+								}
+							},
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "computation-end"
+										}
+									},
+									"mode": "open"
+								}
+							}
+						]
+					}
+				}
+			},
+			"exportstart": {
+				"action": {
+					"type": "executeActions",
+					"props": {
+						"mode": "parallel",
+						"actions": [
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "export-end"
+										}
+									},
+									"mode": "close"
+								}
+							},
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "export-start"
+										}
+									},
+									"mode": "open"
+								}
+							}
+						]
+					}
+				}
+			},
+			"exportend": {
+				"action": {
+					"type": "executeActions",
+					"props": {
+						"mode": "parallel",
+						"actions": [
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "export-start"
+										}
+									},
+									"mode": "close"
+								}
+							},
+							{
+								"type": "setContainerVisibility",
+								"props": {
+									"container": {
+										"name": "anchor2d",
+										"props": {
+											"id": "export-end"
+										}
+									},
+									"mode": "open"
+								}
+							}
+						]
+					}
+				}
+			}
+		},
+		"containers": [
+			{
+				"name": "top",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "## actionSlots"
+						}
+					}
+				]
+			},
+			{
+				"name": "right",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "## Slots in this example\n\n**Root**\n- `appready` — hide doors (same as the first tab), then camera path around the model\n- `computationstart` — show *Computation started*\n- `computationend` — show *Computation finished*\n- `exportstart` — show *Export started*\n- `exportend` — show *Export finished*\n\n**Left tabs**\n- first tab `click` — hide doors\n- second tab `click` — show doors\n- text widget `pointerenter` / `pointerleave` — set **Material Color** while hovering, reset when the pointer leaves\n\nSelecting a tab does not emit `click` on load, so `appready` also hides the doors. Change **Length** to trigger computation. Use **Obj Export** to trigger export slots. Hover the text under a tab to change color (that also starts a computation)."
+						}
+					}
+				]
+			},
+			{
+				"name": "left",
+				"tabs": [
+					{
+						"name": "Hide doors",
+						"actionSlots": {
+							"click": {
+								"action": {
+									"type": "setParameterValue",
+									"props": {
+										"parameter": {
+											"name": "Hide Door"
+										},
+										"value": "true"
+									}
+								}
+							}
+						},
+						"widgets": [
+							{
+								"type": "text",
+								"actionSlots": {
+									"pointerenter": {
+										"action": {
+											"type": "setParameterValue",
+											"props": {
+												"parameter": {
+													"name": "Material Color"
+												},
+												"value": "0x2288ccff"
+											}
+										}
+									},
+									"pointerleave": {
+										"action": {
+											"type": "setParameterValue",
+											"props": {
+												"parameter": {
+													"name": "Material Color"
+												},
+												"value": "0xffffffff"
+											}
+										}
+									}
+								},
+								"props": {
+									"markdown": "When you hover over this element, the color changes."
+								}
+							}
+						]
+					},
+					{
+						"name": "Show doors",
+						"actionSlots": {
+							"click": {
+								"action": {
+									"type": "setParameterValue",
+									"props": {
+										"parameter": {
+											"name": "Hide Door"
+										},
+										"value": "false"
+									}
+								}
+							}
+						},
+						"widgets": [
+							{
+								"type": "text",
+								"actionSlots": {
+									"pointerenter": {
+										"action": {
+											"type": "setParameterValue",
+											"props": {
+												"parameter": {
+													"name": "Material Color"
+												},
+												"value": "0x2288ccff"
+											}
+										}
+									},
+									"pointerleave": {
+										"action": {
+											"type": "setParameterValue",
+											"props": {
+												"parameter": {
+													"name": "Material Color"
+												},
+												"value": "0xffffffff"
+											}
+										}
+									}
+								},
+								"props": {
+									"markdown": "When you hover over this element, the color changes."
+								}
+							}
+						]
+					}
+				],
+				"widgets": [
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Length"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Hide Door"
+									}
+								},
+								{
+									"type": "export",
+									"props": {
+										"name": "Obj Export"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "computation-start",
+					"location": [24, 88],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": false,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Computation started"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "computation-end",
+					"location": [24, 88],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": false,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Computation finished"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "export-start",
+					"location": [24, 200],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": false,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Export started"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "export-end",
+					"location": [24, 200],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": false,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Export finished"
+						}
+					}
+				]
+			}
+		]
+	}
+}

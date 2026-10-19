@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "sessions": [
+    {
+      "id": "default",
+      "slug": "bookshelf-exportable",
+      "acceptRejectMode": false
+    }
+  ],
+  "appBuilderOverride": {
+    "version": "1.0",
+    "agents": [
+      {
+        "id": "bookshelf",
+        "name": "Bookshelf",
+        "message": "You configure a bookshelf."
+      }
+    ],
+    "containers": [
+      {
+        "name": "right",
+        "widgets": [
+          {
+            "type": "hostedAgent",
+            "props": {
+              "title": "Bookshelf agent",
+              "height": "98vh"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

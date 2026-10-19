@@ -6,7 +6,7 @@
  * Add an entry to `scenarioActions` below. Every slug in this array gets:
  *   • smoke test    — page loads, canvas is visible, no JS errors
  *   • visual test   — full-page screenshot matches the stored baseline
- *   • interaction   — runs the `actions` callback (only when `actions` is set)
+ *   • interaction   — `actions` (one test) or each `namedActions` entry
  *
  * Slugs NOT listed here still receive smoke + visual tests automatically.
  *
@@ -88,6 +88,25 @@
  *     await page.getByRole("button", { name: "Section" }).click();
  *     await page.getByRole("region", { name: "Section" }).waitFor({ state: "visible" });
  *
+ * E-COMMERCE / TOOLS API
+ *   Dedicated specs, not this file. Each API method is a named `actions[]`
+ *   entry (one Playwright test per action):
+ *     tests/specs/ecommerceApi.spec.ts  + tests/config/scenarioECommerceApi.ts
+ *     tests/specs/toolsApi.spec.ts      + tests/config/scenarioToolsApi.ts
+ *   Helpers: tests/helpers/eCommerceApi.ts, tests/helpers/toolsApi.ts.
+ *
+ * NAMED ACTIONS (several Playwright tests for one slug)
+ *   Use `namedActions` instead of `actions` when the example needs isolated
+ *   cases (viewport sizes, independent assertions). Each entry becomes
+ *   `interaction: <name>` in appbuilder.spec.ts. Smoke + visual still run.
+ *
+ *     namedActions: [
+ *       {
+ *         name: "desktop keeps original slots",
+ *         run: async (page, slug) => { ... },
+ *       },
+ *     ],
+ *
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -97,6 +116,18 @@ import {getParameterElement} from "../helpers/getParameterElement";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
+import {
+	exampleMobileFallbackAnchorsNamedActions,
+	exampleMobileFallbackGridNamedActions,
+	exampleMobileFallbackKeepBottomNamedActions,
+	exampleMobileFallbackNamedActions,
+	exampleMobileFallbackTabsNamedActions,
+} from "./scenarioMobileFallback";
+
+export interface ScenarioNamedAction {
+	name: string;
+	run: (page: Page, slug: string) => Promise<void>;
+}
 
 export interface ScenarioActionConfig {
 	slug: string;
@@ -116,10 +147,27 @@ export interface ScenarioActionConfig {
 	 * Per-example interaction steps executed after the model has fully loaded.
 	 * When defined, an interaction test is generated in addition to the smoke
 	 * and visual tests. When undefined, only smoke + visual tests run.
+	 * Ignored when `namedActions` is set.
 	 * @param page - Playwright Page
 	 * @param slug - Use it to name snapshots: `${slug}-state-name`
 	 */
 	actions?: (page: Page, slug: string) => Promise<void>;
+	/**
+	 * Isolated interaction cases for this slug. Each entry is its own
+	 * Playwright test (`interaction: <name>`). Prefer this over `actions`
+	 * when cases need a fresh page (viewport sizes, independent asserts).
+	 */
+	namedActions?: ScenarioNamedAction[];
+}
+
+/** Fields needed to open a scenario URL (smoke/visual or a dedicated API spec). */
+export type ScenarioOpenConfig = Pick<
+	ScenarioActionConfig,
+	"slug" | "params" | "setup"
+>;
+
+export interface ScenarioApiActionConfig extends ScenarioOpenConfig {
+	actions: ScenarioNamedAction[];
 }
 
 export const scenarioActions: ScenarioActionConfig[] = [
@@ -517,6 +565,75 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		},
 	},
 	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-executeActions",
+		params: {g: "example-executeActions.json"},
+		actions: async (page, slug) => {
+			const toolbar = page.getByLabel("execute-actions-toolbar");
+			const buttons = toolbar.getByRole("button");
+			const clickToolbar = async (oneBasedIndex: number) => {
+				const button = buttons.nth(oneBasedIndex - 1);
+				await waitForModelRecomputed(page, async () => {
+					await button.click();
+					await expect(button).toBeEnabled();
+				});
+				await takeSnapshot(page, `${slug}-toolbar-${oneBasedIndex}`);
+			};
+
+			await clickToolbar(2);
+			await clickToolbar(1);
+			await clickToolbar(3);
+			await clickToolbar(4);
+		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-actionSlots-selection",
+		params: {g: "example-actionSlots-selection.json"},
+		actions: async (page, _slug) => {
+			// Open area of the back panel. 0.49, 0.58 sits ~10px above a
+			// shelf edge, so a small camera shift selects a shelf instead.
+			const pos = await viewportCoords(page, 0.444, 0.347);
+			await page.mouse.click(pos.x, pos.y);
+			await expect(page.getByText("Selection changed")).toBeVisible();
+			// selecton sets highlight colors and the hover slots do not, so
+			// they are two interaction groups painting the same node. The
+			// resulting red/blue/purple mix is not stable enough to snapshot.
+			const away = await viewportCoords(page, 0.05, 0.02);
+			await page.mouse.move(away.x, away.y);
+			await expect(page.getByText("Hovered")).toBeHidden();
+			await expect(page.getByText("Selection changed")).toBeVisible();
+		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-actionSlots",
+		params: {g: "example-actionSlots.json"},
+		actions: async (page, slug) => {
+			await waitForModelRecomputed(page, async () => {
+				await page.getByRole("tab", {name: "Show doors"}).click();
+			});
+			await takeSnapshot(page, `${slug}-show-doors`);
+
+			await waitForModelRecomputed(page, async () => {
+				await page.getByRole("tab", {name: "Hide doors"}).click();
+			});
+			await takeSnapshot(page, `${slug}-hide-doors`);
+
+			const input = getParameterElement(page, "Length").getByRole(
+				"textbox",
+			);
+			await waitForModelRecomputed(page, async () => {
+				await input.fill("4");
+				await input.press("Enter");
+			});
+			await takeSnapshot(page, `${slug}-computation`);
+		},
+	},
+	{
 		slug: "selection-parameter-variations",
 		// Settings file (served from public/) replacing the pulsing interaction
 		// effects by plain colors, so that the snapshots are deterministic.
@@ -583,6 +700,34 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			});
 			await takeSnapshot(page, `${slug}-first-floor`);
 		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-mobileFallback",
+		params: {g: "example-mobileFallback.json"},
+		namedActions: exampleMobileFallbackNamedActions,
+	},
+	{
+		// Same remapping as example-mobileFallback; Grid has no burger.
+		slug: "example-mobileFallback-grid",
+		params: {g: "example-mobileFallback-grid.json"},
+		namedActions: exampleMobileFallbackGridNamedActions,
+	},
+	{
+		slug: "example-mobileFallback-tabs",
+		params: {g: "example-mobileFallback-tabs.json"},
+		namedActions: exampleMobileFallbackTabsNamedActions,
+	},
+	{
+		slug: "example-mobileFallback-anchors",
+		params: {g: "example-mobileFallback-anchors.json"},
+		namedActions: exampleMobileFallbackAnchorsNamedActions,
+	},
+	{
+		slug: "example-mobileFallback-keepBottom",
+		params: {g: "example-mobileFallback-keepBottom.json"},
+		namedActions: exampleMobileFallbackKeepBottomNamedActions,
 	},
 ];
 

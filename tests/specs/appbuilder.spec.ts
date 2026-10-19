@@ -25,15 +25,18 @@ const allLinks: AppLink[] = fs.existsSync(linksPath)
 	: [];
 
 // Merge fetched links with scenarioActions entries so that slugs listed in
-// scenarioActions but absent from the markdown still get tests.
+// scenarioActions but absent from the public definition pages still get tests.
 const allEntries = new Map(
 	allLinks.map((l) => [l.slug, {slug: l.slug, url: l.url}]),
 );
 for (const config of scenarioActions) {
 	if (!allEntries.has(config.slug)) {
+		const settingsUrl = config.params?.g;
 		allEntries.set(config.slug, {
 			slug: config.slug,
-			url: `https://appbuilder.shapediver.com/v1/main/latest/?slug=${config.slug}`,
+			url: settingsUrl
+				? `https://appbuilder.shapediver.com/v1/main/latest/?g=${encodeURIComponent(settingsUrl)}`
+				: `https://appbuilder.shapediver.com/v1/main/latest/?slug=${config.slug}`,
 		});
 	}
 }
@@ -84,6 +87,7 @@ for (const {slug, url} of allEntries.values()) {
 	const setup = config?.setup;
 	const params = config?.params;
 	const actions = config?.actions;
+	const namedActions = config?.namedActions;
 	const resolvedUrl = applyUrlParams(testUrl(url), params);
 
 	test.describe(slug, () => {
@@ -97,7 +101,17 @@ for (const {slug, url} of allEntries.values()) {
 			await takeSnapshot(page, slug);
 		});
 
-		if (actions) {
+		if (namedActions?.length) {
+			for (const action of namedActions) {
+				test(`interaction: ${action.name}`, async ({page}) => {
+					await page.goto(resolvedUrl, {
+						waitUntil: "domcontentloaded",
+					});
+					await waitForAppReady(page, {interstitial: setup});
+					await action.run(page, slug);
+				});
+			}
+		} else if (actions) {
 			test("interaction: user actions complete successfully", async ({
 				page,
 			}) => {
