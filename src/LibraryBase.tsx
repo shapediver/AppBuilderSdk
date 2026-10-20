@@ -19,6 +19,7 @@ import useLibraryTabConfig from "hooks/useLibraryTabConfig";
 import {useEffect, useMemo} from "react";
 import classes from "~/LibraryBase.module.css";
 import packagejson from "../package.json";
+import NetPromoterScore from "~/shared/shared/ui/net-promoter-score/NetPromoterScore";
 
 // log the SDK version directly to the console
 // this is independent of the logger settings within the app
@@ -79,6 +80,7 @@ export default function LibraryBase() {
 					</Center>
 				)}
 			</NotificationWrapper>
+			<NetPromoterScore />
 		</MantineProvider>
 	);
 }
