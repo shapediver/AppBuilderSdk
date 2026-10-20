@@ -20,9 +20,13 @@ import {
 	isFullscreenAction,
 	isSceneTreeExplorerWidget,
 } from "@AppBuilderLib/features/appbuilder/config/appbuilder";
+import {runAppBuilderActionAr} from "@AppBuilderLib/features/appbuilder/model/runAppBuilderActionAr";
+import {runAppBuilderActionCamera} from "@AppBuilderLib/features/appbuilder/model/runAppBuilderActionCamera";
+import {runAppBuilderActionFullscreen} from "@AppBuilderLib/features/appbuilder/model/runAppBuilderActionFullscreen";
 import AppBuilderActionArComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionArComponent";
 import AppBuilderActionCameraComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionCameraComponent";
 import AppBuilderActionFullscreenComponent from "@AppBuilderLib/features/appbuilder/ui/AppBuilderActionFullscreenComponent";
+import {AppBuilderInteractionSlotListeners} from "@AppBuilderLib/features/appbuilder/ui/AppBuilderInteractionSlotListeners";
 import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
 import AppBuilderAttributeVisualizationWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderAttributeVisualizationWidgetComponent";
@@ -99,18 +103,24 @@ const components: IComponentContext = {
 		ar: {
 			isAction: isArAction,
 			component: AppBuilderActionArComponent,
+			run: runAppBuilderActionAr,
 		},
 		camera: {
 			isAction: isCameraAction,
 			component: AppBuilderActionCameraComponent,
+			run: runAppBuilderActionCamera,
 		},
 		fullscreen: {
 			isAction: isFullscreenAction,
 			component: AppBuilderActionFullscreenComponent,
+			run: runAppBuilderActionFullscreen,
 		},
 	},
 	containerComponent: AppBuilderContainerComponent,
 	fallbackContainerComponent: AppBuilderFallbackContainerComponent,
+	interactionSlotListeners: {
+		component: AppBuilderInteractionSlotListeners,
+	},
 };
 
 root.render(

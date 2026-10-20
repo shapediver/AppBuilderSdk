@@ -2,6 +2,11 @@
  * Fetches the rendered public GrasshopperExampleModels definition pages and
  * extracts App Builder links.
  *
+ * Chapter markdown in that repo is generated from `examples.json` at docs
+ * build time, so this crawls the published HTML rather than the raw `.md`.
+ * App hrefs currently look like:
+ *   https://www.shapediver.com/app/builder/v1/main/latest/?slug=...&redirect=0
+ *
  * Returns an array of { slug, url, source } objects where:
  *   - slug  = the value of the ?slug= query parameter
  *   - url   = the full original App URL (points to /latest/)

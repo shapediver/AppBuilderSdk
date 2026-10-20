@@ -1,0 +1,80 @@
+---
+description: App Builder action catalog, host overlay, and shared non-React action cores. Apply when changing actions, executeActions, camera/AR/fullscreen registration, or action-prop types.
+globs:
+    - "**/appBuilderActionCatalog.ts"
+    - "**/appBuilderActionRun.ts"
+    - "**/sharedAppBuilderActions.ts"
+    - "**/appbuilderActions.ts"
+    - "**/appbuilderActionsTypecheck.ts"
+    - "**/appBuilderActionType.ts"
+    - "**/AppBuilderAction*.tsx"
+    - "**/AppBuilderRoot.tsx"
+    - "**/runAppBuilderAction*"
+alwaysApply: false
+---
+
+# App Builder actions
+
+## Table
+
+- One `{ isAction, component?, run?, setup? }` entry per action.
+- Headless `run`s live in `features/appbuilder/model/appBuilderActionCatalog.ts` (`defaultAppBuilderActionRuns`). No UI imports.
+- `features/appbuilder/ui/sharedAppBuilderActions.ts` spreads those runs and adds shared components, including `executeActions`.
+- `AppBuilderActionFromType` and `runAppBuilderAction` overlay `componentContext.actions` by key. Host match wins. A host key with no `component` and no `run` does not fall through.
+- Toolbar buttons may still call typed `runAppBuilderAction*.ts` helpers on click.
+- `setup` runs when a rendered button owns the action. `executeActions` calls it for each nested action, including actions inside a nested `executeActions`, and passes its own button. `setContainerVisibility` setup registers that button as the 2D anchor position. A later selection opens the panel beside it because the position was stored at render, not on click.
+- The shared action button records the toolbar sibling list for the click. `executeActions` copies that note onto the run. The visibility run closes the other toolbar anchors when that click will open one, and keeps every anchor the action list names.
+- A controller update replaces the action list. Setup must run again without clearing a trigger the new setup still owns. Clearing it moves an open panel to the center.
+- A direct `setContainerVisibility` button clears its 2D trigger on unmount only when the registry still points at that button. Another button may have taken the same anchor.
+- There are no `useAppBuilderAction*` hooks.
+
+## Host-only actions
+
+Do not put `ar`, `camera`, or `fullscreen` in the shared table. That imports viewer UI into every host.
+
+- ShapeDiver registers them from `src/AppBuilderRoot.tsx`.
+- iJewel omits the key (no button; a sequence warns), registers `{ isAction }` to suppress both, or supplies a native `component` + `run` (WebGi).
+- A matching host entry with no `run` is skipped in sequences. There is no ShapeDiver fallback.
+
+## executeActions
+
+- Nested `executeActions` is allowed. `runAppBuilderActions` special-cases it so the catalog import stays acyclic.
+- Sequential mode awaits each action, then `waitForAppBuilderSessionIdle()`.
+- `setParameterValues` awaits `resolveParameterValueSources` and `batchParameterValueUpdate`.
+- An `agentTool` value source cannot be resolved and fails the sequence.
+- `strict: true` makes `setParameterValues` throw on an unknown, invalid, or missing value or source. E-commerce `triggerAction` and the tools camera `run` pass it; the connector then returns `{success: false}`. Toolbar, slots, and in-app `executeActions` omit `strict` and warn or skip.
+
+## Behavior that is easy to get wrong
+
+- Undo/redo call awaited `restoreHistoryStateFromIndex`. They must not use `window.history.back()`.
+- API undo/redo/reset: `entities/parameter/lib/undoRedoParameters.ts` and `resetParameterValues(..., {notify: false})`. The toolbar `run` still toasts.
+- Camera `zoomTo` `nameFilter` in the ShapeDiver `run` gathers current output and instance nodes with `findNodesByNameFilter` on each trigger.
+- Import-parameter file pickers and the import-model-state dialog open from the `run` and wait for the user.
+- Host-registered AR opens native `viewInAR` or the QR modal.
+- Host-registered fullscreen cycles `fullscreen3States` via `cycleFullscreen3States` (same DOM node and `viewerFullscreen3States` store as the toolbar button).
+
+## Camera
+
+Host entry: `componentContext.actions.camera.run`. ShapeDiver registers `runAppBuilderActionCamera` from `AppBuilderRoot.tsx`.
+
+- Named assign is `type: "camera"`, `props.type: "assign"`, `props.props.camera.name`.
+- App Builder `set` requires both position and target.
+- Props are a discriminated union on `type`. `camera.type` must be a viewer `CAMERA_TYPE`.
+- A missing camera or viewport throws only when `strict: true`.
+
+## Shared cores
+
+Toolbar, action slots, tools `runActionControl`, and e-commerce `triggerAction` share these non-React cores. Action-prop Zod is `appbuilderActionsTypecheck.ts` (do not copy it into ecommerce).
+
+- Model state: `createModelStateFromStores` / `importModelStateFromStore` (no sharing-URL update, no toasts).
+- Add to cart: `addToCartFromStores` (no toasts). A plugin `IAddItemToCartReply.successMessage` replaces the success toast and supports `{modelStateId}`. A thrown `Error` message replaces the error toast. The API path uses `addToCartApiResult`: success `{success: true, props: {modelStateId, cartItemId}}`, failure `{success: false, message}`.
+- A successful `executeActions` reply is `{success: true, props: {results}}`.
+- Output lookup is `getOutputContent` (id, name, or displayname).
+
+## Contract files
+
+- Action JSON types: `features/appbuilder/config/appbuilderActions.ts`.
+- Action slot types: `appbuilderActionSlots.ts`.
+- Parameter value source types stay in `appbuilder.ts` (they are nested in actions and instances). `appbuilder.ts` re-exports action and slot types.
+- Settings Zod (`appbuilderActionsTypecheck.ts`) and model-state import those files. Do not copy the types.
+- CrossWindow `triggerAction` allowlist types stay on `ecommerceapi.ts`.

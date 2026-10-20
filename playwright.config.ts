@@ -52,4 +52,11 @@ export default defineConfig({
 			use: {...devices["Desktop Chrome"]},
 		},
 	],
+	webServer: {
+		command:
+			"pnpm exec vite --config tests/fixtures/cross-window/vite.config.ts",
+		url: "http://127.0.0.1:3000/",
+		reuseExistingServer: !process.env.CI,
+		timeout: 60_000,
+	},
 });

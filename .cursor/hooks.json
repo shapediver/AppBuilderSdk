@@ -1,0 +1,17 @@
+{
+	"version": 1,
+	"hooks": {
+		"workspaceOpen": [
+			{
+				"command": "node .cursor/hooks/bootstrap-shared-repo.mjs",
+				"timeout": 180
+			}
+		],
+		"sessionStart": [
+			{
+				"command": "node .cursor/hooks/bootstrap-shared-repo.mjs",
+				"timeout": 180
+			}
+		]
+	}
+}

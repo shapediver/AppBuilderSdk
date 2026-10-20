@@ -123,8 +123,21 @@ export function load(app: Application) {
 				process.cwd(),
 			);
 
+			const definitions = Object.fromEntries(
+				Object.entries(definitionsContext.definitions).sort(
+					([a], [b]) => (a < b ? -1 : a > b ? 1 : 0),
+				),
+			);
+			flat.sort((a, b) =>
+				a.configPath < b.configPath
+					? -1
+					: a.configPath > b.configPath
+						? 1
+						: 0,
+			);
+
 			const nested = {
-				definitions: definitionsContext.definitions,
+				definitions,
 				...buildNestedDocRoot(flat),
 			};
 
@@ -133,10 +146,7 @@ export function load(app: Application) {
 				fs.mkdirSync(publicDir, {recursive: true});
 			}
 
-			const docFlat = wrapDocFlatEntries(
-				flat,
-				definitionsContext.definitions,
-			);
+			const docFlat = wrapDocFlatEntries(flat, definitions);
 
 			fs.writeFileSync(
 				path.join(publicDir, "doc-flat.json"),
@@ -147,7 +157,7 @@ export function load(app: Application) {
 				JSON.stringify(nested, null, 2),
 			);
 			console.log(
-				`Successfully generated doc-flat.json and doc-nested.json (${flat.length} entries, ${Object.keys(definitionsContext.definitions).length} type definitions)`,
+				`Successfully generated doc-flat.json and doc-nested.json (${flat.length} entries, ${Object.keys(definitions).length} type definitions)`,
 			);
 			definitionsContext.disposePrograms?.();
 		} catch (error) {

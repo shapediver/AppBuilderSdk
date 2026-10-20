@@ -1,0 +1,45 @@
+---
+description: E-commerce connector and tools CrossWindow APIs. Apply when changing triggerAction, the tools client, addToCart, or the facades those APIs share with action cores.
+globs:
+    - "**/features/ecommerce/**"
+    - "**/features/agent-tools/**"
+    - "**/tests/fixtures/cross-window/**"
+    - "**/ecommerceapi*"
+    - "**/toolsApi*"
+alwaysApply: false
+---
+
+# E-commerce connector and tools API
+
+Keep two typed CrossWindow facades. They share action cores. They do not share one RPC.
+
+Playwright parent/iframe setup is in `.cursor/rules/e2e-playwright.mdc`. Action-core behavior is in `.cursor/rules/appbuilder-actions.mdc`.
+
+## Schemas
+
+- Canonical action-prop Zod is `features/appbuilder/config/appbuilderActionsTypecheck.ts` (UI-free). It includes parameter-source schemas because `setParameterValue.source` and model-state sources share createModelState props.
+- Settings JSON (`appbuildertypecheck.ts`) and the e-commerce client (`ecommerceapitypecheck.ts`) import that file.
+- Do not import `appbuildertypecheck.ts` from the e-commerce client. That module pulls Mantine theme and widget validation.
+- `features/agent-tools/config` must not import `@mantine/` or `@shapediver/`. `IAgentTheme` is `MantineThemeOverrideProps`, the JSON theme mirror. `getTheme` still sends the published theme; functions are already stripped before it is stored.
+- `IAddItemToCartData` is the cart-plugin payload, not addToCart action props.
+- The screenshot tool schema is stricter than `viewportScreenshotPropsSchema`. Output is `image_url`. Input is `contentType`, `quality`, and `resolution`.
+- `getOutput` and `getMetric` share `getOutputContent`. Metric maps `content` to `value`.
+
+## Runtime
+
+- Do not put live APIs on `window` (`__appBuilderECommerceConnector`, `__appBuilderToolsApi`).
+- `createECommerceApiConnectorActions` is Zustand-only (no hooks, no agent-tools import).
+- `useECommerceApiConnectorActions` passes `componentContext.actions` so host camera and other host keys go through `findAppBuilderActionRegistration`.
+- Tools handshake only when an agent window is set. A Shopify iframe must not always use `window.parent`; that spams Tools.
+- Do not add product query params or window hooks for tests.
+- Deployed `appbuilder.shapediver.com` sends `Cross-Origin-Opener-Policy: same-origin`, so a top-level page cannot handshake a localhost popup (`window.opener` is null).
+
+## triggerAction
+
+- Allowlist types stay on `ecommerceapi.ts` (a subset of action types, including nested `executeActions`).
+- `triggerAction` `importModelState` is the empty action plus `{modelStateId}` (import without the dialog). The `importModelState()` method still requires `{modelStateId}`.
+- create, import, reset, undo, redo, addToCart, and sound skip sharing-URL updates, import dialogs, and toasts: `createModelStateFromStores`, `importModelStateFromStore`, `resetParameterValues(ns, {notify: false})`, `undoParameterHistory`, `redoParameterHistory`, `addToCartApiResult`, `runAppBuilderActionSound`.
+- Remaining types use the action catalog plus the host overlay. Nested `executeActions` uses the same dispatcher.
+- `triggerAction` passes `strict: true`. A thrown strict `setParameterValues` comes back as `{success: false}`.
+- Tools `runActionControl` camera uses `AgentToolsDeps.runCameraAction` from `componentContext.actions.camera.run`.
+- Tools `addToCart` uses `addToCartApiResult` (no toasts). Reply shapes are in the actions rule.
