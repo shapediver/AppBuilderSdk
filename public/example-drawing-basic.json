@@ -1,0 +1,44 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"slug": "2i-pointsinputsimpleexample"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "accordion",
+						"props": {
+							"parameters": [
+								{
+									"name": "Boundary",
+									"overrides": {
+										"settings": {
+											"general": {
+												"activeMode": "default",
+												"presentation": "widget"
+											},
+											"behavior": {
+												"automaticSceneUpdate": true,
+												"automaticSceneUpdateTimeout": 3000
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
+}

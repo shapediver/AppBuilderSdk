@@ -1,0 +1,111 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"slug": "rectangletransform-6-2-3"
+		}
+	],
+	"appBuilderOverride": {
+		"containers": [
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"props": {
+							"controls": [
+								{
+									"props": {
+										"name": "RectangleTransform",
+										"sessionId": "default_appbuilder"
+									},
+									"type": "parameter"
+								}
+							]
+						},
+						"type": "controls"
+					}
+				]
+			}
+		],
+		"parameters": [
+			{
+				"defval": "",
+				"hidden": false,
+				"id": "RectangleTransform",
+				"name": "RectangleTransform",
+				"settings": {
+					"props": {
+						"activeMode": "alwaysActive",
+						"availableColor": "#00ff00",
+						"corners": {
+							"bottomLeft": true,
+							"bottomRight": true,
+							"topLeft": true,
+							"topRight": true
+						},
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 1,
+						"midpoints": {
+							"bottom": true,
+							"left": true,
+							"right": true,
+							"top": true
+						},
+						"minimumSelection": 1,
+						"nameFilter": [
+							"Boxes.box_*"
+						],
+						"objects": [],
+						"plane": {
+							"type": "plane",
+							"vector_u": [
+								1,
+								0,
+								0
+							],
+							"vector_v": [
+								0,
+								1,
+								0
+							]
+						},
+						"prompt": {
+							"activeText": "Select a box in the viewport",
+							"activeTitle": "Transforming boxes",
+							"inactiveTitle": "Start transform"
+						},
+						"restrictions": [],
+						"rotation": {
+							"handleDistance": null,
+							"max": null,
+							"min": null,
+							"step": null,
+							"stepThreshold": null
+						},
+						"scaling": {
+							"step": null,
+							"uMax": null,
+							"uMin": null,
+							"uniform": false,
+							"vMax": null,
+							"vMin": null
+						},
+						"selectionColor": "#ff0000"
+					},
+					"type": "rectangleTransform"
+				},
+				"type": "Interaction"
+			}
+		],
+		"version": "1.0"
+	}
+}

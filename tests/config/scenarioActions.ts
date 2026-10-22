@@ -116,6 +116,7 @@ import {getParameterElement} from "../helpers/getParameterElement";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
+import {interactionExampleScenarios} from "./interactionExampleScenarios";
 import {
 	exampleMobileFallbackAnchorsNamedActions,
 	exampleMobileFallbackGridNamedActions,
@@ -127,6 +128,12 @@ import {
 export interface ScenarioNamedAction {
 	name: string;
 	run: (page: Page, slug: string) => Promise<void>;
+	/**
+	 * Optional test timeout in ms for this action (default: the global test
+	 * timeout). Multi-step flows with several model computations and gizmo
+	 * drags need more on CI runners with software rendering.
+	 */
+	timeout?: number;
 }
 
 export interface ScenarioActionConfig {
@@ -171,6 +178,7 @@ export interface ScenarioApiActionConfig extends ScenarioOpenConfig {
 }
 
 export const scenarioActions: ScenarioActionConfig[] = [
+	...interactionExampleScenarios,
 	{
 		// The "Floor Plan" file parameter must be set before the model can load,
 		// so it belongs in `setup` rather than `actions`.

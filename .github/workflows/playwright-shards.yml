@@ -29,14 +29,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - shard: 1/4
-            shard_name: 1-of-4
-          - shard: 2/4
-            shard_name: 2-of-4
-          - shard: 3/4
-            shard_name: 3-of-4
-          - shard: 4/4
-            shard_name: 4-of-4
+          - shard: 1/8
+            shard_name: 1-of-8
+          - shard: 2/8
+            shard_name: 2-of-8
+          - shard: 3/8
+            shard_name: 3-of-8
+          - shard: 4/8
+            shard_name: 4-of-8
+          - shard: 5/8
+            shard_name: 5-of-8
+          - shard: 6/8
+            shard_name: 6-of-8
+          - shard: 7/8
+            shard_name: 7-of-8
+          - shard: 8/8
+            shard_name: 8-of-8
 
     steps:
       - name: Create GitHub App token
