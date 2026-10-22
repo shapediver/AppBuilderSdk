@@ -360,7 +360,7 @@ const drawingAlwaysActiveDeep: ScenarioNamedAction = {
 		expect(puts.count()).toBe(1);
 		expectPointsMoved(puts.last(), before);
 
-		// Clear is offered once the drawing changed; below the minimum of 3
+		// Clear is offered while there is a drawing; below the minimum of 3
 		// points nothing can be confirmed
 		await dragDrawingPoint(page, 3);
 		await expectDrawingDirty(page, "toolbar");
