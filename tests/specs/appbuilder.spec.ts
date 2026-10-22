@@ -104,6 +104,7 @@ for (const {slug, url} of allEntries.values()) {
 		if (namedActions?.length) {
 			for (const action of namedActions) {
 				test(`interaction: ${action.name}`, async ({page}) => {
+					if (action.timeout) test.setTimeout(action.timeout);
 					await page.goto(resolvedUrl, {
 						waitUntil: "domcontentloaded",
 					});

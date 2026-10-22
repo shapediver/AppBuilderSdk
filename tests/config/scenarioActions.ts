@@ -128,6 +128,12 @@ import {
 export interface ScenarioNamedAction {
 	name: string;
 	run: (page: Page, slug: string) => Promise<void>;
+	/**
+	 * Optional test timeout in ms for this action (default: the global test
+	 * timeout). Multi-step flows with several model computations and gizmo
+	 * drags need more on CI runners with software rendering.
+	 */
+	timeout?: number;
 }
 
 export interface ScenarioActionConfig {

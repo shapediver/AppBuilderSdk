@@ -419,6 +419,14 @@ const drawingScenarios: ScenarioActionConfig[] = [
 	},
 ];
 
+/**
+ * Every flow waits for several model computations and drags gizmos with
+ * continuous rendering; on CI runners (software rendering) a simple flow takes
+ * about 1.5 minutes, so the complex and deep flows need more than the global
+ * 2 minute test timeout.
+ */
+const INTERACTION_TEST_TIMEOUT = 420_000;
+
 export const interactionExampleScenarios: ScenarioActionConfig[] = [
 	...withDeepActions([
 		...transformScenarios("rectangle"),
@@ -426,4 +434,10 @@ export const interactionExampleScenarios: ScenarioActionConfig[] = [
 		...drawingScenarios,
 	]),
 	...interactionExampleExtraScenarios,
-];
+].map((scenario) => ({
+	...scenario,
+	namedActions: scenario.namedActions?.map((action) => ({
+		...action,
+		timeout: action.timeout ?? INTERACTION_TEST_TIMEOUT,
+	})),
+}));
