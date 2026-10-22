@@ -49,7 +49,21 @@ export default defineConfig({
 	projects: [
 		{
 			name: "chromium",
-			use: {...devices["Desktop Chrome"]},
+			use: {
+				...devices["Desktop Chrome"],
+				// Hardware GL: the interaction examples drag gizmo handles, which
+				// miss at the ~4 fps of software GL. The ANGLE backend is
+				// Windows only; elsewhere Chromium picks its default backend.
+				launchOptions: {
+					args: [
+						...(process.platform === "win32"
+							? ["--use-angle=d3d11"]
+							: []),
+						"--ignore-gpu-blocklist",
+						"--enable-gpu",
+					],
+				},
+			},
 		},
 	],
 	webServer: {

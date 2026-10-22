@@ -125,6 +125,7 @@ import {routeSettingsHrefsToAppBase} from "../helpers/routeSettingsHrefsToAppBas
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
+import {interactionExampleScenarios} from "./interactionExampleScenarios";
 import {
 	actionSlotsActions,
 	actionSlotsSelectionActions,
@@ -202,6 +203,7 @@ export interface ScenarioApiActionConfig extends ScenarioOpenConfig {
 }
 
 export const scenarioActions: ScenarioActionConfig[] = [
+	...interactionExampleScenarios,
 	{
 		// The "Floor Plan" file parameter must be set before the model can load,
 		// so it belongs in `setup` rather than `actions`.
