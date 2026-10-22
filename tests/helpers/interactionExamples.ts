@@ -78,14 +78,6 @@ export async function expectNoCustomization(
 	expect(puts.count()).toBe(expected);
 }
 
-/** Orbit the camera with a drag on an empty area of the canvas. */
-export async function orbitCamera(page: Page) {
-	const box = await page.locator("canvas").first().boundingBox();
-	if (!box) throw new Error("Canvas not found");
-	const from = {x: box.x + box.width * 0.12, y: box.y + box.height * 0.15};
-	await dragMouse(page, from, {x: from.x + 120, y: from.y + 40});
-}
-
 /** Run a gesture and assert that it changed the bounds of the first node. */
 async function verified(
 	page: Page,
@@ -111,11 +103,6 @@ export type Gestures = {
 	/** The gesture of the simple tests: corner scale / axis translation. */
 	primary: (page: Page, nodes: string[]) => Promise<void>;
 	translate: (page: Page, nodes: string[]) => Promise<void>;
-	/** Two moves without a pause, within the idle timeout. */
-	translateTwice: (page: Page, nodes: string[]) => Promise<void>;
-	/** The translate gesture without the moved-check, for a move that must not register. */
-	translateUnverified: (page: Page, nodes: string[]) => Promise<void>;
-	rotate: (page: Page, nodes: string[]) => Promise<void>;
 };
 
 const rectangleGestures: Gestures = {
@@ -131,30 +118,6 @@ const rectangleGestures: Gestures = {
 		verified(page, nodes, async () => {
 			const corner = await nodeScreenPoint(page, nodes[0], [0, 0, 1]);
 			await dragMouse(page, corner, {x: corner.x - DRAG_PX, y: corner.y});
-		}),
-	translateTwice: (page, nodes) =>
-		verified(page, nodes, async () => {
-			const corner = await nodeScreenPoint(page, nodes[0], [0, 0, 1]);
-			const moved = {x: corner.x - DRAG_PX, y: corner.y};
-			await dragMouse(page, corner, moved);
-			await dragMouse(
-				page,
-				moved,
-				{x: moved.x - DRAG_PX, y: moved.y},
-				true,
-			);
-		}),
-	translateUnverified: async (page, nodes) => {
-		await settle(page);
-		const corner = await nodeScreenPoint(page, nodes[0], [0, 0, 1]);
-		await dragMouse(page, corner, {x: corner.x - DRAG_PX, y: corner.y});
-	},
-	rotate: (page, nodes) =>
-		verified(page, nodes, async () => {
-			// rotation handle above the midpoint of the top edge
-			const midpoint = await nodeScreenPoint(page, nodes[0], [0.5, 1, 1]);
-			const from = {x: midpoint.x, y: midpoint.y - 12};
-			await dragMouse(page, from, {x: from.x + 40, y: from.y + 10});
 		}),
 };
 
@@ -174,77 +137,12 @@ const gumballGestures: Gestures = {
 	// the gumball's primary gesture is its axis translation
 	primary: gumballTranslate,
 	translate: gumballTranslate,
-	translateTwice: (page, nodes) =>
-		verified(page, nodes, async () => {
-			const from = await gumballHandle(page, nodes);
-			const moved = {x: from.x + DRAG_PX, y: from.y};
-			await dragMouse(page, from, moved);
-			await dragMouse(
-				page,
-				moved,
-				{x: moved.x + DRAG_PX, y: moved.y},
-				true,
-			);
-		}),
-	translateUnverified: async (page, nodes) => {
-		await settle(page);
-		const from = await gumballHandle(page, nodes);
-		await dragMouse(page, from, {x: from.x + DRAG_PX, y: from.y});
-	},
-	rotate: (page, nodes) =>
-		verified(page, nodes, async () => {
-			// the rotation ring around the vertical axis, right of the center
-			const center = await nodesScreenCenter(page, nodes);
-			const from = {x: center.x + 82, y: center.y};
-			await dragMouse(page, from, {x: from.x, y: from.y + 30});
-		}),
 };
 
 export const gestures: Record<Kind, Gestures> = {
 	rectangle: rectangleGestures,
 	gumball: gumballGestures,
 };
-
-/**
- * Zoom the camera in on a box (mouse wheel over it) so that its top face is
- * clear of the scaling handles, which otherwise grab a press near the center.
- */
-export async function zoomInOnNode(
-	page: Page,
-	node: string,
-	minWidthPx = 240,
-	maxSteps = 24,
-) {
-	await settle(page);
-	const width = async () => {
-		const a = await nodeScreenPoint(page, node, [0, 0, 1]);
-		const b = await nodeScreenPoint(page, node, [1, 1, 1]);
-		return Math.abs(b.x - a.x);
-	};
-	// the wheel zoom animates, so the width is checked after each step
-	for (let i = 0; i < maxSteps && (await width()) < minWidthPx; i++) {
-		const center = await nodeScreenPoint(page, node, [0.5, 0.5, 1]);
-		await page.mouse.move(center.x, center.y);
-		await page.mouse.wheel(0, -200);
-		await page.waitForTimeout(400);
-	}
-	await settle(page);
-	expect(
-		await width(),
-		`${node} is too small on screen`,
-	).toBeGreaterThanOrEqual(minWidthPx);
-}
-
-/**
- * Translate a box with the rectangle transform's drag plane: a press on the
- * top face of the (zoomed in) box, away from the handles. Asserts the move;
- * the selection must survive the press (the plane claims the pointer).
- */
-export const planeTranslate = (page: Page, node: string) =>
-	verified(page, [node], async () => {
-		const from = await nodeScreenPoint(page, node, [0.5, 0.5, 1]);
-		await dragMouse(page, from, {x: from.x + DRAG_PX, y: from.y + 15});
-	});
 
 /**
  * Drag a point of the Boundary drawing, starting from its current value

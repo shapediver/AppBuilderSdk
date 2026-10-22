@@ -132,26 +132,6 @@ export function trackCustomizations(page: Page): CustomizationTracker {
 	};
 }
 
-/**
- * Delay the responses of customization requests by `ms` so that a test can
- * interact while a request is in flight. Returns a function that restores
- * normal routing.
- */
-export async function delayCustomizations(
-	page: Page,
-	ms: number,
-): Promise<() => Promise<void>> {
-	const matcher = (url: URL) => url.pathname.endsWith("/output");
-	await page.route(matcher, async (route) => {
-		if (route.request().method() === "PUT") {
-			await new Promise((resolve) => setTimeout(resolve, ms));
-		}
-		// the route may have been removed while the request was delayed
-		await route.continue().catch(() => undefined);
-	});
-	return () => page.unroute(matcher);
-}
-
 /** Collects uncaught page errors from this call on. */
 export function collectPageErrors(page: Page): {errors: () => string[]} {
 	const errors: string[] = [];
@@ -186,18 +166,6 @@ export function transformValueFromBody(
 	throw new Error(`Parameter "${parameterName}" not found in request body`);
 }
 
-/** The points of a drawing parameter value sent with a customization. */
-export function drawingPointsFromBody(body: string): number[][] {
-	const parameters = JSON.parse(body) as Record<string, unknown>;
-	for (const value of Object.values(parameters)) {
-		if (typeof value !== "string" || !value.startsWith('{"points"')) {
-			continue;
-		}
-		return (JSON.parse(value) as {points: number[][]}).points;
-	}
-	throw new Error("Drawing parameter not found in request body");
-}
-
 /** Whether two bounding boxes differ in any coordinate. */
 export const boundsChanged = (
 	a: {min: Vec3; max: Vec3},
@@ -217,17 +185,6 @@ export const matricesDiffer = (
 	epsilon = 1e-3,
 ): boolean =>
 	a.length !== b.length || a.some((v, i) => Math.abs(v - b[i]) > epsilon);
-
-/** Translation part of a column-major 4x4 matrix. */
-export const translationOf = (matrix: number[]): Vec3 => [
-	matrix[12],
-	matrix[13],
-	matrix[14],
-];
-
-/** Whether a column-major 4x4 matrix rotates (non-zero off-diagonal in xy). */
-export const isRotated = (matrix: number[]): boolean =>
-	Math.abs(matrix[1]) > 1e-3 || Math.abs(matrix[4]) > 1e-3;
 
 export const isIdentity = (matrix: number[]): boolean =>
 	matrix.every((value, i) => Math.abs(value - (i % 5 === 0 ? 1 : 0)) < 1e-6);
