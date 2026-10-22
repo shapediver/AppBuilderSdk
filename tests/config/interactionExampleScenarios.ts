@@ -13,8 +13,8 @@
  * default value. The automaticSceneUpdate files turn Clear off
  * (`buttons.clear: false`), so those tools offer no control at all.
  *
- * Every example has a simple and a complex (multi-step) test here, and a deep
- * test in `interactionExampleDeepScenarios.ts`. Handle positions are computed
+ * Every example has a simple and a complex (multi-step) test here (the
+ * reset-value example has one test). Handle positions are computed
  * from the scene at runtime (`sceneCoords`), every gesture verifies that it
  * moved the object (`interactionExamples`).
  *
@@ -40,18 +40,16 @@ import {
 } from "../helpers/interactionExamples";
 import {
 	boundsChanged,
+	collectPageErrors,
 	type CustomizationTracker,
 	isIdentity,
+	matricesDiffer,
 	nodeBounds,
 	trackCustomizations,
 	transformValueFromBody,
 } from "../helpers/sceneCoords";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
-import {
-	interactionExampleExtraScenarios,
-	withDeepActions,
-} from "./interactionExampleDeepScenarios";
 import type {ScenarioActionConfig} from "./scenarioActions";
 
 const BOX = BOXES[0];
@@ -419,20 +417,75 @@ const drawingScenarios: ScenarioActionConfig[] = [
 	},
 ];
 
+/** The matrix of a box in a request body (the box must be part of it). */
+const matrixOf = (body: string, box: string) => {
+	const value = transformValueFromBody(body, PARAMETER);
+	const index = value.names.indexOf(`Boxes.${box}`);
+	expect(index, JSON.stringify(value)).toBeGreaterThanOrEqual(0);
+	return value.transformations[index];
+};
+
+/**
+ * A reset value (`settings.resetValue: ""`) commits the default after every
+ * execution, so `commitValue !== execValue` and the persistent gizmo restarts
+ * on the updated box. The requests look the same as without a reset value
+ * (absolute placements); the test exercises the restart path: the restarted
+ * gizmo keeps working and nothing is sent without a move.
+ */
+const interactionExampleExtraScenarios: ScenarioActionConfig[] = [
+	{
+		slug: "example-gumball-alwaysActive-automaticSceneUpdate-resetValue",
+		params: {
+			g: "example-gumball-alwaysActive-automaticSceneUpdate-resetValue.json",
+		},
+		namedActions: [
+			{
+				name: "reset value: the gizmo restarts after each update",
+				run: async (page, slug) => {
+					const g = gestures.gumball;
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					await expect(confirmButton(page)).toHaveCount(0);
+					await clickNode(page, BOXES[0]);
+					await expectNoCustomization(page, puts, 0);
+					await waitForModelRecomputed(page, async () => {
+						await g.translate(page, [BOXES[0]]);
+					});
+					expect(puts.count()).toBe(1);
+					const first = matrixOf(puts.last(), BOXES[0]);
+					await takeSnapshot(page, `${slug}-updated`);
+
+					// the parameter is back at its default, the gizmo restarted
+					// on the updated box: the next move sends this box again
+					await waitForModelRecomputed(page, async () => {
+						await g.translate(page, [BOXES[0]]);
+					});
+					expect(puts.count()).toBe(2);
+					const second = matrixOf(puts.last(), BOXES[0]);
+					expect(matricesDiffer(second, first)).toBe(true);
+					await takeSnapshot(page, `${slug}-updated-twice`);
+
+					await clickNode(page, BOXES[0]);
+					await expectNoCustomization(page, puts, 2);
+					expect(errors.errors()).toEqual([]);
+				},
+			},
+		],
+	},
+];
+
 /**
  * Every flow waits for several model computations and drags gizmos with
  * continuous rendering; on CI runners (software rendering) a simple flow takes
- * about 1.5 minutes, so the complex and deep flows need more than the global
+ * about 1.5 minutes, so the complex flows need more than the global
  * 2 minute test timeout.
  */
 const INTERACTION_TEST_TIMEOUT = 420_000;
 
 export const interactionExampleScenarios: ScenarioActionConfig[] = [
-	...withDeepActions([
-		...transformScenarios("rectangle"),
-		...transformScenarios("gumball"),
-		...drawingScenarios,
-	]),
+	...transformScenarios("rectangle"),
+	...transformScenarios("gumball"),
+	...drawingScenarios,
 	...interactionExampleExtraScenarios,
 ].map((scenario) => ({
 	...scenario,
