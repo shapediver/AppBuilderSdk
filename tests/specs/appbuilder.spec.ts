@@ -56,10 +56,12 @@ async function runSmoke(
 	url: string,
 	slug: string,
 	setup?: (page: import("@playwright/test").Page) => Promise<void>,
+	beforeGoto?: (page: import("@playwright/test").Page) => Promise<void>,
 ) {
 	const jsErrors: string[] = [];
 	page.on("pageerror", (err) => jsErrors.push(err.message));
 
+	await beforeGoto?.(page);
 	await page.goto(url, {waitUntil: "domcontentloaded"});
 	await waitForAppReady(page, {interstitial: setup});
 
@@ -85,6 +87,7 @@ async function runSmoke(
 for (const {slug, url} of allEntries.values()) {
 	const config = scenarioActionById.get(slug);
 	const setup = config?.setup;
+	const beforeGoto = config?.beforeGoto;
 	const params = config?.params;
 	const actions = config?.actions;
 	const namedActions = config?.namedActions;
@@ -92,10 +95,11 @@ for (const {slug, url} of allEntries.values()) {
 
 	test.describe(slug, () => {
 		test("smoke: loads without error", async ({page}) => {
-			await runSmoke(page, resolvedUrl, slug, setup);
+			await runSmoke(page, resolvedUrl, slug, setup, beforeGoto);
 		});
 
 		test("visual: matches baseline", async ({page}) => {
+			await beforeGoto?.(page);
 			await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
 			await waitForAppReady(page, {interstitial: setup});
 			await takeSnapshot(page, slug);
@@ -104,6 +108,7 @@ for (const {slug, url} of allEntries.values()) {
 		if (namedActions?.length) {
 			for (const action of namedActions) {
 				test(`interaction: ${action.name}`, async ({page}) => {
+					await beforeGoto?.(page);
 					await page.goto(resolvedUrl, {
 						waitUntil: "domcontentloaded",
 					});
@@ -115,6 +120,7 @@ for (const {slug, url} of allEntries.values()) {
 			test("interaction: user actions complete successfully", async ({
 				page,
 			}) => {
+				await beforeGoto?.(page);
 				await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
 				await waitForAppReady(page, {interstitial: setup});
 				await actions(page, slug);

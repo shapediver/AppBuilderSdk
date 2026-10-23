@@ -113,9 +113,11 @@
 import {expect, Page} from "@playwright/test";
 import * as path from "path";
 import {getParameterElement} from "../helpers/getParameterElement";
+import {routeSettingsHrefsToAppBase} from "../helpers/routeSettingsHrefsToAppBase";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
+import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {
 	exampleMobileFallbackAnchorsNamedActions,
 	exampleMobileFallbackGridNamedActions,
@@ -123,6 +125,7 @@ import {
 	exampleMobileFallbackNamedActions,
 	exampleMobileFallbackTabsNamedActions,
 } from "./scenarioMobileFallback";
+import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
 
 export interface ScenarioNamedAction {
 	name: string;
@@ -138,6 +141,12 @@ export interface ScenarioActionConfig {
 	 * Runs in every test (smoke, visual, and interaction).
 	 */
 	setup?: (page: Page) => Promise<void>;
+	/**
+	 * Optional steps executed BEFORE navigation, e.g. `page.route` handlers
+	 * that must be in place when the app fetches its settings.
+	 * Runs in every test (smoke, visual, and interaction).
+	 */
+	beforeGoto?: (page: Page) => Promise<void>;
 	/**
 	 * Additional URL query parameters such as modelStateId or g (theme).
 	 * These are appended to the test URL after the branch rewrite.
@@ -728,6 +737,28 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-mobileFallback-keepBottom",
 		params: {g: "example-mobileFallback-keepBottom.json"},
 		namedActions: exampleMobileFallbackKeepBottomNamedActions,
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		// Database-backed selects over fake CSV/JSON databases from public/,
+		// plus one `source` parameter on the built-in dummy scrolling API.
+		// Root-relative database hrefs are resolved against the branch deploy.
+		slug: "example-filterableDatabase-selects",
+		params: {g: "example-filterableDatabase-selects.json"},
+		beforeGoto: (page) =>
+			routeSettingsHrefsToAppBase(
+				page,
+				"example-filterableDatabase-selects.json",
+			),
+		namedActions: scenarioFilterableDatabaseNamedActions,
+	},
+	{
+		// Same model, plain-items select widgets (no database, no scrolling
+		// API): display names, colors, tooltips, hidden items, commits.
+		slug: "example-select-widgets",
+		params: {g: "example-select-widgets.json"},
+		namedActions: scenarioSelectWidgetsNamedActions,
 	},
 ];
 
