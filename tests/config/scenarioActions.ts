@@ -118,6 +118,7 @@ import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
+import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {
 	exampleMobileFallbackAnchorsNamedActions,
 	exampleMobileFallbackGridNamedActions,
@@ -126,6 +127,7 @@ import {
 	exampleMobileFallbackTabsNamedActions,
 } from "./scenarioMobileFallback";
 import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
+import {scenarioStringSelectNamedActions} from "./scenarioStringSelect";
 
 export interface ScenarioNamedAction {
 	name: string;
@@ -759,6 +761,24 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-select-widgets",
 		params: {g: "example-select-widgets.json"},
 		namedActions: scenarioSelectWidgetsNamedActions,
+	},
+	{
+		// Same model, SS-10264: a database behind every select type, no
+		// filters, itemData patches over database rows.
+		slug: "example-filterableDatabase-all-types",
+		params: {g: "example-filterableDatabase-all-types.json"},
+		beforeGoto: (page) =>
+			routeSettingsHrefsToAppBase(
+				page,
+				"example-filterableDatabase-all-types.json",
+			),
+		namedActions: scenarioFilterableDatabaseAllTypesNamedActions,
+	},
+	{
+		// String parameters as selects; Grasshopper sends the select
+		// settings (echoes the "Settings" parameter into TextInput overrides).
+		slug: "stringselect-10",
+		namedActions: scenarioStringSelectNamedActions,
 	},
 ];
 

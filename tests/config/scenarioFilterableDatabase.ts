@@ -1,10 +1,17 @@
-import {expect, Locator, Page} from "@playwright/test";
+import {expect, Page} from "@playwright/test";
 import {
 	card,
 	cardLabels,
+	expandFilterGroup,
+	filterDropdown,
+	filterPills,
+	loadAllCards,
+	openFilters,
 	parameter,
+	scrollToBottom,
 	sdvParameterValue,
 	snapshotParameter,
+	toggleFilterOption,
 } from "../helpers/selectParameters";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 import type {ScenarioNamedAction} from "./scenarioActions";
@@ -47,64 +54,19 @@ import type {ScenarioNamedAction} from "./scenarioActions";
  * the e-commerce helpers).
  */
 
-/** Scroll the card list to the bottom to trigger the infinite-scroll sentinel. */
-async function scrollToBottom(page: Page, name: string) {
-	await parameter(page, name)
-		.locator("div[style*='overflow-y']")
-		.first()
-		.evaluate((el) => {
-			el.scrollTop = el.scrollHeight;
-			el.dispatchEvent(new Event("scroll"));
-		});
-}
-
-/** Scroll until every page is loaded; returns all card titles. */
-async function loadAllCards(page: Page, name: string): Promise<string[]> {
-	let previous = -1;
-	let labels = await cardLabels(page, name);
-	while (labels.length !== previous) {
-		previous = labels.length;
-		await scrollToBottom(page, name);
-		// Give the sentinel a chance to append the next page.
-		await page.waitForTimeout(500);
-		labels = await cardLabels(page, name);
-	}
-	return labels;
-}
-
-/** The open filter dropdown (Mantine renders it in a portal). */
-function filterDropdown(page: Page): Locator {
-	return page.locator(".mantine-Combobox-dropdown:visible");
-}
-
-/** Open the filter combobox of a database-backed select parameter. */
-async function openFilters(page: Page, name: string) {
-	await parameter(page, name).getByPlaceholder("Filters").click();
-	await expect(filterDropdown(page)).toBeVisible();
-}
-
-/** Expand an accordion filter group (groups start collapsed). */
-async function expandFilterGroup(page: Page, label: string) {
-	const control = filterDropdown(page)
-		.locator(".mantine-Accordion-control")
-		.filter({hasText: label});
-	if ((await control.getAttribute("aria-expanded")) !== "true") {
-		await control.getByText(label, {exact: true}).click();
-	}
-	await expect(control).toHaveAttribute("aria-expanded", "true");
-}
-
-/** Click one filter option (checkbox or radio) by its label. */
-async function toggleFilterOption(page: Page, label: string) {
-	await filterDropdown(page)
-		.locator("label")
-		.getByText(label, {exact: true})
-		.click();
-}
-
-/** Active filter pills of a parameter. */
-function filterPills(page: Page, name: string): Locator {
-	return parameter(page, name).locator(".mantine-Pill-root");
+/** The list shows whole pages again, starting with `first`. */
+async function expectFirstPages(
+	page: Page,
+	name: string,
+	first: string,
+	pageSize: number,
+) {
+	await expect
+		.poll(async () => {
+			const labels = await cardLabels(page, name);
+			return labels[0] === first && labels.length % pageSize === 0;
+		})
+		.toBe(true);
 }
 
 export const scenarioFilterableDatabaseNamedActions: ScenarioNamedAction[] = [
@@ -219,9 +181,9 @@ export const scenarioFilterableDatabaseNamedActions: ScenarioNamedAction[] = [
 				.locator(".mantine-Pill-remove")
 				.click();
 			await expect(filterPills(page, "TenCards")).toHaveCount(0);
-			await expect
-				.poll(async () => (await cardLabels(page, "TenCards")).length)
-				.toBe(4);
+			// Paging restarts from the first page; the sentinel may already have
+			// appended page 2, so assert whole pages, not an exact count.
+			await expectFirstPages(page, "TenCards", "Aluminium", 4);
 		},
 	},
 	{
@@ -409,9 +371,9 @@ export const scenarioFilterableDatabaseNamedActions: ScenarioNamedAction[] = [
 			await parameter(page, "TenCards")
 				.getByPlaceholder("Search")
 				.fill("");
-			await expect
-				.poll(async () => (await cardLabels(page, "TenCards")).length)
-				.toBe(4);
+			// Paging restarts from the first page; the sentinel may already have
+			// appended page 2, so assert whole pages, not an exact count.
+			await expectFirstPages(page, "TenCards", "Aluminium", 4);
 		},
 	},
 	{
