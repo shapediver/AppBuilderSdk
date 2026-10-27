@@ -218,7 +218,9 @@ jobs:
     uses: ./.github/workflows/playwright-shards.yml
     with:
       suite: full
-      shard_total: ${{ inputs.shard_total }}
+      # workflow_dispatch passes the number input on as a string (also for
+      # `gh workflow run -f shard_total=2`); the reusable workflow needs a number.
+      shard_total: ${{ fromJSON(inputs.shard_total) }}
       test_branch: testing/nightly-${{ github.ref_name }}
       environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
       checkout_ref: ${{ needs.check.outputs.sha }}
