@@ -58,6 +58,18 @@ export const drawingSettingsButton = (page: Page) =>
 export const settle = (page: Page) => page.waitForTimeout(SETTLE);
 
 /**
+ * The wrapper of a standard container (left, right, top, bottom). A container
+ * which renders no content is laid out like an absent one: the AppShell moves
+ * the collapsed navbar off-screen, so assert with `toBeInViewport`, not with
+ * `toBeVisible`.
+ */
+export const containerElement = (page: Page, name: string) =>
+	page.locator(`[data-app-builder-container="${name}"]`);
+/** The panel of a 2D anchor (rendered hidden while its content renders nothing). */
+export const anchorPanel = (page: Page, id: string) =>
+	page.locator(`[data-app-builder-anchor="${id}"]`);
+
+/**
  * Click a box. The projected center of its bounding box always lies on the
  * box (the top face center of the tilted box does not).
  */

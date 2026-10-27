@@ -516,6 +516,11 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			const fourthTab = page.getByRole("tab").nth(3);
 			await fourthTab.click();
 			await expect(fourthTab).toHaveAttribute("aria-selected", "true");
+			// the default attribute of the model is applied shortly after the
+			// tab opens: wait for it, the snapshot shows the visualized attribute
+			await expect(
+				page.getByPlaceholder("Select an attribute"),
+			).not.toHaveValue("");
 
 			await takeSnapshot(page, `${slug}-attributes-visible`);
 

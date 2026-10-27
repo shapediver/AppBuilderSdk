@@ -26,15 +26,21 @@
  * its box and closes when another anchor opens). Automatic updates of several
  * parameters are sent together after the longest idle timeout, a new move
  * restarts the countdown, and a move whose parameter unmounts meanwhile (its
- * anchor closed) is still sent (`automaticSceneUpdateScheduler`).
+ * anchor closed) is still sent (`automaticSceneUpdateScheduler`). A container
+ * which renders nothing is not shown: the left container of these examples
+ * appears once its text widgets show the sent values, an anchor whose
+ * parameter renders in the toolbar opens with a hidden panel
+ * (`containerElement`, `anchorPanel`).
  */
 import {expect, Page} from "@playwright/test";
 import {
+	anchorPanel,
 	BOXES,
 	cancelButton,
 	clearButton,
 	clickNode,
 	confirmButton,
+	containerElement,
 	dragDrawingPoint,
 	drawingSettingsButton,
 	expectDrawingDirty,
@@ -230,6 +236,11 @@ function transformScenarios(kind: Kind): ScenarioActionConfig[] {
 					run: async (page, slug) => {
 						const puts = trackCustomizations(page);
 						await expect(confirmButton(page)).toHaveCount(0);
+						// the parameter renders in the toolbar: the left
+						// container has no content and is not shown
+						await expect(
+							containerElement(page, "left"),
+						).not.toBeInViewport();
 						await clickNode(page, BOX);
 						// identity gizmo after a click is not a scene change
 						await expectNoCustomization(page, puts, 0);
@@ -517,6 +528,11 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 					const [a, b] = MULTI_BOXES;
 					const puts = trackCustomizations(page);
 					const errors = collectPageErrors(page);
+					// the parameters render in the toolbar and the text widgets
+					// have no text yet: the left container is not shown
+					await expect(
+						containerElement(page, "left"),
+					).not.toBeInViewport();
 					await clickNode(page, a.box);
 					await expectNoCustomization(page, puts, 0);
 					// the second box is moved within the idle timeout of the
@@ -526,6 +542,10 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 					});
 					expect(puts.count()).toBe(1);
 					expectBoxesSent(puts, [a, b]);
+					// the text widgets show the sent values now
+					await expect(
+						containerElement(page, "left"),
+					).toBeInViewport();
 					// the camera re-frames after a customization
 					await settle(page);
 					await takeSnapshot(page, `${slug}-updated`);
@@ -568,25 +588,30 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 		params: {g: "example-rectangle-anchors-automaticSceneUpdate.json"},
 		namedActions: [
 			{
-				name: "simple: the anchor shows the parameter widget",
+				name: "simple: an anchor without content is not shown",
 				run: async (page, slug) => {
 					const [a] = MULTI_BOXES;
 					const puts = trackCustomizations(page);
-					await expect(multiParameterLabel(page)).toHaveCount(0);
+					await expect(anchorPanel(page, a.parameter)).toHaveCount(0);
 					await clickNode(page, a.box);
-					// the anchor of the box opened with the parameter's widget:
-					// inside an anchor the parameter does not render in the toolbar
-					await expect(multiParameterLabel(page)).toHaveCount(1);
+					// the anchor of the box opens on its selection, but its
+					// parameter renders in the toolbar: the panel is hidden
+					await expect(anchorPanel(page, a.parameter)).toHaveCount(1);
+					await expect(anchorPanel(page, a.parameter)).toBeHidden();
+					await expect(multiParameterLabel(page)).toHaveCount(0);
 					await expectNoCustomization(page, puts, 0);
-					// the camera re-frames after a customization
 					await settle(page);
-					await takeSnapshot(page, `${slug}-anchor-open`);
+					await takeSnapshot(page, `${slug}-anchor-hidden`);
 					await waitForModelRecomputed(page, async () => {
 						await gestures.rectangle.primary(page, [a.box]);
 					});
 					expect(puts.count()).toBe(1);
 					expectBoxesSent(puts, [a]);
-					await expect(multiParameterLabel(page)).toHaveCount(1);
+					await expect(anchorPanel(page, a.parameter)).toBeHidden();
+					// the text widgets of the left container show the value now
+					await expect(
+						containerElement(page, "left"),
+					).toBeInViewport();
 				},
 			},
 			{
@@ -601,7 +626,7 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 					// unmounts with its move pending, the move is still sent
 					await waitForModelRecomputed(page, async () => {
 						await moveTwoBoxesQuickly(page, a.box, b.box, 800);
-						await expect(multiParameterLabel(page)).toHaveCount(1);
+						await expect(multiParameterLabel(page)).toHaveCount(0);
 					});
 					expect(puts.count()).toBe(1);
 					expectBoxesSent(puts, [a, b]);
