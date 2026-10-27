@@ -621,19 +621,28 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 					const puts = trackCustomizations(page);
 					const errors = collectPageErrors(page);
 					await clickNode(page, a.box);
-					// selecting the second box opens its anchor and closes the
-					// first one (anchors are exclusive): the first parameter
-					// unmounts with its move pending, the move is still sent
+					// selecting the second box right after the move opens its
+					// anchor and closes the first one (anchors are exclusive):
+					// the first parameter unmounts with its move pending, the
+					// move is still sent
 					await waitForModelRecomputed(page, async () => {
-						await moveTwoBoxesQuickly(page, a.box, b.box, 800);
-						await expect(multiParameterLabel(page)).toHaveCount(0);
+						await gestures.rectangle.primary(page, [a.box]);
+						await clickNode(page, b.box, false);
 					});
 					expect(puts.count()).toBe(1);
+					expectBoxesSent(puts, [a]);
+
+					// the second parameter sends its move together with the
+					// value of the first one
+					await waitForModelRecomputed(page, async () => {
+						await gestures.rectangle.primary(page, [b.box]);
+					});
+					expect(puts.count()).toBe(2);
 					expectBoxesSent(puts, [a, b]);
 					// the camera re-frames after a customization
 					await settle(page);
 					await takeSnapshot(page, `${slug}-updated`);
-					await expectNoCustomization(page, puts, 1);
+					await expectNoCustomization(page, puts, 2);
 					expect(errors.errors()).toEqual([]);
 				},
 			},

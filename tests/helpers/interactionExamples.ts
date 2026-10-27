@@ -71,10 +71,11 @@ export const anchorPanel = (page: Page, id: string) =>
 
 /**
  * Click a box. The projected center of its bounding box always lies on the
- * box (the top face center of the tilted box does not).
+ * box (the top face center of the tilted box does not). `settleFirst: false`
+ * clicks right away, e.g. while an automatic update is still pending.
  */
-export async function clickNode(page: Page, node: string) {
-	await settle(page);
+export async function clickNode(page: Page, node: string, settleFirst = true) {
+	if (settleFirst) await settle(page);
 	const center = await nodeScreenPoint(page, node, [0.5, 0.5, 0.5]);
 	await page.mouse.click(center.x, center.y);
 	await page.waitForTimeout(500);
@@ -162,15 +163,14 @@ export const gestures: Record<Kind, Gestures> = {
  * (3000 ms in the multi-parameter examples). All screen positions are
  * computed up front and the drags are quick: on a slow runner a mouse step
  * takes about 100 ms, so the second drag has to start about a second after
- * the first one ended. `wait` is the pause after the click on `b` (an anchor
- * opening on the selection needs a moment to show the tool). Asserts that
- * both boxes moved.
+ * the first one ended. `wait` is the pause after the click on `b` (the gizmo
+ * of `b` is created after its selection). Asserts that both boxes moved.
  */
 export async function moveTwoBoxesQuickly(
 	page: Page,
 	a: string,
 	b: string,
-	wait = 250,
+	wait = 500,
 ) {
 	await settle(page);
 	const [aBefore, bBefore] = await Promise.all([
