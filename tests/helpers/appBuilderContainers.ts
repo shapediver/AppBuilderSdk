@@ -42,13 +42,21 @@ export function getAppShellNavbar(page: Page): Locator {
 	return page.locator(".mantine-AppShell-navbar");
 }
 
+/**
+ * Visible text in a container. Hidden matches are ignored: Mantine keeps
+ * inactive tab panels mounted in a hidden React `Activity`, whose updates
+ * run at idle priority, so a switched-away panel can still hold stale (but
+ * invisible) copies of moved content for a while.
+ */
 export async function expectTextInStandardContainer(
 	page: Page,
 	name: E2eStandardContainerName,
 	text: string,
 ): Promise<void> {
 	await expect(
-		getStandardContainer(page, name).getByText(text),
+		getStandardContainer(page, name)
+			.getByText(text)
+			.filter({visible: true}),
 	).toBeVisible();
 }
 
