@@ -36,8 +36,37 @@ CI sets `TEST_BRANCH=testing/<source-branch>` so concurrent workflows use
 isolated deployments.
 Their Git tags use `testing+<source-branch>` because tags cannot be nested
 beneath the legacy `AppBuilderMain@testing` tag.
-CI deploys that test build once, then runs the Playwright suite across four
+CI deploys that test build once, then runs the Playwright suite across
 parallel shards.
+
+## Quick and full suite
+
+```bash
+SKIP_DEPLOY=1 pnpm test-e2e-quick        # quick suite (tests tagged @quick)
+SKIP_DEPLOY=1 pnpm test-e2e              # full suite
+```
+
+- **Quick** — smoke + visual for every slug, plus the interactions of the
+  `scenarioActions.ts` entries with `quickSuite: true`.
+- **Full** — everything, including all other interactions (dedicated scenario
+  files such as mobile fallback, filterable database, select widgets, reset
+  value, action slots) and the e-commerce / tools API specs.
+
+| Workflow                                           | Suite | Shards |
+| -------------------------------------------------- | ----- | ------ |
+| `development`, `staging`, `task-branch-release`    | quick | 8      |
+| `full-tests` (nightly, development/staging/master) | full  | 2      |
+| `full-tests` (started manually)                    | full  | 8      |
+| `release` (master)                                 | full  | 8      |
+
+`full-tests` and `release` record the commit status `appbuilder/full-playwright`.
+A branch head, or the master commit to release, that already has a green status
+is not tested again. The scheduled `full-tests` run starts one `full-tests`
+run on each of development, staging and master, so every branch is tested
+with its own workflow files, commit and environment. Those runs deploy their
+test builds to `testing/nightly-<branch>`. To test one branch by hand, start
+`full-tests` on that branch. Deploys can skip Playwright with the `skip_tests`
+input or `[skip tests]` in the pushed commit message.
 
 ## Adding a test
 
@@ -58,11 +87,12 @@ Open `tests/config/scenarioActions.ts` and add an entry:
 
 Each slug gets:
 
-- **smoke** — page loads, canvas visible, no JS errors
-- **visual** — full-page screenshot matches baseline
+- **smoke + visual** (one test, one page load) — page loads, canvas visible, no JS errors, then the full-page screenshot matches the baseline
 - **interaction** — runs `actions` (one test) or each `namedActions` entry (one test per name)
 
 Use `namedActions` when a slug needs isolated cases on a fresh page (viewport sizes, independent asserts). See `tests/config/scenarioMobileFallback.ts` (AppShell and Grid).
+
+Interactions run only in the full suite (nightly and on release) by default. Set `quickSuite: true` on an entry to also run its interactions on every deploy; keep that for short, core interactions. Smoke + visual of every slug always run in the quick suite.
 
 Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automatically (discovered from the rendered GrasshopperExampleModels App Builder and BETA definition pages).
 

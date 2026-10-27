@@ -4,11 +4,19 @@
  *
  * ─── HOW TO ADD A TEST ───────────────────────────────────────────────────────
  * Add an entry to `scenarioActions` below. Every slug in this array gets:
- *   • smoke test    — page loads, canvas is visible, no JS errors
- *   • visual test   — full-page screenshot matches the stored baseline
- *   • interaction   — `actions` (one test) or each `namedActions` entry
+ *   • smoke + visual — one test: page loads, canvas is visible, no JS
+ *                      errors, full-page screenshot matches the baseline
+ *   • interaction  — `actions` (one test) or each `namedActions` entry
  *
  * Slugs NOT listed here still receive smoke + visual tests automatically.
+ *
+ * ─── QUICK VS FULL SUITE ─────────────────────────────────────────────────────
+ * Deploys to development, staging and task branches run the quick suite
+ * (`pnpm test-e2e-quick`, tag `@quick`): smoke + visual for every slug and
+ * the interactions of the entries with `quickSuite: true`. All other
+ * interactions, including those from dedicated scenario files and the
+ * e-commerce / tools API specs, run only in the full suite (nightly and on
+ * release). Keep the quick suite to short, core interactions.
  *
  * ─── COMMON PATTERNS ─────────────────────────────────────────────────────────
  *
@@ -117,6 +125,10 @@ import {routeSettingsHrefsToAppBase} from "../helpers/routeSettingsHrefsToAppBas
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
+import {
+	actionSlotsActions,
+	actionSlotsSelectionActions,
+} from "./scenarioActionSlots";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {
 	exampleMobileFallbackAnchorsNamedActions,
@@ -125,6 +137,10 @@ import {
 	exampleMobileFallbackNamedActions,
 	exampleMobileFallbackTabsNamedActions,
 } from "./scenarioMobileFallback";
+import {
+	selectionInputResetValueActions,
+	textInputResetValueActions,
+} from "./scenarioResetValue";
 import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
 
 export interface ScenarioNamedAction {
@@ -167,6 +183,12 @@ export interface ScenarioActionConfig {
 	 * when cases need a fresh page (viewport sizes, independent asserts).
 	 */
 	namedActions?: ScenarioNamedAction[];
+	/**
+	 * Also run the interaction tests in the quick suite on deploys. Without
+	 * it they run only in the full suite (nightly and on release). Smoke +
+	 * visual of every slug run in the quick suite regardless.
+	 */
+	quickSuite?: boolean;
 }
 
 /** Fields needed to open a scenario URL (smoke/visual or a dedicated API spec). */
@@ -184,6 +206,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// The "Floor Plan" file parameter must be set before the model can load,
 		// so it belongs in `setup` rather than `actions`.
 		slug: "appbuilder-tutorial2-contextualui",
+		quickSuite: true,
 		setup: async (page) => {
 			await getParameterElement(page, "Floor Plan")
 				.locator('input[type="file"]')
@@ -198,6 +221,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Image upload: FILE INPUT PARAMETER pattern.
 		slug: "appbuilder-tutorial3-imagewidget",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await waitForModelRecomputed(page, async () => {
 				await getParameterElement(page, "Upload Your Image")
@@ -212,6 +236,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// Slider parameter: the slider has no accessible label, so we target
 		// the companion number textbox (TEXT INPUT PARAMETER pattern).
 		slug: "appbuilder-tutorial4-charts",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const input = getParameterElement(page, "Block to Edit").getByRole(
 				"textbox",
@@ -227,6 +252,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// EXPORT / DOWNLOAD pattern: assert that a file download is offered.
 		slug: "11e-parameterandexportcontrols",
+		quickSuite: true,
 		actions: async (page, _slug) => {
 			const downloadPromise = page.waitForEvent("download");
 			await page.getByRole("button", {name: "Download File"}).click();
@@ -240,6 +266,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// ACTION BUTTON pattern: two buttons, each triggering a recompute.
 		slug: "11f-actioncontrol",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await waitForModelRecomputed(page, async () => {
 				await page
@@ -260,6 +287,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// ACCORDION / STACK NAVIGATION pattern.
 		slug: "11g-accordionandstackwidgets",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await page.getByRole("button", {name: "Accordion"}).click();
 			await page
@@ -279,6 +307,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// ACTIVATION BUTTON + canvas click: activate the selection input,
 		// then click a point in the viewport to make a selection.
 		slug: "2d-selectioninput-tutorial1",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await getParameterElement(page, "SelectBox")
 				.getByRole("button")
@@ -295,6 +324,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Same as 2D but selects a different object at a different canvas position.
 		slug: "2e-selectioninput-tutorial2",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await getParameterElement(page, "SelectBox")
 				.getByRole("button")
@@ -311,6 +341,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Minimal gumball example — just activate and snapshot.
 		slug: "2f-minimalgumballexample",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await getParameterElement(page, "GumballInput")
 				.getByRole("button")
@@ -322,6 +353,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Full gumball workflow: activate → drag geometry → confirm.
 		slug: "2g-gumballinput-tutorial1",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await getParameterElement(page, "GumballInput")
 				.getByRole("button")
@@ -348,6 +380,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Points input — activate only; no geometry interaction needed.
 		slug: "2i-pointsinputsimpleexample",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await getParameterElement(page, "Boundary")
 				.getByRole("button")
@@ -359,6 +392,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Points input with geometry constraints — navigate to the group first.
 		slug: "2j-pointsinputgeometryconstraints",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			await page.getByRole("button", {name: "Group"}).click();
 			await getParameterElement(page, "PointsInput")
@@ -371,6 +405,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// SLIDER PARAMETER pattern.
 		slug: "beta-dynamicsliderstutorial",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const input = getParameterElement(page, "SphereCount").getByRole(
 				"textbox",
@@ -389,6 +424,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// renders outside the parameter container, so options must be queried
 		// on `page`, not on the container.
 		slug: "beta-dynamicvalueliststutorial",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const input = getParameterElement(page, "FoodType").getByRole(
 				"combobox",
@@ -405,6 +441,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// MULTILINE TEXT INPUT PARAMETER pattern.
 		// Tab-blur triggers the Mantine onChange and the Grasshopper recompute.
 		slug: "beta-multilinetextinput",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const textarea = getParameterElement(
 				page,
@@ -421,6 +458,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// SLIDER PARAMETER pattern — dynamic instances controller.
 		slug: "beta-instancestutorial1-controller",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const input = getParameterElement(page, "Count").getByRole(
 				"textbox",
@@ -436,6 +474,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// 3D anchor: click the canvas centre to open the anchor overlay.
 		slug: "beta-anchor3d",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const pos = await viewportCoords(page, 0.5, 0.5);
 			await page.mouse.click(pos.x, pos.y);
@@ -447,6 +486,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// Camera action button: the button is disabled for the animation duration
 		// (default 2500 ms) and re-enables when the movement completes.
 		slug: "beta-cameraaction",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			const button = page.getByRole("button", {name: "Set Camera"});
 			await button.click();
@@ -462,6 +502,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// The app has three unlabeled tabs; Playwright indices are zero-based.
 		slug: "7a-attributevisualization-3-2",
+		quickSuite: true,
 		actions: async (page, slug) => {
 			// open the attributes tab (fourth tab in this model)
 			const fourthTab = page.getByRole("tab").nth(3);
@@ -478,60 +519,19 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	},
 	{
 		slug: "textinput-resetvalue-3",
-		actions: async (page, slug) => {
-			const textarea = getParameterElement(page, "textInput").getByRole(
-				"textbox",
-			);
-			await waitForModelRecomputed(page, async () => {
-				await textarea.fill("Default\nExample\nTest");
-				await textarea.press("Tab");
-			});
-			await takeSnapshot(page, `${slug}-newValue`);
-		},
+		actions: textInputResetValueActions,
 	},
-
 	{
 		slug: "selectioninput-resetvalue-6",
-		actions: async (page, slug) => {
-			const pos = await viewportCoords(page, 0.64, 0.554);
-			await waitForModelRecomputed(page, async () => {
-				page.mouse.click(pos.x, pos.y);
-			});
-			await takeSnapshot(page, `${slug}-select`);
-
-			await waitForModelRecomputed(page, async () => {
-				// change one of the color params
-				const colorParam = getParameterElement(
-					page,
-					"Box Color",
-				).getByRole("textbox");
-				await colorParam.fill("#ff0000");
-				await colorParam.press("Enter");
-			});
-			await takeSnapshot(page, `${slug}-changedColor`);
-		},
+		// Plain selection colors: the pulsing default effect never gives two
+		// equal screenshots in a row.
+		params: {g: "example-simple-interaction-colors.json"},
+		actions: selectionInputResetValueActions,
 	},
-
 	{
 		slug: "selectioninput-resetvalue-dynamic-3",
-		actions: async (page, slug) => {
-			const pos = await viewportCoords(page, 0.64, 0.554);
-			await waitForModelRecomputed(page, async () => {
-				page.mouse.click(pos.x, pos.y);
-			});
-			await takeSnapshot(page, `${slug}-select`);
-
-			await waitForModelRecomputed(page, async () => {
-				// change one of the color params
-				const colorParam = getParameterElement(
-					page,
-					"Box Color",
-				).getByRole("textbox");
-				await colorParam.fill("#ff0000");
-				await colorParam.press("Enter");
-			});
-			await takeSnapshot(page, `${slug}-changedColor`);
-		},
+		params: {g: "example-simple-interaction-colors.json"},
+		actions: selectionInputResetValueActions,
 	},
 
 	{
@@ -542,6 +542,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// (the model stops sending the reset value), and adding another cabinet
 		// selects the new one again.
 		slug: "modularcabinets-test",
+		quickSuite: true,
 		// Settings file (served from public/) replacing the pulsing interaction
 		// effects by plain colors, so that the snapshots are deterministic.
 		params: {g: "example-simple-interaction-colors.json"},
@@ -577,6 +578,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// Self-contained settings JSON (`g`); session is in the file, so the
 		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-executeActions",
+		quickSuite: true,
 		params: {g: "example-executeActions.json"},
 		actions: async (page, slug) => {
 			const toolbar = page.getByLabel("execute-actions-toolbar");
@@ -601,49 +603,18 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-actionSlots-selection",
 		params: {g: "example-actionSlots-selection.json"},
-		actions: async (page, _slug) => {
-			// Open area of the back panel. 0.49, 0.58 sits ~10px above a
-			// shelf edge, so a small camera shift selects a shelf instead.
-			const pos = await viewportCoords(page, 0.444, 0.347);
-			await page.mouse.click(pos.x, pos.y);
-			await expect(page.getByText("Selection changed")).toBeVisible();
-			// selecton sets highlight colors and the hover slots do not, so
-			// they are two interaction groups painting the same node. The
-			// resulting red/blue/purple mix is not stable enough to snapshot.
-			const away = await viewportCoords(page, 0.05, 0.02);
-			await page.mouse.move(away.x, away.y);
-			await expect(page.getByText("Hovered")).toBeHidden();
-			await expect(page.getByText("Selection changed")).toBeVisible();
-		},
+		actions: actionSlotsSelectionActions,
 	},
 	{
 		// Self-contained settings JSON (`g`); session is in the file, so the
 		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-actionSlots",
 		params: {g: "example-actionSlots.json"},
-		actions: async (page, slug) => {
-			await waitForModelRecomputed(page, async () => {
-				await page.getByRole("tab", {name: "Show doors"}).click();
-			});
-			await takeSnapshot(page, `${slug}-show-doors`);
-
-			await waitForModelRecomputed(page, async () => {
-				await page.getByRole("tab", {name: "Hide doors"}).click();
-			});
-			await takeSnapshot(page, `${slug}-hide-doors`);
-
-			const input = getParameterElement(page, "Length").getByRole(
-				"textbox",
-			);
-			await waitForModelRecomputed(page, async () => {
-				await input.fill("4");
-				await input.press("Enter");
-			});
-			await takeSnapshot(page, `${slug}-computation`);
-		},
+		actions: actionSlotsActions,
 	},
 	{
 		slug: "selection-parameter-variations",
+		quickSuite: true,
 		// Settings file (served from public/) replacing the pulsing interaction
 		// effects by plain colors, so that the snapshots are deterministic.
 		params: {g: "example-simple-interaction-colors.json"},

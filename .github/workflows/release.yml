@@ -26,6 +26,7 @@ on:
 permissions:
   contents: read
 
+# Shared with full-tests.yml so a release never runs next to the nightly suite.
 concurrency:
   group: appbuilder-release
   cancel-in-progress: false
@@ -36,9 +37,11 @@ jobs:
     permissions:
       contents: write
       id-token: write
+      statuses: read
     environment: production
     outputs:
       prepared_sha: ${{ steps.prepared-commit.outputs.sha }}
+      full_tests_done: ${{ steps.full-tests.outputs.full_tests_done }}
     steps:
       - name: Validate inputs
         shell: bash
@@ -77,6 +80,23 @@ jobs:
         id: prepared-commit
         shell: bash
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Check full Playwright status for the prepared commit
+        id: full-tests
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREPARED_SHA: ${{ steps.prepared-commit.outputs.sha }}
+        run: |
+          COUNT=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${PREPARED_SHA}/statuses" \
+            --jq '[.[] | select(.context == "appbuilder/full-playwright" and .state == "success")] | length')
+          if [[ "$COUNT" -gt 0 ]]; then
+            echo "full_tests_done=true" >> "$GITHUB_OUTPUT"
+            echo "Full Playwright suite already passed for ${PREPARED_SHA}; skipping it."
+          else
+            echo "full_tests_done=false" >> "$GITHUB_OUTPUT"
+            echo "Full Playwright suite has not passed for ${PREPARED_SHA}; release will run it."
+          fi
 
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
@@ -176,6 +196,7 @@ jobs:
         run: pnpm test
 
       - name: Deploy E2E test build
+        if: steps.full-tests.outputs.full_tests_done != 'true'
         run: pnpm test-e2e-deploy
         env:
           APPBUILDER_E2E_DEPLOY: "1"
@@ -208,17 +229,51 @@ jobs:
 
   e2e:
     needs: prepare
+    if: needs.prepare.outputs.full_tests_done != 'true'
     uses: ./.github/workflows/playwright-shards.yml
     with:
+      suite: full
+      shard_total: 8
       test_branch: testing/master
       environment: production
       checkout_ref: ${{ needs.prepare.outputs.prepared_sha }}
     secrets: inherit
 
+  record-full-test-status:
+    needs:
+      - prepare
+      - e2e
+    if: >-
+      !cancelled() &&
+      needs.prepare.result == 'success' &&
+      needs.prepare.outputs.full_tests_done != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+
+    steps:
+      - name: Record full Playwright status
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREPARED_SHA: ${{ needs.prepare.outputs.prepared_sha }}
+          E2E_RESULT: ${{ needs.e2e.result }}
+        run: |
+          if [[ "$E2E_RESULT" == "success" ]]; then STATE="success"; DESCRIPTION="Full Playwright suite passed"; else STATE="failure"; DESCRIPTION="Full Playwright suite failed"; fi
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${PREPARED_SHA}" \
+            -f state="$STATE" \
+            -f context="appbuilder/full-playwright" \
+            -f description="$DESCRIPTION" \
+            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
   release:
     needs:
       - prepare
       - e2e
+    if: >-
+      !cancelled() &&
+      needs.prepare.result == 'success' &&
+      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped')
     runs-on: ubuntu-latest
     permissions:
       contents: write

@@ -16,27 +16,51 @@ on:
         required: false
         default: ""
         type: string
+      suite:
+        description: Test suite to run, quick (tests tagged @quick) or full
+        required: true
+        type: string
+      shard_total:
+        description: Number of parallel Playwright shards
+        required: true
+        type: number
+      artifact_prefix:
+        description: Prefix for failure artifact names, unique per caller job in a run
+        required: false
+        default: playwright
+        type: string
 
 permissions:
   contents: read
 
 jobs:
+  shards:
+    name: Plan shards
+    runs-on: ubuntu-latest
+    outputs:
+      indexes: ${{ steps.plan.outputs.indexes }}
+
+    steps:
+      - name: Validate inputs and plan shards
+        id: plan
+        shell: bash
+        env:
+          SUITE: ${{ inputs.suite }}
+          SHARD_TOTAL: ${{ inputs.shard_total }}
+        run: |
+          case "$SUITE" in quick|full) ;; *) echo "Invalid suite: $SUITE" >&2; exit 1;; esac
+          if ! [[ "$SHARD_TOTAL" =~ ^[1-9][0-9]*$ ]]; then echo "Invalid shard_total: $SHARD_TOTAL" >&2; exit 1; fi
+          echo "indexes=$(seq -s, 1 "$SHARD_TOTAL" | sed 's/.*/[&]/')" >> "$GITHUB_OUTPUT"
+
   playwright:
-    name: Playwright (${{ matrix.shard }})
+    name: Playwright ${{ inputs.suite }} (${{ matrix.shard_index }}/${{ inputs.shard_total }})
+    needs: shards
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - shard: 1/4
-            shard_name: 1-of-4
-          - shard: 2/4
-            shard_name: 2-of-4
-          - shard: 3/4
-            shard_name: 3-of-4
-          - shard: 4/4
-            shard_name: 4-of-4
+        shard_index: ${{ fromJSON(needs.shards.outputs.indexes) }}
 
     steps:
       - name: Create GitHub App token
@@ -85,8 +109,8 @@ jobs:
           pnpm config set @shapediver:registry https://registry.npmjs.org
           pnpm install --frozen-lockfile
 
-      - name: Run Playwright shard ${{ matrix.shard }}
-        run: pnpm test-e2e --shard=${{ matrix.shard }}
+      - name: Run Playwright ${{ inputs.suite }} shard ${{ matrix.shard_index }}/${{ inputs.shard_total }}
+        run: pnpm ${{ inputs.suite == 'quick' && 'test-e2e-quick' || 'test-e2e' }} --shard=${{ matrix.shard_index }}/${{ inputs.shard_total }}
         env:
           SKIP_DEPLOY: "1"
           TEST_BRANCH: ${{ inputs.test_branch }}
@@ -107,7 +131,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: playwright-shard-${{ matrix.shard_name }}-failure-artifacts
+          name: ${{ inputs.artifact_prefix }}-${{ inputs.suite }}-shard-${{ matrix.shard_index }}-of-${{ inputs.shard_total }}-failure-artifacts
           if-no-files-found: ignore
           compression-level: 0
           path: .github-artifacts/failure/
