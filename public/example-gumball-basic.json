@@ -1,0 +1,73 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"slug": "rectangletransform-6-2-3"
+		}
+	],
+	"appBuilderOverride": {
+		"containers": [
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"props": {
+							"controls": [
+								{
+									"props": {
+										"name": "RectangleTransform",
+										"sessionId": "default_appbuilder"
+									},
+									"type": "parameter"
+								}
+							]
+						},
+						"type": "controls"
+					}
+				]
+			}
+		],
+		"parameters": [
+			{
+				"defval": "",
+				"hidden": false,
+				"id": "RectangleTransform",
+				"name": "RectangleTransform",
+				"settings": {
+					"props": {
+						"activeMode": "default",
+						"availableColor": "#00ff00",
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 3,
+						"minimumSelection": 1,
+						"nameFilter": [
+							"Boxes.box_*"
+						],
+						"objects": [],
+						"prompt": {
+							"activeText": "Select a box in the viewport",
+							"activeTitle": "Transforming boxes",
+							"inactiveTitle": "Start transform"
+						},
+						"restrictions": [],
+						"selectionColor": "#ff0000",
+						"automaticSceneUpdate": true,
+						"automaticSceneUpdateTimeout": 3000
+					},
+					"type": "gumball"
+				},
+				"type": "Interaction"
+			}
+		],
+		"version": "1.0"
+	}
+}

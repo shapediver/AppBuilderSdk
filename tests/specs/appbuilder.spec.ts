@@ -115,6 +115,7 @@ for (const {slug, url} of allEntries.values()) {
 					`interaction: ${action.name}`,
 					interactionDetails,
 					async ({page}) => {
+						if (action.timeout) test.setTimeout(action.timeout);
 						await beforeGoto?.(page);
 						await page.goto(resolvedUrl, {
 							waitUntil: "domcontentloaded",
