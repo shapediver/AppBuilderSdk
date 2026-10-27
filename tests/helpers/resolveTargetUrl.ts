@@ -8,12 +8,6 @@
  * The segment `/main/latest/` becomes `/main/<branch>/`.
  */
 export function rewriteToTestBranch(url: string, branch: string): string {
-	// TEMPORARY local switch (remove before finishing): run against a dev server
-	if (process.env.TEST_APP_URL) {
-		const target = new URL(process.env.TEST_APP_URL);
-		target.search = new URL(url).search;
-		return target.toString();
-	}
 	return url.replace("/main/latest/", `/main/${branch}/`);
 }
 

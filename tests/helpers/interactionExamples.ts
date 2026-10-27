@@ -145,6 +145,55 @@ export const gestures: Record<Kind, Gestures> = {
 };
 
 /**
+ * Scale box `a` (already selected) from its corner and, within the idle
+ * timeout of that move, select box `b` and scale it from its corner as well
+ * (3000 ms in the multi-parameter examples). All screen positions are
+ * computed up front and the drags are quick: on a slow runner a mouse step
+ * takes about 100 ms, so the second drag has to start about a second after
+ * the first one ended. `wait` is the pause after the click on `b` (an anchor
+ * opening on the selection needs a moment to show the tool). Asserts that
+ * both boxes moved.
+ */
+export async function moveTwoBoxesQuickly(
+	page: Page,
+	a: string,
+	b: string,
+	wait = 250,
+) {
+	await settle(page);
+	const [aBefore, bBefore] = await Promise.all([
+		nodeBounds(page, a),
+		nodeBounds(page, b),
+	]);
+	const aCorner = await nodeScreenPoint(page, a, [1, 1, 1]);
+	const bCenter = await nodeScreenPoint(page, b, [0.5, 0.5, 0.5]);
+	const bCorner = await nodeScreenPoint(page, b, [1, 1, 1]);
+	await dragMouse(
+		page,
+		aCorner,
+		{x: aCorner.x + DRAG_PX, y: aCorner.y},
+		true,
+	);
+	await page.mouse.click(bCenter.x, bCenter.y);
+	await page.waitForTimeout(wait);
+	await dragMouse(
+		page,
+		bCorner,
+		{x: bCorner.x + DRAG_PX, y: bCorner.y},
+		true,
+	);
+	await page.waitForTimeout(300);
+	expect(
+		boundsChanged(aBefore, await nodeBounds(page, a)),
+		`the quick gesture did not move ${a}`,
+	).toBe(true);
+	expect(
+		boundsChanged(bBefore, await nodeBounds(page, b)),
+		`the quick gesture did not move ${b}`,
+	).toBe(true);
+}
+
+/**
  * Drag a point of the Boundary drawing, starting from its current value
  * (points move with every confirmation). `expectDrawingDirty` verifies it.
  */

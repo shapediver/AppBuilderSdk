@@ -19,6 +19,14 @@
  * moved the object (`interactionExamples`).
  *
  * Settings files: public/example-<rectangle|gumball|drawing>-<mode>.json.
+ *
+ * Two more rectangle examples load testing-account models with one always
+ * active, automatically updating parameter per box (`multi`: all three in the
+ * left container; `anchors`: each in a 2D anchor which opens on selection of
+ * its box and closes when another anchor opens). Automatic updates of several
+ * parameters are sent together after the longest idle timeout, a new move
+ * restarts the countdown, and a move whose parameter unmounts meanwhile (its
+ * anchor closed) is still sent (`automaticSceneUpdateScheduler`).
  */
 import {expect, Page} from "@playwright/test";
 import {
@@ -33,6 +41,7 @@ import {
 	expectNoCustomization,
 	gestures,
 	type Kind,
+	moveTwoBoxesQuickly,
 	PARAMETER,
 	settle,
 	startDrawingButton,
@@ -474,6 +483,139 @@ const interactionExampleExtraScenarios: ScenarioActionConfig[] = [
 	},
 ];
 
+/** The boxes of the multi-parameter examples and the parameter of each. */
+const MULTI_BOXES = [
+	{box: "box_original", parameter: "RectangleTransform2"},
+	{box: "box_translated", parameter: "RectangleTransform1"},
+];
+/** Label of each parameter of the multi-parameter examples (widget header). */
+const MULTI_PARAMETER_LABEL = "RectangleTransform";
+const multiParameterLabel = (page: Page) =>
+	page.getByText(MULTI_PARAMETER_LABEL, {exact: true});
+
+/** The last request carries a real transformation of each of the boxes. */
+const expectBoxesSent = (
+	puts: CustomizationTracker,
+	boxes: {box: string; parameter: string}[],
+) => {
+	for (const {box, parameter} of boxes) {
+		const value = transformValueFromBody(puts.last(), parameter);
+		const index = value.names.indexOf(`Boxes.${box}`);
+		expect(index, JSON.stringify(value)).toBeGreaterThanOrEqual(0);
+		expect(isIdentity(value.transformations[index])).toBe(false);
+	}
+};
+
+const multiParameterScenarios: ScenarioActionConfig[] = [
+	{
+		slug: "example-rectangle-multi-automaticSceneUpdate",
+		params: {g: "example-rectangle-multi-automaticSceneUpdate.json"},
+		namedActions: [
+			{
+				name: "simple: moves of two boxes are sent together",
+				run: async (page, slug) => {
+					const [a, b] = MULTI_BOXES;
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					await clickNode(page, a.box);
+					await expectNoCustomization(page, puts, 0);
+					// the second box is moved within the idle timeout of the
+					// first move: one request carries both placements
+					await waitForModelRecomputed(page, async () => {
+						await moveTwoBoxesQuickly(page, a.box, b.box);
+					});
+					expect(puts.count()).toBe(1);
+					expectBoxesSent(puts, [a, b]);
+					// the camera re-frames after a customization
+					await settle(page);
+					await takeSnapshot(page, `${slug}-updated`);
+					await expectNoCustomization(page, puts, 1);
+					expect(errors.errors()).toEqual([]);
+				},
+			},
+			{
+				name: "complex: a move restarts the countdown, a later move resends both",
+				run: async (page, slug) => {
+					const [a, b] = MULTI_BOXES;
+					const g = gestures.rectangle;
+					const puts = trackCustomizations(page);
+					await clickNode(page, a.box);
+					await moveTwoBoxesQuickly(page, a.box, b.box);
+					// the move of the second box restarted the countdown: the
+					// timeout since the first move passed without a request
+					await page.waitForTimeout(2000);
+					expect(puts.count()).toBe(0);
+					await waitForModelRecomputed(page, async () => {});
+					expect(puts.count()).toBe(1);
+					expectBoxesSent(puts, [a, b]);
+
+					// the value of every parameter is part of each request: a
+					// further move of the first box resends the second one too
+					await waitForModelRecomputed(page, async () => {
+						await g.primary(page, [a.box]);
+					});
+					expect(puts.count()).toBe(2);
+					expectBoxesSent(puts, [a, b]);
+					// the camera re-frames after a customization
+					await settle(page);
+					await takeSnapshot(page, `${slug}-updated-twice`);
+				},
+			},
+		],
+	},
+	{
+		slug: "example-rectangle-anchors-automaticSceneUpdate",
+		params: {g: "example-rectangle-anchors-automaticSceneUpdate.json"},
+		namedActions: [
+			{
+				name: "simple: the anchor shows the parameter widget",
+				run: async (page, slug) => {
+					const [a] = MULTI_BOXES;
+					const puts = trackCustomizations(page);
+					await expect(multiParameterLabel(page)).toHaveCount(0);
+					await clickNode(page, a.box);
+					// the anchor of the box opened with the parameter's widget:
+					// inside an anchor the parameter does not render in the toolbar
+					await expect(multiParameterLabel(page)).toHaveCount(1);
+					await expectNoCustomization(page, puts, 0);
+					// the camera re-frames after a customization
+					await settle(page);
+					await takeSnapshot(page, `${slug}-anchor-open`);
+					await waitForModelRecomputed(page, async () => {
+						await gestures.rectangle.primary(page, [a.box]);
+					});
+					expect(puts.count()).toBe(1);
+					expectBoxesSent(puts, [a]);
+					await expect(multiParameterLabel(page)).toHaveCount(1);
+				},
+			},
+			{
+				name: "complex: a move pending while its anchor closes is sent",
+				run: async (page, slug) => {
+					const [a, b] = MULTI_BOXES;
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					await clickNode(page, a.box);
+					// selecting the second box opens its anchor and closes the
+					// first one (anchors are exclusive): the first parameter
+					// unmounts with its move pending, the move is still sent
+					await waitForModelRecomputed(page, async () => {
+						await moveTwoBoxesQuickly(page, a.box, b.box, 800);
+						await expect(multiParameterLabel(page)).toHaveCount(1);
+					});
+					expect(puts.count()).toBe(1);
+					expectBoxesSent(puts, [a, b]);
+					// the camera re-frames after a customization
+					await settle(page);
+					await takeSnapshot(page, `${slug}-updated`);
+					await expectNoCustomization(page, puts, 1);
+					expect(errors.errors()).toEqual([]);
+				},
+			},
+		],
+	},
+];
+
 /**
  * Every flow waits for several model computations and drags gizmos with
  * continuous rendering; on CI runners (software rendering) a simple flow takes
@@ -487,6 +629,7 @@ export const interactionExampleScenarios: ScenarioActionConfig[] = [
 	...transformScenarios("gumball"),
 	...drawingScenarios,
 	...interactionExampleExtraScenarios,
+	...multiParameterScenarios,
 ].map((scenario) => ({
 	...scenario,
 	namedActions: scenario.namedActions?.map((action) => ({
