@@ -160,10 +160,10 @@ export const gestures: Record<Kind, Gestures> = {
 /**
  * Scale box `a` (already selected) from its corner and, within the idle
  * timeout of that move, select box `b` and scale it from its corner as well
- * (3000 ms in the multi-parameter examples). All screen positions are
- * computed up front and the drags are quick: on a slow runner a mouse step
- * takes about 100 ms, so the second drag has to start about a second after
- * the first one ended. `wait` is the pause after the click on `b` (the gizmo
+ * (the multi-parameter example sets a 30 s timeout: on a CI runner a mouse
+ * step takes about 0.6 s and the second drag starts about 5 s after the click
+ * on `b`, which restarts the countdown). All screen positions are computed up
+ * front and the drags are quick. `wait` is the pause after the click on `b` (the gizmo
  * of `b` is created after its selection). Asserts that both boxes moved.
  */
 export async function moveTwoBoxesQuickly(

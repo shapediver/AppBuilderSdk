@@ -8,5 +8,291 @@
 			"id": "default",
 			"slug": "ss-10024-one-parameter-per-box-2"
 		}
-	]
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectangleTransform1",
+										"sessionId": "default_appbuilder"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectangleTransform2",
+										"sessionId": "default_appbuilder"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectangleTransform3",
+										"sessionId": "default_appbuilder"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "text",
+						"props": {}
+					},
+					{
+						"type": "text",
+						"props": {}
+					},
+					{
+						"type": "text",
+						"props": {}
+					}
+				]
+			}
+		],
+		"parameters": [
+			{
+				"id": "RectangleTransform1",
+				"defval": "",
+				"name": "RectangleTransform",
+				"type": "Interaction",
+				"hidden": false,
+				"settings": {
+					"props": {
+						"activeMode": "alwaysActive",
+						"availableColor": "#00ff00",
+						"corners": {
+							"bottomLeft": true,
+							"bottomRight": true,
+							"topLeft": true,
+							"topRight": true
+						},
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 1,
+						"midpoints": {
+							"bottom": true,
+							"left": true,
+							"right": true,
+							"top": true
+						},
+						"minimumSelection": 1,
+						"nameFilter": [
+							"Boxes.box_translated"
+						],
+						"objects": [],
+						"plane": {
+							"type": "plane",
+							"vector_u": [
+								1,
+								0,
+								0
+							],
+							"vector_v": [
+								0,
+								1,
+								0
+							]
+						},
+						"prompt": {
+							"activeText": "Select a box in the viewport",
+							"activeTitle": "Transforming boxes",
+							"inactiveTitle": "Start transform"
+						},
+						"restrictions": [],
+						"rotation": {
+							"handleDistance": null,
+							"max": null,
+							"min": null,
+							"step": null,
+							"stepThreshold": null
+						},
+						"scaling": {
+							"step": null,
+							"uMax": null,
+							"uMin": null,
+							"uniform": false,
+							"vMax": null,
+							"vMin": null
+						},
+						"selectionColor": "#ff0000",
+						"automaticSceneUpdate": true,
+						"automaticSceneUpdateTimeout": 30000,
+						"buttons": {
+							"clear": false
+						}
+					},
+					"type": "rectangleTransform"
+				}
+			},
+			{
+				"id": "RectangleTransform2",
+				"defval": "",
+				"name": "RectangleTransform",
+				"type": "Interaction",
+				"hidden": false,
+				"settings": {
+					"props": {
+						"activeMode": "alwaysActive",
+						"availableColor": "#00ff00",
+						"corners": {
+							"bottomLeft": true,
+							"bottomRight": true,
+							"topLeft": true,
+							"topRight": true
+						},
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 1,
+						"midpoints": {
+							"bottom": true,
+							"left": true,
+							"right": true,
+							"top": true
+						},
+						"minimumSelection": 1,
+						"nameFilter": [
+							"Boxes.box_original"
+						],
+						"objects": [],
+						"plane": {
+							"type": "plane",
+							"vector_u": [
+								1,
+								0,
+								0
+							],
+							"vector_v": [
+								0,
+								1,
+								0
+							]
+						},
+						"prompt": {
+							"activeText": "Select a box in the viewport",
+							"activeTitle": "Transforming boxes",
+							"inactiveTitle": "Start transform"
+						},
+						"restrictions": [],
+						"rotation": {
+							"handleDistance": null,
+							"max": null,
+							"min": null,
+							"step": null,
+							"stepThreshold": null
+						},
+						"scaling": {
+							"step": null,
+							"uMax": null,
+							"uMin": null,
+							"uniform": false,
+							"vMax": null,
+							"vMin": null
+						},
+						"selectionColor": "#ff0000",
+						"automaticSceneUpdate": true,
+						"automaticSceneUpdateTimeout": 30000,
+						"buttons": {
+							"clear": false
+						}
+					},
+					"type": "rectangleTransform"
+				}
+			},
+			{
+				"id": "RectangleTransform3",
+				"defval": "",
+				"name": "RectangleTransform",
+				"type": "Interaction",
+				"hidden": false,
+				"settings": {
+					"props": {
+						"activeMode": "alwaysActive",
+						"availableColor": "#00ff00",
+						"corners": {
+							"bottomLeft": true,
+							"bottomRight": true,
+							"topLeft": true,
+							"topRight": true
+						},
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 1,
+						"midpoints": {
+							"bottom": true,
+							"left": true,
+							"right": true,
+							"top": true
+						},
+						"minimumSelection": 1,
+						"nameFilter": [
+							"Boxes.box_transformed"
+						],
+						"objects": [],
+						"plane": {
+							"type": "plane",
+							"vector_u": [
+								1,
+								0,
+								0
+							],
+							"vector_v": [
+								0,
+								1,
+								0
+							]
+						},
+						"prompt": {
+							"activeText": "Select a box in the viewport",
+							"activeTitle": "Transforming boxes",
+							"inactiveTitle": "Start transform"
+						},
+						"restrictions": [],
+						"rotation": {
+							"handleDistance": null,
+							"max": null,
+							"min": null,
+							"step": null,
+							"stepThreshold": null
+						},
+						"scaling": {
+							"step": null,
+							"uMax": null,
+							"uMin": null,
+							"uniform": false,
+							"vMax": null,
+							"vMin": null
+						},
+						"selectionColor": "#ff0000",
+						"automaticSceneUpdate": true,
+						"automaticSceneUpdateTimeout": 30000,
+						"buttons": {
+							"clear": false
+						}
+					},
+					"type": "rectangleTransform"
+				}
+			}
+		]
+	}
 }
