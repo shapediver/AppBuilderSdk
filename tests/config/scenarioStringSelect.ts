@@ -60,8 +60,20 @@ async function csvDatabase(page: Page, filters: unknown[] = []) {
 	};
 }
 
-const BRASS_JSON = JSON.stringify({material: "metal", dataId: "D-1002"});
-const CEDAR_JSON = JSON.stringify({material: "wood", dataId: "D-1003"});
+// The settings travel through the model, which may reorder the keys of the
+// `data` mapping: compare the committed row data as objects, not as strings.
+const BRASS_DATA = {material: "metal", dataId: "D-1002"};
+const CEDAR_DATA = {material: "wood", dataId: "D-1003"};
+
+/** The committed value of a parameter parsed as JSON (undefined if it is no JSON). */
+async function sdvParameterJson(page: Page, name: string): Promise<unknown> {
+	const value = await sdvParameterValue(page, name);
+	try {
+		return JSON.parse(String(value));
+	} catch {
+		return undefined;
+	}
+}
 
 export const scenarioStringSelectNamedActions: ScenarioNamedAction[] = [
 	{
@@ -132,8 +144,8 @@ export const scenarioStringSelectNamedActions: ScenarioNamedAction[] = [
 				await card(page, "TextInput", "Brass").click();
 			});
 			await expect
-				.poll(() => sdvParameterValue(page, "TextInput"))
-				.toBe(BRASS_JSON);
+				.poll(() => sdvParameterJson(page, "TextInput"))
+				.toEqual(BRASS_DATA);
 			await snapshotParameter(
 				page,
 				"TextInput",
@@ -169,8 +181,8 @@ export const scenarioStringSelectNamedActions: ScenarioNamedAction[] = [
 				await page.getByRole("option", {name: "Brass"}).click();
 			});
 			await expect
-				.poll(() => sdvParameterValue(page, "TextInput"))
-				.toBe(BRASS_JSON);
+				.poll(() => sdvParameterJson(page, "TextInput"))
+				.toEqual(BRASS_DATA);
 			// The stored JSON maps back to the row for display.
 			await expect(input).toHaveValue("Brass");
 			await snapshotParameter(
@@ -199,8 +211,8 @@ export const scenarioStringSelectNamedActions: ScenarioNamedAction[] = [
 				await chips.getByText("Cedar", {exact: true}).click();
 			});
 			await expect
-				.poll(() => sdvParameterValue(page, "TextInput"))
-				.toBe(CEDAR_JSON);
+				.poll(() => sdvParameterJson(page, "TextInput"))
+				.toEqual(CEDAR_DATA);
 
 			// Grasshopper now hides Cedar (the current value) and renames
 			// Aluminium. The stored value stays; no chip is selected.
@@ -216,7 +228,9 @@ export const scenarioStringSelectNamedActions: ScenarioNamedAction[] = [
 				chips.getByText("Aluminium (recommended)", {exact: true}),
 			).toBeVisible();
 			await expect(chips.locator("input:checked")).toHaveCount(0);
-			expect(await sdvParameterValue(page, "TextInput")).toBe(CEDAR_JSON);
+			expect(await sdvParameterJson(page, "TextInput")).toEqual(
+				CEDAR_DATA,
+			);
 			await snapshotParameter(page, "TextInput", `${slug}-patch-applied`);
 
 			// Patch removed again: Cedar is back and selected.

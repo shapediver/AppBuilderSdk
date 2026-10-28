@@ -231,15 +231,17 @@ if [ "$deploy" -eq 1 ]; then
     fi
 fi
 
+# Get the current branch
+branch=$(git rev-parse --abbrev-ref HEAD)
+
 # If we are deploying, check for uncommitted or untracked non-ignored files.
-if [ "$deploy" -eq 1 ]; then
+# Testing deployments (testing/*) may include uncommitted changes, e.g. to run
+# the e2e tests against work in progress.
+if [ "$deploy" -eq 1 ] && [[ "$branch" != testing/* ]]; then
     if [ -n "$(git status --porcelain)" ]; then
         fail "There are uncommitted or untracked non-ignored files."
     fi
 fi
-
-# Get the current branch
-branch=$(git rev-parse --abbrev-ref HEAD)
 
 # npm version
 npm_version=$(node -p "require('./package.json').version")
