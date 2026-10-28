@@ -1,0 +1,283 @@
+name: full-tests
+
+# Full Playwright suite for the heads of development, staging and master.
+# Scheduled runs only fire on the default branch, so the nightly run starts
+# one workflow_dispatch run per branch; each of those uses its own branch's
+# workflow files, commit and environment. A commit that already has a green
+# appbuilder/full-playwright status is skipped; release.yml reads the same
+# status for master.
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+    inputs:
+      shard_total:
+        description: Number of parallel Playwright shards
+        required: false
+        default: 8
+        type: number
+      force:
+        description: Run even if the full suite already passed for the commit
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+# The master run shares the release group, so a release never runs next to
+# it. development and staging run in parallel; at 2 shards each that is fewer
+# concurrent sessions than one quick suite deploy.
+concurrency:
+  group: ${{ github.event_name == 'schedule' && 'full-tests-schedule' || (github.ref_name == 'master' && 'appbuilder-release' || format('full-tests-{0}', github.ref_name)) }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Dispatch full tests per branch
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+
+    steps:
+      - name: Start full-tests on development, staging and master
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          FAILED=0
+          for BRANCH in development staging master; do
+            echo "Starting full-tests on ${BRANCH}..."
+            gh workflow run full-tests.yml --repo "$GITHUB_REPOSITORY" --ref "$BRANCH" -f shard_total=2 \
+              || { echo "::error::Could not start full-tests on ${BRANCH}."; FAILED=1; }
+          done
+          exit "$FAILED"
+
+  check:
+    name: Check full tests
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: read
+    outputs:
+      sha: ${{ steps.check.outputs.sha }}
+      full_tests_done: ${{ steps.check.outputs.full_tests_done }}
+
+    steps:
+      - name: Check full Playwright status for this commit
+        id: check
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.ref_name }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          case "$BRANCH" in development|staging|master) ;; *) echo "full-tests runs on development, staging or master, not ${BRANCH}." >&2; exit 1;; esac
+          SHA="${GITHUB_SHA}"
+          echo "sha=${SHA}" >> "$GITHUB_OUTPUT"
+          COUNT=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${SHA}/statuses" \
+            --jq '[.[] | select(.context == "appbuilder/full-playwright" and .state == "success")] | length')
+          if [[ "$COUNT" -gt 0 && "$FORCE" != "true" ]]; then
+            echo "full_tests_done=true" >> "$GITHUB_OUTPUT"
+            echo "Full Playwright suite already passed for ${BRANCH} at ${SHA}."
+          else
+            echo "full_tests_done=false" >> "$GITHUB_OUTPUT"
+            echo "Running the full Playwright suite for ${BRANCH} at ${SHA}."
+          fi
+
+  prepare:
+    name: Deploy test build
+    needs: check
+    if: needs.check.outputs.full_tests_done != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+      id-token: write
+    environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
+
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.BOT_APP_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          ref: ${{ needs.check.outputs.sha }}
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+        with:
+          version: 11.3.0
+
+      - name: Setup Node.js for GitHub Packages
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.12.0
+          cache: pnpm
+          scope: "@shapediver"
+          registry-url: https://npm.pkg.github.com
+
+      - name: Configure GitHub Packages registry
+        run: |
+          pnpm config set @shapediver:registry https://npm.pkg.github.com
+          pnpm config set //npm.pkg.github.com/:_authToken "${NODE_AUTH_TOKEN}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Install dependencies
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+        run: |
+          pnpm install --frozen-lockfile && exit 0
+          echo "GitHub Packages install failed, falling back to npmjs.org..."
+          pnpm config set @shapediver:registry https://registry.npmjs.org
+          pnpm install --frozen-lockfile
+
+      - name: Configure git user
+        shell: bash
+        run: |
+          APP_SLUG="${{ steps.app-token.outputs.app-slug }}"
+          USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Write Sentry config
+        env:
+          SENTRY_CONFIG_LOCAL_TS: ${{ secrets.SENTRY_CONFIG_LOCAL_TS }}
+        run: printf '%s' "$SENTRY_CONFIG_LOCAL_TS" > sentryconfig.local.ts
+
+      - name: Export deployment env
+        run: |
+          echo "APPBUILDER_BUCKET=${{ secrets.APPBUILDER_BUCKET }}" >> "$GITHUB_ENV"
+          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> "$GITHUB_ENV"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Run unit tests
+        run: pnpm test
+
+      # Own testing branch per source branch, so the nightly run never
+      # replaces the build a deploy of that branch is testing right now.
+      - name: Deploy E2E test build
+        run: pnpm test-e2e-deploy
+        env:
+          APPBUILDER_E2E_DEPLOY: "1"
+          APPBUILDER_E2E_SKIP_INSTALL: "1"
+          APPBUILDER_ASSUME_YES: "1"
+          TEST_BRANCH: testing/nightly-${{ github.ref_name }}
+          APPBUILDER_PUSH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PLATFORM_CLIENT_ID: ${{ secrets.PLATFORM_CLIENT_ID }}
+          PLATFORM_ACCESS_TOKEN_KEY: ${{ secrets.PLATFORM_ACCESS_TOKEN_KEY }}
+          PLATFORM_ACCESS_TOKEN_SECRET: ${{ secrets.PLATFORM_ACCESS_TOKEN_SECRET }}
+
+      - name: Collect preparation failure artifacts
+        if: failure()
+        shell: bash
+        run: |
+          rm -rf .github-artifacts/failure
+          mkdir -p .github-artifacts/failure
+          for path in playwright-report test-results dist; do
+            if [[ -e "$path" ]]; then cp -R "$path" .github-artifacts/failure/; fi
+          done
+
+      - name: Upload preparation failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: full-tests-${{ github.ref_name }}-preparation-failure-artifacts
+          if-no-files-found: ignore
+          compression-level: 0
+          path: .github-artifacts/failure/
+
+  e2e:
+    needs:
+      - check
+      - prepare
+    uses: ./.github/workflows/playwright-shards.yml
+    with:
+      suite: full
+      # workflow_dispatch passes the number input on as a string (also for
+      # `gh workflow run -f shard_total=2`); the reusable workflow needs a number.
+      shard_total: ${{ fromJSON(inputs.shard_total) }}
+      test_branch: testing/nightly-${{ github.ref_name }}
+      environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
+      checkout_ref: ${{ needs.check.outputs.sha }}
+      artifact_prefix: full-tests-${{ github.ref_name }}
+    secrets: inherit
+
+  record-full-test-status:
+    name: Record full test status
+    needs:
+      - check
+      - prepare
+      - e2e
+    if: >-
+      !cancelled() &&
+      needs.check.result == 'success' &&
+      needs.check.outputs.full_tests_done != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+    environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
+
+    steps:
+      - name: Record full Playwright status
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ needs.check.outputs.sha }}
+          PREPARE_RESULT: ${{ needs.prepare.result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
+        run: |
+          if [[ "$PREPARE_RESULT" == "success" && "$E2E_RESULT" == "success" ]]; then STATE="success"; DESCRIPTION="Full Playwright suite passed"; else STATE="failure"; DESCRIPTION="Full Playwright suite failed"; fi
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${SHA}" \
+            -f state="$STATE" \
+            -f context="appbuilder/full-playwright" \
+            -f description="$DESCRIPTION" \
+            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+      - name: Notify Slack
+        continue-on-error: true
+        shell: bash
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          PREPARE_RESULT: ${{ needs.prepare.result }}
+          E2E_RESULT: ${{ needs.e2e.result }}
+          WORKFLOW: ${{ github.workflow }}
+          BRANCH: ${{ github.ref_name }}
+          SHA: ${{ needs.check.outputs.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ needs.check.outputs.sha }}
+        run: |
+          if [[ -z "${SLACK_WEBHOOK_URL}" ]]; then
+            echo "SLACK_WEBHOOK_URL not configured; skipping Slack notification."
+            exit 0
+          fi
+          if [[ "${PREPARE_RESULT}" == "success" && "${E2E_RESULT}" == "success" ]]; then STATUS="success"; elif [[ "${PREPARE_RESULT}" == "cancelled" || "${E2E_RESULT}" == "cancelled" ]]; then STATUS="cancelled"; else STATUS="failure"; fi
+          case "$STATUS" in success) COLOR="#36a64f"; EMOJI=":white_check_mark:"; STATUS_LABEL="Passed";; cancelled) COLOR="#808080"; EMOJI=":warning:"; STATUS_LABEL="Cancelled";; *) COLOR="#cc0000"; EMOJI=":x:"; STATUS_LABEL="Failed";; esac
+          SHORT_SHA="${SHA:0:7}"
+          PAYLOAD="$(jq -cn --arg color "$COLOR" --arg emoji "$EMOJI" --arg statusLabel "$STATUS_LABEL" --arg workflow "$WORKFLOW" --arg branch "$BRANCH" --arg commitUrl "$COMMIT_URL" --arg shortSha "$SHORT_SHA" --arg runUrl "$RUN_URL" '{attachments:[{color:$color,blocks:[{type:"section",text:{type:"mrkdwn",text:($emoji + " *AppBuilder full Playwright suite finished*")}},{type:"section",fields:[{type:"mrkdwn",text:("*Status:*\n" + $statusLabel)},{type:"mrkdwn",text:("*Workflow:*\n" + $workflow)},{type:"mrkdwn",text:("*Branch:*\n`" + $branch + "`")},{type:"mrkdwn",text:("*Commit:*\n<" + $commitUrl + "|`" + $shortSha + "`>")} ]},{type:"actions",elements:[{type:"button",text:{type:"plain_text",text:"View Run"},url:$runUrl}]}]}]}')"
+          curl -sS --max-time 15 -X POST -H "Content-type: application/json" --data "$PAYLOAD" "$SLACK_WEBHOOK_URL" >/dev/null || echo "Slack notification failed."

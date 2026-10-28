@@ -111,7 +111,7 @@ async function getPlatformAccessToken() {
 					continue;
 				}
 
-				const result = await client.authorization.passwordGrant(
+				await client.authorization.passwordGrant(
 					platformAccessTokenKey,
 					platformAccessTokenSecret,
 				);
@@ -132,11 +132,12 @@ async function getPlatformAccessToken() {
 							SdPlatformModelGetEmbeddableFields.User,
 						])
 						.catch((error) => {
+							// a deleted model must not drop the whole platform
 							console.error(
 								`Failed to retrieve model definition for slug ${slug} on platform ${platform}:`,
 								error,
 							);
-							throw error;
+							return undefined;
 						});
 
 					promises.push(modelDef);
@@ -145,7 +146,8 @@ async function getPlatformAccessToken() {
 				const modelDefs = await Promise.all(promises);
 
 				slugs.forEach((slug, index) => {
-					modelDefinitions[slug] = modelDefs[index].data;
+					const modelDef = modelDefs[index];
+					if (modelDef) modelDefinitions[slug] = modelDef.data;
 				});
 			} catch (error) {
 				console.error(

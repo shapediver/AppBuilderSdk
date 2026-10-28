@@ -103,7 +103,7 @@ export default defineConfig(async () => {
 						groups: [
 							{
 								name: "react",
-								test: /node_modules[\\/](react|react-dom|react-router-dom)([\\/]|$)/,
+								test: /node_modules[\\/](react|react-dom)([\\/]|$)/,
 								priority: 30,
 							},
 							{

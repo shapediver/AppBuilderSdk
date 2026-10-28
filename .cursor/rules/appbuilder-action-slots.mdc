@@ -1,0 +1,80 @@
+---
+description: App Builder action slots — UI and application events, custom events, selection/hover host listeners, and waitUntilReady. Apply when changing actionSlots or interaction slot listeners.
+globs:
+    - "**/appBuilderActionSlots.ts"
+    - "**/appbuilderActionSlots.ts"
+    - "**/AppBuilderActionSlots.tsx"
+    - "**/AppBuilderApplicationActionSlots.tsx"
+    - "**/AppBuilderInteractionSlotListeners.tsx"
+    - "**/actionSlots*"
+alwaysApply: false
+---
+
+# App Builder action slots
+
+Node-level `actionSlots` call the same `runAppBuilderAction` catalog, including nested `executeActions`. The AR QR modal and the import-model-state dialog stay mounted on `AppBuilderPage`.
+
+- UI wrapper: `features/appbuilder/ui/AppBuilderActionSlots.tsx` (pointer and `click` only; no viewer viewport import).
+- Application listeners: `features/appbuilder/ui/AppBuilderApplicationActionSlots.tsx`.
+
+## Host registration
+
+Scene select/hover is host-registered, same as `ar`, `camera`, `fullscreen`, and `waitUntilReady`.
+
+- Prop: `IComponentContext.interactionSlotListeners` (`AppBuilderInteractionSlotListenersProps` in `ComponentContext.types.ts`).
+- ShapeDiver registers `{ component: AppBuilderInteractionSlotListeners }` from `src/AppBuilderRoot.tsx` (`useSelection` + `viewer.viewport`).
+- iJewel omits the key (warns when JSON has `selecton`, `selectoff`, `hoveron`, or `hoveroff`), registers `{}` to suppress both, or supplies a native `component` that calls `handlersRef` via `actionSlotHandlerKey`.
+- A host entry with no `component` does not fall through to ShapeDiver.
+- Do not import `AppBuilderInteractionSlotListeners` from shared application-slot wiring.
+
+## Allowlists
+
+`APP_BUILDER_SLOT_EVENTS` in `features/appbuilder/lib/appBuilderActionSlots.ts`.
+
+- Widget, tab, container, control, toolbar, and viewport alias `APP_BUILDER_UI_EVENTS`.
+- `application` is `APP_BUILDER_APPLICATION_EVENTS`.
+- Ignored names on the root are logged against `root` (union of application and UI events).
+- Call sites pass `allowedEvents={APP_BUILDER_SLOT_EVENTS.<kind>}`.
+- Zod does not restrict which events a node may use.
+
+## Slot values
+
+- A slot value is one object or an array of objects (same event, different `eventProps`, such as several root `selecton` name filters).
+- An incompatible `eventProps.type` is warned and skipped. It is not treated as unfiltered.
+- `selecton`, `selectoff`, `hoveron`, and `hoveroff` require a non-empty `eventProps.props.nameFilter`. Zod rejects a missing or empty filter, and the runner skips it. There is no `*` match-all.
+
+## custom events
+
+- The runner registers valid `custom:*` kebab-case names. Invalid names are warned and skipped.
+- UI nodes, including tab panels, dispatch locally via `useDispatchAppBuilderCustomEvent`. A miss bubbles to the parent node, then to the application bus.
+- Root `custom:*` uses `registerAppBuilderCustomActionSlot`, scoped by session `namespace`, and `dispatchAppBuilderCustomEvent`.
+- Tabs cannot wrap `Tabs.Tab`, so their dispatcher wraps panel children. It does not use the global bus.
+- Viewport wrap sets `includeCustomEvents={false}` so a root `custom:*` is not registered twice.
+
+## DOM registration
+
+- Pointer, `click`, and `contextmenu` use `uiSlotDomProps` on the wrap `Box` (widgets, containers, controls, toolbar items, viewport host). `contextmenu` calls `preventDefault`.
+- Tab controls cannot wrap `Tabs.Tab` (`Tabs.List` requires it as a direct child), so they put `uiSlotDomProps` on `controlProps`. That type is `ButtonHTMLAttributes`, so a new UI event does not need a tab-type edit.
+
+## Application events
+
+Registered on `AppBuilderPage` via `AppBuilderApplicationActionSlots`.
+
+- `appready` waits with no timeout: `waitForAppBuilderViewport` → `viewportAccessFunctions.waitUntilReady`.
+- Computation is `TASK_START` / `TASK_END` for `SESSION_CUSTOMIZATION`.
+- `computationerror` is `TASK_CANCEL` with status `"Session customization failed"` (local session id on the task payload). A superseded customize cancels with a different status.
+- Export slots are `TASK_START` / `TASK_END` / `TASK_CANCEL` for `EXPORT_REQUEST` (`data.sessionId`, `exportId`, `name`, `displayname`). Same path as widgets and export parameter value sources.
+
+## Viewer interaction
+
+Slot names are `selecton`, `selectoff`, `hoveron`, and `hoveroff`. Viewer `interaction.multiSelect.*` maps onto the select slots.
+
+The ShapeDiver listener enables hover and select the way an anchor `selectionProperties` does: `useSelection`, a passive interaction request, hover default true, min 0, max 1, `deselectOnEmpty`. Groups use the full effective selection config. Conflicting colors, max, or hover on the same name filter and viewport warn and run as separate groups.
+
+After computation it restores selection silently and fires `selecton` / `selectoff` only when the selected name set changed. `processActive` is scoped to this session `namespace`. The listener runs the matching slot when that viewer event fires on this group's manager. Pair with `setContainerVisibility` to replace `selectionProperties`.
+
+## waitUntilReady
+
+- ShapeDiver registers it from `useViewport` (`waitForViewportScene`): bounding box settled and containing geometry, or an empty box when there is none. Viewer `calculateZoomTo` no-ops on an empty box.
+- iJewel and WebGi register their own `waitUntilReady` for host visibility.
+- A host with no viewport skips the wait.

@@ -45,6 +45,9 @@ for (const config of scenarioActions) {
 // Helpers
 // ---------------------------------------------------------------------------
 
+/** Tag of the quick suite run on deploys (`pnpm test-e2e-quick`). */
+const QUICK = {tag: "@quick"};
+
 /** Return the rewritten test URL. */
 function testUrl(url: string): string {
 	return rewriteToTestBranch(url, TEST_BRANCH);
@@ -56,10 +59,12 @@ async function runSmoke(
 	url: string,
 	slug: string,
 	setup?: (page: import("@playwright/test").Page) => Promise<void>,
+	beforeGoto?: (page: import("@playwright/test").Page) => Promise<void>,
 ) {
 	const jsErrors: string[] = [];
 	page.on("pageerror", (err) => jsErrors.push(err.message));
 
+	await beforeGoto?.(page);
 	await page.goto(url, {waitUntil: "domcontentloaded"});
 	await waitForAppReady(page, {interstitial: setup});
 
@@ -85,40 +90,54 @@ async function runSmoke(
 for (const {slug, url} of allEntries.values()) {
 	const config = scenarioActionById.get(slug);
 	const setup = config?.setup;
+	const beforeGoto = config?.beforeGoto;
 	const params = config?.params;
 	const actions = config?.actions;
 	const namedActions = config?.namedActions;
 	const resolvedUrl = applyUrlParams(testUrl(url), params);
+	const interactionDetails = config?.quickSuite ? QUICK : {};
 
 	test.describe(slug, () => {
-		test("smoke: loads without error", async ({page}) => {
-			await runSmoke(page, resolvedUrl, slug, setup);
-		});
-
-		test("visual: matches baseline", async ({page}) => {
-			await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
-			await waitForAppReady(page, {interstitial: setup});
-			await takeSnapshot(page, slug);
-		});
+		// Smoke and visual share one page load; every load costs ~10s.
+		test(
+			"smoke + visual: loads without error and matches baseline",
+			QUICK,
+			async ({page}) => {
+				await test.step("smoke", () =>
+					runSmoke(page, resolvedUrl, slug, setup, beforeGoto));
+				await test.step("visual", () => takeSnapshot(page, slug));
+			},
+		);
 
 		if (namedActions?.length) {
 			for (const action of namedActions) {
-				test(`interaction: ${action.name}`, async ({page}) => {
+				test(
+					`interaction: ${action.name}`,
+					interactionDetails,
+					async ({page}) => {
+						if (action.timeout) test.setTimeout(action.timeout);
+						await beforeGoto?.(page);
+						await page.goto(resolvedUrl, {
+							waitUntil: "domcontentloaded",
+						});
+						await waitForAppReady(page, {interstitial: setup});
+						await action.run(page, slug);
+					},
+				);
+			}
+		} else if (actions) {
+			test(
+				"interaction: user actions complete successfully",
+				interactionDetails,
+				async ({page}) => {
+					await beforeGoto?.(page);
 					await page.goto(resolvedUrl, {
 						waitUntil: "domcontentloaded",
 					});
 					await waitForAppReady(page, {interstitial: setup});
-					await action.run(page, slug);
-				});
-			}
-		} else if (actions) {
-			test("interaction: user actions complete successfully", async ({
-				page,
-			}) => {
-				await page.goto(resolvedUrl, {waitUntil: "domcontentloaded"});
-				await waitForAppReady(page, {interstitial: setup});
-				await actions(page, slug);
-			});
+					await actions(page, slug);
+				},
+			);
 		}
 	});
 }
