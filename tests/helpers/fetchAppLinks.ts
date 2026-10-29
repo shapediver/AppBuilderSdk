@@ -66,23 +66,21 @@ export async function fetchAppLinks(): Promise<AppLink[]> {
 				Exclude<AppLinkSource, "TESTING_ACCOUNT">,
 				string,
 			][]
-		).map(
-			async ([source, pageUrl]) => {
-				const res = await fetch(pageUrl);
-				if (!res.ok)
-					throw new Error(
-						`Failed to fetch ${pageUrl}: ${res.status} ${res.statusText}`,
-					);
-				const html = await res.text();
-				const links = extractLinks(html, source);
-				if (links.length === 0) {
-					throw new Error(
-						`No App Builder links found in public definition page ${pageUrl}`,
-					);
-				}
-				return links;
-			},
-		),
+		).map(async ([source, pageUrl]) => {
+			const res = await fetch(pageUrl);
+			if (!res.ok)
+				throw new Error(
+					`Failed to fetch ${pageUrl}: ${res.status} ${res.statusText}`,
+				);
+			const html = await res.text();
+			const links = extractLinks(html, source);
+			if (links.length === 0) {
+				throw new Error(
+					`No App Builder links found in public definition page ${pageUrl}`,
+				);
+			}
+			return links;
+		}),
 	);
 
 	// Deduplicate by slug (a slug may appear in both sources via cross-references).

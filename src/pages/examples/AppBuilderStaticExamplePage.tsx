@@ -11,8 +11,8 @@ import {useSession} from "@AppBuilderLib/entities/session/model/useSession";
 import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportComponent";
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import {IAppBuilderSettingsSession} from "@AppBuilderLib/features/appbuilder/config/appbuilder";
-import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import useAppBuilderSettings from "@AppBuilderLib/features/appbuilder/model/useAppBuilderSettings";
+import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import {Logger} from "@AppBuilderLib/shared/lib/logger";
 import AppBuilderImage from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderImage";
 import AppBuilderTextWidgetComponent from "@AppBuilderLib/widgets/appbuilder/ui/AppBuilderTextWidgetComponent";
@@ -283,7 +283,10 @@ My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best sea
 		>
 			<ViewportComponent>
 				<ViewportOverlayWrapper>
-					<AppBuilderToolbarLayer namespace={sessionId} sessionSettings={sessionDto} />
+					<AppBuilderToolbarLayer
+						namespace={sessionId}
+						sessionSettings={sessionDto}
+					/>
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</AppBuilderTemplateSelector>

@@ -111,7 +111,7 @@ Slugs not listed in `scenarioActions.ts` still get smoke + visual tests automati
 | `viewportCoords(page, x, y)`             | Normalized (0–1) → pixel coordinates                                                                                                   |
 | `getStandardContainer(page, name)`       | Template slot by `data-app-builder-container` (`left` / `right` / `top` / `bottom`)                                                    |
 | `expectTextPresentInStandardContainer`   | Assert slot text without Playwright visibility (Grid overflow clip)                                                                    |
-| `setViewportBelowMobileBreakpoint(page)` | Resize below TemplateSelector `md` (992px); no AppShell burger wait                                                            |
+| `setViewportBelowMobileBreakpoint(page)` | Resize below TemplateSelector `md` (992px); no AppShell burger wait                                                                    |
 | `setViewportBelowNavbarBreakpoint(page)` | Resize below AppShell `md` (992px) and wait for the burger                                                                             |
 | `openAppShellNavbar(page)`               | Click the burger and wait for the navbar (`hidden` attribute removed)                                                                  |
 | `expectAppShellNavbarCollapsed(page)`    | Assert AppShell navbar `hidden` attribute (Mantine collapsed; Playwright `toBeHidden()` is unreliable)                                 |

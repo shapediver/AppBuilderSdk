@@ -58,7 +58,9 @@ export function useToolbarNestedAnchorButton(
 	const {exclusiveContainers, siblingAnchorIds} = useContext(
 		ToolbarContainerExclusivityContext,
 	);
-	const setTrigger = useViewportAnchorTriggerRegistry((state) => state.setTrigger);
+	const setTrigger = useViewportAnchorTriggerRegistry(
+		(state) => state.setTrigger,
+	);
 
 	const buttonRef = useCallback(
 		(node: HTMLButtonElement | null) => {
