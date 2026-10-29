@@ -3,11 +3,18 @@ import prettierConfig from "eslint-config-prettier/flat";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactPlugin from "eslint-plugin-react";
 import globals from "globals";
+import {createRequire} from "node:module";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 import tseslint from "typescript-eslint";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// eslint-plugin-react's version detection ("detect") uses context.getFilename(),
+// which ESLint 10 removed, so pass the installed React version explicitly.
+const reactVersion = createRequire(import.meta.url)(
+	"react/package.json",
+).version;
 
 export default tseslint.config(
 	{
@@ -51,7 +58,7 @@ export default tseslint.config(
 			},
 		},
 		settings: {
-			react: {version: "19.2.4"},
+			react: {version: reactVersion},
 		},
 		rules: {
 			"prettier/prettier": "error",
@@ -97,6 +104,13 @@ export default tseslint.config(
 					],
 				},
 			],
+		},
+	},
+	{
+		// TypeScript checks component props; the rule misreads render callbacks as components
+		files: ["**/*.{ts,tsx}"],
+		rules: {
+			"react/prop-types": "off",
 		},
 	},
 	{
