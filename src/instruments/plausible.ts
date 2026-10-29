@@ -58,12 +58,7 @@ function createPlausibleTracker(options: PlausibleConfig): ITrackerContext {
 			const {callback = undefined} = options ?? {};
 			if (type === "Web vitals") {
 				const name = metricName as
-					| "CLS"
-					| "FCP"
-					| "FID"
-					| "INP"
-					| "LCP"
-					| "TTFB";
+					"CLS" | "FCP" | "FID" | "INP" | "LCP" | "TTFB";
 				const propNameValue = `${name}-val`;
 				const propNameRating = `${name}-rat`;
 				track(type, {

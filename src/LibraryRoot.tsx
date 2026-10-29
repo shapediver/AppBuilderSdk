@@ -1,7 +1,7 @@
 import RootComponent from "@AppBuilderLib/shared/ui/root/RootComponent";
-import "instruments/sentry";
 import ReactDOM from "react-dom/client";
 import {PlausibleTracker} from "~/instruments/plausible";
+import "~/instruments/sentry";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import LibraryBase from "~/LibraryBase";
 import {SentryErrorReportingContext} from "./instruments/sentry";

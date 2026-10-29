@@ -13,8 +13,8 @@ import ParametersAndExportsAccordionComponent from "@AppBuilderLib/widgets/appbu
 import {Grid} from "@mantine/core";
 import {SESSION_SETTINGS_MODE} from "@shapediver/viewer.session";
 import {useMemo} from "react";
-import {ExampleModels} from "tickets";
 import ExamplePage from "~/pages/examples/ExamplePage";
+import {ExampleModels} from "~/tickets";
 import classes from "./MultipleViewportPage.module.css";
 
 /**

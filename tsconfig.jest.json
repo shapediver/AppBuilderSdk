@@ -6,14 +6,14 @@
 		"declaration": true,
 		"emitDeclarationOnly": true,
 		"outDir": "./.tsbuild/jest",
+		"rootDir": ".",
 		"module": "commonjs",
-		"moduleResolution": "node",
-		"baseUrl": "src",
+		"moduleResolution": "bundler",
 		"paths": {
-			"@AppBuilderShared/*": ["./shared/*"],
-			"@AppBuilderLib/*": ["./shared/*"],
-			"~/*": ["./*"],
-			"@modelstorage": ["../modelstorage.ts"]
+			"@AppBuilderShared/*": ["./src/shared/*"],
+			"@AppBuilderLib/*": ["./src/shared/*"],
+			"~/*": ["./src/*"],
+			"@modelstorage": ["./modelstorage.ts"]
 		},
 		"types": [
 			"node",

@@ -552,9 +552,12 @@ export function mergeMirrorDefinitionOverlay(
  * only provides an unresolved reference (e.g. Omit<ImageProps, "src">).
  */
 const COMPILER_OPTIONS: ts.CompilerOptions = {
+	// TypeScript 6 enables strict by default; optional properties would then
+	// resolve to unions with undefined in the generated docs.
+	strict: false,
 	jsx: ts.JsxEmit.React,
 	skipLibCheck: true,
-	moduleResolution: ts.ModuleResolutionKind.NodeJs,
+	moduleResolution: ts.ModuleResolutionKind.Bundler,
 	allowSyntheticDefaultImports: true,
 	esModuleInterop: true,
 };

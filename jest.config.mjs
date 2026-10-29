@@ -18,7 +18,19 @@ export default {
 				tsconfig: "tsconfig.jest.json",
 			},
 		],
+		// ESM-only dependencies (see transformIgnorePatterns) are transpiled to CommonJS.
+		"^.+\\.js$": [
+			"ts-jest",
+			{
+				tsconfig: {allowJs: true, module: "commonjs"},
+				transpilation: true,
+			},
+		],
 	},
+	// TanStack Table 9 and match-sorter-utils 9 are ESM-only.
+	transformIgnorePatterns: [
+		"/node_modules/(?!\\.pnpm/@tanstack\\+|@tanstack/)",
+	],
 
 	moduleNameMapper: {
 		"^@AppBuilderLib/(.*)$": "<rootDir>/src/shared/$1",

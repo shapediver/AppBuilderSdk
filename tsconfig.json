@@ -1,16 +1,15 @@
 {
 	"compilerOptions": {
 		"target": "es6",
-		"baseUrl": "src",
 		"types": [
 			"vite/client",
 			"vite-plugin-svgr/client"
 		],
 		"paths": {
-			"@AppBuilderShared/*": ["./shared/*"],
-			"@AppBuilderLib/*": ["./shared/*"],
-			"~/*": ["./*"],
-			"@modelstorage": ["../modelstorage.ts"]
+			"@AppBuilderShared/*": ["./src/shared/*"],
+			"@AppBuilderLib/*": ["./src/shared/*"],
+			"~/*": ["./src/*"],
+			"@modelstorage": ["./modelstorage.ts"]
 		},
 		"lib": [
 			"dom",
@@ -25,7 +24,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": true,
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,

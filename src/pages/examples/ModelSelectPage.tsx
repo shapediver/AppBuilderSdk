@@ -2,8 +2,8 @@ import ViewportComponent from "@AppBuilderLib/entities/viewport/ui/ViewportCompo
 import ViewportOverlayWrapper from "@AppBuilderLib/entities/viewport/ui/ViewportOverlayWrapper";
 import AppBuilderToolbarLayer from "@AppBuilderLib/features/appbuilder/ui/AppBuilderToolbarLayer";
 import ModelSelect from "@AppBuilderLib/features/model-select/ui/ModelSelect";
-import {ExampleModels} from "tickets";
 import ExamplePage from "~/pages/examples/ExamplePage";
+import {ExampleModels} from "~/tickets";
 
 /**
  * Function that creates the model select page.
@@ -19,7 +19,10 @@ export default function ModelSelectPage() {
 		<ExamplePage aside={<ModelSelect exampleModels={ExampleModels} />}>
 			<ViewportComponent id={viewportId}>
 				<ViewportOverlayWrapper>
-					<AppBuilderToolbarLayer namespace="" viewportId={viewportId} />
+					<AppBuilderToolbarLayer
+						namespace=""
+						viewportId={viewportId}
+					/>
 				</ViewportOverlayWrapper>
 			</ViewportComponent>
 		</ExamplePage>

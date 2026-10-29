@@ -36,10 +36,10 @@ import AppBuilderSceneTreeExplorerWidgetComponent from "@AppBuilderLib/widgets/a
 import {NumberAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/NumberAttribute";
 import {StringAttributeThemeProps} from "@AppBuilderLib/widgets/appbuilder/ui/attributes/StringAttribute";
 import {PARAMETER_TYPE} from "@shapediver/viewer.session";
-import "instruments/sentry";
 import ReactDOM from "react-dom/client";
 import AppBuilderBase from "~/AppBuilderBase";
 import {PlausibleTracker} from "~/instruments/plausible";
+import "~/instruments/sentry";
 import {setupWebVitalsTracking} from "~/instruments/webvitals";
 import {SentryErrorReportingContext} from "./instruments/sentry";
 
