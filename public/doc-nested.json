@@ -154,6 +154,10 @@
       "type": "unknown",
       "name": "AppBuilderParameterValueSourceType"
     },
+    "AppBuilderSetParameterValuesUpdateMode": {
+      "type": "unknown",
+      "name": "AppBuilderSetParameterValuesUpdateMode"
+    },
     "AppBuilderThemeOtherProps": {
       "properties": {
         "v8ThemeSupport": {
@@ -224,8 +228,14 @@
       ]
     },
     "AppShellSize": {
-      "type": "unknown",
-      "name": "AppShellSize"
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
     },
     "BUSY_MODE_DISPLAY": {
       "type": "unknown",
@@ -1321,7 +1331,7 @@
             "itemData": {
               "type": "unknown",
               "name": "Record<string, ISelectComponentItemDataType>",
-              "description": "Record containing optional further item data per item name."
+              "description": "Record containing optional further item data per item name.\r\nWhen `database` is set, an entry whose key matches a database row\r\noverwrites that row field by field. `hidden` exists only here."
             },
             "searchable": {
               "type": "boolean",
@@ -1336,6 +1346,13 @@
               "description": "Optional CSS controlling the absolute height of the widget.\r\nIn case this is not specified, the default behavior of the widget\r\nis to adapt its height according to the items."
             }
           }
+        }
+      }
+    },
+    "Record_string_string": {
+      "properties": {
+        "[string]": {
+          "type": "string"
         }
       }
     },
@@ -2345,6 +2362,13 @@
             "type": {
               "type": "string"
             }
+          },
+          {
+            "name": "properties",
+            "description": "Optional custom properties forwarded to the e-commerce plugin\r\nwhen adding to the cart or updating the sharing link.\r\nValues are sent unchanged.",
+            "type": {
+              "$ref": "#/definitions/Record_string_string"
+            }
           }
         ],
         "category": "feature"
@@ -2380,6 +2404,12 @@
   },
   "themeOverrides": {
     "components": {
+      "AgentUi": {
+        "defaultProps": {
+          "properties": [],
+          "category": "appbuilder"
+        }
+      },
       "AppBuilderAccordionUiWidgetComponent": {
         "defaultProps": {
           "properties": [
@@ -3562,6 +3592,13 @@
         "defaultProps": {
           "properties": [
             {
+              "name": "gap",
+              "description": "Gap between children. Omitted keeps the Stack theme gap.",
+              "type": {
+                "$ref": "#/definitions/string_or_number"
+              }
+            },
+            {
               "name": "p",
               "description": "Stack padding",
               "type": {
@@ -3821,6 +3858,13 @@
             {
               "name": "loadSdtf",
               "description": "Option to load the SDTF data. The data is not loaded by default as it can be quite large. (default: false)",
+              "type": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "directTextureDownload",
+              "description": "Fetch texture URLs directly in the browser. (default: false)\n\nShapeDiver texture assets are fetched from their URL.\nOther texture URLs are downloaded through the Geometry Backend, which reads them for the viewer.\nSet this to true to request those URLs from the browser. The host must allow cross-origin reads from the viewer.",
               "type": {
                 "type": "boolean"
               }
@@ -4566,7 +4610,7 @@
             },
             {
               "name": "automaticSceneUpdate",
-              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball, rectangle transform, and dragging. Selection ignores it.",
+              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball and rectangle transform (the drawing parameter has the\nsame setting in its behavior settings). Selection and dragging ignore it.\nApp Builder applies it only for always active tools (`activeMode: \"alwaysActive\"`).",
               "type": {
                 "type": "boolean"
               },
@@ -4578,7 +4622,7 @@
               "type": {
                 "type": "number"
               },
-              "default": "1000"
+              "default": "500"
             },
             {
               "name": "occludeBySceneGeometry",
@@ -4635,7 +4679,7 @@
             },
             {
               "name": "clearButton",
-              "description": "Clear control: toolbar/widget tooltip and icon. Default tooltip is `Clear ${parameterName}`.",
+              "description": "Clear control. `label` is the icon caption when\r\n`AppBuilderToolbarIconButton` `labelSide` is set, and the tooltip\r\nfallback otherwise. Default label is `Clear ${parameterName}`.",
               "type": {
                 "$ref": "#/definitions/ParameterInteractionButtonThemeProps"
               }
@@ -4811,7 +4855,7 @@
             },
             {
               "name": "automaticSceneUpdate",
-              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball, rectangle transform, and dragging. Selection ignores it.",
+              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball and rectangle transform (the drawing parameter has the\nsame setting in its behavior settings). Selection and dragging ignore it.\nApp Builder applies it only for always active tools (`activeMode: \"alwaysActive\"`).",
               "type": {
                 "type": "boolean"
               },
@@ -4823,7 +4867,7 @@
               "type": {
                 "type": "number"
               },
-              "default": "1000"
+              "default": "500"
             },
             {
               "name": "occludeBySceneGeometry",
@@ -4853,6 +4897,13 @@
             {
               "name": "cancelButton",
               "description": "Cancel control: widget label, toolbar tooltip, and icon.",
+              "type": {
+                "$ref": "#/definitions/ParameterInteractionButtonThemeProps"
+              }
+            },
+            {
+              "name": "clearButton",
+              "description": "Clear control. `label` is the icon caption when\r\n`AppBuilderToolbarIconButton` `labelSide` is set, and the tooltip\r\nfallback otherwise. Default label is `Clear ${parameterName}`.",
               "type": {
                 "$ref": "#/definitions/ParameterInteractionButtonThemeProps"
               }
@@ -5045,7 +5096,7 @@
             },
             {
               "name": "automaticSceneUpdate",
-              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball, rectangle transform, and dragging. Selection ignores it.",
+              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball and rectangle transform (the drawing parameter has the\nsame setting in its behavior settings). Selection and dragging ignore it.\nApp Builder applies it only for always active tools (`activeMode: \"alwaysActive\"`).",
               "type": {
                 "type": "boolean"
               },
@@ -5057,7 +5108,7 @@
               "type": {
                 "type": "number"
               },
-              "default": "1000"
+              "default": "500"
             },
             {
               "name": "occludeBySceneGeometry",
@@ -5087,6 +5138,13 @@
             {
               "name": "cancelButton",
               "description": "Cancel control: widget label, toolbar tooltip, and icon.",
+              "type": {
+                "$ref": "#/definitions/ParameterInteractionButtonThemeProps"
+              }
+            },
+            {
+              "name": "clearButton",
+              "description": "Clear control. `label` is the icon caption when\r\n`AppBuilderToolbarIconButton` `labelSide` is set, and the tooltip\r\nfallback otherwise. Default label is `Clear ${parameterName}`.",
               "type": {
                 "$ref": "#/definitions/ParameterInteractionButtonThemeProps"
               }
@@ -5198,7 +5256,7 @@
             },
             {
               "name": "automaticSceneUpdate",
-              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball, rectangle transform, and dragging. Selection ignores it.",
+              "description": "If true, a customization is requested after handles stop changing.\nWaits automaticSceneUpdateTimeout after the last committed change.\n\nThis is not session-level `ISessionApi.automaticSceneUpdate`, which\ncontrols whether the session scene tree node is replaced after customize.\n\nUsed by gumball and rectangle transform (the drawing parameter has the\nsame setting in its behavior settings). Selection and dragging ignore it.\nApp Builder applies it only for always active tools (`activeMode: \"alwaysActive\"`).",
               "type": {
                 "type": "boolean"
               },
@@ -5210,7 +5268,7 @@
               "type": {
                 "type": "number"
               },
-              "default": "1000"
+              "default": "500"
             },
             {
               "name": "occludeBySceneGeometry",
@@ -5246,7 +5304,7 @@
             },
             {
               "name": "clearButton",
-              "description": "Clear control: toolbar/widget tooltip and icon. Default tooltip is `Clear ${parameterName}`.",
+              "description": "Clear control. `label` is the icon caption when\r\n`AppBuilderToolbarIconButton` `labelSide` is set, and the tooltip\r\nfallback otherwise. Default label is `Clear ${parameterName}`.",
               "type": {
                 "$ref": "#/definitions/ParameterInteractionButtonThemeProps"
               }

@@ -1454,6 +1454,16 @@ export function createTsTypeResolver(projectRoot: string) {
 			return deepSimplifySchema({properties: merged});
 		}
 
+		// Unions of primitives (e.g. number | (string & {})) only expose shared
+		// prototype methods as properties; describe the union itself instead.
+		if (
+			type
+				.getProperties()
+				.some((symbol) => PROTOTYPE_METHOD_NAMES.has(symbol.getName()))
+		) {
+			return deepSimplifySchema(schemaFromTsType(checker, type, 0));
+		}
+
 		const properties = propertiesFromTsType(checker, type);
 		if (!Object.keys(properties).length) return undefined;
 		return deepSimplifySchema({properties});
