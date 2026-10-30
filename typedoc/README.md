@@ -10,10 +10,10 @@ During TypeDoc conversion (`Converter.EVENT_RESOLVE_END`), the plugin scans ever
 
 It writes two files into **`public/`** (created if missing):
 
-| File | Description |
-|------|-------------|
-| **`doc-flat.json`** | Object with **`definitions`** (shared type schemas, OpenAPI-style), **`entries`** (config rows), and **`entriesByCategory`** (index of `configPath` values grouped by `@category`). Property types use `{ "$ref": "#/definitions/…" }` or inline `{ "type": "string" }` etc. |
-| **`doc-nested.json`** | Same **`definitions`** plus config nested by dot-path from `@configPath`. |
+| File                  | Description                                                                                                                                                                                                                                                                  |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`doc-flat.json`**   | Object with **`definitions`** (shared type schemas, OpenAPI-style), **`entries`** (config rows), and **`entriesByCategory`** (index of `configPath` values grouped by `@category`). Property types use `{ "$ref": "#/definitions/…" }` or inline `{ "type": "string" }` etc. |
+| **`doc-nested.json`** | Same **`definitions`** plus config nested by dot-path from `@configPath`.                                                                                                                                                                                                    |
 
 Duplicate `@configPath` values are deduplicated (last wins); duplicates log a warning.
 
@@ -25,14 +25,14 @@ Mantine theme overrides and App Builder theme props are spread across many compo
 
 Declared under `"blockTags"` in root **`typedoc.json`** so TypeDoc preserves them.
 
-| Tag | Required | Role |
-|-----|----------|------|
-| **`@docAttached`** | Yes | Marks this reflection as a theme-doc source. |
-| **`@configPath`** | Yes | Dot path for JSON overrides (e.g. `themeOverrides.components.MyComponent.defaultProps`). |
-| **`@displayName`** | No | Human-facing name in output; falls back to the reflection name. |
-| **`@docLink`** | No | URL when props should not be inlined (e.g. full Mantine `PaperProps` docs). |
-| **`@category`** | No | Groups custom components for filtering (`widget`, `entity`, `feature`, `page`, `shared`). Emitted on each entry and in `entriesByCategory`. |
-| **`@default`**, **`@minimum`**, **`@maximum`**, **`@example`** | No | On individual props; copied into flat `properties` when present. |
+| Tag                                                            | Required | Role                                                                                                                                        |
+| -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`@docAttached`**                                             | Yes      | Marks this reflection as a theme-doc source.                                                                                                |
+| **`@configPath`**                                              | Yes      | Dot path for JSON overrides (e.g. `themeOverrides.components.MyComponent.defaultProps`).                                                    |
+| **`@displayName`**                                             | No       | Human-facing name in output; falls back to the reflection name.                                                                             |
+| **`@docLink`**                                                 | No       | URL when props should not be inlined (e.g. full Mantine `PaperProps` docs).                                                                 |
+| **`@category`**                                                | No       | Groups custom components for filtering (`widget`, `entity`, `feature`, `page`, `shared`). Emitted on each entry and in `entriesByCategory`. |
+| **`@default`**, **`@minimum`**, **`@maximum`**, **`@example`** | No       | On individual props; copied into flat `properties` when present.                                                                            |
 
 Example (minimal):
 

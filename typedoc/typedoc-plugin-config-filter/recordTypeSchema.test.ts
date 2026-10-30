@@ -89,7 +89,19 @@ describe("recordTypeSchema", () => {
 		const sizeValue = {
 			oneOf: [
 				{
-					enum: ["xs", "sm", "md", "lg", "xl", "h1", "h2", "h3", "h4", "h5", "h6"],
+					enum: [
+						"xs",
+						"sm",
+						"md",
+						"lg",
+						"xl",
+						"h1",
+						"h2",
+						"h3",
+						"h4",
+						"h5",
+						"h6",
+					],
 					type: "string",
 				},
 				{type: "number"},

@@ -10,7 +10,8 @@ function collectViewerAliases(rootDir: string): Record<string, string> {
 
 	function walk(dir: string) {
 		for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
-			if (entry.name === "node_modules" || entry.name === ".git") continue;
+			if (entry.name === "node_modules" || entry.name === ".git")
+				continue;
 
 			const fullPath = path.join(dir, entry.name);
 			if (entry.isDirectory()) {
@@ -44,4 +45,7 @@ function collectViewerAliases(rootDir: string): Record<string, string> {
  *   2. Adjust viewerRoot above if your Viewer checkout is in a different location
  *   3. Run `npm start`
  */
-export default collectViewerAliases(viewerRoot) satisfies Record<string, string>;
+export default collectViewerAliases(viewerRoot) satisfies Record<
+	string,
+	string
+>;

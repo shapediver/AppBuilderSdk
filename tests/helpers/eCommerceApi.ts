@@ -36,8 +36,7 @@ export type ECommerceCreateModelStateResult = {
 };
 
 export type ECommerceImportModelStateResult =
-	| {success: true}
-	| {success: false; message: string};
+	{success: true} | {success: false; message: string};
 
 export type SdvParameterRef = {
 	namespace: string;

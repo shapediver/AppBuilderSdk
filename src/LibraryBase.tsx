@@ -15,11 +15,11 @@ import {Notifications} from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import * as ShapeDiverViewerSession from "@shapediver/viewer.session";
 import * as ShapeDiverViewerViewport from "@shapediver/viewer.viewport";
-import useLibraryTabConfig from "hooks/useLibraryTabConfig";
 import {useEffect, useMemo} from "react";
+import useLibraryTabConfig from "~/hooks/useLibraryTabConfig";
 import classes from "~/LibraryBase.module.css";
-import packagejson from "../package.json";
 import NetPromoterScore from "~/shared/shared/ui/net-promoter-score/NetPromoterScore";
+import packagejson from "../package.json";
 
 // log the SDK version directly to the console
 // this is independent of the logger settings within the app

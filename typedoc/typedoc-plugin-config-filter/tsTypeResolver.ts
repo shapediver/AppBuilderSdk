@@ -534,8 +534,7 @@ export function mergeMirrorDefinitionOverlay(
 	const mirrorOptions: SchemaSimplifyOptions = {preserveMirrorFidelity: true};
 	for (const [key, mirrorProp] of Object.entries(fromMirror.properties)) {
 		const builtProp = builtProps[key] as
-			| (DocTypeSchema & MirrorPropertyMeta)
-			| undefined;
+			(DocTypeSchema & MirrorPropertyMeta) | undefined;
 		const simplified = deepSimplifySchema(mirrorProp, mirrorOptions);
 		const mirrorMeta = extractMirrorPropertyMeta(mirrorProp);
 		const builtMeta = builtProp ? extractMirrorPropertyMeta(builtProp) : {};
@@ -552,9 +551,12 @@ export function mergeMirrorDefinitionOverlay(
  * only provides an unresolved reference (e.g. Omit<ImageProps, "src">).
  */
 const COMPILER_OPTIONS: ts.CompilerOptions = {
+	// TypeScript 6 enables strict by default; optional properties would then
+	// resolve to unions with undefined in the generated docs.
+	strict: false,
 	jsx: ts.JsxEmit.React,
 	skipLibCheck: true,
-	moduleResolution: ts.ModuleResolutionKind.NodeJs,
+	moduleResolution: ts.ModuleResolutionKind.Bundler,
 	allowSyntheticDefaultImports: true,
 	esModuleInterop: true,
 };
@@ -751,8 +753,7 @@ export function createTsTypeResolver(projectRoot: string) {
 		if (checker.isArrayType(type) || checker.isTupleType(type)) {
 			const elementType = (
 				checker.getTypeArguments(type as ts.TypeReference) as
-					| ts.Type[]
-					| undefined
+					ts.Type[] | undefined
 			)?.[0];
 			if (elementType) {
 				return {
@@ -1451,6 +1452,16 @@ export function createTsTypeResolver(projectRoot: string) {
 			}
 			if (!Object.keys(merged).length) return undefined;
 			return deepSimplifySchema({properties: merged});
+		}
+
+		// Unions of primitives (e.g. number | (string & {})) only expose shared
+		// prototype methods as properties; describe the union itself instead.
+		if (
+			type
+				.getProperties()
+				.some((symbol) => PROTOTYPE_METHOD_NAMES.has(symbol.getName()))
+		) {
+			return deepSimplifySchema(schemaFromTsType(checker, type, 0));
 		}
 
 		const properties = propertiesFromTsType(checker, type);

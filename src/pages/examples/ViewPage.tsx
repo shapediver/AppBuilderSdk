@@ -24,8 +24,8 @@ import {
 	SESSION_SETTINGS_MODE,
 } from "@shapediver/viewer.session";
 import {MaterialEngine} from "@shapediver/viewer.viewport";
-import ExamplePage from "pages/examples/ExamplePage";
 import {useCallback, useEffect, useMemo, useState} from "react";
+import ExamplePage from "~/pages/examples/ExamplePage";
 import {ExampleModels} from "~/tickets";
 
 interface Props extends IAppBuilderSettingsSession {
@@ -111,7 +111,8 @@ export default function ViewPage(_props: Partial<Props>) {
 	const sessionId = sessionCreateDto?.id ?? "";
 
 	// use a session with a ShapeDiver model and register its parameters
-	const {sessionApi, sessionSettings} = useSessionWithAppBuilder(sessionCreateDto);
+	const {sessionApi, sessionSettings} =
+		useSessionWithAppBuilder(sessionCreateDto);
 	useEffect(() => {
 		if (sessionApi)
 			Logger.debug(
@@ -288,7 +289,10 @@ export default function ViewPage(_props: Partial<Props>) {
 					sessionSettingsId={sessionId}
 				>
 					<ViewportOverlayWrapper>
-						<AppBuilderToolbarLayer namespace={sessionId} sessionSettings={sessionSettings} />
+						<AppBuilderToolbarLayer
+							namespace={sessionId}
+							sessionSettings={sessionSettings}
+						/>
 					</ViewportOverlayWrapper>
 				</ViewportComponent>
 			</ExamplePage>
