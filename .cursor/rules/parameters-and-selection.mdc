@@ -34,6 +34,10 @@ Every PUT carries **all** parameter values. A value committed without execution 
 
 Effective interaction settings come from **AppBuilder JSON**, not viewer `param.settings` (min/max selection, `activeMode`, `presentation`, `nameFilter` may be overridden).
 
+## Filterable database selects (SS-10229)
+
+`useFilterableDatabaseStateStore` keeps a plain view per `namespace:parameterId` (`filterableDatabasePersistenceKey`): filter selection, `loadedCount`, search text and anchors, `appliedSearchTerms` (what the list applies: adding or removing an anchor applies only the anchors, so it is not always anchors + field text), and `scrollTop`. Closing a container unmounts the control; idling it (`IdleWhenHidden` / toolbar `Activity`) tears down effects. Either way the view is rebuilt from the store: `createFilterableDatabaseScrollingApi({searchTerms, loadedCount})` recreates the list. Parsed tables of static `href` sources are cached per parameter outside Zustand (sync restore, no loader). `export` sources are fetched again on remount, because their content changes with each computation. Saves carry the `settingsKey` they belong to, so a late cleanup after a definition change is dropped. Pending text filters and debounced searches are committed on cleanup. The scroll offset is restored only when the list has its own scroll container (`height` set; `useRestoredScrollTop`). Single select, multiselect, and string parameters pass the key. Views and tables are dropped in the parameter store's `removeSession`, and the namespace stays closed (saves ignored) until `addSession` / `addGeneric` reopen it, because controls may unmount after their session was removed and their cleanups would write the view back. The parameter value stays in the parameter store.
+
 ## Session store (`entities/session/model/useShapeDiverStoreSession.ts`)
 
 Output update callbacks receive `(newNode, oldNode)`. `output.node` may lag or be `undefined` while the viewer processes a response. The store caches the latest node seen by the callback and **never** promotes `undefined` or a replaced node.

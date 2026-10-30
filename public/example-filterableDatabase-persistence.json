@@ -1,0 +1,195 @@
+{
+	"version": "1.0",
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "aeb34c624ff75099dda49670f13df76a4b9d3347258629cbc3e3373fb5e5bd04b2cb7c7c861982b5f81abf6aff38a8358411159926cb1d2114f9e7a08de7e81407f2e658c409c004df266d8fb8b1e30ced636e61e5590d4634de141859aa1d14edacc2b5e7ceeb-1dcebb5e8b7c42d0d368b0a8b1a03ae2",
+			"modelViewUrl": "https://sdr8euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"themeOverrides": {
+		"components": {
+			"ParameterSelectComponent": {
+				"defaultProps": {
+					"componentSettings": {
+						"TenCards": {
+							"type": "fullwidthcards",
+							"searchable": true,
+							"limit": 2,
+							"height": "220px",
+							"database": {
+								"dataSource": {
+									"href": "/example-filterableDatabase.csv"
+								},
+								"itemDataDefinition": {
+									"value": 0,
+									"displayname": 1,
+									"imageUrl": 2,
+									"description": 6,
+									"tooltip": 5,
+									"data": {
+										"material": 3,
+										"dataId": 5
+									}
+								},
+								"filters": [
+									{
+										"column": 1,
+										"label": "Name",
+										"type": "text",
+										"inline": true
+									},
+									{
+										"column": 3,
+										"label": "Material",
+										"multiple": true
+									},
+									{
+										"column": 7,
+										"columnLabel": 8,
+										"label": "Category",
+										"multivalued": true
+									}
+								]
+							}
+						},
+						"SevenCards": {
+							"type": "grid",
+							"searchable": true,
+							"limit": 2,
+							"height": "240px",
+							"database": {
+								"dataSource": {
+									"href": "/example-filterableDatabase.json",
+									"format": "json"
+								},
+								"itemDataDefinition": {
+									"value": 0,
+									"displayname": 1,
+									"imageUrl": 2,
+									"description": 7
+								},
+								"filters": [
+									{
+										"column": 4,
+										"columnLabel": 5,
+										"label": "Category",
+										"multivalued": true
+									}
+								]
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "top",
+				"widgets": [
+					{
+						"type": "actions",
+						"props": {
+							"actions": [
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Close catalog",
+										"container": {
+											"name": "left"
+										},
+										"mode": "close"
+									}
+								},
+								{
+									"type": "setContainerVisibility",
+									"props": {
+										"label": "Open catalog",
+										"container": {
+											"name": "left"
+										},
+										"mode": "open"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "left",
+				"tabs": [
+					{
+						"name": "Catalog",
+						"widgets": [
+							{
+								"type": "controls",
+								"props": {
+									"controls": [
+										{
+											"type": "parameter",
+											"props": {
+												"name": "TenCards",
+												"sessionId": "default"
+											}
+										}
+									]
+								}
+							}
+						]
+					},
+					{
+						"name": "Notes",
+						"widgets": [
+							{
+								"type": "text",
+								"props": {
+									"markdown": "Notes tab"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "persistence-toolbar",
+					"side": "bottom",
+					"align": "center"
+				},
+				"groups": [
+					[
+						{
+							"id": "grid-panel",
+							"type": "widgets",
+							"props": {
+								"label": "Grid catalog",
+								"icon": "layout-grid",
+								"widgets": [
+									{
+										"type": "controls",
+										"props": {
+											"controls": [
+												{
+													"type": "parameter",
+													"props": {
+														"name": "SevenCards",
+														"sessionId": "default"
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					]
+				]
+			}
+		]
+	}
+}
