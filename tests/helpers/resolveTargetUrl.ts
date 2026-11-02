@@ -12,6 +12,22 @@ export function rewriteToTestBranch(url: string, branch: string): string {
 }
 
 /**
+ * Test URL for an App URL on /latest/: the same URL on the test branch, or,
+ * when `APPBUILDER_BASE_URL` is set (e.g. a local dev server at
+ * `http://127.0.0.1:8080/`), that base with the URL's query.
+ */
+export function resolveTestUrl(
+	url: string,
+	branch: string,
+	baseUrl = process.env.APPBUILDER_BASE_URL,
+): string {
+	if (!baseUrl) return rewriteToTestBranch(url, branch);
+	const target = new URL(baseUrl);
+	target.search = new URL(url).search;
+	return target.toString();
+}
+
+/**
  * Appends additional query parameters to a URL.
  *
  * Useful for adding optional URL parameters such as:

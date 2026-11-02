@@ -132,6 +132,7 @@ import {
 } from "./scenarioActionSlots";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
+import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
 import {
 	exampleMobileFallbackAnchorsNamedActions,
 	exampleMobileFallbackGridNamedActions,
@@ -757,6 +758,19 @@ export const scenarioActions: ScenarioActionConfig[] = [
 				"example-filterableDatabase-all-types.json",
 			),
 		namedActions: scenarioFilterableDatabaseAllTypesNamedActions,
+	},
+	{
+		// Same model, SS-10229: database selects keep filters, search, loaded
+		// pages, and scroll offset when their container closes, their tab
+		// switches, their toolbar popover closes, or the navbar collapses.
+		slug: "example-filterableDatabase-persistence",
+		params: {g: "example-filterableDatabase-persistence.json"},
+		beforeGoto: (page) =>
+			routeSettingsHrefsToAppBase(
+				page,
+				"example-filterableDatabase-persistence.json",
+			),
+		namedActions: scenarioFilterableDatabasePersistenceNamedActions,
 	},
 	{
 		// String parameters as selects; Grasshopper sends the select

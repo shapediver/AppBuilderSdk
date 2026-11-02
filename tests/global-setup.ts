@@ -25,6 +25,8 @@ import {fetchTestingAccountLinks} from "./helpers/fetchTestingAccountLinks";
  *
  * Overrides:
  *   - SKIP_DEPLOY=1 bypasses deployment unconditionally.
+ *   - APPBUILDER_BASE_URL (e.g. a local dev server) is tested instead of the
+ *     branch deploy, so nothing is deployed.
  *   - APPBUILDER_E2E_DEPLOY=1 opts into deployment explicitly (required in CI).
  *   - APPBUILDER_E2E_SKIP_INSTALL=1 prevents global setup from running pnpm i.
  */
@@ -56,6 +58,13 @@ export default async function globalSetup() {
 export function deployCurrentHead() {
 	if (process.env.SKIP_DEPLOY === "1") {
 		console.log("[global-setup] SKIP_DEPLOY=1 — skipping deploy.");
+		return;
+	}
+
+	if (process.env.APPBUILDER_BASE_URL) {
+		console.log(
+			`[global-setup] APPBUILDER_BASE_URL=${process.env.APPBUILDER_BASE_URL} — testing that server, skipping deploy.`,
+		);
 		return;
 	}
 

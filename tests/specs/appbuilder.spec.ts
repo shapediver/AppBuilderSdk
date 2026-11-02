@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import {scenarioActionById, scenarioActions} from "../config/scenarioActions";
 import {AppLink} from "../helpers/fetchAppLinks";
-import {applyUrlParams, rewriteToTestBranch} from "../helpers/resolveTargetUrl";
+import {applyUrlParams, resolveTestUrl} from "../helpers/resolveTargetUrl";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {waitForAppReady} from "../helpers/waitForAppReady";
 
@@ -48,9 +48,9 @@ for (const config of scenarioActions) {
 /** Tag of the quick suite run on deploys (`pnpm test-e2e-quick`). */
 const QUICK = {tag: "@quick"};
 
-/** Return the rewritten test URL. */
+/** Return the rewritten test URL (test branch, or `APPBUILDER_BASE_URL`). */
 function testUrl(url: string): string {
-	return rewriteToTestBranch(url, TEST_BRANCH);
+	return resolveTestUrl(url, TEST_BRANCH);
 }
 
 /** Core smoke assertions: page loads, canvas visible, no JS errors. */

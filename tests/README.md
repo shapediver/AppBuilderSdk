@@ -130,4 +130,4 @@ Opens the app, lets you click the 3D scene, and prints normalized coordinates.
 
 - `TEST_BRANCH` — branch/version to test against (default: `testing/local`)
 - `SKIP_DEPLOY` — set to `1` to skip deploy
-- `APPBUILDER_BASE_URL` — override the base URL entirely
+- `APPBUILDER_BASE_URL` — override the base URL entirely (e.g. a local dev server at `http://127.0.0.1:8080/`); nothing is deployed
