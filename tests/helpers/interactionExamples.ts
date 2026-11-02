@@ -135,7 +135,7 @@ const rectangleGestures: Gestures = {
 };
 
 /** The gumball's first axis handle sits 48 px right of its center. */
-const gumballHandle = async (page: Page, nodes: string[]) => {
+export const gumballHandle = async (page: Page, nodes: string[]) => {
 	const center = await nodesScreenCenter(page, nodes);
 	return {x: center.x + 48, y: center.y};
 };
