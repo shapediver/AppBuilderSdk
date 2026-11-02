@@ -30,12 +30,15 @@ import type {ScenarioNamedAction} from "./scenarioActions";
  *   patch also applies on the paged scrolling-API path (cards).
  *
  * Databases (`public/example-filterableDatabase-*.json`) hold one row per
- * parameter choice: value, English displayname, tooltip, parity. Hrefs are
+ * parameter choice: value, English displayname, tooltip, parity. The numbers
+ * file also has a Zero row that is not a choice. Hrefs are
  * root-relative and rewritten for branch deploys like in the other database
  * scenario.
  *
  * Parameter setup (model `sdr8euc1`, all StringList):
- * - DropDown: dropdown, no filters, "Four" hidden.
+ * - DropDown: dropdown, no filters, "Four" hidden. The numbers file
+ *   lists Three, then Zero (not a choice), then One, Two, Four.
+ *   Choices still show as One, Two, Three.
  * - Checklist: MultiSelect, inline single-select Parity filter.
  * - ButtonGroup: displayname patch on "Zwa", unknown key "Vier".
  * - ButtonChipGroup: current value "Ocho" hidden.
@@ -72,6 +75,23 @@ export const scenarioFilterableDatabaseAllTypesNamedActions: ScenarioNamedAction
 				await expect(input).toHaveValue("Zwei");
 				await moveMouseAway(page);
 				await snapshotParameter(page, "DropDown", `${slug}-dropdown`);
+			},
+		},
+		{
+			name: "items limit database rows to choices in choice order",
+			run: async (page) => {
+				const dropdown = parameter(page, "DropDown");
+				await dropdown.getByRole("combobox").click();
+				// File order is Three, Zero, One, Two, Four. Zero is not a
+				// choice. Four is hidden. The widget follows the choices.
+				await expect(page.getByRole("option")).toHaveText([
+					"Eins",
+					"Zwei",
+					"Drei",
+				]);
+				await expect(
+					page.getByRole("option", {name: "Null"}),
+				).toHaveCount(0);
 			},
 		},
 		{

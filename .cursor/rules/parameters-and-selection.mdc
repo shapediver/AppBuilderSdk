@@ -71,3 +71,7 @@ Gumball, rectangle transform, anchor, and attribute visualization reuse `useSele
 ## Toolbar
 
 `AppBuilderToolbar`, `resolveRuntimeToolbarGroups` (Confirm/Cancel aggregate by `aggregationId`; menu only with toggleable rows; trailing actions become commands otherwise). Buttons disabled while executing.
+
+## Filterable database items
+
+`items` next to `database` narrows the table before filters, search, and paging, in `items` order. Omitted `items` shows every row. `[]` shows none. Do not pass the hidden-filtered widget list as that allow-list: a hidden row must stay in the table so filter options still see it, and `filterHiddenSelectItems` removes it from the select list afterwards. String parameters pass `selectSettings.items` (`undefined` vs `[]`). StringList parameters pass the choices, including hidden ones (`uniqueChoicesIncludingHidden`); the choices are the allow-list. A current value that is not in the shown rows is not highlighted and is not written back. A checklist still has to merge those hidden selections back on the next change: the widget only sees the rows on screen, so passing that trimmed list as `value` makes the next click drop whatever the filter is hiding.
