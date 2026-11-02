@@ -5,7 +5,7 @@ import {scenarioActionById, scenarioActions} from "../config/scenarioActions";
 import {AppLink} from "../helpers/fetchAppLinks";
 import {applyUrlParams, resolveTestUrl} from "../helpers/resolveTargetUrl";
 import {takeSnapshot} from "../helpers/takeSnapshot";
-import {waitForAppReady} from "../helpers/waitForAppReady";
+import {APP_READY_TIMEOUT, waitForAppReady} from "../helpers/waitForAppReady";
 
 // ---------------------------------------------------------------------------
 // Branch to test — set TEST_BRANCH env var before running, e.g.:
@@ -60,13 +60,14 @@ async function runSmoke(
 	slug: string,
 	setup?: (page: import("@playwright/test").Page) => Promise<void>,
 	beforeGoto?: (page: import("@playwright/test").Page) => Promise<void>,
+	readyTimeout?: number,
 ) {
 	const jsErrors: string[] = [];
 	page.on("pageerror", (err) => jsErrors.push(err.message));
 
 	await beforeGoto?.(page);
 	await page.goto(url, {waitUntil: "domcontentloaded"});
-	await waitForAppReady(page, {interstitial: setup});
+	await waitForAppReady(page, {interstitial: setup, timeout: readyTimeout});
 
 	const canvas = page.locator("canvas").first();
 	await expect(canvas).toBeVisible({timeout: 15_000});
@@ -96,15 +97,25 @@ for (const {slug, url} of allEntries.values()) {
 	const namedActions = config?.namedActions;
 	const resolvedUrl = applyUrlParams(testUrl(url), params);
 	const interactionDetails = config?.quickSuite ? QUICK : {};
+	const readyTimeout = config?.slowScene ? 3 * APP_READY_TIMEOUT : undefined;
 
 	test.describe(slug, () => {
+		if (config?.slowScene) test.slow();
+
 		// Smoke and visual share one page load; every load costs ~10s.
 		test(
 			"smoke + visual: loads without error and matches baseline",
 			QUICK,
 			async ({page}) => {
 				await test.step("smoke", () =>
-					runSmoke(page, resolvedUrl, slug, setup, beforeGoto));
+					runSmoke(
+						page,
+						resolvedUrl,
+						slug,
+						setup,
+						beforeGoto,
+						readyTimeout,
+					));
 				await test.step("visual", () => takeSnapshot(page, slug));
 			},
 		);
@@ -120,7 +131,10 @@ for (const {slug, url} of allEntries.values()) {
 						await page.goto(resolvedUrl, {
 							waitUntil: "domcontentloaded",
 						});
-						await waitForAppReady(page, {interstitial: setup});
+						await waitForAppReady(page, {
+							interstitial: setup,
+							timeout: readyTimeout,
+						});
 						await action.run(page, slug);
 					},
 				);
@@ -134,7 +148,10 @@ for (const {slug, url} of allEntries.values()) {
 					await page.goto(resolvedUrl, {
 						waitUntil: "domcontentloaded",
 					});
-					await waitForAppReady(page, {interstitial: setup});
+					await waitForAppReady(page, {
+						interstitial: setup,
+						timeout: readyTimeout,
+					});
 					await actions(page, slug);
 				},
 			);

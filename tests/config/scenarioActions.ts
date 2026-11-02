@@ -199,6 +199,12 @@ export interface ScenarioActionConfig {
 	 * visual of every slug run in the quick suite regardless.
 	 */
 	quickSuite?: boolean;
+	/**
+	 * Every load of this scene freezes the page for ~1.5 min on CI runners
+	 * with software rendering (model sdr8euc1). Triples the test timeout and
+	 * the waitForAppReady timeout for all tests of this slug.
+	 */
+	slowScene?: boolean;
 }
 
 /** Fields needed to open a scenario URL (smoke/visual or a dedicated API spec). */
@@ -732,6 +738,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// plus one `source` parameter on the built-in dummy scrolling API.
 		// Root-relative database hrefs are resolved against the branch deploy.
 		slug: "example-filterableDatabase-selects",
+		slowScene: true,
 		params: {g: "example-filterableDatabase-selects.json"},
 		beforeGoto: (page) =>
 			routeSettingsHrefsToAppBase(
@@ -744,6 +751,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// Same model, plain-items select widgets (no database, no scrolling
 		// API): display names, colors, tooltips, hidden items, commits.
 		slug: "example-select-widgets",
+		slowScene: true,
 		params: {g: "example-select-widgets.json"},
 		namedActions: scenarioSelectWidgetsNamedActions,
 	},
@@ -751,6 +759,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// Same model, SS-10264: a database behind every select type, no
 		// filters, itemData patches over database rows.
 		slug: "example-filterableDatabase-all-types",
+		slowScene: true,
 		params: {g: "example-filterableDatabase-all-types.json"},
 		beforeGoto: (page) =>
 			routeSettingsHrefsToAppBase(
@@ -764,6 +773,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// pages, and scroll offset when their container closes, their tab
 		// switches, their toolbar popover closes, or the navbar collapses.
 		slug: "example-filterableDatabase-persistence",
+		slowScene: true,
 		params: {g: "example-filterableDatabase-persistence.json"},
 		beforeGoto: (page) =>
 			routeSettingsHrefsToAppBase(

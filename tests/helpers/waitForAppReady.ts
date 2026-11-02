@@ -2,6 +2,9 @@ import {Frame, Page} from "@playwright/test";
 
 type PageOrFrame = Page | Frame;
 
+/** Default timeout in ms for each wait in waitForAppReady. */
+export const APP_READY_TIMEOUT = 90_000;
+
 /** Waits until the standard ShapeDiver AppBuilder page is ready to use. */
 export async function waitForAppReady(
 	page: PageOrFrame,
@@ -10,7 +13,7 @@ export async function waitForAppReady(
 		interstitial?: (page: Page) => Promise<void>;
 	} = {},
 ): Promise<void> {
-	const {timeout = 90_000, interstitial} = options;
+	const {timeout = APP_READY_TIMEOUT, interstitial} = options;
 
 	await page
 		.locator('[data-component="Loader"]')
