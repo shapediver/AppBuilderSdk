@@ -63,10 +63,17 @@ export function card(page: Page, name: string, displayname: string): Locator {
 }
 
 /**
- * Screenshot with the parameter scrolled into view (most parameters sit
- * below the fold of the sidebar's own scroll container) and its visible
- * images loaded. Images scrolled out of view inside a card list may be lazy
- * and never load, so only images in the viewport are awaited.
+ * Screenshot with the parameter scrolled to the top of the sidebar's own
+ * scroll container (most parameters sit below the fold) and its visible
+ * images loaded. Always aligning to the top keeps the scroll offset
+ * independent of where earlier clicks left the sidebar;
+ * `scrollIntoViewIfNeeded` keeps any offset that shows the parameter, and
+ * that offset differs between OS and Playwright/Mantine versions.
+ * Only the sidebar scrolls: `scrollIntoView` would also scroll the window
+ * when the sidebar cannot scroll far enough and an open dropdown makes the
+ * page taller than the viewport.
+ * Images scrolled out of view inside a card list may be lazy and never
+ * load, so only images in the viewport are awaited.
  */
 export async function snapshotParameter(
 	page: Page,
@@ -74,7 +81,22 @@ export async function snapshotParameter(
 	snapshotName: string,
 ) {
 	const element = parameter(page, name);
-	await element.scrollIntoViewIfNeeded();
+	await element.evaluate((el) => {
+		let container = el.parentElement;
+		while (
+			container &&
+			!(
+				/(auto|scroll)/.test(getComputedStyle(container).overflowY) &&
+				container.scrollHeight > container.clientHeight
+			)
+		) {
+			container = container.parentElement;
+		}
+		if (!container) return;
+		container.scrollTop +=
+			el.getBoundingClientRect().top -
+			container.getBoundingClientRect().top;
+	});
 	await expect
 		.poll(() =>
 			element.locator("img").evaluateAll((images) =>
