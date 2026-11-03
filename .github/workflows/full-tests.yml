@@ -3,9 +3,10 @@ name: full-tests
 # Full Playwright suite for the heads of development, staging and master.
 # Scheduled runs only fire on the default branch, so the nightly run starts
 # one workflow_dispatch run per branch; each of those uses its own branch's
-# workflow files, commit and environment. A commit that already has a green
-# appbuilder/full-playwright status is skipped; release.yml reads the same
-# status for master.
+# workflow files, commit and environment. It can also be dispatched manually
+# on any other branch, which then tests against the development environment.
+# A commit that already has a green appbuilder/full-playwright status is
+# skipped; release.yml reads the same status for master.
 on:
   schedule:
     - cron: "0 1 * * *"
@@ -63,6 +64,8 @@ jobs:
       statuses: read
     outputs:
       sha: ${{ steps.check.outputs.sha }}
+      environment: ${{ steps.check.outputs.environment }}
+      artifact_prefix: ${{ steps.check.outputs.artifact_prefix }}
       full_tests_done: ${{ steps.check.outputs.full_tests_done }}
 
     steps:
@@ -74,7 +77,10 @@ jobs:
           BRANCH: ${{ github.ref_name }}
           FORCE: ${{ inputs.force }}
         run: |
-          case "$BRANCH" in development|staging|master) ;; *) echo "full-tests runs on development, staging or master, not ${BRANCH}." >&2; exit 1;; esac
+          case "$BRANCH" in master) ENVIRONMENT=production;; staging) ENVIRONMENT=staging;; *) ENVIRONMENT=development;; esac
+          echo "environment=${ENVIRONMENT}" >> "$GITHUB_OUTPUT"
+          # Artifact names must not contain slashes (e.g. feature/foo).
+          echo "artifact_prefix=full-tests-${BRANCH//\//-}" >> "$GITHUB_OUTPUT"
           SHA="${GITHUB_SHA}"
           echo "sha=${SHA}" >> "$GITHUB_OUTPUT"
           COUNT=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${SHA}/statuses" \
@@ -96,7 +102,7 @@ jobs:
       contents: write
       packages: read
       id-token: write
-    environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
+    environment: ${{ needs.check.outputs.environment }}
 
     steps:
       - name: Create GitHub App token
@@ -206,7 +212,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: full-tests-${{ github.ref_name }}-preparation-failure-artifacts
+          name: ${{ needs.check.outputs.artifact_prefix }}-preparation-failure-artifacts
           if-no-files-found: ignore
           compression-level: 0
           path: .github-artifacts/failure/
@@ -222,9 +228,9 @@ jobs:
       # `gh workflow run -f shard_total=2`); the reusable workflow needs a number.
       shard_total: ${{ fromJSON(inputs.shard_total) }}
       test_branch: testing/nightly-${{ github.ref_name }}
-      environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
+      environment: ${{ needs.check.outputs.environment }}
       checkout_ref: ${{ needs.check.outputs.sha }}
-      artifact_prefix: full-tests-${{ github.ref_name }}
+      artifact_prefix: ${{ needs.check.outputs.artifact_prefix }}
     secrets: inherit
 
   record-full-test-status:
@@ -241,7 +247,7 @@ jobs:
     permissions:
       contents: read
       statuses: write
-    environment: ${{ github.ref_name == 'master' && 'production' || github.ref_name }}
+    environment: ${{ needs.check.outputs.environment }}
 
     steps:
       - name: Record full Playwright status
