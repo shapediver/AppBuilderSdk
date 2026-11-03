@@ -37,10 +37,12 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 						"set_camera",
 						"get_camera",
 						"get_screenshot",
-						"get_metric",
+						"get_output",
 					]),
 				);
 				expect(names).not.toContain("ask_user_question");
+				// get_metric was replaced by get_output
+				expect(names).not.toContain("get_metric");
 				const screenshot = listed.find(
 					(tool) => tool.name === "get_screenshot",
 				);
@@ -297,10 +299,18 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 			},
 		},
 		{
-			name: "get_metric is not found without AgentMetric",
+			name: "get_output is not found without AgentMetric",
 			run: async (page) => {
-				const metric = await toolsExecute(page, "get_metric", {});
+				const metric = await toolsExecute(page, "get_output", {
+					output: "AgentMetric",
+				});
 				expect(metric.found).toBe(false);
+				expect(metric.message).toBeUndefined();
+
+				// output is required
+				const missing = await toolsExecute(page, "get_output", {});
+				expect(missing.found).toBe(false);
+				expect(missing.message).toEqual(expect.any(String));
 			},
 		},
 	],
