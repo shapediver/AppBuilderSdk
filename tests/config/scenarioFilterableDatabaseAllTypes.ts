@@ -47,7 +47,7 @@ import type {ScenarioNamedAction} from "./scenarioActions";
  * - ImageDropDown: CSV with images, Material filter.
  * - SevenCards: carousel over JSON, no filters, "Option 7" hidden.
  * - TenCards: paged cards, no filters, "Option 2" hidden, "Option 1" renamed.
- * - ThreeCards: grid, no filters.
+ * - ThreeCards: grid, no filters, only its three choices' rows.
  */
 export const scenarioFilterableDatabaseAllTypesNamedActions: ScenarioNamedAction[] =
 	[
@@ -352,7 +352,12 @@ export const scenarioFilterableDatabaseAllTypesNamedActions: ScenarioNamedAction
 				await expect(
 					parameter(page, "ThreeCards").getByPlaceholder("Filters"),
 				).toHaveCount(0);
-				expect(await cardLabels(page, "ThreeCards")).toHaveLength(10);
+				// Only the three choices' rows, not all ten database rows.
+				expect(await cardLabels(page, "ThreeCards")).toEqual([
+					"Aluminium",
+					"Brass",
+					"Cedar",
+				]);
 				await waitForModelRecomputed(page, async () => {
 					await card(page, "ThreeCards", "Cedar").click();
 				});
