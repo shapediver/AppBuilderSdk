@@ -28,12 +28,12 @@
  * restarts the countdown, and a move whose parameter unmounts meanwhile (its
  * anchor closed) is still sent (`parameterChangeScheduler`). A third one
  * (`multi-immediate`) adds a custom toggle which computes right away and takes
- * the pending moves along in its request. Two variants of it with a 10 s
- * countdown cover undo (`multi-undo`: a pending move is discarded) and
+ * the pending moves along in its request. Two variants of it (the same 30 s
+ * countdown) cover undo (`multi-undo`: a pending move is discarded) and
  * accept/reject mode (`multi-acceptReject`: the toggle waits for Accept, a
  * scheduled move does not accept it, Accept takes a pending move along). The
  * automatic examples of all three tools check that editing is paused during a
- * computation (the requests are delayed). A container
+ * computation (the requests are held). A container
  * which renders nothing is not shown: the left container of these examples
  * appears once its text widgets show the sent values, an anchor whose
  * parameter renders in the toolbar opens with a hidden panel
@@ -322,10 +322,10 @@ const gumballPausedAction: ScenarioNamedAction = {
 		const puts = trackCustomizations(page);
 		const errors = collectPageErrors(page);
 		await clickNode(page, BOX);
-		const endDelay = await delayCustomizations(page);
+		const release = await holdCustomizations(page);
 		await waitForModelRecomputed(page, async () => {
 			await g.translate(page, [BOX]);
-			// the move is sent after the idle timeout, the request is delayed
+			// the move is sent after the idle timeout, the request is held
 			await expect.poll(() => puts.count(), {timeout: 10_000}).toBe(1);
 			await page.waitForTimeout(500);
 			const before = await nodeBounds(page, BOX);
@@ -336,8 +336,8 @@ const gumballPausedAction: ScenarioNamedAction = {
 				boundsChanged(before, await nodeBounds(page, BOX)),
 				"the paused gumball moved the box",
 			).toBe(false);
+			release();
 		});
-		await endDelay();
 		// the drag was not scheduled either
 		await expectNoCustomization(page, puts, 1);
 		await takeSnapshot(page, `${slug}-paused`);
@@ -509,11 +509,11 @@ const drawingScenarios: ScenarioActionConfig[] = [
 						),
 					);
 					const moved = {x: from.x + 60, y: from.y};
-					const endDelay = await delayCustomizations(page);
+					const release = await holdCustomizations(page);
 					await waitForModelRecomputed(page, async () => {
 						await dragMouse(page, from, moved);
 						// the move is sent after the idle timeout, the request
-						// is delayed
+						// is held
 						await expect
 							.poll(() => puts.count(), {timeout: 10_000})
 							.toBe(1);
@@ -524,8 +524,8 @@ const drawingScenarios: ScenarioActionConfig[] = [
 							x: moved.x + 60,
 							y: moved.y,
 						});
+						release();
 					});
-					await endDelay();
 					// the drag was not scheduled
 					await expectNoCustomization(page, puts, 1);
 					await takeSnapshot(page, `${slug}-paused`);
@@ -848,7 +848,7 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 							before,
 						);
 					};
-					const endDelay = await delayCustomizations(page);
+					const release = await holdCustomizations(page);
 					await waitForModelRecomputed(page, async () => {
 						await toggleSwitch(page).click();
 						await page.waitForTimeout(500);
@@ -858,8 +858,8 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 							await dragCornerTransforms(),
 							"the paused tool transformed the box",
 						).toBe(false);
+						release();
 					});
-					await endDelay();
 					expect(puts.count()).toBe(1);
 					const sentBefore = transformValueFromBody(
 						puts.last(),
@@ -895,8 +895,8 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 		],
 	},
 	{
-		// the immediate example, the moves wait for 10 s (Undo of the viewport
-		// toolbar)
+		// the immediate example with Undo of the viewport toolbar, the moves
+		// wait for 30 s
 		slug: "example-rectangle-multi-undo",
 		params: {g: "example-rectangle-multi-undo.json"},
 		namedActions: [
@@ -941,7 +941,7 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 	},
 	{
 		// the immediate example with the toggle in accept/reject mode (inline
-		// controls), the moves wait for 10 s
+		// controls), the moves wait for 30 s
 		slug: "example-rectangle-multi-acceptReject",
 		params: {g: "example-rectangle-multi-acceptReject.json"},
 		namedActions: [
@@ -1022,8 +1022,12 @@ const multiParameterScenarios: ScenarioActionConfig[] = [
 	},
 ];
 
-/** Longer than the 10 s countdown of the undo and accept/reject examples. */
-const MULTI_COUNTDOWN_WAIT = 12_000;
+/**
+ * Longer than the 30 s countdown of the undo and accept/reject examples. The
+ * countdown has to outlast the steps between a move and the Undo or Accept
+ * click, which take about 10 s on CI runners.
+ */
+const MULTI_COUNTDOWN_WAIT = 32_000;
 
 /**
  * Undo of the viewport toolbar, which shows while the pointer moves over the
@@ -1041,16 +1045,22 @@ const acceptButton = (page: Page) => page.getByRole("button", {name: "Accept"});
 const rejectButton = (page: Page) => page.getByRole("button", {name: "Reject"});
 
 /**
- * Delay the customization requests (6 s each), so that a computation takes
- * long enough for a gesture in between. Returns the function ending it.
+ * Hold the customization requests until released, so that a computation
+ * lasts for the gestures in between (a fixed delay is too short on CI
+ * runners, where a drag alone takes about 40 s). Returns the function
+ * releasing them; later requests pass right away.
  */
-async function delayCustomizations(page: Page) {
-	const customization = (url: URL) => url.pathname.endsWith("/output");
-	await page.route(customization, async (route) => {
-		if (route.request().method() === "PUT") await page.waitForTimeout(6000);
-		await route.continue();
-	});
-	return () => page.unroute(customization);
+async function holdCustomizations(page: Page) {
+	let release = () => {};
+	const released = new Promise<void>((resolve) => (release = resolve));
+	await page.route(
+		(url) => url.pathname.endsWith("/output"),
+		async (route) => {
+			if (route.request().method() === "PUT") await released;
+			await route.continue();
+		},
+	);
+	return release;
 }
 
 /**
