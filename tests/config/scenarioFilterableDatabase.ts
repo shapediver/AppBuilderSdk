@@ -38,7 +38,8 @@ import type {ScenarioNamedAction} from "./scenarioActions";
  *   mapping, inline text filter, Material tag filter, Category folder
  *   filter.
  * - ThreeCards: CSV, grid, single-select inline color filter, Material
- *   restricted by `filterValues`. Only choices Option 1-3 exist.
+ *   restricted by `filterValues`. Only choices Option 1-3 exist, so the
+ *   grid shows only their rows (the choices are the allow-list).
  * - SevenCards: JSON with inferred columns, nested `data`, folder arrays;
  *   grid paging (`limit: 2` in a 240px panel) and search.
  * - Color: small JSON database with "search:" suggestion rows (search
@@ -377,31 +378,41 @@ export const scenarioFilterableDatabaseNamedActions: ScenarioNamedAction[] = [
 		},
 	},
 	{
-		// ThreeCards: inline color filter is single-select (radio) with
-		// swatches; Material lists only `filterValues`. Grid commits keys.
+		// ThreeCards: only the rows of its choices Option 1-3 show, and the
+		// filters offer only their values. The inline color filter is
+		// single-select (radio) with swatches; Material lists only
+		// `filterValues`. Grid commits keys.
 		name: "database grid color filter and filter values",
 		run: async (page, slug) => {
-			expect(await loadAllCards(page, "ThreeCards")).toHaveLength(10);
+			expect(await loadAllCards(page, "ThreeCards")).toEqual([
+				"Aluminium",
+				"Brass",
+				"Cedar",
+			]);
 
 			await openFilters(page, "ThreeCards");
 			await expect(
 				filterDropdown(page).locator(".mantine-ColorSwatch-root"),
 			).not.toHaveCount(0);
+			// red is only a color of rows outside the choices
+			await expect(
+				filterDropdown(page).getByRole("radio", {name: "red"}),
+			).toHaveCount(0);
 			await filterDropdown(page)
-				.getByRole("radio", {name: "red"})
+				.getByRole("radio", {name: "orange"})
 				.click();
 			await expect
 				.poll(() => cardLabels(page, "ThreeCards"))
-				.toEqual(["Fiber", "Jute"]);
+				.toEqual(["Cedar"]);
 			// Radio: picking another color replaces the first one.
 			await filterDropdown(page)
-				.getByRole("radio", {name: "blue"})
+				.getByRole("radio", {name: "yellow"})
 				.click();
 			await expect
 				.poll(() => cardLabels(page, "ThreeCards"))
-				.toEqual(["Glass"]);
+				.toEqual(["Brass"]);
 			await expect(filterPills(page, "ThreeCards")).toHaveText([
-				"Color: blue",
+				"Color: yellow",
 			]);
 			await snapshotParameter(
 				page,
