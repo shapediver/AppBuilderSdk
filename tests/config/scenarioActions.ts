@@ -144,6 +144,7 @@ import {
 	selectionInputResetValueActions,
 	textInputResetValueActions,
 } from "./scenarioResetValue";
+import {scenarioSelectionActionNamedActions} from "./scenarioSelectionAction";
 import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
 import {scenarioStringSelectNamedActions} from "./scenarioStringSelect";
 
@@ -781,6 +782,13 @@ export const scenarioActions: ScenarioActionConfig[] = [
 				"example-filterableDatabase-persistence.json",
 			),
 		namedActions: scenarioFilterableDatabasePersistenceNamedActions,
+	},
+	{
+		// SS-10192: toolbar buttons with `selection` actions select and
+		// deselect nodes of a selection parameter.
+		slug: "example-selectionAction",
+		params: {g: "example-selectionAction.json"},
+		namedActions: scenarioSelectionActionNamedActions,
 	},
 	{
 		// String parameters as selects; Grasshopper sends the select
