@@ -35,10 +35,13 @@ export async function actionSlotsSelectionActions(page: Page) {
  * `computationend` on parameter controls. Every anchor opens once and
  * stays open (nothing closes it), so each case starts with a fresh page.
  */
-const lengthStarted = (page: Page) => page.getByText("Length started");
-const lengthComputed = (page: Page) => page.getByText("Length computed");
-const doorComputed = (page: Page) => page.getByText("Door computed");
-const rootComputed = (page: Page) => page.getByText("Root computed");
+// The description repeats the anchor texts in italics, so look for headings.
+const anchorHeading = (page: Page, name: string) =>
+	page.getByRole("heading", {name, exact: true});
+const lengthStarted = (page: Page) => anchorHeading(page, "Length started");
+const lengthComputed = (page: Page) => anchorHeading(page, "Length computed");
+const doorComputed = (page: Page) => anchorHeading(page, "Door computed");
+const rootComputed = (page: Page) => anchorHeading(page, "Root computed");
 
 async function expectNoSlotRan(page: Page) {
 	await expect(lengthStarted(page)).toBeHidden();
