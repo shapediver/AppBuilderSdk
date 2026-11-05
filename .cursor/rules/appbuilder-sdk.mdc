@@ -17,7 +17,7 @@ Workflow only. Do not add feature behavior, ticket notes, or API semantics to th
 ## Git and commits
 
 - Branch names: `task/JIRA-ISSUE-ID`. Every commit message starts with the ticket (`SS-10004: ...`).
-- Commits are SSH-signed via 1Password; **signing fails from an agent shell**. Stage and describe; **let the user commit**.
+- Commits are SSH-signed via 1Password.
 - `git checkout -- <file>` restores from the _index_; use `git checkout HEAD --` when files are staged.
 
 ## Line endings and edits
