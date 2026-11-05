@@ -1,0 +1,228 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"actionSlots": {
+			"computationend": {
+				"action": {
+					"type": "setContainerVisibility",
+					"props": {
+						"container": {
+							"name": "anchor2d",
+							"props": {
+								"id": "root-computed"
+							}
+						},
+						"mode": "open"
+					}
+				}
+			}
+		},
+		"containers": [
+			{
+				"name": "right",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "## Computation slots of parameter controls\n\nThe slots sit on the parameter control, next to `type` and `props`, and run only when that parameter was part of the computation.\n\n- **Length**: `computationstart` shows *Length started*, `computationend` shows *Length computed*.\n- **Hide Door** (accept/reject, inline): `computationend` shows *Door computed* when the change is accepted, not when it is queued.\n- **Material Color**: no slots.\n- **Root**: `computationend` shows *Root computed* for every computation.\n- **Change both** sets Length and Hide Door in one computation, so both controls run their slots.\n\nChange **Material Color** to see that only the root slot runs."
+						}
+					}
+				]
+			},
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"actionSlots": {
+										"computationstart": {
+											"action": {
+												"type": "setContainerVisibility",
+												"props": {
+													"container": {
+														"name": "anchor2d",
+														"props": {
+															"id": "length-started"
+														}
+													},
+													"mode": "open"
+												}
+											}
+										},
+										"computationend": {
+											"action": {
+												"type": "setContainerVisibility",
+												"props": {
+													"container": {
+														"name": "anchor2d",
+														"props": {
+															"id": "length-computed"
+														}
+													},
+													"mode": "open"
+												}
+											}
+										}
+									},
+									"props": {
+										"name": "Length"
+									}
+								},
+								{
+									"type": "parameter",
+									"actionSlots": {
+										"computationend": {
+											"action": {
+												"type": "setContainerVisibility",
+												"props": {
+													"container": {
+														"name": "anchor2d",
+														"props": {
+															"id": "door-computed"
+														}
+													},
+													"mode": "open"
+												}
+											}
+										}
+									},
+									"props": {
+										"name": "Hide Door",
+										"acceptRejectMode": true,
+										"acceptRejectModePresentation": "inline"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Material Color"
+									}
+								},
+								{
+									"type": "action",
+									"props": {
+										"label": "Change both",
+										"definition": {
+											"type": "setParameterValues",
+											"props": {
+												"parameterValues": [
+													{
+														"parameter": {
+															"name": "Length"
+														},
+														"value": "4"
+													},
+													{
+														"parameter": {
+															"name": "Hide Door"
+														},
+														"value": "true"
+													}
+												]
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "length-started",
+					"location": [24, 88],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": true,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Length started"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "length-computed",
+					"location": [24, 160],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": true,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Length computed"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "door-computed",
+					"location": [24, 232],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": true,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Door computed"
+						}
+					}
+				]
+			},
+			{
+				"name": "anchor2d",
+				"props": {
+					"id": "root-computed",
+					"location": [24, 304],
+					"justification": "TL",
+					"exclusive": false,
+					"defaultOpen": false,
+					"useCloseButton": true,
+					"width": 240
+				},
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Root computed"
+						}
+					}
+				]
+			}
+		]
+	}
+}

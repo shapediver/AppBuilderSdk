@@ -65,6 +65,17 @@ Registered on `AppBuilderPage` via `AppBuilderApplicationActionSlots`.
 - `computationerror` is `TASK_CANCEL` with status `"Session customization failed"` (local session id on the task payload). A superseded customize cancels with a different status.
 - Export slots are `TASK_START` / `TASK_END` / `TASK_CANCEL` for `EXPORT_REQUEST` (`data.sessionId`, `exportId`, `name`, `displayname`). Same path as widgets and export parameter value sources.
 
+## Parameter control computation slots
+
+A control of `type: "parameter"` may use `computationstart`, `computationend`, and `computationerror` (`APP_BUILDER_SLOT_EVENTS.parameterControl`, schema `IAppBuilderParameterControlActionSlots`). They sit on the control, not in `props.overrides`, and take no `eventProps` (the control's name and session identify the parameter). Export, output, action controls, and toolbar items do not gain them.
+
+- The viewer task only carries the session id. `entities/parameter/model/parameterComputationEvents.ts` remembers the ids the parameter executor sends (`markParametersInCustomization`, called right before `session.customize` / `requestExports` in `useShapeDiverStoreParameters.ts`). It forgets them on `TASK_END` (after the scene node is replaced) and on a failed `TASK_CANCEL`.
+- A superseded customization (other cancel status) keeps the ids: the newer customization sends every current value. `customize_parallel` tasks (instances) are ignored.
+- In customize mode only ids whose `value !== sessionValue` are marked, because the viewer emits no task for an unchanged customization. A stuck id would run the slot for the next unrelated customization.
+- `features/appbuilder/ui/AppBuilderParameterActionSlots.tsx` subscribes per control and runs the action when the session and parameter id match. `AppBuilderControlsWidgetComponent` renders it next to the control (also for hidden parameters) and strips the computation keys from the DOM wrapper's slots (`omitParameterComputationSlots`), so they are neither run twice nor warned about.
+- Accept/reject needs no code: the executor runs only when the accepted change is computed.
+- Custom (App Builder) parameters are not computed by a session, so their slots never run.
+
 ## Viewer interaction
 
 Slot names are `selecton`, `selectoff`, `hoveron`, and `hoveroff`. Viewer `interaction.multiSelect.*` maps onto the select slots.
