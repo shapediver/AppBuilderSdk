@@ -53,6 +53,15 @@ Do not put `ar`, `camera`, or `fullscreen` in the shared table. That imports vie
 - Host-registered AR opens native `viewInAR` or the QR modal.
 - Host-registered fullscreen cycles `fullscreen3States` via `cycleFullscreen3States` (same DOM node and `viewerFullscreen3States` store as the toolbar button).
 
+## Selection (`type: "selection"`, SS-10192)
+
+- Props: `select?`, `deselect?` (name filters, `*` wildcards, nodes in both lists are selected) and `parameter?: {name, sessionId}`. It applies to selection, gumball, and rectangle transform parameters. Dragging is unaffected.
+- The change goes through the owning parameter's `setSelectedNodeNames`, so the restore effects and the auto-confirm rules behave as for a user selection. Mounted selection, gumball, and rectangle components register a target with `useSelectionActionTarget` (`entities/parameter/model/interaction/selectionActionRegistry.ts`). A parameter whose component is not mounted cannot be changed (warns when `parameter` names it).
+- **The catalog's import graph must stay viewer-free.** The catalog is imported by many suites, and a top-level import of `@shapediver/viewer.features.interaction` breaks them with an ES module error from three.js. The registry holds no viewer import. `selectionNameMatcher.ts` (viewer matching) is imported only by the hook in the component.
+- More matches than `maximumSelection`: the first matches in scene order are selected and a warning is logged. `minimumSelection` and the exclusive-rectangle rules of SS-10334 are not handled.
+- A selection that does not fill `maximumSelection` stays a pending draft (Confirm/Cancel), like a user selection. A following action in `executeActions` can run before React commits the selection.
+- Example and e2e: `public/example-selectionAction.json`, `tests/config/scenarioSelectionAction.ts`.
+
 ## Camera
 
 Host entry: `componentContext.actions.camera.run`. ShapeDiver registers `runAppBuilderActionCamera` from `AppBuilderRoot.tsx`.
