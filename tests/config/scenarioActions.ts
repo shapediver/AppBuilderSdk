@@ -130,6 +130,7 @@ import {
 	actionSlotsActions,
 	actionSlotsSelectionActions,
 } from "./scenarioActionSlots";
+import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
@@ -619,6 +620,14 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await clickToolbar(3);
 			await clickToolbar(4);
 		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		// SS-10342: the "assign" camera action fits cameras with `initialAutoAdjust`.
+		slug: "example-cameraAssign",
+		params: {g: "example-cameraAssign.json"},
+		namedActions: scenarioCameraAssignNamedActions,
 	},
 	{
 		// Self-contained settings JSON (`g`); session is in the file, so the
