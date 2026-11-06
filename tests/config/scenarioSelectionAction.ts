@@ -6,11 +6,14 @@ import {
 	settle,
 } from "../helpers/interactionExamples";
 import {
+	boundsChanged,
 	collectPageErrors,
 	type CustomizationTracker,
 	isIdentity,
+	nodeBounds,
 	trackCustomizations,
 	transformValueFromBody,
+	type Vec3,
 } from "../helpers/sceneCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 import type {ScenarioNamedAction} from "./scenarioActions";
@@ -130,17 +133,32 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
  * E2E coverage for the `selection` action on exclusive rectangle transforms
  * (SS-10192 with SS-10334) on `public/example-selectionAction-exclusive.json`
  * (testing-account model `ss-10024-one-parameter-per-box-2`). RectOriginal
- * transforms `box_original`, RectTranslated `box_translated`; both are
- * exclusive with `minimumSelection: 1` and offer Confirm / Cancel (shown as
- * soon as a box is selected: the new gizmo reports its placement).
+ * (id `RectangleTransform2`) transforms `box_original`, RectTranslated (id
+ * `RectangleTransform1`) `box_translated`; the model reads the values by these
+ * ids. Both are exclusive with `minimumSelection: 1` and offer Confirm /
+ * Cancel (shown as soon as a box is selected: the new gizmo reports its
+ * placement).
  *
  * The boxes of `example-selectionAction.json` are claimed by SelectBox and
  * the root slots, so a rectangle transform there would be blocked by the
  * interaction ownership. This example uses its own model.
  */
 
-const ORIGINAL = {box: "box_original", parameter: "RectOriginal"};
-const TRANSLATED = {box: "box_translated", parameter: "RectTranslated"};
+const ORIGINAL = {box: "box_original", parameter: "RectangleTransform2"};
+const TRANSLATED = {box: "box_translated", parameter: "RectangleTransform1"};
+
+/** The model applied the sent placement: the recomputed box has moved. */
+const expectModelMoved = async (
+	page: Page,
+	box: string,
+	initial: {min: Vec3; max: Vec3},
+) => {
+	await settle(page);
+	expect(
+		boundsChanged(initial, await nodeBounds(page, box)),
+		`the model did not apply the transformation of ${box}`,
+	).toBe(true);
+};
 
 /** Rectangles shown in the viewport (one scene root child per gizmo). */
 const shownRectangles = (page: Page) =>
@@ -175,6 +193,7 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				const puts = trackCustomizations(page);
 				const errors = collectPageErrors(page);
 				await settle(page);
+				const initial = await nodeBounds(page, ORIGINAL.box);
 				// an exclusive parameter selects nothing on load
 				expect(await shownRectangles(page)).toBe(0);
 
@@ -193,6 +212,7 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				});
 				expect(puts.count()).toBe(1);
 				expectBoxSent(puts, ORIGINAL);
+				await expectModelMoved(page, ORIGINAL.box, initial);
 				expect(errors.errors()).toEqual([]);
 			},
 		},
@@ -204,6 +224,11 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				const errors = collectPageErrors(page);
 				const logs = collectSelectionWarnings(page);
 				await settle(page);
+				const initialOriginal = await nodeBounds(page, ORIGINAL.box);
+				const initialTranslated = await nodeBounds(
+					page,
+					TRANSLATED.box,
+				);
 
 				await actionButton(page, "Select original").click();
 				await expect.poll(() => shownRectangles(page)).toBe(1);
@@ -232,6 +257,8 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				expect(puts.count()).toBe(1);
 				expectBoxSent(puts, ORIGINAL);
 				expectBoxSent(puts, TRANSLATED);
+				await expectModelMoved(page, ORIGINAL.box, initialOriginal);
+				await expectModelMoved(page, TRANSLATED.box, initialTranslated);
 				expect(logs.warnings()).toEqual([]);
 				expect(errors.errors()).toEqual([]);
 			},
