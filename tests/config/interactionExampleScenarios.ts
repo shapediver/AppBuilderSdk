@@ -1163,8 +1163,53 @@ const exclusiveRectangleScenarios: ScenarioActionConfig[] = [
 					});
 					expect(puts.count()).toBe(1);
 					expectTransformationSent(puts);
-					expect(errors.errors()).toEqual([]);
 					await takeSnapshot(page, `${slug}-scaled`);
+
+					// with the box selected, a press on the preview handle of
+					// another box selects that one and scales it in one gesture
+					const other = BOXES[2];
+					await settle(page);
+					const otherBefore = await nodeBounds(page, other);
+					const otherHover = await nodeScreenPoint(
+						page,
+						other,
+						[0.25, 0.5, 0.5],
+					);
+					await page.mouse.move(otherHover.x, otherHover.y + 40);
+					await page.mouse.move(otherHover.x, otherHover.y, {
+						steps: 5,
+					});
+					await page.waitForTimeout(500);
+					const otherCorner = await nodeScreenPoint(
+						page,
+						other,
+						[1, 1, 1],
+					);
+					await page.mouse.move(otherCorner.x, otherCorner.y, {
+						steps: 10,
+					});
+					await page.waitForTimeout(300);
+					await page.mouse.down();
+					await page.waitForTimeout(100);
+					await page.mouse.move(otherCorner.x + 60, otherCorner.y, {
+						steps: 20,
+					});
+					await page.waitForTimeout(100);
+					await page.mouse.up();
+					await page.waitForTimeout(300);
+					expect(
+						boundsChanged(
+							otherBefore,
+							await nodeBounds(page, other),
+						),
+						"the preview handle did not scale the other box",
+					).toBe(true);
+					await waitForModelRecomputed(page, async () => {
+						await confirmButton(page).click();
+					});
+					expect(puts.count()).toBe(2);
+					expectTransformationSent(puts, other);
+					expect(errors.errors()).toEqual([]);
 				},
 			},
 			{
