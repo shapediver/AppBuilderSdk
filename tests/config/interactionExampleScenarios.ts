@@ -87,9 +87,9 @@ import type {
 const BOX = BOXES[0];
 
 /** The last request carries a real (non-identity) transformation of the box. */
-const expectTransformationSent = (puts: CustomizationTracker) => {
+const expectTransformationSent = (puts: CustomizationTracker, node = BOX) => {
 	const value = transformValueFromBody(puts.last(), PARAMETER);
-	const index = value.names.indexOf(`Boxes.${BOX}`);
+	const index = value.names.indexOf(`Boxes.${node}`);
 	expect(index, JSON.stringify(value)).toBeGreaterThanOrEqual(0);
 	expect(isIdentity(value.transformations[index])).toBe(false);
 };
@@ -1096,6 +1096,127 @@ const customValueFromBody = (body: string, parameterId: string) => {
 	throw new Error(`Parameter "${parameterId}" not found in request body`);
 };
 
+/** The camera position of the first viewport. */
+const cameraPosition = (page: Page) =>
+	page.evaluate(() => {
+		const SDV = (window as any).SDV;
+		const viewport = Object.values(SDV.viewports)[0] as any;
+		return Array.from(viewport.camera.position) as number[];
+	});
+
+const expectCameraUnchanged = async (page: Page, before: number[]) => {
+	const after = await cameraPosition(page);
+	after.forEach((value, i) => expect(value).toBeCloseTo(before[i], 6));
+};
+
+/**
+ * Exclusive rectangle transform (SS-10334, `example-rectangle-exclusive`):
+ * the alwaysActive example with `exclusive: true`. Hovering a box previews its
+ * rectangle without selecting it; a press on a preview handle selects the box
+ * and scales it in the same gesture; a press-drag on a box moves it without
+ * orbiting the camera; a click without a drag only selects.
+ */
+const exclusiveRectangleScenarios: ScenarioActionConfig[] = [
+	{
+		slug: "example-rectangle-exclusive",
+		params: {g: "example-rectangle-exclusive.json"},
+		namedActions: [
+			{
+				name: "simple: hover previews, a handle press scales in one gesture",
+				run: async (page, slug) => {
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					await expect(confirmButton(page)).toHaveCount(0);
+					await settle(page);
+					// hover the box away from the handles of its preview (a
+					// handle under the pointer ends the hover effect of the box):
+					// the preview is not a selection
+					const hover = await nodeScreenPoint(
+						page,
+						BOX,
+						[0.25, 0.5, 0.5],
+					);
+					await page.mouse.move(hover.x, hover.y + 40);
+					await page.mouse.move(hover.x, hover.y, {steps: 5});
+					await page.waitForTimeout(500);
+					await expect(confirmButton(page)).toHaveCount(0);
+					await takeSnapshot(page, `${slug}-preview`);
+
+					// the corner handle of the preview scales the box right away
+					const before = await nodeBounds(page, BOX);
+					const corner = await nodeScreenPoint(page, BOX, [1, 1, 1]);
+					await page.mouse.move(corner.x, corner.y, {steps: 10});
+					await page.waitForTimeout(300);
+					await page.mouse.down();
+					await page.waitForTimeout(100);
+					await page.mouse.move(corner.x + 60, corner.y, {steps: 20});
+					await page.waitForTimeout(100);
+					await page.mouse.up();
+					await page.waitForTimeout(300);
+					expect(
+						boundsChanged(before, await nodeBounds(page, BOX)),
+						"the preview handle did not scale the box",
+					).toBe(true);
+					await expect(confirmButton(page)).toBeEnabled();
+					await waitForModelRecomputed(page, async () => {
+						await confirmButton(page).click();
+					});
+					expect(puts.count()).toBe(1);
+					expectTransformationSent(puts);
+					expect(errors.errors()).toEqual([]);
+					await takeSnapshot(page, `${slug}-scaled`);
+				},
+			},
+			{
+				name: "simple: a body drag moves without orbiting, a click only selects",
+				run: async (page, slug) => {
+					const node = BOXES[2];
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					await settle(page);
+					const camera = await cameraPosition(page);
+					const before = await nodeBounds(page, node);
+					// away from the handles of the preview (a handle wins the press)
+					const from = await nodeScreenPoint(
+						page,
+						node,
+						[0.25, 0.5, 0.5],
+					);
+					await dragMouse(page, from, {x: from.x + 60, y: from.y});
+					await page.waitForTimeout(300);
+					const moved = await nodeBounds(page, node);
+					expect(
+						boundsChanged(before, moved),
+						"the body drag did not move the box",
+					).toBe(true);
+					// a translation: the size of the box is unchanged
+					for (let i = 0; i < 3; i++)
+						expect(moved.max[i] - moved.min[i]).toBeCloseTo(
+							before.max[i] - before.min[i],
+							3,
+						);
+					await expectCameraUnchanged(page, camera);
+					await expect(confirmButton(page)).toBeEnabled();
+					await takeSnapshot(page, `${slug}-moved`);
+
+					// a click on the selected box neither moves nor deselects it
+					await clickNode(page, node);
+					expect(
+						boundsChanged(moved, await nodeBounds(page, node)),
+					).toBe(false);
+					await expect(confirmButton(page)).toBeEnabled();
+					await waitForModelRecomputed(page, async () => {
+						await confirmButton(page).click();
+					});
+					expect(puts.count()).toBe(1);
+					expectTransformationSent(puts, node);
+					expect(errors.errors()).toEqual([]);
+				},
+			},
+		],
+	},
+];
+
 /**
  * Every flow waits for several model computations and drags gizmos with
  * continuous rendering; on CI runners (software rendering) a simple flow takes
@@ -1107,6 +1228,7 @@ const INTERACTION_TEST_TIMEOUT = 420_000;
 export const interactionExampleScenarios: ScenarioActionConfig[] = [
 	...transformScenarios("rectangle"),
 	...transformScenarios("gumball"),
+	...exclusiveRectangleScenarios,
 	...drawingScenarios,
 	...interactionExampleExtraScenarios,
 	...multiParameterScenarios,
