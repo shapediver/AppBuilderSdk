@@ -72,6 +72,7 @@ Host entry: `componentContext.actions.camera.run`. ShapeDiver registers `runAppB
 - App Builder `set` requires both position and target.
 - Props are a discriminated union on `type`. `camera.type` must be a viewer `CAMERA_TYPE`.
 - A missing camera or viewport throws only when `strict: true`.
+- `assign` fits the camera to the scene (`zoomTo`, `options` or duration 0) when the assigned camera has `initialAutoAdjust` and the action sets no `position` or `target` (SS-10342). `assignCamera` of the viewer alone does not fit; the viewer fits only on the first scene load. Default viewer cameras have no `name`, the action matches their id (`front`, `perspective`).
 
 ## Shared cores
 

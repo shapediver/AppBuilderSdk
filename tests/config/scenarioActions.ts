@@ -130,6 +130,7 @@ import {
 	actionSlotsActions,
 	actionSlotsSelectionActions,
 } from "./scenarioActionSlots";
+import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
@@ -619,6 +620,38 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			await clickToolbar(1);
 			await clickToolbar(3);
 			await clickToolbar(4);
+		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		// SS-10342: the "assign" camera action fits cameras with `initialAutoAdjust`.
+		slug: "example-cameraAssign",
+		params: {g: "example-cameraAssign.json"},
+		namedActions: scenarioCameraAssignNamedActions,
+	},
+	{
+		// SS-10367: hostedAgent iframe uses the same Paper corners and shadow
+		// as other widgets. Point the frame at a public page so no agent
+		// server is required; the chrome is on the parent Paper around it.
+		slug: "example-agent-iframe",
+		params: {
+			g: "example-agent-iframe.json",
+			agentUrl: "https://example.com/",
+		},
+		actions: async (page) => {
+			const frame = page.getByTitle("Bookshelf agent");
+			await expect(frame).toBeVisible();
+			const paper = frame.locator("xpath=..");
+			await expect(paper).toHaveClass(/mantine-Paper-root/);
+			const radius = await paper.evaluate(
+				(el) => getComputedStyle(el).borderRadius,
+			);
+			const shadow = await paper.evaluate(
+				(el) => getComputedStyle(el).boxShadow,
+			);
+			expect(radius).not.toBe("0px");
+			expect(shadow).not.toBe("none");
 		},
 	},
 	{
