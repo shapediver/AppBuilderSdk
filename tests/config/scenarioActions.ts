@@ -630,6 +630,30 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		namedActions: scenarioCameraAssignNamedActions,
 	},
 	{
+		// SS-10367: hostedAgent iframe uses the same Paper corners and shadow
+		// as other widgets. Point the frame at a public page so no agent
+		// server is required; the chrome is on the parent Paper around it.
+		slug: "example-agent-iframe",
+		params: {
+			g: "example-agent-iframe.json",
+			agentUrl: "https://example.com/",
+		},
+		actions: async (page) => {
+			const frame = page.getByTitle("Bookshelf agent");
+			await expect(frame).toBeVisible();
+			const paper = frame.locator("xpath=..");
+			await expect(paper).toHaveClass(/mantine-Paper-root/);
+			const radius = await paper.evaluate(
+				(el) => getComputedStyle(el).borderRadius,
+			);
+			const shadow = await paper.evaluate(
+				(el) => getComputedStyle(el).boxShadow,
+			);
+			expect(radius).not.toBe("0px");
+			expect(shadow).not.toBe("none");
+		},
+	},
+	{
 		// Self-contained settings JSON (`g`); session is in the file, so the
 		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-actionSlots-selection",
