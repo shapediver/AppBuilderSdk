@@ -1,5 +1,10 @@
 import {expect, Page} from "@playwright/test";
-import {confirmButton, gestures, settle} from "../helpers/interactionExamples";
+import {
+	cancelButton,
+	confirmButton,
+	gestures,
+	settle,
+} from "../helpers/interactionExamples";
 import {
 	collectPageErrors,
 	type CustomizationTracker,
@@ -126,7 +131,8 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
  * (SS-10192 with SS-10334) on `public/example-selectionAction-exclusive.json`
  * (testing-account model `ss-10024-one-parameter-per-box-2`). RectOriginal
  * transforms `box_original`, RectTranslated `box_translated`; both are
- * exclusive with `minimumSelection: 1` and offer Confirm / Cancel.
+ * exclusive with `minimumSelection: 1` and offer Confirm / Cancel (shown as
+ * soon as a box is selected: the new gizmo reports its placement).
  *
  * The boxes of `example-selectionAction.json` are claimed by SelectBox and
  * the root slots, so a rectangle transform there would be blocked by the
@@ -175,7 +181,9 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				await actionButton(page, "Select original").click();
 				// the rectangle is a selection: its handles transform the box
 				await expect.poll(() => shownRectangles(page)).toBe(1);
-				await expect(confirmButton(page)).toHaveCount(0);
+				// like after a click, the new rectangle offers Confirm and Cancel
+				await expect(confirmButton(page)).toBeEnabled();
+				await expect(cancelButton(page)).toBeEnabled();
 				await gestures.rectangle.primary(page, [ORIGINAL.box]);
 				await expect(confirmButton(page)).toBeEnabled();
 				expect(puts.count()).toBe(0);
