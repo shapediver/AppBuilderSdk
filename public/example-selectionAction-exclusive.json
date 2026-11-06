@@ -20,6 +20,27 @@
 						"props": {
 							"markdown": "### Selection action on exclusive rectangle transforms\nEach box has its own exclusive rectangle transform with a minimum selection of 1. Selecting a box deselects the other one. A deselect is ignored once a box is selected."
 						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectOriginal",
+										"sessionId": "default_appbuilder"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectTranslated",
+										"sessionId": "default_appbuilder"
+									}
+								}
+							]
+						}
 					}
 				]
 			},
