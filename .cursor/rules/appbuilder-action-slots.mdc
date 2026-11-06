@@ -84,6 +84,8 @@ The ShapeDiver listener enables hover and select the way an anchor `selectionPro
 
 After computation it restores selection silently and fires `selecton` / `selectoff` only when the selected name set changed. `processActive` is scoped to this session `namespace`. The listener runs the matching slot when that viewer event fires on this group's manager. Pair with `setContainerVisibility` to replace `selectionProperties`.
 
+A `selection` action without `parameter` changes these groups (the ones whose nameFilter candidates match) through `setSelectedNodeNamesAndRestoreSelection`, then runs `selecton` when the result is non-empty and `selectoff` when it is empty. An unchanged selection does nothing, so the slot can run that action without looping. An action that sets `parameter` does not touch these groups.
+
 ## waitUntilReady
 
 - ShapeDiver registers it from `useViewport` (`waitForViewportScene`): bounding box settled and containing geometry, or an empty box when there is none. Viewer `calculateZoomTo` no-ops on an empty box.
