@@ -784,8 +784,9 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		namedActions: scenarioFilterableDatabasePersistenceNamedActions,
 	},
 	{
-		// SS-10192: toolbar buttons with `selection` actions select and
-		// deselect nodes of a selection parameter.
+		// SS-10192: selection actions. Without `parameter`, toolbar buttons
+		// change the root selecton/selectoff selection. With `parameter`,
+		// they change the SelectBox selection parameter.
 		slug: "example-selectionAction",
 		params: {g: "example-selectionAction.json"},
 		namedActions: scenarioSelectionActionNamedActions,
