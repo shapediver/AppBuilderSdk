@@ -128,6 +128,7 @@ import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 import {interactionExampleScenarios} from "./interactionExampleScenarios";
 import {
 	actionSlotsActions,
+	actionSlotsParameterNamedActions,
 	actionSlotsSelectionActions,
 } from "./scenarioActionSlots";
 import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
@@ -667,6 +668,13 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-actionSlots",
 		params: {g: "example-actionSlots.json"},
 		actions: actionSlotsActions,
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-actionSlots-parameter",
+		params: {g: "example-actionSlots-parameter.json"},
+		namedActions: actionSlotsParameterNamedActions,
 	},
 	{
 		slug: "selection-parameter-variations",
