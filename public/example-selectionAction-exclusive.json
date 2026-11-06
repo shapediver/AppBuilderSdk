@@ -1,0 +1,177 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"slug": "ss-10024-one-parameter-per-box-2"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "right",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Selection action on exclusive rectangle transforms\nEach box has its own exclusive rectangle transform with a minimum selection of 1. Selecting a box deselects the other one. A deselect is ignored once a box is selected."
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectOriginal",
+										"sessionId": "default_appbuilder"
+									}
+								},
+								{
+									"type": "parameter",
+									"props": {
+										"name": "RectTranslated",
+										"sessionId": "default_appbuilder"
+									}
+								}
+							]
+						}
+					}
+				]
+			},
+			{
+				"name": "toolbar",
+				"props": {
+					"id": "selection-action-exclusive-toolbar",
+					"side": "top",
+					"align": "center"
+				},
+				"groups": [
+					[
+						{
+							"type": "action",
+							"props": {
+								"label": "Select original",
+								"icon": "tabler:hand-finger",
+								"tooltip": "RectOriginal: select box_original",
+								"definition": {
+									"type": "selection",
+									"props": {
+										"select": ["Boxes.box_original"],
+										"parameter": {
+											"name": "RectOriginal",
+											"sessionId": "default_appbuilder"
+										}
+									}
+								}
+							}
+						},
+						{
+							"type": "action",
+							"props": {
+								"label": "Deselect original",
+								"icon": "tabler:square-off",
+								"tooltip": "RectOriginal: deselect box_original (ignored below the minimum)",
+								"definition": {
+									"type": "selection",
+									"props": {
+										"deselect": ["Boxes.*"],
+										"parameter": {
+											"name": "RectOriginal",
+											"sessionId": "default_appbuilder"
+										}
+									}
+								}
+							}
+						},
+						{
+							"type": "action",
+							"props": {
+								"label": "Select translated",
+								"icon": "tabler:target",
+								"tooltip": "RectTranslated: select box_translated",
+								"definition": {
+									"type": "selection",
+									"props": {
+										"select": ["Boxes.box_translated"],
+										"parameter": {
+											"name": "RectTranslated",
+											"sessionId": "default_appbuilder"
+										}
+									}
+								}
+							}
+						}
+					]
+				]
+			}
+		],
+		"parameters": [
+			{
+				"id": "RectangleTransform2",
+				"defval": "",
+				"name": "RectOriginal",
+				"type": "Interaction",
+				"hidden": false,
+				"settings": {
+					"props": {
+						"activeMode": "alwaysActive",
+						"exclusive": true,
+						"availableColor": "#00ff00",
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 1,
+						"minimumSelection": 1,
+						"nameFilter": ["Boxes.box_original"],
+						"plane": {
+							"type": "plane",
+							"vector_u": [1, 0, 0],
+							"vector_v": [0, 1, 0]
+						},
+						"selectionColor": "#ff0000"
+					},
+					"type": "rectangleTransform"
+				}
+			},
+			{
+				"id": "RectangleTransform1",
+				"defval": "",
+				"name": "RectTranslated",
+				"type": "Interaction",
+				"hidden": false,
+				"settings": {
+					"props": {
+						"activeMode": "alwaysActive",
+						"exclusive": true,
+						"availableColor": "#00ff00",
+						"deselectOnEmpty": false,
+						"enableRotation": true,
+						"enableScaling": true,
+						"enableTranslation": true,
+						"hover": true,
+						"hoverColor": "#0000ff",
+						"maximumSelection": 1,
+						"minimumSelection": 1,
+						"nameFilter": ["Boxes.box_translated"],
+						"plane": {
+							"type": "plane",
+							"vector_u": [1, 0, 0],
+							"vector_v": [0, 1, 0]
+						},
+						"selectionColor": "#ff0000"
+					},
+					"type": "rectangleTransform"
+				}
+			}
+		]
+	}
+}

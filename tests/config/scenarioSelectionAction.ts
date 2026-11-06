@@ -1,9 +1,19 @@
 import {expect, Page} from "@playwright/test";
-import {confirmButton, settle} from "../helpers/interactionExamples";
 import {
+	cancelButton,
+	confirmButton,
+	gestures,
+	settle,
+} from "../helpers/interactionExamples";
+import {
+	boundsChanged,
 	collectPageErrors,
+	type CustomizationTracker,
+	isIdentity,
+	nodeBounds,
 	trackCustomizations,
 	transformValueFromBody,
+	type Vec3,
 } from "../helpers/sceneCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 import type {ScenarioNamedAction} from "./scenarioActions";
@@ -118,3 +128,139 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
 		},
 	},
 ];
+
+/**
+ * E2E coverage for the `selection` action on exclusive rectangle transforms
+ * (SS-10192 with SS-10334) on `public/example-selectionAction-exclusive.json`
+ * (testing-account model `ss-10024-one-parameter-per-box-2`). RectOriginal
+ * (id `RectangleTransform2`) transforms `box_original`, RectTranslated (id
+ * `RectangleTransform1`) `box_translated`; the model reads the values by these
+ * ids. Both are exclusive with `minimumSelection: 1` and offer Confirm /
+ * Cancel (shown as soon as a box is selected: the new gizmo reports its
+ * placement).
+ *
+ * The boxes of `example-selectionAction.json` are claimed by SelectBox and
+ * the root slots, so a rectangle transform there would be blocked by the
+ * interaction ownership. This example uses its own model.
+ */
+
+const ORIGINAL = {box: "box_original", parameter: "RectangleTransform2"};
+const TRANSLATED = {box: "box_translated", parameter: "RectangleTransform1"};
+
+/** The model applied the sent placement: the recomputed box has moved. */
+const expectModelMoved = async (
+	page: Page,
+	box: string,
+	initial: {min: Vec3; max: Vec3},
+) => {
+	await settle(page);
+	expect(
+		boundsChanged(initial, await nodeBounds(page, box)),
+		`the model did not apply the transformation of ${box}`,
+	).toBe(true);
+};
+
+/** Rectangles shown in the viewport (one scene root child per gizmo). */
+const shownRectangles = (page: Page) =>
+	page.evaluate(
+		() =>
+			(window as any).SDV.sceneTree.root.children.filter(
+				(child: {name: string}) =>
+					child.name === "RectangleTransformDTParent",
+			).length,
+	);
+
+/** The last request carries a real transformation of the box. */
+const expectBoxSent = (
+	puts: CustomizationTracker,
+	{box, parameter}: {box: string; parameter: string},
+) => {
+	const value = transformValueFromBody(puts.last(), parameter);
+	const index = value.names.indexOf(`Boxes.${box}`);
+	expect(index, JSON.stringify(value)).toBeGreaterThanOrEqual(0);
+	expect(isIdentity(value.transformations[index])).toBe(false);
+};
+
+/** Gizmo drags and computations on CI runners, see interactionExampleScenarios. */
+const EXCLUSIVE_TEST_TIMEOUT = 420_000;
+
+export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[] =
+	[
+		{
+			name: "simple: the action selects an exclusive rectangle transform like a click",
+			timeout: EXCLUSIVE_TEST_TIMEOUT,
+			run: async (page) => {
+				const puts = trackCustomizations(page);
+				const errors = collectPageErrors(page);
+				await settle(page);
+				const initial = await nodeBounds(page, ORIGINAL.box);
+				// an exclusive parameter selects nothing on load
+				expect(await shownRectangles(page)).toBe(0);
+
+				await actionButton(page, "Select original").click();
+				// the rectangle is a selection: its handles transform the box
+				await expect.poll(() => shownRectangles(page)).toBe(1);
+				// like after a click, the new rectangle offers Confirm and Cancel
+				await expect(confirmButton(page)).toBeEnabled();
+				await expect(cancelButton(page)).toBeEnabled();
+				await gestures.rectangle.primary(page, [ORIGINAL.box]);
+				await expect(confirmButton(page)).toBeEnabled();
+				expect(puts.count()).toBe(0);
+
+				await waitForModelRecomputed(page, async () => {
+					await confirmButton(page).click();
+				});
+				expect(puts.count()).toBe(1);
+				expectBoxSent(puts, ORIGINAL);
+				await expectModelMoved(page, ORIGINAL.box, initial);
+				expect(errors.errors()).toEqual([]);
+			},
+		},
+		{
+			name: "complex: a deselect below the minimum is ignored, selecting another box hands over",
+			timeout: EXCLUSIVE_TEST_TIMEOUT,
+			run: async (page) => {
+				const puts = trackCustomizations(page);
+				const errors = collectPageErrors(page);
+				const logs = collectSelectionWarnings(page);
+				await settle(page);
+				const initialOriginal = await nodeBounds(page, ORIGINAL.box);
+				const initialTranslated = await nodeBounds(
+					page,
+					TRANSLATED.box,
+				);
+
+				await actionButton(page, "Select original").click();
+				await expect.poll(() => shownRectangles(page)).toBe(1);
+
+				// minimumSelection 1: the deselect is ignored, not an error, and
+				// the box stays selected
+				await actionButton(page, "Deselect original").click();
+				await settle(page);
+				expect(await shownRectangles(page)).toBe(1);
+				await gestures.rectangle.primary(page, [ORIGINAL.box]);
+				await expect(confirmButton(page)).toBeEnabled();
+
+				// selecting the other box deselects the first one although its
+				// minimum is 1: one rectangle, on the new box
+				await actionButton(page, "Select translated").click();
+				await settle(page);
+				await expect.poll(() => shownRectangles(page)).toBe(1);
+				await gestures.rectangle.primary(page, [TRANSLATED.box]);
+				expect(puts.count()).toBe(0);
+
+				// the first parameter kept its pending move: one Confirm
+				// commits both
+				await waitForModelRecomputed(page, async () => {
+					await confirmButton(page).click();
+				});
+				expect(puts.count()).toBe(1);
+				expectBoxSent(puts, ORIGINAL);
+				expectBoxSent(puts, TRANSLATED);
+				await expectModelMoved(page, ORIGINAL.box, initialOriginal);
+				await expectModelMoved(page, TRANSLATED.box, initialTranslated);
+				expect(logs.warnings()).toEqual([]);
+				expect(errors.errors()).toEqual([]);
+			},
+		},
+	];
