@@ -1,7 +1,9 @@
 import {expect, Page} from "@playwright/test";
-import {confirmButton, settle} from "../helpers/interactionExamples";
+import {confirmButton, gestures, settle} from "../helpers/interactionExamples";
 import {
 	collectPageErrors,
+	type CustomizationTracker,
+	isIdentity,
 	trackCustomizations,
 	transformValueFromBody,
 } from "../helpers/sceneCoords";
@@ -118,3 +120,112 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
 		},
 	},
 ];
+
+/**
+ * E2E coverage for the `selection` action on exclusive rectangle transforms
+ * (SS-10192 with SS-10334) on `public/example-selectionAction-exclusive.json`
+ * (testing-account model `ss-10024-one-parameter-per-box-2`). RectOriginal
+ * transforms `box_original`, RectTranslated `box_translated`; both are
+ * exclusive with `minimumSelection: 1` and offer Confirm / Cancel.
+ *
+ * The boxes of `example-selectionAction.json` are claimed by SelectBox and
+ * the root slots, so a rectangle transform there would be blocked by the
+ * interaction ownership. This example uses its own model.
+ */
+
+const ORIGINAL = {box: "box_original", parameter: "RectOriginal"};
+const TRANSLATED = {box: "box_translated", parameter: "RectTranslated"};
+
+/** Rectangles shown in the viewport (one scene root child per gizmo). */
+const shownRectangles = (page: Page) =>
+	page.evaluate(
+		() =>
+			(window as any).SDV.sceneTree.root.children.filter(
+				(child: {name: string}) =>
+					child.name === "RectangleTransformDTParent",
+			).length,
+	);
+
+/** The last request carries a real transformation of the box. */
+const expectBoxSent = (
+	puts: CustomizationTracker,
+	{box, parameter}: {box: string; parameter: string},
+) => {
+	const value = transformValueFromBody(puts.last(), parameter);
+	const index = value.names.indexOf(`Boxes.${box}`);
+	expect(index, JSON.stringify(value)).toBeGreaterThanOrEqual(0);
+	expect(isIdentity(value.transformations[index])).toBe(false);
+};
+
+/** Gizmo drags and computations on CI runners, see interactionExampleScenarios. */
+const EXCLUSIVE_TEST_TIMEOUT = 420_000;
+
+export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[] =
+	[
+		{
+			name: "simple: the action selects an exclusive rectangle transform like a click",
+			timeout: EXCLUSIVE_TEST_TIMEOUT,
+			run: async (page) => {
+				const puts = trackCustomizations(page);
+				const errors = collectPageErrors(page);
+				await settle(page);
+				// an exclusive parameter selects nothing on load
+				expect(await shownRectangles(page)).toBe(0);
+
+				await actionButton(page, "Select original").click();
+				// the rectangle is a selection: its handles transform the box
+				await expect.poll(() => shownRectangles(page)).toBe(1);
+				await expect(confirmButton(page)).toHaveCount(0);
+				await gestures.rectangle.primary(page, [ORIGINAL.box]);
+				await expect(confirmButton(page)).toBeEnabled();
+				expect(puts.count()).toBe(0);
+
+				await waitForModelRecomputed(page, async () => {
+					await confirmButton(page).click();
+				});
+				expect(puts.count()).toBe(1);
+				expectBoxSent(puts, ORIGINAL);
+				expect(errors.errors()).toEqual([]);
+			},
+		},
+		{
+			name: "complex: a deselect below the minimum is ignored, selecting another box hands over",
+			timeout: EXCLUSIVE_TEST_TIMEOUT,
+			run: async (page) => {
+				const puts = trackCustomizations(page);
+				const errors = collectPageErrors(page);
+				const logs = collectSelectionWarnings(page);
+				await settle(page);
+
+				await actionButton(page, "Select original").click();
+				await expect.poll(() => shownRectangles(page)).toBe(1);
+
+				// minimumSelection 1: the deselect is ignored, not an error, and
+				// the box stays selected
+				await actionButton(page, "Deselect original").click();
+				await settle(page);
+				expect(await shownRectangles(page)).toBe(1);
+				await gestures.rectangle.primary(page, [ORIGINAL.box]);
+				await expect(confirmButton(page)).toBeEnabled();
+
+				// selecting the other box deselects the first one although its
+				// minimum is 1: one rectangle, on the new box
+				await actionButton(page, "Select translated").click();
+				await settle(page);
+				await expect.poll(() => shownRectangles(page)).toBe(1);
+				await gestures.rectangle.primary(page, [TRANSLATED.box]);
+				expect(puts.count()).toBe(0);
+
+				// the first parameter kept its pending move: one Confirm
+				// commits both
+				await waitForModelRecomputed(page, async () => {
+					await confirmButton(page).click();
+				});
+				expect(puts.count()).toBe(1);
+				expectBoxSent(puts, ORIGINAL);
+				expectBoxSent(puts, TRANSLATED);
+				expect(logs.warnings()).toEqual([]);
+				expect(errors.errors()).toEqual([]);
+			},
+		},
+	];

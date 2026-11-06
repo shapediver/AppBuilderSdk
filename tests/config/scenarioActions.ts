@@ -146,7 +146,10 @@ import {
 	selectionInputResetValueActions,
 	textInputResetValueActions,
 } from "./scenarioResetValue";
-import {scenarioSelectionActionNamedActions} from "./scenarioSelectionAction";
+import {
+	scenarioSelectionActionExclusiveNamedActions,
+	scenarioSelectionActionNamedActions,
+} from "./scenarioSelectionAction";
 import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
 import {scenarioStringSelectNamedActions} from "./scenarioStringSelect";
 
@@ -831,6 +834,13 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-selectionAction",
 		params: {g: "example-selectionAction.json"},
 		namedActions: scenarioSelectionActionNamedActions,
+	},
+	{
+		// SS-10192 with SS-10334: selection actions on exclusive rectangle
+		// transforms (one box each, minimumSelection 1).
+		slug: "example-selectionAction-exclusive",
+		params: {g: "example-selectionAction-exclusive.json"},
+		namedActions: scenarioSelectionActionExclusiveNamedActions,
 	},
 	{
 		// String parameters as selects; Grasshopper sends the select
