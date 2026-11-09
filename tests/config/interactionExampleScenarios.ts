@@ -1270,10 +1270,52 @@ const exclusiveRectangleScenarios: ScenarioActionConfig[] = [
  */
 const INTERACTION_TEST_TIMEOUT = 420_000;
 
+/**
+ * `example-rectangle-exclusive` with `automaticSceneUpdate`. A move is sent
+ * after the idle timeout. Selecting a box sends nothing and offers no Confirm.
+ */
+const exclusiveAutomaticScenarios: ScenarioActionConfig[] = [
+	{
+		slug: "example-rectangle-exclusive-automaticSceneUpdate",
+		params: {g: "example-rectangle-exclusive-automaticSceneUpdate.json"},
+		namedActions: [
+			{
+				name: "simple: a move is sent, selecting is not",
+				run: async (page) => {
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					await expect(confirmButton(page)).toHaveCount(0);
+					await expect(
+						page.getByText("Exclusive, sent automatically"),
+					).toBeVisible();
+					await settle(page);
+					const node = BOXES[2];
+					const from = await nodeScreenPoint(
+						page,
+						node,
+						[0.25, 0.5, 0.5],
+					);
+					await waitForModelRecomputed(page, async () => {
+						await dragMouse(page, from, {
+							x: from.x + 60,
+							y: from.y,
+						});
+					});
+					expect(puts.count()).toBe(1);
+					expectTransformationSent(puts, node);
+					await expect(confirmButton(page)).toHaveCount(0);
+					expect(errors.errors()).toEqual([]);
+				},
+			},
+		],
+	},
+];
+
 export const interactionExampleScenarios: ScenarioActionConfig[] = [
 	...transformScenarios("rectangle"),
 	...transformScenarios("gumball"),
 	...exclusiveRectangleScenarios,
+	...exclusiveAutomaticScenarios,
 	...drawingScenarios,
 	...interactionExampleExtraScenarios,
 	...multiParameterScenarios,
