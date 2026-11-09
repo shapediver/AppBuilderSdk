@@ -16,21 +16,27 @@ import type {ScenarioNamedAction} from "./scenarioActions";
 
 /** `example-actionSlots-selection`: selection and hover slots on one node. */
 export async function actionSlotsSelectionActions(page: Page) {
-	await expect(page.getByText("Selection and hover slots")).toBeVisible();
+	await expect(
+		page.getByRole("heading", {name: "Selection and hover slots"}),
+	).toBeVisible();
 	// Open area of the back panel. 0.49, 0.58 sits ~10px above a
 	// shelf edge, so a small camera shift selects a shelf instead.
 	const pos = await viewportCoords(page, 0.444, 0.347);
 	await page.mouse.move(pos.x, pos.y);
-	await expect(page.getByText("The part under the pointer")).toBeVisible();
+	await expect(page.getByRole("heading", {name: "Hovered"})).toBeVisible();
 	await page.mouse.click(pos.x, pos.y);
-	await expect(page.getByText("Selection changed")).toBeVisible();
+	await expect(
+		page.getByRole("heading", {name: "Selection changed"}),
+	).toBeVisible();
 	// selecton sets highlight colors and the hover slots do not, so
 	// they are two interaction groups painting the same node. The
 	// resulting red/blue/purple mix is not stable enough to snapshot.
 	const away = await viewportCoords(page, 0.05, 0.02);
 	await page.mouse.move(away.x, away.y);
-	await expect(page.getByText("Hovered")).toBeHidden();
-	await expect(page.getByText("Selection changed")).toBeVisible();
+	await expect(page.getByRole("heading", {name: "Hovered"})).toBeHidden();
+	await expect(
+		page.getByRole("heading", {name: "Selection changed"}),
+	).toBeVisible();
 }
 
 /**
