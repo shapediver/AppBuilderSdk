@@ -23,7 +23,7 @@
 						"nameFilter": ["*"],
 						"selectionColor": "#ff0000",
 						"availableColor": "#00ff00",
-						"hoverColor": "#0000ff"
+						"hover": false
 					}
 				},
 				"action": {
@@ -43,7 +43,10 @@
 				"eventProps": {
 					"type": "selection",
 					"props": {
-						"nameFilter": ["*"]
+						"nameFilter": ["*"],
+						"selectionColor": "#ff0000",
+						"availableColor": "#00ff00",
+						"hover": false
 					}
 				},
 				"action": {
@@ -63,7 +66,9 @@
 				"eventProps": {
 					"type": "selection",
 					"props": {
-						"nameFilter": ["*"]
+						"nameFilter": ["*"],
+						"hoverColor": "#0000ff",
+						"maximumSelection": 0
 					}
 				},
 				"action": {
@@ -83,7 +88,9 @@
 				"eventProps": {
 					"type": "selection",
 					"props": {
-						"nameFilter": ["*"]
+						"nameFilter": ["*"],
+						"hoverColor": "#0000ff",
+						"maximumSelection": 0
 					}
 				},
 				"action": {
@@ -102,6 +109,17 @@
 		},
 		"containers": [
 			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "### Selection and hover slots\nClick a part of the bookshelf. **Selection changed** opens and the part turns red. Move the pointer over a part: **Hovered** opens and the part turns blue. Move the pointer away and Hovered closes. Click empty space to clear the selection.\n\nThe two panels are two interaction groups on the same parts. The selection group does not hover. The hover group does not select."
+						}
+					}
+				]
+			},
+			{
 				"name": "anchor2d",
 				"props": {
 					"id": "selection-changed",
@@ -116,7 +134,7 @@
 					{
 						"type": "text",
 						"props": {
-							"markdown": "### Selection changed"
+							"markdown": "### Selection changed\nThe part you clicked stays selected until you click empty space."
 						}
 					}
 				]
@@ -136,7 +154,7 @@
 					{
 						"type": "text",
 						"props": {
-							"markdown": "### Hovered"
+							"markdown": "### Hovered\nThe part under the pointer. This panel closes when the pointer leaves it."
 						}
 					}
 				]

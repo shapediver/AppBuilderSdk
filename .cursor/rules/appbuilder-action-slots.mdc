@@ -86,6 +86,8 @@ After computation it restores selection silently and fires `selecton` / `selecto
 
 A `selection` action without `parameter` changes these groups (the ones whose nameFilter candidates match) through `setSelectedNodeNamesAndRestoreSelection`, then runs `selecton` when the result is non-empty and `selectoff` when it is empty. An unchanged selection does nothing, so the slot can run that action without looping. An action that sets `parameter` does not touch these groups.
 
+`selecton` and `selectoff` (and the hover pair) share one interaction manager only when `selectionSlotGroupKey` matches: same name filter, colors, hover, and maximum. A select pair that leaves hover on and a hover pair that can select are two managers on the same parts, so one click both selects and hovers. `example-actionSlots-selection` sets `hover: false` on the select pair and `maximumSelection: 0` on the hover pair. `*` is a name-filter wildcard for every output, not an omitted filter.
+
 ## waitUntilReady
 
 - ShapeDiver registers it from `useViewport` (`waitForViewportScene`): bounding box settled and containing geometry, or an empty box when there is none. Viewer `calculateZoomTo` no-ops on an empty box.

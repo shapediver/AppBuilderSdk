@@ -16,9 +16,12 @@ import type {ScenarioNamedAction} from "./scenarioActions";
 
 /** `example-actionSlots-selection`: selection and hover slots on one node. */
 export async function actionSlotsSelectionActions(page: Page) {
+	await expect(page.getByText("Selection and hover slots")).toBeVisible();
 	// Open area of the back panel. 0.49, 0.58 sits ~10px above a
 	// shelf edge, so a small camera shift selects a shelf instead.
 	const pos = await viewportCoords(page, 0.444, 0.347);
+	await page.mouse.move(pos.x, pos.y);
+	await expect(page.getByText("The part under the pointer")).toBeVisible();
 	await page.mouse.click(pos.x, pos.y);
 	await expect(page.getByText("Selection changed")).toBeVisible();
 	// selecton sets highlight colors and the hover slots do not, so
