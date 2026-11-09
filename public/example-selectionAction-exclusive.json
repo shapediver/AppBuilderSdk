@@ -18,7 +18,7 @@
 					{
 						"type": "text",
 						"props": {
-							"markdown": "### Selection action on exclusive rectangle transforms\nEach box has its own exclusive rectangle transform with a minimum selection of 1. Selecting a box deselects the other one. A deselect is ignored once a box is selected."
+							"markdown": "### Selection action on exclusive rectangle transforms\nEach box has its own exclusive rectangle transform with a minimum selection of 1. Selecting a box deselects the other one. A click on the selected box does not deselect it. The deselect action does. Confirm and Cancel appear after a handle moves."
 						}
 					},
 					{
@@ -76,7 +76,7 @@
 							"props": {
 								"label": "Deselect original",
 								"icon": "tabler:square-off",
-								"tooltip": "RectOriginal: deselect box_original (ignored below the minimum)",
+								"tooltip": "RectOriginal: deselect box_original",
 								"definition": {
 									"type": "selection",
 									"props": {
