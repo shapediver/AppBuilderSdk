@@ -103,23 +103,16 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
 			expect(logs.warnings()).toHaveLength(1);
 			await expect(rootSelection(page)).toBeHidden();
 
-			// the box targeted by select replaces the others deselected by
-			// the wildcard, the box in both lists stays selected
-			await actionButton(page, "Only box 3").click();
-			await settle(page);
-			expect(puts.count()).toBe(1);
-			await expect(confirmButton(page)).toBeEnabled();
+			// an action commits a result the parameter accepts, also when it
+			// does not fill the maximum (a click of one box still waits)
 			await waitForModelRecomputed(page, async () => {
-				await confirmButton(page).click();
+				await actionButton(page, "Only box 3").click();
 			});
 			expect(puts.count()).toBe(2);
 			expect(committedNames(puts.last())).toEqual(["Boxes.box_3"]);
 
-			await actionButton(page, "Deselect parameter").click();
-			await settle(page);
-			expect(puts.count()).toBe(2);
 			await waitForModelRecomputed(page, async () => {
-				await confirmButton(page).click();
+				await actionButton(page, "Deselect parameter").click();
 			});
 			expect(puts.count()).toBe(3);
 			expect(committedNames(puts.last())).toEqual([]);
@@ -135,9 +128,9 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
  * (testing-account model `ss-10024-one-parameter-per-box-2`). RectOriginal
  * (id `RectangleTransform2`) transforms `box_original`, RectTranslated (id
  * `RectangleTransform1`) `box_translated`; the model reads the values by these
- * ids. Both are exclusive with `minimumSelection: 1` and offer Confirm /
- * Cancel (shown as soon as a box is selected: the new gizmo reports its
- * placement).
+ * ids. Both are exclusive with `minimumSelection: 1`. A click keeps that
+ * minimum; the deselect action clears the box. Confirm and Cancel appear
+ * after a handle moves, not when the box is only selected.
  *
  * The boxes of `example-selectionAction.json` are claimed by SelectBox and
  * the root slots, so a rectangle transform there would be blocked by the
@@ -200,9 +193,9 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				await actionButton(page, "Select original").click();
 				// the rectangle is a selection: its handles transform the box
 				await expect.poll(() => shownRectangles(page)).toBe(1);
-				// like after a click, the new rectangle offers Confirm and Cancel
-				await expect(confirmButton(page)).toBeEnabled();
-				await expect(cancelButton(page)).toBeEnabled();
+				// selecting does not enable Confirm or Cancel
+				await expect(confirmButton(page)).toHaveCount(0);
+				await expect(cancelButton(page)).toHaveCount(0);
 				await gestures.rectangle.primary(page, [ORIGINAL.box]);
 				await expect(confirmButton(page)).toBeEnabled();
 				expect(puts.count()).toBe(0);
@@ -217,7 +210,7 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 			},
 		},
 		{
-			name: "complex: a deselect below the minimum is ignored, selecting another box hands over",
+			name: "complex: a deselect clears the box, selecting another box hands over",
 			timeout: EXCLUSIVE_TEST_TIMEOUT,
 			run: async (page) => {
 				const puts = trackCustomizations(page);
@@ -233,11 +226,12 @@ export const scenarioSelectionActionExclusiveNamedActions: ScenarioNamedAction[]
 				await actionButton(page, "Select original").click();
 				await expect.poll(() => shownRectangles(page)).toBe(1);
 
-				// minimumSelection 1: the deselect is ignored, not an error, and
-				// the box stays selected
+				// the action clears the box; a click would keep the minimum
 				await actionButton(page, "Deselect original").click();
 				await settle(page);
-				expect(await shownRectangles(page)).toBe(1);
+				await expect.poll(() => shownRectangles(page)).toBe(0);
+				await actionButton(page, "Select original").click();
+				await expect.poll(() => shownRectangles(page)).toBe(1);
 				await gestures.rectangle.primary(page, [ORIGINAL.box]);
 				await expect(confirmButton(page)).toBeEnabled();
 
