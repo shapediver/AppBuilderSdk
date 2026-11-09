@@ -25,7 +25,7 @@ Write drivers as `.mjs` under `test-results/scratch` (wiped by e2e; keep copies 
 
 Count computations with `page.on("request")` filtered to `PUT` and `/output`; diff the body's parameter values against the previous request.
 
-Pulse highlight effects make **pixel counting unreliable**; use events, parameter values, or `public/example-simple-interaction-colors.json` for snapshots.
+Pulse highlight effects make **pixel counting unreliable**; use events, parameter values, or a solid-color settings file for snapshots.
 
 ## Who committed? (async stacks)
 
