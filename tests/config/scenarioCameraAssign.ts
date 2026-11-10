@@ -85,7 +85,9 @@ const distance = (a: ArrayLike<number>, b: ArrayLike<number>) =>
 	Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 
 const assignButton = (page: Page, name: string) =>
-	page.getByLabel("camera-assign-toolbar").getByRole("button", {name});
+	page
+		.getByLabel("camera-assign-toolbar")
+		.getByRole("button", {name, exact: true});
 
 export const scenarioCameraAssignNamedActions: ScenarioNamedAction[] = [
 	{
