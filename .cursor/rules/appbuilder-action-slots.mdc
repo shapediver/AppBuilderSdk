@@ -61,7 +61,7 @@ Scene select/hover is host-registered, same as `ar`, `camera`, `fullscreen`, and
 Registered on `AppBuilderPage` via `AppBuilderApplicationActionSlots`.
 
 - `appready` waits with no timeout: `waitForAppBuilderViewport` → `viewportAccessFunctions.waitUntilReady`.
-- Computation is `TASK_START` / `TASK_END` for `SESSION_CUSTOMIZATION`.
+- A customization that opens a process manager (`beginComputationSpan`) runs `computationstart` when that span opens, before `TASK_START`, and `computationend` when the last manager of that span is gone, after `TASK_END` and after instances from that computation are registered. Further managers of the same session that appear while the span is open, such as the instance rebuild, belong to it. A customization with no span, including default exports, keeps `TASK_START` / `TASK_END`.
 - `computationerror` is `TASK_CANCEL` with status `"Session customization failed"` (local session id on the task payload). A superseded customize cancels with a different status.
 - Export slots are `TASK_START` / `TASK_END` / `TASK_CANCEL` for `EXPORT_REQUEST` (`data.sessionId`, `exportId`, `name`, `displayname`). Same path as widgets and export parameter value sources.
 
