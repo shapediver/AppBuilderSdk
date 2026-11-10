@@ -138,4 +138,81 @@ export const scenarioCameraAssignNamedActions: ScenarioNamedAction[] = [
 			expect(distance(pose.position, moved.position)).toBeLessThan(1e-3);
 		},
 	},
+	{
+		name: "assigning perspective with a mismatched direction matches assign without it",
+		run: async (page) => {
+			const withoutDirection = await prepareCamera(
+				page,
+				"perspective",
+				"front",
+				true,
+			);
+			expect(
+				distance(
+					withoutDirection.moved.position,
+					withoutDirection.fitted.position,
+				),
+			).toBeGreaterThan(1e-3);
+
+			await assignButton(page, "Assign Perspective").click();
+
+			await expect
+				.poll(async () => {
+					const pose = await activeCameraPose(page);
+
+					return pose.name === "perspective"
+						? distance(
+								pose.position,
+								withoutDirection.fitted.position,
+							)
+						: Infinity;
+				})
+				.toBeLessThan(1e-3);
+			const poseWithout = await activeCameraPose(page);
+
+			const withDirection = await prepareCamera(
+				page,
+				"perspective",
+				"front",
+				true,
+			);
+			expect(
+				distance(
+					withDirection.moved.position,
+					withDirection.fitted.position,
+				),
+			).toBeGreaterThan(1e-3);
+
+			await assignButton(page, "Assign Perspective + direction").click();
+
+			await expect
+				.poll(async () => {
+					const pose = await activeCameraPose(page);
+
+					return pose.name === "perspective"
+						? distance(pose.position, withDirection.fitted.position)
+						: Infinity;
+				})
+				.toBeLessThan(1e-3);
+			const poseWith = await activeCameraPose(page);
+
+			expect(
+				distance(poseWith.position, poseWithout.position),
+			).toBeLessThan(1e-3);
+			expect(distance(poseWith.target, poseWithout.target)).toBeLessThan(
+				1e-3,
+			);
+
+			const direction = await page.evaluate(() => {
+				const SDV = (window as any).SDV;
+				const viewport = Object.values(SDV.viewports)[0] as any;
+				const cameras = Object.values(viewport.cameras) as any[];
+				const label = (c: any) => (c.name ?? c.id).toLowerCase();
+				const camera = cameras.find((c) => label(c) === "perspective");
+
+				return camera?.direction;
+			});
+			expect(direction).toBeUndefined();
+		},
+	},
 ];

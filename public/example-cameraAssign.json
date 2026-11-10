@@ -70,6 +70,26 @@
 									}
 								}
 							}
+						},
+						{
+							"type": "action",
+							"props": {
+								"label": "Assign Perspective + direction",
+								"icon": "tabler:perspective",
+								"tooltip": "Assign Perspective with an unsupported direction",
+								"definition": {
+									"type": "camera",
+									"props": {
+										"type": "assign",
+										"props": {
+											"camera": {
+												"name": "Perspective",
+												"direction": "top"
+											}
+										}
+									}
+								}
+							}
 						}
 					]
 				]
