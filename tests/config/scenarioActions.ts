@@ -146,7 +146,6 @@ import {
 	selectionInputResetValueActions,
 	textInputResetValueActions,
 } from "./scenarioResetValue";
-import {scenarioSelectionActionNamedActions} from "./scenarioSelectionAction";
 import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
 import {scenarioStringSelectNamedActions} from "./scenarioStringSelect";
 
@@ -823,14 +822,6 @@ export const scenarioActions: ScenarioActionConfig[] = [
 				"example-filterableDatabase-persistence.json",
 			),
 		namedActions: scenarioFilterableDatabasePersistenceNamedActions,
-	},
-	{
-		// SS-10192: selection actions. Without `parameter`, toolbar buttons
-		// change the root selecton/selectoff selection. With `parameter`,
-		// they change the SelectBox selection parameter.
-		slug: "example-selectionAction",
-		params: {g: "example-selectionAction.json"},
-		namedActions: scenarioSelectionActionNamedActions,
 	},
 	{
 		// String parameters as selects; Grasshopper sends the select
