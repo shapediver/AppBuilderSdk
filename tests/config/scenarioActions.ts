@@ -122,6 +122,7 @@ import {expect, Page} from "@playwright/test";
 import * as path from "path";
 import {getParameterElement} from "../helpers/getParameterElement";
 import {routeSettingsHrefsToAppBase} from "../helpers/routeSettingsHrefsToAppBase";
+import {nodeScreenPoint} from "../helpers/sceneCoords";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {viewportCoords} from "../helpers/viewportCoords";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
@@ -341,7 +342,8 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	},
 
 	{
-		// Same as 2D but selects a different object at a different canvas position.
+		// Click the rightmost box. The updated model sits higher in the view,
+		// so a fixed canvas fraction lands in the empty space below the boxes.
 		slug: "2e-selectioninput-tutorial2",
 		quickSuite: true,
 		actions: async (page, slug) => {
@@ -349,7 +351,7 @@ export const scenarioActions: ScenarioActionConfig[] = [
 				.getByRole("button")
 				.click();
 
-			const pos = await viewportCoords(page, 0.6, 0.7);
+			const pos = await nodeScreenPoint(page, "box_3", [0.5, 0.5, 0.5]);
 			await waitForModelRecomputed(page, async () => {
 				await page.mouse.click(pos.x, pos.y);
 			});
