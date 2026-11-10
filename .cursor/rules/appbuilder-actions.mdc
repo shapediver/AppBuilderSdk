@@ -53,6 +53,17 @@ Do not put `ar`, `camera`, or `fullscreen` in the shared table. That imports vie
 - Host-registered AR opens native `viewInAR` or the QR modal.
 - Host-registered fullscreen cycles `fullscreen3States` via `cycleFullscreen3States` (same DOM node and `viewerFullscreen3States` store as the toolbar button).
 
+## Selection (`type: "selection"`, SS-10192)
+
+- Props: `select?`, `deselect?` (name filters, `*` wildcards, nodes in both lists are selected) and `parameter?: {name, sessionId}`.
+- **Without `parameter`:** changes the root scene selection. Root `selecton` / `selectoff` groups (`eventProps.type: "selection"` plus a nameFilter) each run `useSelection` in `AppBuilderInteractionSlotListeners` (`InteractionSlotGroup`) and register as targets. Groups whose candidates match the filters change. A non-empty result runs that group's `selecton`; an empty result runs `selectoff`. If the resulting set equals the current selection, the action does nothing (a slot that runs the same action does not loop). The current selection is `getSelectedNodeNames`: a click writes it before React renders, and the slot handlers of that click run in the same event.
+- **With `parameter`:** only that mounted interaction parameter changes (selection, gumball, rectangle transform). Dragging is unaffected. The change goes through the component's `setSelectedNodeNames`, so restore effects and auto-confirm rules behave as for a user selection. A parameter whose component is not mounted cannot be changed (warns).
+- **The catalog's import graph must stay viewer-free.** The catalog is imported by many suites, and a top-level import of `@shapediver/viewer.features.interaction` breaks them with an ES module error from three.js. The registry holds no viewer import. `useSelectionActionTarget` installs `findNamedNodesByNameFilter` (`setSelectionActionNameFinder`); the registry intersects those names with the target's `NamedNode` candidates. Do not import `findNodesByNameFilter` from the registry or from `runAppBuilderActionSelection`.
+- More matches than `maximumSelection`: the first matches in scene order are selected and a warning is logged. `minimumSelection` and the exclusive-rectangle rules of SS-10334 are not handled.
+- A parameter selection that does not fill `maximumSelection` stays a pending draft (Confirm/Cancel), like a user selection. A following action in `executeActions` can run before React commits the selection.
+- Example and e2e: `public/example-selectionAction.json`, `tests/config/scenarioSelectionAction.ts`. The default buttons use root slots; the `parameter` buttons target `SelectBox`.
+- A custom selection parameter in example JSON must not set `value`. `useDefineGenericParameters` re-syncs when the parameter list identity changes (the second customization does this) and `syncGeneric` calls `setExecutedValue` with that static `value`. The in-flight `execute` then sees `committedMeanwhile` and keeps the empty value, so Confirm of a later draft is wiped. `defval` is enough: a missing `value` is not written over the committed selection.
+
 ## Camera
 
 Host entry: `componentContext.actions.camera.run`. ShapeDiver registers `runAppBuilderActionCamera` from `AppBuilderRoot.tsx`.
