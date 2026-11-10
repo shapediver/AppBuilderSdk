@@ -103,16 +103,23 @@ export const scenarioSelectionActionNamedActions: ScenarioNamedAction[] = [
 			expect(logs.warnings()).toHaveLength(1);
 			await expect(rootSelection(page)).toBeHidden();
 
-			// an action commits a result the parameter accepts, also when it
-			// does not fill the maximum (a click of one box still waits)
+			// one box does not fill the maximum, so the action waits for Confirm.
+			// A click of one box waits the same way.
+			await actionButton(page, "Only box 3").click();
+			await expect(confirmButton(page)).toBeEnabled();
+			expect(puts.count()).toBe(1);
 			await waitForModelRecomputed(page, async () => {
-				await actionButton(page, "Only box 3").click();
+				await confirmButton(page).click();
 			});
 			expect(puts.count()).toBe(2);
 			expect(committedNames(puts.last())).toEqual(["Boxes.box_3"]);
 
+			// clearing the selection does not fill the maximum either
+			await actionButton(page, "Deselect parameter").click();
+			await expect(confirmButton(page)).toBeEnabled();
+			expect(puts.count()).toBe(2);
 			await waitForModelRecomputed(page, async () => {
-				await actionButton(page, "Deselect parameter").click();
+				await confirmButton(page).click();
 			});
 			expect(puts.count()).toBe(3);
 			expect(committedNames(puts.last())).toEqual([]);
