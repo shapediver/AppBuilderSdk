@@ -11,6 +11,7 @@ Workflow only. Do not add feature behavior, ticket notes, or API semantics to th
 
 - **Two git repos.** Root `AppBuilderSdk` (usually `development`) contains `src/shared`, a separate clone of `AppBuilderShared`. Shared changes: `git -C src/shared ...`. Root only records the shared pointer ("shared update") plus app, tests, and `public/`.
 - **New worktrees:** follow `.cursor/rules/worktree-shared-repo.mdc`.
+- **Changing `src/shared`:** read `src/shared/.cursor/rules/host-compat.mdc` first. Shared also runs in AppBuilderIJewel3D, which has no `@shapediver/viewer.viewport` / `viewer.features.*`.
 - **Path alias:** `@AppBuilderLib/...` → `src/shared/...`. FSD: `entities/` (parameter, session, viewport), `features/`, `widgets/`, `shared/`. Tests live in `__tests__` next to the module (`jsdom` env header for store tests).
 - **Viewer:** `@shapediver/viewer.*`. `viewer.local.ts` can link `../Viewer`; viewer bugs are fixed there and need a **dev server restart**. Keep `node_modules` in sync (`pnpm install`) when versions differ.
 
@@ -49,6 +50,6 @@ Some untouched tests have pre-existing prettier violations.
 
 ## Agent rules
 
-Edit `.cursor/rules/` only to record a recurring agent mistake that is not already written (a wrong assumption about a store, a driver, or a root cause that will be repeated). Add it to the topic rule, or create a new `.mdc` with `alwaysApply: false` and a description that says when to read it. Do not add ticket notes, example paths, coordinates, or a restatement of the change just made. Do not invent process the user did not confirm. Do not append to this file.
+Edit `.cursor/rules/` only to record a recurring agent mistake that is not already written (a wrong assumption about a store, a driver, or a root cause that will be repeated). Add it to the topic rule, or create a new `.mdc` with `alwaysApply: false` and a description that says when to read it. Add a new rule to the topic table in `CLAUDE.md` too. Do not add ticket notes, example paths, coordinates, or a restatement of the change just made. Do not invent process the user did not confirm. Do not append to this file.
 
 Topic rules: `appbuilder-actions`, `appbuilder-action-slots`, `ecommerce-tools-api`, `appbuilder-icons`, `mobile-fallback`, `accept-reject`, `parameters-and-selection`, `browser-diagnosis`, `e2e-playwright`, `fsd`, `custom-component`, `worktree-shared-repo`.
