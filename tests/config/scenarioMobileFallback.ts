@@ -445,7 +445,8 @@ export const exampleMobileFallbackImagesNamedActions: ScenarioNamedAction[] = [
 	{
 		name: "mobile anchor image fits the top container like a native image",
 		run: async (page, slug) => {
-			await setViewportBelowNavbarBreakpoint(
+			// no navbar content, so there is no burger to wait for
+			await setViewportBelowMobileBreakpoint(
 				page,
 				APP_BUILDER_E2E_VIEWPORT_MOBILE_PORTRAIT,
 			);
