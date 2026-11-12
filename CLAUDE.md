@@ -2,7 +2,7 @@
 
 ## Repositories
 
-- Two git repos: the root (`AppBuilderSdk`, usually on `development`) and `src/shared`, a separate clone of `AppBuilderShared`. Run shared git commands as `git -C src/shared ...`. The root commits only the shared pointer ("shared update") plus app, tests and `public/`, after `src/shared` is committed.
+- Two git repos: the root (`AppBuilderSdk`, usually on `development`) and `src/shared`, a separate clone of `AppBuilderShared`. Run shared git commands as `git -C src/shared ...`. The root commits only the shared pointer (`<KEY>: shared update`) plus app, tests and `public/`, after `src/shared` is committed.
 - Shared code also runs in AppBuilderIJewel3D. `src/shared/CLAUDE.md` loads its host rules when you work there.
 - New worktree: a SessionStart hook inits `src/shared` and writes `.vscode/settings.json`. Check out `task/<KEY>` in both repos.
 - `viewer.local.ts` can link `../Viewer`. Viewer bugs are fixed there and need a dev server restart. Run `pnpm install` when the installed viewer version differs from `package.json`.
@@ -23,7 +23,7 @@ The working tree is CRLF, git stores LF (`autocrlf`), and eslint enforces `lineb
 - Typecheck: `npx tsc --noEmit -p .` at the root (covers `src/shared`). Always run it after changing `forwardRef` type parameters or host elements (`svg` vs `img`), or spreading a `ref` onto a third-party component. Don't spread a union-typed `ref` onto a component that accepts one host type; narrow the ref at each host.
 - Unit test: `npx jest --config jest.config.mjs <path>`. Tests live in `__tests__` next to the module; store tests need the `jsdom` environment header.
 - `jest.mock` replaces all exports. When you add a named export, find the suites that `jest.mock` that module, keep the real exports with `...jest.requireActual(...)`, and run those suites too (or `pnpm test`, which CI runs).
-- E2E: `e2e-testing` skill. Never the whole suite. Don't deploy or rerun e2e unless asked.
+- E2E: `e2e-testing` skill. Never the whole suite. Don't deploy or rerun e2e unless asked or `/implement` or `/spec` runs it.
 
 ## Browser
 

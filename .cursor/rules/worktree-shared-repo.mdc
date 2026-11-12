@@ -30,7 +30,7 @@ New Cursor worktrees often have an empty `src/shared` and hide Shared diffs in C
      }
      ```
 3. **Branch synchronization:**
-   - Ensure `task/JIRA-ISSUE-ID` is checked out in **both** the root repo and `src/shared` (`git -C src/shared checkout ...`).
+   - Ensure `task/<KEY>` is checked out in **both** the root repo and `src/shared` (`git -C src/shared checkout ...`).
 4. **Source Control / Changes visibility in the IDE:**
    - If changes in `src/shared` do not appear in the Source Control panel:
      a. Instruct/perform Source Control tab refresh (refresh icon in Source Control view).

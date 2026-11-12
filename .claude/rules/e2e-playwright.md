@@ -24,4 +24,4 @@ Global setup caches the app links (public pages plus the testing account, which 
 
 `APPBUILDER_BASE_URL` (e.g. `http://127.0.0.1:8080/`) runs `appbuilder.spec.ts` against that server instead of the branch deploy and skips the deploy (`resolveTestUrl` keeps only the query of the scenario URL). Use it for uncommitted work: start the worktree's dev server (`BROWSER=none pnpm exec vite --host 127.0.0.1 --port 8080 --strictPort`; port 3000 is the cross-window fixture server). Global setup still needs `.env.platform-access` (gitignored, copy it into a new worktree), and the worktree's `node_modules` must match `package.json` (an outdated viewer breaks the app at load). A checkout that links `../Viewer` (`viewer.local.ts`) serves whatever that Viewer checkout contains. To prove a test reproduces a bug, park the fix in a temporary commit, `git switch --detach origin/development` in `src/shared`, run, switch back, `git reset --soft HEAD~1`.
 
-**Do not deploy or rerun e2e unless the user asks.**
+**Do not deploy or rerun e2e unless the user asks or `/implement` or `/spec` runs it.**

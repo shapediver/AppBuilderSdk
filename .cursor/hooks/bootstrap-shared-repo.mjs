@@ -11,9 +11,9 @@ const GIT_SETTINGS = {
 
 const SESSION_CONTEXT = [
 	"AppBuilderSdk worktree bootstrap:",
-	"- `src/shared` is the AppBuilderShared git repo. Changes there only appear in the Changes panel if that repo is scanned (`git.scanRepositories: [\"src/shared\"]`) or added as a workspace folder.",
+	'- `src/shared` is the AppBuilderShared git repo. Changes there only appear in the Changes panel if that repo is scanned (`git.scanRepositories: ["src/shared"]`) or added as a workspace folder.',
 	"- If `src/shared` is empty, run `git submodule update --init -- src/shared` before other work.",
-	"- Shared git commands: `git -C src/shared ...`. Use branch `task/JIRA-ISSUE-ID` in both repos.",
+	"- Shared git commands: `git -C src/shared ...`. Use branch `task/<KEY>` in both repos.",
 ].join("\n");
 
 function readStdin() {
@@ -100,8 +100,17 @@ try {
 }
 
 if (input.hook_event_name === "sessionStart") {
+	// Cursor
+	process.stdout.write(JSON.stringify({additional_context: SESSION_CONTEXT}));
+} else if (input.hook_event_name === "SessionStart") {
+	// Claude Code
 	process.stdout.write(
-		JSON.stringify({additional_context: SESSION_CONTEXT}),
+		JSON.stringify({
+			hookSpecificOutput: {
+				hookEventName: "SessionStart",
+				additionalContext: SESSION_CONTEXT,
+			},
+		}),
 	);
 } else {
 	process.stdout.write("{}");
