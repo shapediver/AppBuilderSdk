@@ -139,6 +139,7 @@ import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilte
 import {
 	exampleMobileFallbackAnchorsNamedActions,
 	exampleMobileFallbackGridNamedActions,
+	exampleMobileFallbackImagesNamedActions,
 	exampleMobileFallbackKeepBottomNamedActions,
 	exampleMobileFallbackNamedActions,
 	exampleMobileFallbackTabsNamedActions,
@@ -769,6 +770,12 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-mobileFallback-anchors",
 		params: {g: "example-mobileFallback-anchors.json"},
 		namedActions: exampleMobileFallbackAnchorsNamedActions,
+	},
+	{
+		// Anchor image widgets falling back into top (horizontal) and right.
+		slug: "example-mobileFallback-images",
+		params: {g: "example-mobileFallback-images.json"},
+		namedActions: exampleMobileFallbackImagesNamedActions,
 	},
 	{
 		slug: "example-mobileFallback-keepBottom",
