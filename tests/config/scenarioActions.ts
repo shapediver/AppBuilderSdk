@@ -134,6 +134,7 @@ import {
 } from "./scenarioActionSlots";
 import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
 import {failedComputationShowsMessageOnce} from "./scenarioFailedComputation";
+import {decimalplacesSettingActions} from "./scenarioDecimalplaces";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
@@ -646,9 +647,10 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		namedActions: scenarioCameraAssignNamedActions,
 	},
 	{
-		// SS-10367: hostedAgent iframe uses the same Paper corners and shadow
-		// as other widgets. Point the frame at a public page so no agent
-		// server is required; the chrome is on the parent Paper around it.
+		// SS-10367: hostedAgent iframe uses the same Paper chrome as other
+		// standard widgets (rounded corners, border, no shadow). Point the
+		// frame at a public page so no agent server is required; the chrome
+		// is on the parent Paper around it.
 		slug: "example-agent-iframe",
 		params: {
 			g: "example-agent-iframe.json",
@@ -665,8 +667,12 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			const shadow = await paper.evaluate(
 				(el) => getComputedStyle(el).boxShadow,
 			);
+			const borderStyle = await paper.evaluate(
+				(el) => getComputedStyle(el).borderTopStyle,
+			);
 			expect(radius).not.toBe("0px");
-			expect(shadow).not.toBe("none");
+			expect(borderStyle).toBe("solid");
+			expect(shadow).toBe("none");
 		},
 	},
 	{
@@ -689,6 +695,14 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-actionSlots-parameter",
 		params: {g: "example-actionSlots-parameter.json"},
 		namedActions: actionSlotsParameterNamedActions,
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		// SS-10216: `overrides.decimalplaces` of parameter refs and controls.
+		slug: "example-decimalplaces",
+		params: {g: "example-decimalplaces.json"},
+		actions: decimalplacesSettingActions,
 	},
 	{
 		slug: "selection-parameter-variations",
