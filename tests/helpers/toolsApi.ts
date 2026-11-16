@@ -111,3 +111,49 @@ export async function toolsExecuteAndRecompute(
 	});
 	return reply!;
 }
+
+type PendingExecuteWindow = Window & {
+	__toolsApiPending?: Promise<unknown>;
+};
+
+/**
+ * Starts `execute` on the parent without awaiting it, for tools that wait
+ * for the user (`ask_user_question`). Read the reply with
+ * {@link toolsExecuteResult}.
+ */
+export async function toolsExecuteStart(
+	page: Page,
+	name: string,
+	input: unknown = {},
+): Promise<void> {
+	await page.evaluate(
+		({name, input}) => {
+			const parent = window as unknown as CrossWindowParentWindow &
+				PendingExecuteWindow;
+			const api = parent.__toolsApi;
+			if (!api) {
+				throw new Error(
+					"Tools API client is not registered on the parent.",
+				);
+			}
+			parent.__toolsApiPending = api.execute({name, input});
+		},
+		{name, input},
+	);
+}
+
+/** Awaits the reply of the call started by {@link toolsExecuteStart}. */
+export async function toolsExecuteResult(
+	page: Page,
+): Promise<ToolsApiExecuteResult> {
+	const result = await page.evaluate(async () => {
+		const pending = (window as unknown as PendingExecuteWindow)
+			.__toolsApiPending;
+		if (!pending) {
+			throw new Error("No pending Tools API execute.");
+		}
+		return pending;
+	});
+	expect(result, "Tools API execute returned nothing").toBeTruthy();
+	return result as ToolsApiExecuteResult;
+}

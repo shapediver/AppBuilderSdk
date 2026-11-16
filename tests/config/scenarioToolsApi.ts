@@ -3,27 +3,39 @@
  *
  * Playwright loads App Builder in the localhost CrossWindow iframe (port 3000,
  * same parent as e-commerce), stubs Open agent to return `window.parent`, and
- * owns `ToolsApiFactory.getClientApi(iframe.contentWindow)`. ask_user_question
- * is out of scope.
+ * owns `ToolsApiFactory.getClientApi(iframe.contentWindow)`. `execute` of
+ * ask_user_question shows the page dialog and returns the answer (SS-10426).
  */
 import {expect} from "@playwright/test";
+import {sdvTarget} from "../helpers/crossWindowParent";
 import {TOOLS_E2E_AGENT} from "../helpers/openToolsApiScenario";
 import {takeSnapshot} from "../helpers/takeSnapshot";
 import {
 	toolsExecute,
 	toolsExecuteAndRecompute,
+	toolsExecuteResult,
+	toolsExecuteStart,
 	toolsGetAgentConfig,
 	toolsGetSessionInfo,
 	toolsListTools,
 } from "../helpers/toolsApi";
 import type {ScenarioApiActionConfig} from "./scenarioActions";
 
+const ASK_USER_QUESTION_INPUT = {
+	questions: [
+		{
+			question: "Which edge should the opening sit on?",
+			options: ["Left", "Right", "Top"],
+		},
+	],
+};
+
 export const scenarioToolsApi: ScenarioApiActionConfig = {
 	slug: "example-toolsApi",
 	params: {g: "example-executeActions.json"},
 	actions: [
 		{
-			name: "listTools includes in-scope tools and excludes ask_user_question",
+			name: "listTools includes in-scope tools and ask_user_question",
 			run: async (page) => {
 				const listed = await toolsListTools(page);
 				const names = listed.map((tool) => tool.name);
@@ -38,9 +50,9 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 						"get_camera",
 						"get_screenshot",
 						"get_output",
+						"ask_user_question",
 					]),
 				);
-				expect(names).not.toContain("ask_user_question");
 				// get_metric was replaced by get_output
 				expect(names).not.toContain("get_metric");
 				const screenshot = listed.find(
@@ -50,6 +62,52 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 				expect(screenshot?.description).not.toMatch(
 					/success:\s*true,\s*image\s*[},]/i,
 				);
+			},
+		},
+		{
+			name: "ask_user_question shows the page question and returns the picked option",
+			run: async (page) => {
+				await toolsExecuteStart(
+					page,
+					"ask_user_question",
+					ASK_USER_QUESTION_INPUT,
+				);
+				const dialog = sdvTarget(page).getByRole("dialog");
+				await expect(
+					dialog.getByText("Which edge should the opening sit on?"),
+				).toBeVisible();
+				await dialog.getByRole("radio", {name: "Right"}).check();
+				await dialog.getByRole("button", {name: "Submit"}).click();
+				expect(await toolsExecuteResult(page)).toEqual({
+					success: true,
+					answers: [
+						{
+							question: "Which edge should the opening sit on?",
+							answer: "Right",
+						},
+					],
+				});
+				await expect(dialog).toHaveCount(0);
+			},
+		},
+		{
+			name: "ask_user_question returns dismissed when the page question is dismissed",
+			run: async (page) => {
+				await toolsExecuteStart(
+					page,
+					"ask_user_question",
+					ASK_USER_QUESTION_INPUT,
+				);
+				const dialog = sdvTarget(page).getByRole("dialog");
+				await expect(
+					dialog.getByText("Which edge should the opening sit on?"),
+				).toBeVisible();
+				await dialog.getByRole("button", {name: "Dismiss"}).click();
+				expect(await toolsExecuteResult(page)).toEqual({
+					success: false,
+					message: "dismissed",
+				});
+				await expect(dialog).toHaveCount(0);
 			},
 		},
 		{
