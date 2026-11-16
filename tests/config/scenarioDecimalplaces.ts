@@ -3,13 +3,13 @@ import {getParameterElement} from "../helpers/getParameterElement";
 import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 
 /**
- * E2E coverage for `overrides.decimalplaces` (SS-10216,
+ * E2E coverage for `settings.decimalplaces` (SS-10216,
  * `public/example-decimalplaces.json`): the "Board Height" parameter (Float,
- * 3 decimal places, -1 to 1) is shown three times, without an override, with
+ * 3 decimal places, -1 to 1) is shown three times, without the setting, with
  * 0 decimal places (accordion parameter) and with 1 decimal place (parameter
  * control).
  */
-export async function decimalplacesOverrideActions(page: Page) {
+export async function decimalplacesSettingActions(page: Page) {
 	const input = (name: string) =>
 		getParameterElement(page, name).getByRole("textbox");
 	const model = input("Board Height (model)");
