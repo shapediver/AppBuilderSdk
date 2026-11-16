@@ -133,6 +133,7 @@ import {
 	actionSlotsSelectionActions,
 } from "./scenarioActionSlots";
 import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
+import {decimalplacesOverrideActions} from "./scenarioDecimalplaces";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
@@ -678,6 +679,14 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-actionSlots-parameter",
 		params: {g: "example-actionSlots-parameter.json"},
 		namedActions: actionSlotsParameterNamedActions,
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		// SS-10216: `overrides.decimalplaces` of parameter refs and controls.
+		slug: "example-decimalplaces",
+		params: {g: "example-decimalplaces.json"},
+		actions: decimalplacesOverrideActions,
 	},
 	{
 		slug: "selection-parameter-variations",
