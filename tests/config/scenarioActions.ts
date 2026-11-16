@@ -133,6 +133,7 @@ import {
 	actionSlotsSelectionActions,
 } from "./scenarioActionSlots";
 import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
+import {failedComputationShowsMessageOnce} from "./scenarioFailedComputation";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
@@ -259,16 +260,26 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// the companion number textbox (TEXT INPUT PARAMETER pattern).
 		slug: "appbuilder-tutorial4-charts",
 		quickSuite: true,
-		actions: async (page, slug) => {
-			const input = getParameterElement(page, "Block to Edit").getByRole(
-				"textbox",
-			);
-			await waitForModelRecomputed(page, async () => {
-				await input.fill("2");
-				await input.press("Enter");
-			});
-			await takeSnapshot(page, `${slug}-block2`);
-		},
+		namedActions: [
+			{
+				name: "user actions complete successfully",
+				run: async (page, slug) => {
+					const input = getParameterElement(
+						page,
+						"Block to Edit",
+					).getByRole("textbox");
+					await waitForModelRecomputed(page, async () => {
+						await input.fill("2");
+						await input.press("Enter");
+					});
+					await takeSnapshot(page, `${slug}-block2`);
+				},
+			},
+			{
+				name: "failed computation shows its message once",
+				run: failedComputationShowsMessageOnce,
+			},
+		],
 	},
 
 	{
