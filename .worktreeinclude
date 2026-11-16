@@ -1,0 +1,17 @@
+# Gitignored files Claude Code copies into a new worktree (.gitignore syntax).
+# Only files that are also gitignored are copied.
+
+# Platform access for e2e global setup, build and publish env
+.env
+.env.platform-access
+.env.sentry-build-plugin
+.npmrc
+
+# Local model storage and Sentry config used by the dev server and build
+modelstorage.local.ts
+modelstorage.slugs.ts
+sentryconfig.local.ts
+
+# Not copied on purpose: viewer.local.ts (links ../Viewer; a worktree uses the
+# installed Viewer unless asked), .vscode/ (written by the SessionStart hook),
+# tests/config/.app-links.json (cache rebuilt by global setup).
