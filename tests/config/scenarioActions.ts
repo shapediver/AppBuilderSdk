@@ -635,9 +635,10 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		namedActions: scenarioCameraAssignNamedActions,
 	},
 	{
-		// SS-10367: hostedAgent iframe uses the same Paper corners and shadow
-		// as other widgets. Point the frame at a public page so no agent
-		// server is required; the chrome is on the parent Paper around it.
+		// SS-10367: hostedAgent iframe uses the same Paper chrome as other
+		// standard widgets (rounded corners, border, no shadow). Point the
+		// frame at a public page so no agent server is required; the chrome
+		// is on the parent Paper around it.
 		slug: "example-agent-iframe",
 		params: {
 			g: "example-agent-iframe.json",
@@ -654,8 +655,12 @@ export const scenarioActions: ScenarioActionConfig[] = [
 			const shadow = await paper.evaluate(
 				(el) => getComputedStyle(el).boxShadow,
 			);
+			const borderStyle = await paper.evaluate(
+				(el) => getComputedStyle(el).borderTopStyle,
+			);
 			expect(radius).not.toBe("0px");
-			expect(shadow).not.toBe("none");
+			expect(borderStyle).toBe("solid");
+			expect(shadow).toBe("none");
 		},
 	},
 	{
