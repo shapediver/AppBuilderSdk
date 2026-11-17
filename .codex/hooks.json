@@ -1,0 +1,16 @@
+{
+	"description": "Worktree setup for AppBuilderSdk (see AGENTS.md, Agent config).",
+	"hooks": {
+		"SessionStart": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "node scripts/agents/setup-worktree.mjs",
+						"timeout": 600
+					}
+				]
+			}
+		]
+	}
+}

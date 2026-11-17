@@ -1,11 +1,3 @@
----
-description: App Builder icon values — Iconify names, image URLs, and inline Iconify objects. Apply when changing iconType, Icon, or toolbar button icons.
-globs:
-    - "**/shared/ui/icon/**"
-    - "**/isIconImageUrl.ts"
-alwaysApply: false
----
-
 # Icons
 
 `IAppBuilderIcon` and `iconType` accept:

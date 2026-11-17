@@ -1,17 +1,8 @@
----
-paths:
-  - "**/features/ecommerce/**"
-  - "**/features/agent-tools/**"
-  - "**/tests/fixtures/cross-window/**"
-  - "**/ecommerceapi*"
-  - "**/toolsApi*"
----
-
 # E-commerce connector and tools API
 
 Keep two typed CrossWindow facades. They share action cores. They do not share one RPC.
 
-Playwright parent/iframe setup is in `.claude/rules/e2e-playwright.md`. Action-core behavior is in `.claude/rules/appbuilder-actions.md`.
+Playwright parent/iframe setup is in `.agents/rules/e2e-playwright.md`. Action-core behavior is in `.agents/rules/appbuilder-actions.md`.
 
 ## Schemas
 
