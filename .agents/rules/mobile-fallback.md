@@ -1,14 +1,3 @@
----
-description: Mobile fallback for containers and viewport anchors. Apply when changing mobileFallbacks, mobileBreakpoint, or anchor mobile layout.
-globs:
-    - "**/AppBuilderTemplateSelector*"
-    - "**/viewport-anchor/**"
-    - "**/useViewportAnchors*"
-    - "**/*mobileFallback*"
-    - "**/*MobileFallback*"
-alwaysApply: false
----
-
 # Mobile fallback
 
 Theme is the general default. This is independent of AppShell vs grid.

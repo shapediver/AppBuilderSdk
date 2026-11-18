@@ -10,8 +10,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "node \"$CLAUDE_PROJECT_DIR/.cursor/hooks/bootstrap-shared-repo.mjs\"",
-						"timeout": 180
+						"command": "node \"$CLAUDE_PROJECT_DIR/scripts/agents/setup-worktree.mjs\"",
+						"timeout": 600
 					}
 				]
 			}

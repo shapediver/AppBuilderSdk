@@ -3,14 +3,14 @@
 	"hooks": {
 		"workspaceOpen": [
 			{
-				"command": "node .cursor/hooks/bootstrap-shared-repo.mjs",
-				"timeout": 180
+				"command": "node scripts/agents/setup-worktree.mjs",
+				"timeout": 600
 			}
 		],
 		"sessionStart": [
 			{
-				"command": "node .cursor/hooks/bootstrap-shared-repo.mjs",
-				"timeout": 180
+				"command": "node scripts/agents/setup-worktree.mjs",
+				"timeout": 600
 			}
 		]
 	}

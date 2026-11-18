@@ -115,7 +115,7 @@ After all files are moved, check that there are no broken imports referencing th
 
 ## Barrels and import paths
 
-Follow `.claude/rules/shared-imports.md`. When a moved file was re-exported from an old barrel, delete that stale re-export line; add no barrel at the destination. Leave other existing barrels untouched unless the user asks to remove them.
+Follow `.agents/rules/shared-imports.md`. When a moved file was re-exported from an old barrel, delete that stale re-export line; add no barrel at the destination. Leave other existing barrels untouched unless the user asks to remove them.
 
 ## Key Rules
 

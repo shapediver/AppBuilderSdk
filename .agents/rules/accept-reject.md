@@ -1,12 +1,3 @@
----
-description: Accept/reject presentation for pending parameter changes — global overlay vs inline controls. Apply when changing acceptRejectModePresentation or Accept/Reject buttons.
-globs:
-    - "**/AcceptReject*"
-    - "**/acceptReject*"
-    - "**/ViewportAcceptReject*"
-alwaysApply: false
----
-
 # Accept/reject presentation
 
 Parameter refs and parameter controls may set `acceptRejectModePresentation` to `"global"` (default) or `"inline"`.

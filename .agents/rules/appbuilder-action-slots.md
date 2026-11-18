@@ -1,13 +1,3 @@
----
-paths:
-  - "**/appBuilderActionSlots.ts"
-  - "**/appbuilderActionSlots.ts"
-  - "**/AppBuilderActionSlots.tsx"
-  - "**/AppBuilderApplicationActionSlots.tsx"
-  - "**/AppBuilderInteractionSlotListeners.tsx"
-  - "**/actionSlots*"
----
-
 # App Builder action slots
 
 Node-level `actionSlots` call the same `runAppBuilderAction` catalog, including nested `executeActions`. The AR QR modal and the import-model-state dialog stay mounted on `AppBuilderPage`.

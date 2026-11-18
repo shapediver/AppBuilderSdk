@@ -1,12 +1,3 @@
----
-paths:
-  - "**/isContainerEmpty*"
-  - "**/useAppBuilderStandardContainers*"
-  - "**/useViewportAnchors*"
-  - "**/pages/templates/**"
-  - "**/viewport-anchor/**"
----
-
 # Empty containers
 
 A container (left, right, top, bottom, 2D / 3D anchor) which renders nothing is not shown. Typical cases: a `controls` widget whose parameters are always active interaction parameters presented in the toolbar (they render an empty fragment), `text` widgets without text, or an anchor opened by a selection whose parameter lives in the toolbar (it was an empty panel).

@@ -1,16 +1,3 @@
----
-paths:
-  - "**/appBuilderActionCatalog.ts"
-  - "**/appBuilderActionRun.ts"
-  - "**/sharedAppBuilderActions.ts"
-  - "**/appbuilderActions.ts"
-  - "**/appbuilderActionsTypecheck.ts"
-  - "**/appBuilderActionType.ts"
-  - "**/AppBuilderAction*.tsx"
-  - "**/AppBuilderRoot.tsx"
-  - "**/runAppBuilderAction*"
----
-
 # App Builder actions
 
 ## Table
