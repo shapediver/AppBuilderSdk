@@ -34,13 +34,13 @@ const SESSION_CONTEXT = [
 
 const log = [];
 
-function git(cwd, args, input) {
+function git(cwd, args, input, timeout = 170000) {
 	const r = spawnSync("git", args, {
 		cwd,
 		input,
 		encoding: "utf8",
 		windowsHide: true,
-		timeout: 170000,
+		timeout,
 	});
 	return r.status === 0 ? r.stdout.trim() : null;
 }
@@ -127,9 +127,17 @@ function copyIncluded(root, main) {
 function ensureGitSettings(root) {
 	const file = path.join(root, ".vscode", "settings.json");
 	let settings = {};
-	try {
-		settings = JSON.parse(fs.readFileSync(file, "utf8"));
-	} catch {}
+	if (fs.existsSync(file)) {
+		try {
+			settings = JSON.parse(fs.readFileSync(file, "utf8"));
+		} catch {
+			// JSONC (comments, trailing commas) or invalid: never overwrite the user's settings
+			log.push(
+				"warning: .vscode/settings.json is not plain JSON; add the git.* keys by hand",
+			);
+			return;
+		}
+	}
 	const missing = Object.entries(GIT_SETTINGS).filter(
 		([k, v]) => JSON.stringify(settings[k]) !== JSON.stringify(v),
 	);
@@ -147,9 +155,35 @@ function initShared(root) {
 	const empty =
 		!fs.existsSync(shared) ||
 		fs.readdirSync(shared).filter((n) => n !== ".git").length === 0;
-	if (!empty) return;
-	git(root, ["submodule", "update", "--init", "--", "src/shared"]);
-	log.push("initialized src/shared");
+	if (!empty) {
+		// "-" = not initialized: files left by a failed run. Git won't clone into a non-empty folder,
+		// and deleting files is not this script's call, so say what to do.
+		const uninitialized = git(root, [
+			"submodule",
+			"status",
+			"--",
+			"src/shared",
+		])
+			?.trimStart()
+			.startsWith("-");
+		if (uninitialized)
+			log.push(
+				"warning: src/shared has files but is not initialized; delete the folder, then run git submodule update --init -- src/shared",
+			);
+		return;
+	}
+	const ok =
+		git(
+			root,
+			["submodule", "update", "--init", "--", "src/shared"],
+			undefined,
+			LOCK_STALE_MS - 60000,
+		) !== null;
+	log.push(
+		ok
+			? "initialized src/shared"
+			: "warning: git submodule update --init -- src/shared failed; run it by hand",
+	);
 }
 
 const LOCK_STALE_MS = 600000; // the hook timeout
