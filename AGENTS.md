@@ -39,7 +39,7 @@ The working tree is CRLF, git stores LF (`autocrlf`), and eslint enforces `lineb
 
 ## Agent config
 
-All content is tool-neutral and lives in `AGENTS.md`, `.agents/`, `.worktreeinclude` and `scripts/agents/`. Files under `.claude/`, `.cursor/` and `.codex/` are only hook adapters.
+All content is tool-neutral and lives in `AGENTS.md`, `.agents/`, `.worktreeinclude` and `scripts/agents/`. Files under `.claude/`, `.cursor/` and `.codex/` are only hook adapters, plus `.cursor/BUGBOT.md` for the Bugbot PR reviewer, which reads only that file.
 
 | Concern           | Content (edit this)                                      | Adapters                                                                                     |
 | ----------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------- |

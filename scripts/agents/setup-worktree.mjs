@@ -3,7 +3,8 @@
 // 1. Copy local, gitignored files listed in .worktreeinclude from the main checkout (skips existing files).
 //    Same semantics as Claude Code's .worktreeinclude: gitignore syntax, only files that are also gitignored.
 // 2. Init the src/shared submodule when it is empty.
-// 3. Run `pnpm install` when node_modules is missing (skip with --no-install).
+// 3. Run `pnpm install` unless a complete install exists (skip with --no-install).
+//    Steps 2 and 3 run under a lock in the git dir, so parallel hook runs don't collide.
 // 4. Write the .vscode/settings.json git keys so src/shared diffs show in the IDE.
 // Called by: .claude/settings.json and .codex/hooks.json (SessionStart), .cursor/hooks.json (sessionStart,
 // workspaceOpen), .cursor/worktrees.json (setup-worktree). Prints hook output when stdin carries a hook event.
@@ -44,14 +45,27 @@ function git(cwd, args, input) {
 	return r.status === 0 ? r.stdout.trim() : null;
 }
 
+// Hooks pipe their event and close stdin at once. A shell that leaves stdin open (an agent running the
+// script by hand) would block a synchronous read forever, so stop waiting after 2 s.
 function readStdin() {
-	if (process.stdin.isTTY) return {};
-	try {
-		const raw = fs.readFileSync(0, "utf8").trim();
-		return raw ? JSON.parse(raw) : {};
-	} catch {
-		return {};
-	}
+	if (process.stdin.isTTY) return Promise.resolve({});
+	return new Promise((resolve) => {
+		let raw = "";
+		const done = () => {
+			clearTimeout(timer);
+			process.stdin.pause();
+			try {
+				resolve(raw.trim() ? JSON.parse(raw) : {});
+			} catch {
+				resolve({});
+			}
+		};
+		const timer = setTimeout(done, 2000);
+		process.stdin.setEncoding("utf8");
+		process.stdin.on("data", (chunk) => (raw += chunk));
+		process.stdin.on("end", done);
+		process.stdin.on("error", done);
+	});
 }
 
 // .worktreeinclude line -> glob relative to the repo root (gitignore semantics, simplified)
@@ -138,10 +152,29 @@ function initShared(root) {
 	log.push("initialized src/shared");
 }
 
+const LOCK_STALE_MS = 600000; // the hook timeout
+
+// One run at a time: Cursor fires workspaceOpen, sessionStart and setup-worktree together on a new
+// worktree. The lock lives in the worktree's git dir; a lock older than the hook timeout is stale.
+function takeLock(gitDir) {
+	const file = path.join(gitDir, "agent-setup.lock");
+	try {
+		if (Date.now() - fs.statSync(file).mtimeMs > LOCK_STALE_MS)
+			fs.rmSync(file, {force: true});
+	} catch {}
+	try {
+		fs.closeSync(fs.openSync(file, "wx"));
+	} catch {
+		return null;
+	}
+	return () => fs.rmSync(file, {force: true});
+}
+
 // Without node_modules, prettier/eslint/tsc and the format-on-edit hook can't run. pnpm links from its
-// global store, so a fresh install is fast; later runs skip this step.
+// global store, so a fresh install is fast; later runs skip this step. pnpm writes .modules.yaml at
+// the end of an install, so a killed or failed install is retried.
 function installDeps(root) {
-	if (fs.existsSync(path.join(root, "node_modules"))) return;
+	if (fs.existsSync(path.join(root, "node_modules", ".modules.yaml"))) return;
 	// One command string: pnpm is a .cmd shim on Windows and needs a shell.
 	const r = spawnSync("pnpm install --frozen-lockfile --prefer-offline", {
 		cwd: root,
@@ -157,7 +190,7 @@ function installDeps(root) {
 	);
 }
 
-const input = readStdin();
+const input = await readStdin();
 const start =
 	process.env.CLAUDE_PROJECT_DIR ||
 	process.env.CURSOR_PROJECT_DIR ||
@@ -170,14 +203,25 @@ const commonDir = git(root, [
 	"--git-common-dir",
 ]);
 const main = commonDir ? path.dirname(commonDir) : root;
+const gitDir = git(root, ["rev-parse", "--path-format=absolute", "--git-dir"]);
+let release = null;
 
 for (const step of [
 	() =>
 		!process.argv.includes("--no-copy") &&
 		path.resolve(main) !== path.resolve(root) &&
 		copyIncluded(root, main),
-	() => initShared(root),
-	() => !process.argv.includes("--no-install") && installDeps(root),
+	() => {
+		if (!gitDir) return;
+		release = takeLock(gitDir);
+		if (!release)
+			log.push(
+				"warning: another setup run is initializing src/shared or installing; it finishes in the background",
+			);
+	},
+	() => release && initShared(root),
+	() =>
+		release && !process.argv.includes("--no-install") && installDeps(root),
 	() => ensureGitSettings(root),
 ]) {
 	try {
@@ -186,16 +230,21 @@ for (const step of [
 		log.push(`warning: ${e.message}`); // fail open: session start must not block
 	}
 }
+release?.();
 
+const warnings = log.filter((l) => l.startsWith("warning"));
+const context = warnings.length
+	? `${SESSION_CONTEXT}\n- Setup warnings: ${warnings.join("; ")}`
+	: SESSION_CONTEXT;
 const event = input.hook_event_name;
 if (event === "sessionStart") {
-	process.stdout.write(JSON.stringify({additional_context: SESSION_CONTEXT})); // Cursor
+	process.stdout.write(JSON.stringify({additional_context: context})); // Cursor
 } else if (event === "SessionStart") {
 	process.stdout.write(
 		JSON.stringify({
 			hookSpecificOutput: {
 				hookEventName: "SessionStart",
-				additionalContext: SESSION_CONTEXT,
+				additionalContext: context,
 			},
 		}),
 	); // Claude Code, Codex
