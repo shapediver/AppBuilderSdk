@@ -1356,7 +1356,8 @@ async function hoverNode(page: Page, node: string) {
 /**
  * SS-10593: while another interaction runs (a second, not always active
  * rectangle transform on box_original), the always-active exclusive
- * rectangle transform is suspended: its boxes are not hovered (no preview),
+ * rectangle transform is suspended: an unconfirmed move is cancelled (as by
+ * Cancel), its boxes are not hovered (no preview),
  * the gizmo of its selection is hidden and nothing can be moved. It resumes
  * with its selection once the other interaction ends. Neither sends a request.
  */
@@ -1381,14 +1382,21 @@ const suspendScenarios: ScenarioActionConfig[] = [
 					await hoverNode(page, hoverBox);
 					expect(await hovers.hovered(hoverBox)).toBe(true);
 					await takeSnapshot(page, `${slug}-preview`);
-					// select a box: its gizmo is shown
+					// select a box and move it without confirming
 					await clickNode(page, box);
+					const initial = await nodeBounds(page, box);
+					await gestures.rectangle.primary(page, [box]);
+					await expect(confirmButton(page)).toBeEnabled();
 
-					// start the other interaction
+					// start the other interaction: it cancels the unconfirmed move
 					await page
 						.getByRole("button", {name: "Start other transform"})
 						.click();
 					await settle(page);
+					expect(
+						boundsChanged(initial, await nodeBounds(page, box)),
+						"the unconfirmed move was not cancelled",
+					).toBe(false);
 
 					// suspended: no hover, no preview, the gizmo is hidden
 					await hovers.clear();
