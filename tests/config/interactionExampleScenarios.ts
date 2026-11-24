@@ -1311,11 +1311,131 @@ const exclusiveAutomaticScenarios: ScenarioActionConfig[] = [
 	},
 ];
 
+/**
+ * Records the scene nodes of HOVER_ON events (with the names of their
+ * parents: the hovered node may be a child of the named box).
+ */
+async function trackHovers(page: Page) {
+	await page.evaluate(() => {
+		const w = window as any;
+		const SDV = w.SDV;
+		w.__hoveredNodes = [];
+		SDV.addListener(SDV.EVENTTYPE_INTERACTION.HOVER_ON, (e: any) => {
+			for (const hovered of e.nodes ?? []) {
+				const names: string[] = [];
+				for (let node = hovered; node; node = node.parent)
+					names.push(node.name);
+				w.__hoveredNodes.push(names.join("/"));
+			}
+		});
+	});
+	return {
+		hovered: (node: string) =>
+			page.evaluate(
+				(name) =>
+					((window as any).__hoveredNodes as string[]).some((path) =>
+						path.split("/").includes(name),
+					),
+				node,
+			),
+		clear: () =>
+			page.evaluate(() => {
+				(window as any).__hoveredNodes.length = 0;
+			}),
+	};
+}
+
+/** Move the pointer onto the center of a box (on the box, also when tilted). */
+async function hoverNode(page: Page, node: string) {
+	const point = await nodeScreenPoint(page, node, [0.5, 0.5, 0.5]);
+	await page.mouse.move(point.x, point.y + 40);
+	await page.mouse.move(point.x, point.y, {steps: 5});
+	await page.waitForTimeout(500);
+}
+
+/**
+ * SS-10593: while another interaction runs (a second, not always active
+ * rectangle transform on box_original), the always-active exclusive
+ * rectangle transform is suspended: its boxes are not hovered (no preview),
+ * the gizmo of its selection is hidden and nothing can be moved. It resumes
+ * with its selection once the other interaction ends. Neither sends a request.
+ */
+const suspendScenarios: ScenarioActionConfig[] = [
+	{
+		slug: "example-rectangle-exclusive-suspend",
+		params: {g: "example-rectangle-exclusive-suspend.json"},
+		namedActions: [
+			{
+				name: "another interaction suspends hover, preview and gizmo",
+				run: async (page, slug) => {
+					const puts = trackCustomizations(page);
+					const errors = collectPageErrors(page);
+					const hovers = await trackHovers(page);
+					const otherBox = BOXES[0];
+					const hoverBox = BOXES[1];
+					// axis aligned: its bounding box corner is a scaling handle
+					const box = BOXES[2];
+					await settle(page);
+
+					// always active: hovering a box previews it
+					await hoverNode(page, hoverBox);
+					expect(await hovers.hovered(hoverBox)).toBe(true);
+					await takeSnapshot(page, `${slug}-preview`);
+					// select a box: its gizmo is shown
+					await clickNode(page, box);
+
+					// start the other interaction
+					await page
+						.getByRole("button", {name: "Start other transform"})
+						.click();
+					await settle(page);
+
+					// suspended: no hover, no preview, the gizmo is hidden
+					await hovers.clear();
+					await hoverNode(page, hoverBox);
+					expect(await hovers.hovered(hoverBox)).toBe(false);
+					await takeSnapshot(page, `${slug}-suspended`);
+					// a drag at the corner of the selected box moves nothing
+					const before = await nodeBounds(page, box);
+					const corner = await nodeScreenPoint(page, box, [1, 1, 1]);
+					await dragMouse(page, corner, {
+						x: corner.x + 60,
+						y: corner.y,
+					});
+					await page.waitForTimeout(300);
+					expect(
+						boundsChanged(before, await nodeBounds(page, box)),
+						"a suspended rectangle transform moved its box",
+					).toBe(false);
+
+					// the other interaction works (it selected its only box), and
+					// Cancel ends it
+					await gestures.rectangle.primary(page, [otherBox]);
+					await cancelButton(page).click();
+					await settle(page);
+
+					// resumed: hover and the gizmo of the kept selection are back
+					await hovers.clear();
+					await hoverNode(page, hoverBox);
+					expect(await hovers.hovered(hoverBox)).toBe(true);
+					await gestures.rectangle.primary(page, [box]);
+					await expect(confirmButton(page)).toBeEnabled();
+					await takeSnapshot(page, `${slug}-resumed`);
+					await cancelButton(page).click();
+					await expectNoCustomization(page, puts, 0);
+					expect(errors.errors()).toEqual([]);
+				},
+			},
+		],
+	},
+];
+
 export const interactionExampleScenarios: ScenarioActionConfig[] = [
 	...transformScenarios("rectangle"),
 	...transformScenarios("gumball"),
 	...exclusiveRectangleScenarios,
 	...exclusiveAutomaticScenarios,
+	...suspendScenarios,
 	...drawingScenarios,
 	...interactionExampleExtraScenarios,
 	...multiParameterScenarios,
