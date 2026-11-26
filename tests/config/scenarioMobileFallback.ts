@@ -409,6 +409,74 @@ export const exampleMobileFallbackAnchorsNamedActions: ScenarioNamedAction[] = [
 	},
 ];
 
+/**
+ * SS-10436: example-mobileFallback-images. Image widgets are 400x200 PNGs;
+ * the alt text identifies each one. Both anchors cap at 200px on desktop.
+ */
+const IMAGE_ALTS = {
+	topNative: "MF-IMG-TOP-NATIVE",
+	anchorTop: "MF-IMG-ANCHOR-TOP",
+	anchorRight: "MF-IMG-ANCHOR-RIGHT",
+} as const;
+
+async function imageBox(page: Page, alt: string) {
+	const img = page.locator(`img[alt="${alt}"]`);
+	await expect(img).toBeVisible();
+	const box = await img.boundingBox();
+	expect(box).not.toBeNull();
+	return box!;
+}
+
+export const exampleMobileFallbackImagesNamedActions: ScenarioNamedAction[] = [
+	{
+		name: "desktop anchors keep their maxWidth",
+		run: async (page) => {
+			for (const alt of [IMAGE_ALTS.anchorTop, IMAGE_ALTS.anchorRight]) {
+				const img = page.locator(
+					`[data-app-builder-anchor] img[alt="${alt}"]`,
+				);
+				await expect(img).toBeVisible();
+				expect((await imageBox(page, alt)).width).toBeLessThanOrEqual(
+					201,
+				);
+			}
+		},
+	},
+	{
+		name: "mobile anchor image fits the top container like a native image",
+		run: async (page, slug) => {
+			// no navbar content, so there is no burger to wait for
+			await setViewportBelowMobileBreakpoint(
+				page,
+				APP_BUILDER_E2E_VIEWPORT_MOBILE_PORTRAIT,
+			);
+			const top = getStandardContainer(page, "top");
+			await expect(
+				top.locator(`img[alt="${IMAGE_ALTS.anchorTop}"]`),
+			).toBeVisible();
+			const topBox = await top.boundingBox();
+			expect(topBox).not.toBeNull();
+			const native = await imageBox(page, IMAGE_ALTS.topNative);
+			const moved = await imageBox(page, IMAGE_ALTS.anchorTop);
+			expect(moved.height).toBeLessThanOrEqual(topBox!.height);
+			expect(moved.y).toBeGreaterThanOrEqual(topBox!.y - 1);
+			expect(Math.abs(moved.height - native.height)).toBeLessThanOrEqual(
+				1,
+			);
+
+			// vertical target keeps filling the container width
+			const right = getStandardContainer(page, "right");
+			await expect(
+				right.locator(`img[alt="${IMAGE_ALTS.anchorRight}"]`),
+			).toBeVisible();
+			const rightBox = await right.boundingBox();
+			const movedRight = await imageBox(page, IMAGE_ALTS.anchorRight);
+			expect(movedRight.width).toBeGreaterThan(rightBox!.width * 0.8);
+			await takeSnapshot(page, `${slug}-mobile-portrait-layout`);
+		},
+	},
+];
+
 const KB_LABELS = {
 	left: "MF-KB-LEFT",
 	right: "MF-KB-RIGHT",

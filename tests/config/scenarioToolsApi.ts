@@ -3,8 +3,9 @@
  *
  * Playwright loads App Builder in the localhost CrossWindow iframe (port 3000,
  * same parent as e-commerce), stubs Open agent to return `window.parent`, and
- * owns `ToolsApiFactory.getClientApi(iframe.contentWindow)`. ask_user_question
- * is out of scope.
+ * owns `ToolsApiFactory.getClientApi(iframe.contentWindow)`. App Builder does not
+ * list or run ask_user_question; getAgentConfig only reports whether the
+ * agent may use it (`askUserQuestion`).
  */
 import {expect} from "@playwright/test";
 import {TOOLS_E2E_AGENT} from "../helpers/openToolsApiScenario";
@@ -61,6 +62,8 @@ export const scenarioToolsApi: ScenarioApiActionConfig = {
 					message: TOOLS_E2E_AGENT.message,
 					showThreadHistory: true,
 					createThreadOnLoad: true,
+					// ask_user_question is on by default (no genericTools)
+					askUserQuestion: true,
 				});
 				expect(await toolsGetSessionInfo(page)).toEqual(
 					expect.any(Object),

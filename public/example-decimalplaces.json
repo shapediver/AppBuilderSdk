@@ -1,0 +1,82 @@
+{
+	"version": "1.0",
+	"settings": {
+		"disableFallbackUi": true
+	},
+	"sessions": [
+		{
+			"id": "default",
+			"ticket": "50eb2a26ddaa432ca18288b8a120ef194fa35bb813e4f43ae89d657991a865f9deaa20a1c840e47cdf6dbc019cd16ae15a9a6b3a7d91722455299d6bd29b1f26b3ff3b7adaac1df3d50f3ba4d010a560180dff8f745c946dadb41167a3431e223d69b32743f167-5b9465f92a0cf9c235b8ea315aab0cd5",
+			"modelViewUrl": "https://sdr7euc1.eu-central-1.shapediver.com"
+		}
+	],
+	"appBuilderOverride": {
+		"version": "1.0",
+		"containers": [
+			{
+				"name": "right",
+				"widgets": [
+					{
+						"type": "text",
+						"props": {
+							"markdown": "## Decimal places of sliders\n\n`settings.decimalplaces` reduces the number of decimal places of a Float parameter's slider and number input. A value which does not reduce them is ignored.\n\n- **Board Height (model)**: no setting.\n- **Board Height (0 decimal places)**: a parameter of the accordion with `overrides.settings.decimalplaces: 0`.\n- **Board Height (1 decimal place)**: a parameter control with `overrides.settings.decimalplaces: 1`.\n\nAll three show the same parameter."
+						}
+					}
+				]
+			},
+			{
+				"name": "left",
+				"widgets": [
+					{
+						"type": "accordion",
+						"props": {
+							"parameters": [
+								{
+									"name": "Board Height",
+									"overrides": {
+										"displayname": "Board Height (model)"
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "accordion",
+						"props": {
+							"parameters": [
+								{
+									"name": "Board Height",
+									"overrides": {
+										"displayname": "Board Height (0 decimal places)",
+										"settings": {
+											"decimalplaces": 0
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"type": "controls",
+						"props": {
+							"controls": [
+								{
+									"type": "parameter",
+									"props": {
+										"name": "Board Height",
+										"overrides": {
+											"displayname": "Board Height (1 decimal place)",
+											"settings": {
+												"decimalplaces": 1
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
+}

@@ -4,13 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  minimatch@10: ^11.0.1
+
 importers:
 
   .:
     dependencies:
       '@emotion/react':
         specifier: 11.14.0
-        version: 11.14.0(@types/react@19.3.0)(react@19.3.1)
+        version: 11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@8.1.1)
       '@iconify/react':
         specifier: 6.0.3
         version: 6.0.3(react@19.3.1)
@@ -51,32 +54,32 @@ importers:
         specifier: 1.7.0
         version: 1.7.0
       '@shapediver/viewer.features.attribute-visualization':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.features.drawing-tools':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.features.interaction':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.features.transformation-tools':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.session':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.shared.global-access-objects':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.shared.types':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@shapediver/viewer.utils.mime-type':
         specifier: 1.1.0
         version: 1.1.0
       '@shapediver/viewer.viewport':
-        specifier: 3.22.0-next.52
-        version: 3.22.0-next.52
+        specifier: 3.23.0
+        version: 3.23.0
       '@tanstack/match-sorter-utils':
         specifier: 9.2.6
         version: 9.2.6
@@ -112,16 +115,16 @@ importers:
         version: 6.0.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       react-markdown:
         specifier: 10.1.0
-        version: 10.1.0(@types/react@19.3.0)(react@19.3.1)
+        version: 10.1.0(@types/react@19.3.0)(react@19.3.1)(supports-color@8.1.1)
       recharts:
         specifier: 3.10.1
         version: 3.10.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react-is@19.3.1)(react@19.3.1)(redux@5.0.1)
       remark-directive:
         specifier: 4.0.0
-        version: 4.0.0
+        version: 4.0.0(supports-color@8.1.1)
       remark-gfm:
         specifier: 4.0.1
-        version: 4.0.1
+        version: 4.0.1(supports-color@8.1.1)
       unist-util-visit:
         specifier: 5.2.0
         version: 5.2.0
@@ -134,7 +137,7 @@ importers:
     devDependencies:
       '@eslint/js':
         specifier: 10.0.1
-        version: 10.0.1(eslint@10.13.0)
+        version: 10.0.1(eslint@10.13.0(supports-color@8.1.1))
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
@@ -167,10 +170,10 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@typescript-eslint/eslint-plugin':
         specifier: 8.72.1
-        version: 8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.13.0)(typescript@6.0.3))(eslint@10.13.0)(typescript@6.0.3)
+        version: 8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@typescript-eslint/parser':
         specifier: 8.72.1
-        version: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
+        version: 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@vitejs/plugin-react':
         specifier: 6.1.2
         version: 6.1.2(vite@8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1))
@@ -179,25 +182,25 @@ importers:
         version: 18.0.9
       eslint:
         specifier: 10.13.0
-        version: 10.13.0
+        version: 10.13.0(supports-color@8.1.1)
       eslint-config-prettier:
         specifier: 10.1.8
-        version: 10.1.8(eslint@10.13.0)
+        version: 10.1.8(eslint@10.13.0(supports-color@8.1.1))
       eslint-plugin-prettier:
         specifier: 5.5.7
-        version: 5.5.7(eslint-config-prettier@10.1.8(eslint@10.13.0))(eslint@10.13.0)(prettier@3.9.10)
+        version: 5.5.7(eslint-config-prettier@10.1.8(eslint@10.13.0(supports-color@8.1.1)))(eslint@10.13.0(supports-color@8.1.1))(prettier@3.9.10)
       eslint-plugin-react:
         specifier: 7.37.5
-        version: 7.37.5(eslint@10.13.0)
+        version: 7.37.5(eslint@10.13.0(supports-color@8.1.1))
       globals:
         specifier: ^17.13.0
         version: 17.13.0
       jest:
         specifier: 30.5.2
-        version: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)
+        version: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       jest-environment-jsdom:
         specifier: 30.5.2
-        version: 30.5.2
+        version: 30.5.2(supports-color@8.1.1)
       prettier:
         specifier: 3.9.10
         version: 3.9.10
@@ -206,10 +209,10 @@ importers:
         version: 4.3.0(prettier@3.9.10)(typescript@6.0.3)
       ts-jest:
         specifier: 29.4.15
-        version: 29.4.15(@babel/core@7.29.7)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0))(typescript@6.0.3)
+        version: 29.4.15(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1))(typescript@6.0.3)
       ts-to-zod:
         specifier: ^5.1.0
-        version: 5.1.0
+        version: 5.1.0(supports-color@8.1.1)
       tsx:
         specifier: 4.23.15
         version: 4.23.15
@@ -224,7 +227,7 @@ importers:
         version: 6.0.3
       typescript-eslint:
         specifier: ^8.72.1
-        version: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
+        version: 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       vite:
         specifier: 8.3.5
         version: 8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1)
@@ -233,7 +236,7 @@ importers:
         version: 1.3.9
       vite-plugin-svgr:
         specifier: 5.2.0
-        version: 5.2.0(typescript@6.0.3)(vite@8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1))
+        version: 5.2.0(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1))
       web-vitals:
         specifier: 6.2.3
         version: 6.2.3
@@ -769,6 +772,9 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
+
+  '@isaacs/nonrecursive-glob-match@1.1.0':
+    resolution: {integrity: sha512-GPm/Dbvk5RLmhRnxXIa7nTpK0xtl4E0wj0MslsuNiJ1FIROU+2+9lgUC/dgF7Ey4QCWhfEsgxilMRMCdHPfDfw==}
 
   '@istanbuljs/load-nyc-config@1.1.0':
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
@@ -1421,16 +1427,16 @@ packages:
     engines: {node: '>=18'}
 
   '@shapediver/sdk.sdtf-core@1.7.4':
-    resolution: {integrity: sha512-izDtWUa34fBqKoTNfBFMNPzkuvO6R9JbMCURxLY9VdseAhDdldMhLKf7Kyy/8Dhpxqwl2qkGrcMxVz3qpjs79g==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-core/1.7.4/e33ae6e56965d0c96947d47766bf8ed925ab203f}
+    resolution: {integrity: sha512-izDtWUa34fBqKoTNfBFMNPzkuvO6R9JbMCURxLY9VdseAhDdldMhLKf7Kyy/8Dhpxqwl2qkGrcMxVz3qpjs79g==}
 
   '@shapediver/sdk.sdtf-geometry@1.7.4':
-    resolution: {integrity: sha512-Lsh5KkBCW8FMhKi7/fjsfsFJU+1qHO32B5kWuwfLz9qDjTLnF4wf77WfEUonai8NHqysLC+m29FYLfJ+8YIavA==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-geometry/1.7.4/d95bad3ebead30570fa815a1b38c2c90d39c14b4}
+    resolution: {integrity: sha512-Lsh5KkBCW8FMhKi7/fjsfsFJU+1qHO32B5kWuwfLz9qDjTLnF4wf77WfEUonai8NHqysLC+m29FYLfJ+8YIavA==}
 
   '@shapediver/sdk.sdtf-primitives@1.7.4':
-    resolution: {integrity: sha512-8e0yUxJf6oUbTdeqqVDA+hJA+0Ms8OcHcQLnpNyxHz0wsHLa0s1xRctcTm63HXhXIzXWdQAmoxQ3dzVcqaloNA==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-primitives/1.7.4/f830560988fcf88da04f9459559716ea2102f719}
+    resolution: {integrity: sha512-8e0yUxJf6oUbTdeqqVDA+hJA+0Ms8OcHcQLnpNyxHz0wsHLa0s1xRctcTm63HXhXIzXWdQAmoxQ3dzVcqaloNA==}
 
   '@shapediver/sdk.sdtf-v1@1.9.0':
-    resolution: {integrity: sha512-4krbcrC10Sgbydllz4PhqTBn5eUx0vguN6Dyzl2tCNo6zjiCsdpHsdhM0o3nEBtqTVNjMQ/mW0PdSEP3M7V75g==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.sdtf-v1/1.9.0/0387706ec80410a414e8c6662c223d70952eed8e}
+    resolution: {integrity: sha512-4krbcrC10Sgbydllz4PhqTBn5eUx0vguN6Dyzl2tCNo6zjiCsdpHsdhM0o3nEBtqTVNjMQ/mW0PdSEP3M7V75g==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1440,113 +1446,113 @@ packages:
   '@shapediver/sdk.stargate-sdk-v1@1.7.0':
     resolution: {integrity: sha512-pDfXkjSx4yg/wnrwJm1E4SVDWu9KKlU25hY93vA7e/o9q9n2xThG3ajD7F+jF7MwB2xG6vmOZRsAEnxxsL9d1g==, tarball: https://npm.pkg.github.com/download/@shapediver/sdk.stargate-sdk-v1/1.7.0/3d528cc918043f3965b722b09873130b0b33ecce}
 
-  '@shapediver/viewer.api.general@3.22.0-next.52':
-    resolution: {integrity: sha512-JxCfAc7gpgQh15CHLJaA1DSfVT+sjBOWicxZ1LpgdhtsJaKI/RV8gk5Hl4DZP3/Zj8Ok7vHMtEIvvleBqJnKPw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.api.general/3.22.0-next.52/265954bff60aa2ed5483135b0c503eddf06c0a84}
+  '@shapediver/viewer.api.general@3.23.0':
+    resolution: {integrity: sha512-KhbH63nUFMZYOhOHphTCwlGVdwRkXC7NuWJKJlTRsJrnxP3J2N/Td21c1HDClTNZj/QyNIw9yu7c/XI+BaJB+g==}
 
-  '@shapediver/viewer.creation-control-center.session@3.22.0-next.52':
-    resolution: {integrity: sha512-86HOlGXk/japNPyBfVn9X798IF2hxRY9wSDNOrsrANRs/b8/HQl1VDxEtQdd0YjnHaRSSzWsqABtCmG7vYqH0w==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.creation-control-center.session/3.22.0-next.52/693cc572d6415a2f65b5cc9d5f0af41751c05f7c}
+  '@shapediver/viewer.creation-control-center.session@3.23.0':
+    resolution: {integrity: sha512-xbfYOiDIV8dTIyEMFBfv2f3NXJf4rgaqkbtz9dqJpGzjLepr1YiTiYAwR11xNyzD8pv+TretFSxV1qaViOWcTw==}
 
-  '@shapediver/viewer.creation-control-center.viewport@3.22.0-next.52':
-    resolution: {integrity: sha512-tom2mR/akzhER8EFNpqK0p2gplS0xofCY5TBCa/gQPp1bj7vWv9jeE3CpuJsG1pAdvSvdmFYV4/ZZHu33UUv6A==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.creation-control-center.viewport/3.22.0-next.52/f0b8cb456549a675942acc2cfe1fd506f168d3be}
+  '@shapediver/viewer.creation-control-center.viewport@3.23.0':
+    resolution: {integrity: sha512-BKHHzRbKWhcn/ZW3ExhT+4HX1Lg/mZpV4rzAjB/kABoFFV8lWT/Vjj5mEarj7XqXB3+sjfxT5HO9pgqinMX3wg==}
 
-  '@shapediver/viewer.data-engine.data-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-C6xCgz5Ae1Vx7ujP7/LO6w1KW7X9DXIZJhv/gHW4sI/EkKiy8s/ct4Xee/6H4nCjdoxkebWegibchKobel4hbA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.data-engine/3.22.0-next.52/04ba3b6eefba22333d1ad9a8703770f603887754}
+  '@shapediver/viewer.data-engine.data-engine@3.23.0':
+    resolution: {integrity: sha512-iRmeOCdPwm3RMEKFrQzyBf0LgFb0UqujjtcKMrzCSpfUsVz62Y3pKoHbbwCVcgXSmoQ6xddJGUaYpc64Rt4M8Q==}
 
-  '@shapediver/viewer.data-engine.geometry-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-G8TM1ZAZTwN9YAHMbO2cvuDbjzVV6XWQLAQnsRYQyOxp42F5tQXkVGdq7dap72JJn2kMR7Xv6kSe+/U4dLzLKw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.geometry-engine/3.22.0-next.52/814708c22fd11bb7a9298643793edfa9358901f1}
+  '@shapediver/viewer.data-engine.geometry-engine@3.23.0':
+    resolution: {integrity: sha512-wKfgV8FM4fsqqpl5914cqBzdeeM0P/56+hskCnBqnWBQUW+dj6uRSL4kQ1T14V5QXOWRxy0yWYDHCYsI70R6tQ==}
 
-  '@shapediver/viewer.data-engine.gltf-converter@3.22.0-next.52':
-    resolution: {integrity: sha512-mZS0x5pv7+qI3AZgQr3t9mLH5tGBWp/z97i99Ff2OolQXES1sky+t/1FnBuTi+Vgj/OygEW48hg0joMLFiE4yw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.gltf-converter/3.22.0-next.52/bf0661a94589da14cde7295fba31b5c907052c01}
+  '@shapediver/viewer.data-engine.gltf-converter@3.23.0':
+    resolution: {integrity: sha512-I3c1jVtyko/WTeNVrcoi/w5FYtVZzjEqwAoy941pYY3K0k0HJSfSOxsdqu1JmSCmzETuIdh72MxUhX53Bx4Jiw==}
 
-  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-V/qIjOEipQ6kuUdd2fsntZxU133cnzEBp8KBxq9siTIrp7kkbsS5C2H2tgyBiIfmYvL1dqDqsGq1yU4nZ5g/eg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.html-element-anchor-engine/3.22.0-next.52/f94ee0d2cef47d14f5f3648902fef9d4e9feeadf}
+  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.23.0':
+    resolution: {integrity: sha512-vvlg7xC0reKMZ2rUvX13Blrq0Re6HBaxis9LlVDcUUKwP8P8XaP6aWQmGuh+oC+ZHveSHJYBQbvTCgoNbS2vIw==}
 
-  '@shapediver/viewer.data-engine.material-database-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-7l2j8j1LdTcdtiq5lGWnLQtb8tAm7++DN7WY4lbDqffAcivR0A88xSKoaT6I4OxY9XcR6mguDUpgsihiUeGpkQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.material-database-engine/3.22.0-next.52/80127b89d95535f90798e2316e841b94588321af}
+  '@shapediver/viewer.data-engine.material-database-engine@3.23.0':
+    resolution: {integrity: sha512-ikt8n1peAQgTcBW8TAhF6kJz6U/tQ16efoycI/ThoKILq+tD3MN9Fxf/7BlT1/XciV78iMaGkAAplT0OHUE1Dw==}
 
-  '@shapediver/viewer.data-engine.material-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-YGZ4DypzfNoQOn8FNrxy9VN2odbIFlhtgg0DkIhHPs36KRO5YFX18Qu2yuM1IVvVVdmu1/JqhFfgYbd6tK3ABA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.material-engine/3.22.0-next.52/e7d94bb59d51aa580fc27b73727382988358df29}
+  '@shapediver/viewer.data-engine.material-engine@3.23.0':
+    resolution: {integrity: sha512-fEqXlsiYNaC6uKLLIq3zKM2uFL1QAU30LzxWUou3IMWhCkPokoV/7fhZ1DVsJefl12BuPDL905YaJOyp7luN5A==}
 
-  '@shapediver/viewer.data-engine.sdtf-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-bsHfbooaw/N4KbpERPkoxNvDBMYqgE4ZliiWxO5m6lmmQksO32blH4wwDtCA0t5m8GcpPrP//hwKcK56vqgFBQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.sdtf-engine/3.22.0-next.52/7faa89dfce8a22ba07af9027a39e7ca35663938e}
+  '@shapediver/viewer.data-engine.sdtf-engine@3.23.0':
+    resolution: {integrity: sha512-woVZdxR6TJ+OXXjAIXZJtRJ7IceW4h6G9FA+2arrr1ScjHuHdguARl3oGJLY3do+dI4y66HVBc7Lb2oqMWBUqQ==}
 
-  '@shapediver/viewer.data-engine.tag3d-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-vtGxG1q2lNTree6IIA7LbeQCsH9iecYvr0jOkovtMiaSL6KYChsPEyPHFmf/u1AHvIo2VSPZ0ralk+7hy+aghA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.data-engine.tag3d-engine/3.22.0-next.52/5613e9bd7fb23c2172c1fe49c990d6ec2fcd22c1}
+  '@shapediver/viewer.data-engine.tag3d-engine@3.23.0':
+    resolution: {integrity: sha512-YhV5zqbpH/j1u3OSPZC882oeopkUSRwrjH4a1IM2vqBeOSVlRRQ1Z48YuY/MYkRQAx+/F9efHPW1TiheMx2RAQ==}
 
-  '@shapediver/viewer.features.attribute-visualization@3.22.0-next.52':
-    resolution: {integrity: sha512-hG6hOyqmpgGDt8XyOAimp1mZZLGF95yjp8hfGWPrEYLgm2Vlud3u9lAPzAGT8jJz+KsrvzQLUjtFkfYA+YWVGw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.attribute-visualization/3.22.0-next.52/80faa7985d7aad578a0ff6cecda98a0202839cc7}
+  '@shapediver/viewer.features.attribute-visualization@3.23.0':
+    resolution: {integrity: sha512-1l/jZd7cEybmQ9OgNwIRt36at5zMgJiZr1jJlke4Kzpl6oyidMwjdQSZ59Qd5TsSXpTaOU6dIOt+9r3Bsc+yzw==}
 
-  '@shapediver/viewer.features.drawing-tools@3.22.0-next.52':
-    resolution: {integrity: sha512-32iRloEeVOQ5cRxP68hr7BmEy+IIbJgFjxoceCkLI+doujR/tAzofn7hngQY5tY4efc28JbwtmD9UJyEYNkrdw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.drawing-tools/3.22.0-next.52/41e913822517b84ec918acb892b2bc548fb9f97d}
+  '@shapediver/viewer.features.drawing-tools@3.23.0':
+    resolution: {integrity: sha512-F5DeNIPNmUBODV+Qnyp6n8fPoQuqt2cuTOSApXJucbNFAp1LkSHwhgyG2tdPLVr1IgQphMrlJfr7rAkAQ24BDA==}
 
-  '@shapediver/viewer.features.interaction@3.22.0-next.52':
-    resolution: {integrity: sha512-cdBj5jc+tzUJceD2laCjZ7vyPO4FaYN9Q0gInAPWnA+c829PORJo3zSk1H8EJ1JXZxq6Qf17BkqYgl6FKGHC6g==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.interaction/3.22.0-next.52/4ee85df5c10e501412cbb84a95b345caf26d151b}
+  '@shapediver/viewer.features.interaction@3.23.0':
+    resolution: {integrity: sha512-R/djtx6pPla9PeGiQeA0oXxg0hGpDfYYhNnQsvX1EntZKm9k1L7lr1FJ09HXJIubxxLEbcvH2u1QdDlvzatibQ==}
 
-  '@shapediver/viewer.features.transformation-tools@3.22.0-next.52':
-    resolution: {integrity: sha512-bObT+wg1SjUFUZb3RmU9iXxAQB4FonsVQf+N8T21UeVWnfjfdFJkZTmTwG3jlDjv3txJFHCPmw2/L69fYoPxKQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.features.transformation-tools/3.22.0-next.52/289c35fb9822d569e67398214da2803bc17bba2d}
+  '@shapediver/viewer.features.transformation-tools@3.23.0':
+    resolution: {integrity: sha512-3XHZ0qO70wiVFOwVIi+fp7+ipUV3Og4NrBDPbUxW1F7+qXnvTqHkoBMCr0RjdciruxWEs94luOUMPvIrL3OeRg==}
 
-  '@shapediver/viewer.rendering-engine.animation-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-JuE60vPoQHQny0IV+FU5h941VLeBaqxd7uvzxdjS8C7SRqgDl6zKuydlrBEFvwiBXLInefaF/7/rFd9w94gCmw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.animation-engine/3.22.0-next.52/ce9efa12f7dbbb7b1206fdb760a0a09054773ade}
+  '@shapediver/viewer.rendering-engine.animation-engine@3.23.0':
+    resolution: {integrity: sha512-+MM+4gwAo/nk2N5VXLsweNtFIxskcDTVBYwJcjGE0DQodgUSIynwDH2XBnL+m+MDXP0SypvQeKCHp+BV9F8ELA==}
 
-  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-h5dOMeBO0L+3e59vab8kPxtkdvFS7VADPqxJIKbhHoVFmHOiahSiJiillSV7hDYqNgE2ifxf7MZgU3byBlVxCQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.animation-frame-engine/3.22.0-next.52/be024a2976ab91a601451230418da30354e9d8da}
+  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.23.0':
+    resolution: {integrity: sha512-GydsKZHcrN9sq7txw0aPZtZ3416HQQ6I/UJ/wk7pF6Zg9+sX7X5kUcNEAAUDDUo4ZRps5f68fGOr9xz/SLAUNQ==}
 
-  '@shapediver/viewer.rendering-engine.camera-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-3CYlY5yi+M0e9J3gohBGbMR1efUUU47uEUyQCJZNOZlr5x+GCZM9YyFUEFy1Z9mgRJCwHkZ2lNvQbJ1oZBfLIA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.camera-engine/3.22.0-next.52/9d53c42ff498abb469ff88ccd8537be5d578b818}
+  '@shapediver/viewer.rendering-engine.camera-engine@3.23.0':
+    resolution: {integrity: sha512-oqEUt0Pdruv5l4OaIJd7dw66YSt1jFoHCJA7uKNS1fSf80E0ZcPoxYVdWl530LNXmgdeyEhEYehNkuDHjvhM3g==}
 
-  '@shapediver/viewer.rendering-engine.canvas-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-CA+D1x7JAD4LkakejV/+siRpg5JeIxYcpQ+FS8PxxN1/F1XUTdD5HGNrZmRsgPLbazE21iyQrFcmLiIG3EWrzQ==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.canvas-engine/3.22.0-next.52/2fed72cfb290b483fa97c0f9480e8d1b45d2796c}
+  '@shapediver/viewer.rendering-engine.canvas-engine@3.23.0':
+    resolution: {integrity: sha512-LK2Gf1Y9AFIP42AwDUg0K25s5OSfE/2U3NlQJzJUZtxXUDdPAK6XlzA5pxGY+H34bHpLf2bF++DKykQ5qb4UVw==}
 
-  '@shapediver/viewer.rendering-engine.intersection-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-rieMVHUXLNeOsKZqF3T7EbuyAgNdsHENXxaaYuuwIUMMcptJG4RWBuPTx/tiE1c349CkhXM2sWrOgjLX0igvgw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.intersection-engine/3.22.0-next.52/aad07b05744f3e0bba78997c26e179f0f58ce176}
+  '@shapediver/viewer.rendering-engine.intersection-engine@3.23.0':
+    resolution: {integrity: sha512-UwIgxDaSzYVoISCl0uze8OAnKqu71dvbDCjAo6CguNFtMRtPtSmgtHq0yKBMN2JODb4tNgDwFQn70+tGzt5HPQ==}
 
-  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-rQ6QKn/8UC4ICxV3kZVT/5Vjl+Ex2dFIHlEUgktAMMY5VqcRaKOUBrwCYd3oIdmHFyZZ2I0emf/2FaoQP+08AA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.intersection-restriction-engine/3.22.0-next.52/757ac8abfe589d5fcd6ba8bc7dcee1a8ddbb29f1}
+  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.23.0':
+    resolution: {integrity: sha512-jnuWTywKB17ibDgvBkjaysrCl8Jn+5plFnktPxSXujhAoRYGt4C1MUPqm5WpEdUdQWT/owF3OUa18sg3FrGLmA==}
 
-  '@shapediver/viewer.rendering-engine.light-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-WanjBACKMkONixbsz6N2Uy2YzjZei7uIdNr93Q9yiAiSvLt08PcjHE1Pm5S1HX/03nxQqhGsKlU22st73GpSbg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.light-engine/3.22.0-next.52/8ceb310da10ce428232f56ecffff9d614b45db39}
+  '@shapediver/viewer.rendering-engine.light-engine@3.23.0':
+    resolution: {integrity: sha512-2Ar1z/aFA9izL1tQZmesDvH2QSrYhkNVi5+p4IK3C/0HwVCo+BsKdf6/3CGVPExJ0j5TTMaUz1Ohi7IA0o6s3A==}
 
-  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.22.0-next.52':
-    resolution: {integrity: sha512-IkqY7Q9QisNTp2OIiJvqRznESY8i+yqX+yEOyCB9fnlZeqvXgPRLqhf2cSvquLTJYLFL+vKMKvngJDT/UnPzoA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.rendering-engine-threejs/3.22.0-next.52/5d52248180fae8623d93add1b6290a5f01547b06}
+  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.23.0':
+    resolution: {integrity: sha512-Tnp+NHvwnLo1mUBzXpuhjFlIcF9++w8hOGLnhuejq25E8mEONJpoz72rtK8enDkFGAvWdPD/KpgaCE+ditLc5g==}
 
-  '@shapediver/viewer.rendering-engine.rendering-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-bZcXwDGQUyKmogYfil31LYd/iAZCjn9QwcjeaMV7+BMXZ1WfWNNLQnyDHlKXlnXO718s224k8eh7/MwnoRe2ug==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.rendering-engine.rendering-engine/3.22.0-next.52/23d02116eeed5622d96ecd0aa3ffe594b2d8c114}
+  '@shapediver/viewer.rendering-engine.rendering-engine@3.23.0':
+    resolution: {integrity: sha512-10nNdVjpgdBdVEanYAudPlKIMQrm/aYjh60OmahrPOnjB7E9pY8wqtRiAyX6dUAPuF5bsXQ4bGjJ1ahJm6DzSg==}
 
-  '@shapediver/viewer.session-engine.session-engine@3.22.0-next.52':
-    resolution: {integrity: sha512-RqosHLI9FSuJpJs5uFyr1Wey7syPDwTlL8PLOZyidV/x/jKyXDeVcmWyhvsS2LXQyngB2TrsFHMdWZmneOYvuA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.session-engine.session-engine/3.22.0-next.52/bd3eeea202559a2a1b5d723d78693384f01780ca}
+  '@shapediver/viewer.session-engine.session-engine@3.23.0':
+    resolution: {integrity: sha512-j1AtSBVC3tV+eUF0PnAElmI7/gZUQeuyMAbdZWy1xUEeucCUjfDTDaUKGN/LRQXN9y+P1dD5yowH37U695e5Dw==}
 
-  '@shapediver/viewer.session@3.22.0-next.52':
-    resolution: {integrity: sha512-MNQDVpGtaz616LHIL9Sz5mBh3oUpGD74PbZMNrS0v9CeU5gz1SSj0cFz75PuJIPVj+OetXPhzJAUL0xiNDQ1GA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.session/3.22.0-next.52/eff4b15959fa41499f846e6712de94f3009539fe}
+  '@shapediver/viewer.session@3.23.0':
+    resolution: {integrity: sha512-KOAmIlVeSwFbba/3TVlrkOyO2OJ3rFInxMFQ2vDhUX+2UaudbAWQ/Cs2Vx+NZ2I2aeYbwswrBnrYU+GFbfZFOg==}
 
   '@shapediver/viewer.settings@1.3.3':
-    resolution: {integrity: sha512-d3pWiKguYFM5tjHYrrCM1ZkHzhFOAAq5EFbwUTsnq4vYOT60NvrBwoC/fYJr2G4ZYszF39cgLMt4htbqygzdYg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.settings/1.3.3/6212295216ea4f6150fd28804567dcce5e4cc6d7}
+    resolution: {integrity: sha512-d3pWiKguYFM5tjHYrrCM1ZkHzhFOAAq5EFbwUTsnq4vYOT60NvrBwoC/fYJr2G4ZYszF39cgLMt4htbqygzdYg==}
 
-  '@shapediver/viewer.shared.build-data@3.22.0-next.52':
-    resolution: {integrity: sha512-/Q9DJdhUOkgOKn3I+bHBpEv3YTK9vb8sxAElsXjQZSnnuYNty220bf7lhcc742rYtzMEIIq6Be/UdxPa3SPPHg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.build-data/3.22.0-next.52/b5f18f482f3e642f177e094c849c4e89d0288acb}
+  '@shapediver/viewer.shared.build-data@3.23.0':
+    resolution: {integrity: sha512-BJX8amgDaBuLjDkJEO20fqrUJEN4zyAqqRwypa50W+SixnADfWk2VdjPyBbH69Px2deDgoU6/MJA2Qx3qBsdLA==}
 
-  '@shapediver/viewer.shared.global-access-objects@3.22.0-next.52':
-    resolution: {integrity: sha512-zXxpzlrjQqsdB7Vosgbm0EiAGWr9fbFOdxXHH2aqhuAPgFYzgqeOQA8oI1oS1LOpw6yhb8+cih3RYbrX1E1DJw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.global-access-objects/3.22.0-next.52/58a299334b5158ce399c34b94b3e921ba462847a}
+  '@shapediver/viewer.shared.global-access-objects@3.23.0':
+    resolution: {integrity: sha512-ackUfJzjUJzM9jIS75oDORBWyJNoTozypWOM4PZLg1TZBE5VGBzi6OW+d2W2CDbhFD27VZy7BvRcgJsj0V6wew==}
 
-  '@shapediver/viewer.shared.math@3.22.0-next.52':
-    resolution: {integrity: sha512-jn2L5xG7uTbtSCKep5kld5IILbO2DrYrRI0w9qY2X6MCPap+z056wlVyeCA+f0kgPk3VuowwqwVJR2o+ZljTDw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.math/3.22.0-next.52/8f18eeb9a45c440ab30d981735ec7bef04a70974}
+  '@shapediver/viewer.shared.math@3.23.0':
+    resolution: {integrity: sha512-2kMy29RaaiB+pKy8crHziIFJhZGvYuLGJbHe5cNBp1X67HQ+ysD9ry5NFrK0r0Q8FXlkS1AN05JJSa7SWBSsVQ==}
 
-  '@shapediver/viewer.shared.node-tree@3.22.0-next.52':
-    resolution: {integrity: sha512-p+N4V0+21qUoo7QmOzv4Hig6gNSQlUrHmoEGRMaz3FDDr88tP4Qn6ujuoTpKt9DSb895Tq1ADHDTcxqbmLlW8w==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.node-tree/3.22.0-next.52/abae4cf5bd004530c3c71c5b1c957639c07aeb41}
+  '@shapediver/viewer.shared.node-tree@3.23.0':
+    resolution: {integrity: sha512-uuzwMrfbIeNmWFdd48QKSgx6hnhhapzGXZlnTl2iwQBVZp88oL0V2vq7CNGUk4oGvJEkROcCUWdlGbeaqMfLpA==}
 
-  '@shapediver/viewer.shared.services@3.22.0-next.52':
-    resolution: {integrity: sha512-NBhKm6UkU3/7jUpi+YnY905OExCUAtYQCFYSxujHbB1IHzvgYTDycDlCTlLwGBT1nsMy6MYSTo2AAqbte+3Nyg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.services/3.22.0-next.52/4d4683c8f790620aa5cded33e015834f29141827}
+  '@shapediver/viewer.shared.services@3.23.0':
+    resolution: {integrity: sha512-xucvdDHn0fbihw8bKFUjGmb5wJNGzQoFI1Q+MPkj9jPy5cZQoD30kXYM5GMfvq+2jaK8TRWXIzBiQlfTY7zfVw==}
 
-  '@shapediver/viewer.shared.types@3.22.0-next.52':
-    resolution: {integrity: sha512-eYnUgKWRIPT/g9itVWYdxYGksBQ0wznpKygGqh8rK/7M3t5/NzMNAK4d1dwEW4qMnACG9BQDt3ZEssNZNsGWxg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.shared.types/3.22.0-next.52/321b58bfc0354e8ab5ac435e454ce0075960140d}
+  '@shapediver/viewer.shared.types@3.23.0':
+    resolution: {integrity: sha512-fOQGj9i6/Oj8Vx4QO8nPJC/wdmYTIWUlBNMfB7962+4/WLVSiSIP4R3pRr1AJZJiOXMOq/XrxuAYRwYToT4SLQ==}
 
   '@shapediver/viewer.utils.mime-type@1.1.0':
     resolution: {integrity: sha512-KssQEsaUYiLkMCtbW/vd0CxjmP/8REAUejKL+fvjOrp1Z98MED31wYPeVbOXstFOtrCOdhMGM6mFIN2I4DMzfw==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.utils.mime-type/1.1.0/9bb9eb82ce3b2c71836a370d50aa570abcc65ec6}
 
-  '@shapediver/viewer.viewport@3.22.0-next.52':
-    resolution: {integrity: sha512-3ko1bzUBP2pY4zy2CqaoLkI7zE9p+5qii0xEfQNn70LtaveHww+motmS6kyzn9x7pvX7GF8F1PTWffSXCzEXXA==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer.viewport/3.22.0-next.52/fc5ed08b0d9e721ca107d0aeb52ad383165bb18e}
+  '@shapediver/viewer.viewport@3.23.0':
+    resolution: {integrity: sha512-Vouw32NhmaPnO/kDWOwIJcgf4SL5iF+D8rHoNpX7XbrIUn9mw0wOIf6kjeQeCb4dQfTB9NGjDsiidtTtqrkVBQ==}
 
-  '@shapediver/viewer@3.22.0-next.52':
-    resolution: {integrity: sha512-haAmdDn+MbTwd4wsH/A3XT2o3avFfsS7vyl2WfU62EKGazwTuJBB46tBBux8ZGJRPpUXIKq/9/S2/aYQwmXNNg==, tarball: https://npm.pkg.github.com/download/@shapediver/viewer/3.22.0-next.52/6a9d93ccac415168a59fbda95d12622da917af11}
+  '@shapediver/viewer@3.23.0':
+    resolution: {integrity: sha512-KVjj0JdMfq/8kwD+jpHF/Thffy+olM8/W5CXUbKspCKq0sehpaRC2/cJOHEVmVvSUlZ+MK35HhnfPXQYZWJQTA==}
 
   '@shikijs/engine-oniguruma@3.23.0':
     resolution: {integrity: sha512-1nWINwKXxKKLqPibT5f4pAFLej9oZzQTsby8942OTlsJzOBZ0MWKiwzMsd+jhzu8YPCHAswGnnN1YtQfirL35g==}
@@ -3723,9 +3729,9 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
-  minimatch@10.2.6:
-    resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
-    engines: {node: 18 || 20 || >=22}
+  minimatch@11.0.8:
+    resolution: {integrity: sha512-nFQuYSTVrGvysVBps5Ih+0BdnYFN/Cj3C816r6+p7yK+FHrVLGE4O4N9AFwykrlNlvM2HYt+Rad1Uiro6h88Ig==}
+    engines: {node: 20 || >=22}
 
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
@@ -5040,16 +5046,16 @@ snapshots:
 
   '@babel/compat-data@7.29.7': {}
 
-  '@babel/core@7.29.7':
+  '@babel/core@7.29.7(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
       '@babel/helper-compilation-targets': 7.29.7
-      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7)
+      '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
       '@babel/helpers': 7.29.7
       '@babel/parser': 7.29.7
       '@babel/template': 7.29.7
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@8.1.1)
       '@babel/types': 7.29.7
       '@jridgewell/remapping': 2.3.5
       convert-source-map: 2.0.0
@@ -5078,19 +5084,19 @@ snapshots:
 
   '@babel/helper-globals@7.29.7': {}
 
-  '@babel/helper-module-imports@7.29.7':
+  '@babel/helper-module-imports@7.29.7(supports-color@8.1.1)':
     dependencies:
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@8.1.1)
       '@babel/types': 7.29.7
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7)':
+  '@babel/helper-module-transforms@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)':
     dependencies:
-      '@babel/core': 7.29.7
-      '@babel/helper-module-imports': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@babel/helper-module-imports': 7.29.7(supports-color@8.1.1)
       '@babel/helper-validator-identifier': 7.29.7
-      '@babel/traverse': 7.29.7
+      '@babel/traverse': 7.29.7(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -5111,89 +5117,89 @@ snapshots:
     dependencies:
       '@babel/types': 7.29.7
 
-  '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-import-attributes@7.29.7(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-import-attributes@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
-  '@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7)':
+  '@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-plugin-utils': 7.29.7
 
   '@babel/runtime@7.29.10': {}
@@ -5206,7 +5212,7 @@ snapshots:
       '@babel/parser': 7.29.7
       '@babel/types': 7.29.7
 
-  '@babel/traverse@7.29.7':
+  '@babel/traverse@7.29.7(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.7
@@ -5290,9 +5296,9 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@emotion/babel-plugin@11.13.5':
+  '@emotion/babel-plugin@11.13.5(supports-color@8.1.1)':
     dependencies:
-      '@babel/helper-module-imports': 7.29.7
+      '@babel/helper-module-imports': 7.29.7(supports-color@8.1.1)
       '@babel/runtime': 7.29.7
       '@emotion/hash': 0.9.2
       '@emotion/memoize': 0.9.0
@@ -5318,10 +5324,10 @@ snapshots:
 
   '@emotion/memoize@0.9.0': {}
 
-  '@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)':
+  '@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@8.1.1)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@emotion/babel-plugin': 11.13.5
+      '@emotion/babel-plugin': 11.13.5(supports-color@8.1.1)
       '@emotion/cache': 11.14.0
       '@emotion/serialize': 1.3.3
       '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.1)
@@ -5432,18 +5438,18 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@eslint-community/eslint-utils@4.10.1(eslint@10.13.0)':
+  '@eslint-community/eslint-utils@4.10.1(eslint@10.13.0(supports-color@8.1.1))':
     dependencies:
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/config-array@0.23.5':
+  '@eslint/config-array@0.23.5(supports-color@8.1.1)':
     dependencies:
       '@eslint/object-schema': 3.0.5
       debug: 4.4.3(supports-color@8.1.1)
-      minimatch: 10.2.6
+      minimatch: 11.0.8
     transitivePeerDependencies:
       - supports-color
 
@@ -5455,9 +5461,9 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
 
-  '@eslint/js@10.0.1(eslint@10.13.0)':
+  '@eslint/js@10.0.1(eslint@10.13.0(supports-color@8.1.1))':
     optionalDependencies:
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
 
   '@eslint/object-schema@3.0.5': {}
 
@@ -5531,6 +5537,8 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
+  '@isaacs/nonrecursive-glob-match@1.1.0': {}
+
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
       camelcase: 5.3.1
@@ -5550,13 +5558,13 @@ snapshots:
       jest-util: 30.5.1
       slash: 3.0.0
 
-  '@jest/core@30.5.2(babel-plugin-macros@3.1.0)':
+  '@jest/core@30.5.2(babel-plugin-macros@3.1.0)(supports-color@8.1.1)':
     dependencies:
       '@jest/console': 30.5.2
       '@jest/pattern': 30.5.0
-      '@jest/reporters': 30.5.2
+      '@jest/reporters': 30.5.2(supports-color@8.1.1)
       '@jest/test-result': 30.5.2
-      '@jest/transform': 30.5.2
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
       '@types/node': 24.19.1
       ansi-escapes: 4.3.2
@@ -5566,15 +5574,15 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       graceful-fs: 4.2.11
       jest-changed-files: 30.5.1
-      jest-config: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)
+      jest-config: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       jest-haste-map: 30.5.1
       jest-message-util: 30.5.1
       jest-regex-util: 30.5.0
       jest-resolve: 30.5.1
-      jest-resolve-dependencies: 30.5.2
-      jest-runner: 30.5.2
-      jest-runtime: 30.5.2
-      jest-snapshot: 30.5.2
+      jest-resolve-dependencies: 30.5.2(supports-color@8.1.1)
+      jest-runner: 30.5.2(supports-color@8.1.1)
+      jest-runtime: 30.5.2(supports-color@8.1.1)
+      jest-snapshot: 30.5.2(supports-color@8.1.1)
       jest-util: 30.5.1
       jest-validate: 30.5.1
       jest-watcher: 30.5.2
@@ -5588,7 +5596,7 @@ snapshots:
 
   '@jest/diff-sequences@30.5.0': {}
 
-  '@jest/environment-jsdom-abstract@30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0)':
+  '@jest/environment-jsdom-abstract@30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0(supports-color@8.1.1))':
     dependencies:
       '@jest/environment': 30.5.2
       '@jest/fake-timers': 30.5.2
@@ -5597,7 +5605,7 @@ snapshots:
       '@types/node': 24.19.1
       jest-mock: 30.5.2
       jest-util: 30.5.1
-      jsdom: 26.1.0
+      jsdom: 26.1.0(supports-color@8.1.1)
 
   '@jest/environment@30.5.2':
     dependencies:
@@ -5610,10 +5618,10 @@ snapshots:
     dependencies:
       '@jest/get-type': 30.5.0
 
-  '@jest/expect@30.5.2':
+  '@jest/expect@30.5.2(supports-color@8.1.1)':
     dependencies:
       expect: 30.5.2
-      jest-snapshot: 30.5.2
+      jest-snapshot: 30.5.2(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -5628,10 +5636,10 @@ snapshots:
 
   '@jest/get-type@30.5.0': {}
 
-  '@jest/globals@30.5.2':
+  '@jest/globals@30.5.2(supports-color@8.1.1)':
     dependencies:
       '@jest/environment': 30.5.2
-      '@jest/expect': 30.5.2
+      '@jest/expect': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
       jest-mock: 30.5.2
     transitivePeerDependencies:
@@ -5642,12 +5650,12 @@ snapshots:
       '@types/node': 24.19.1
       jest-regex-util: 30.5.0
 
-  '@jest/reporters@30.5.2':
+  '@jest/reporters@30.5.2(supports-color@8.1.1)':
     dependencies:
       '@bcoe/v8-coverage': 0.2.3
       '@jest/console': 30.5.2
       '@jest/test-result': 30.5.2
-      '@jest/transform': 30.5.2
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
       '@jridgewell/trace-mapping': 0.3.31
       '@types/node': 24.19.1
@@ -5657,9 +5665,9 @@ snapshots:
       glob: 13.0.6
       graceful-fs: 4.2.11
       istanbul-lib-coverage: 3.2.2
-      istanbul-lib-instrument: 6.0.3
+      istanbul-lib-instrument: 6.0.3(supports-color@8.1.1)
       istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.6
+      istanbul-lib-source-maps: 5.0.6(supports-color@8.1.1)
       istanbul-reports: 3.2.0
       jest-message-util: 30.5.1
       jest-util: 30.5.1
@@ -5702,12 +5710,12 @@ snapshots:
       jest-haste-map: 30.5.1
       slash: 3.0.0
 
-  '@jest/transform@30.5.2':
+  '@jest/transform@30.5.2(supports-color@8.1.1)':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@jest/types': 30.5.1
       '@jridgewell/trace-mapping': 0.3.31
-      babel-plugin-istanbul: 8.0.0
+      babel-plugin-istanbul: 8.0.0(supports-color@8.1.1)
       chalk: 4.1.2
       convert-source-map: 2.0.0
       fast-json-stable-stringify: 2.1.0
@@ -5831,7 +5839,7 @@ snapshots:
       indent-string: 4.0.0
       is-wsl: 2.2.0
       lilconfig: 3.1.3
-      minimatch: 10.2.6
+      minimatch: 11.0.8
       semver: 7.8.5
       string-width: 4.2.3
       supports-color: 8.1.1
@@ -6183,254 +6191,254 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@shapediver/viewer.api.general@3.22.0-next.52':
+  '@shapediver/viewer.api.general@3.23.0':
     dependencies:
-      '@shapediver/viewer.data-engine.geometry-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
+      '@shapediver/viewer.data-engine.geometry-engine': 3.23.0
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.creation-control-center.session@3.22.0-next.52':
+  '@shapediver/viewer.creation-control-center.session@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.session-engine.session-engine': 3.22.0-next.52
+      '@shapediver/viewer.session-engine.session-engine': 3.23.0
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
 
-  '@shapediver/viewer.creation-control-center.viewport@3.22.0-next.52':
+  '@shapediver/viewer.creation-control-center.viewport@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.23.0
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
 
-  '@shapediver/viewer.data-engine.data-engine@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.data-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.data-engine.geometry-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.html-element-anchor-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.material-database-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.material-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.sdtf-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.tag3d-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.global-access-objects': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.data-engine.geometry-engine': 3.23.0
+      '@shapediver/viewer.data-engine.html-element-anchor-engine': 3.23.0
+      '@shapediver/viewer.data-engine.material-database-engine': 3.23.0
+      '@shapediver/viewer.data-engine.material-engine': 3.23.0
+      '@shapediver/viewer.data-engine.sdtf-engine': 3.23.0
+      '@shapediver/viewer.data-engine.tag3d-engine': 3.23.0
+      '@shapediver/viewer.shared.global-access-objects': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.data-engine.geometry-engine@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.geometry-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.data-engine.material-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.light-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.data-engine.material-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.light-engine': 3.23.0
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.data-engine.gltf-converter@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.gltf-converter@3.23.0':
     dependencies:
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.global-access-objects': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.global-access-objects': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.22.0-next.52':
-    dependencies:
-      '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
-      gl-matrix: 3.4.4
-
-  '@shapediver/viewer.data-engine.material-database-engine@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.html-element-anchor-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.data-engine.material-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.global-access-objects': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.data-engine.material-engine@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.material-database-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.data-engine.material-engine': 3.23.0
+      '@shapediver/viewer.shared.global-access-objects': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.data-engine.sdtf-engine@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.material-engine@3.23.0':
+    dependencies:
+      '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
+      gl-matrix: 3.4.4
+
+  '@shapediver/viewer.data-engine.sdtf-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
       '@shapediver/sdk.sdtf-primitives': 1.7.4
       '@shapediver/sdk.sdtf-v1': 1.9.0
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.data-engine.tag3d-engine@3.22.0-next.52':
+  '@shapediver/viewer.data-engine.tag3d-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.data-engine.geometry-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.global-access-objects': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.data-engine.geometry-engine': 3.23.0
+      '@shapediver/viewer.shared.global-access-objects': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.features.attribute-visualization@3.22.0-next.52':
+  '@shapediver/viewer.features.attribute-visualization@3.23.0':
     dependencies:
-      '@shapediver/viewer': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       detect-it: 4.0.1
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.features.drawing-tools@3.22.0-next.52':
+  '@shapediver/viewer.features.drawing-tools@3.23.0':
     dependencies:
-      '@shapediver/viewer': 3.22.0-next.52
-      '@shapediver/viewer.features.interaction': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer': 3.23.0
+      '@shapediver/viewer.features.interaction': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/three': 0.184.1
       gl-matrix: 3.4.4
       three: 0.184.0
 
-  '@shapediver/viewer.features.interaction@3.22.0-next.52':
+  '@shapediver/viewer.features.interaction@3.23.0':
     dependencies:
-      '@shapediver/viewer': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/three': 0.184.1
       detect-it: 4.0.1
       gl-matrix: 3.4.4
       three: 0.184.0
 
-  '@shapediver/viewer.features.transformation-tools@3.22.0-next.52':
+  '@shapediver/viewer.features.transformation-tools@3.23.0':
     dependencies:
-      '@shapediver/viewer': 3.22.0-next.52
-      '@shapediver/viewer.features.drawing-tools': 3.22.0-next.52
-      '@shapediver/viewer.features.interaction': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer': 3.23.0
+      '@shapediver/viewer.features.drawing-tools': 3.23.0
+      '@shapediver/viewer.features.interaction': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-restriction-engine': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/three': 0.184.1
       gl-matrix: 3.4.4
       three: 0.184.0
 
-  '@shapediver/viewer.rendering-engine.animation-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.animation-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@tweenjs/tween.js': 25.0.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.animation-frame-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
       '@tweenjs/tween.js': 25.0.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.rendering-engine.camera-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.camera-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@tweenjs/tween.js': 25.0.0
       detect-it: 4.0.1
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.rendering-engine.canvas-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.canvas-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.rendering-engine.intersection-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.intersection-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/three': 0.184.1
       detect-it: 4.0.1
       gl-matrix: 3.4.4
       three: 0.184.0
 
-  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.intersection-restriction-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/three': 0.184.1
       gl-matrix: 3.4.4
       three: 0.184.0
 
-  '@shapediver/viewer.rendering-engine.light-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.light-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.rendering-engine-threejs@3.23.0':
     dependencies:
-      '@shapediver/viewer.data-engine.gltf-converter': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.tag3d-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.animation-frame-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.canvas-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.intersection-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.light-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.global-access-objects': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.data-engine.gltf-converter': 3.23.0
+      '@shapediver/viewer.data-engine.tag3d-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.animation-frame-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.canvas-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.intersection-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.light-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.shared.global-access-objects': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@tweenjs/tween.js': 25.0.0
       '@types/stats.js': 0.17.4
       '@types/three': 0.184.1
@@ -6439,80 +6447,80 @@ snapshots:
       stats.js: 0.17.0
       three: 0.184.0
 
-  '@shapediver/viewer.rendering-engine.rendering-engine@3.22.0-next.52':
+  '@shapediver/viewer.rendering-engine.rendering-engine@3.23.0':
     dependencies:
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.session-engine.session-engine@3.22.0-next.52':
+  '@shapediver/viewer.session-engine.session-engine@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.global-access-objects': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.global-access-objects': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@shapediver/viewer.utils.mime-type': 1.1.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.session@3.22.0-next.52':
+  '@shapediver/viewer.session@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.api.general': 3.22.0-next.52
-      '@shapediver/viewer.creation-control-center.session': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.gltf-converter': 3.22.0-next.52
-      '@shapediver/viewer.session-engine.session-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.api.general': 3.23.0
+      '@shapediver/viewer.creation-control-center.session': 3.23.0
+      '@shapediver/viewer.data-engine.gltf-converter': 3.23.0
+      '@shapediver/viewer.session-engine.session-engine': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
 
   '@shapediver/viewer.settings@1.3.3':
     dependencies:
       uuid: 14.0.0
       zod: 4.6.7
 
-  '@shapediver/viewer.shared.build-data@3.22.0-next.52': {}
+  '@shapediver/viewer.shared.build-data@3.23.0': {}
 
-  '@shapediver/viewer.shared.global-access-objects@3.22.0-next.52':
+  '@shapediver/viewer.shared.global-access-objects@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
+      '@shapediver/viewer.shared.node-tree': 3.23.0
 
-  '@shapediver/viewer.shared.math@3.22.0-next.52':
+  '@shapediver/viewer.shared.math@3.23.0':
     dependencies:
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.shared.node-tree@3.22.0-next.52':
+  '@shapediver/viewer.shared.node-tree@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
       '@shapediver/sdk.sdtf-primitives': 1.7.4
       '@shapediver/sdk.sdtf-v1': 1.9.0
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       gl-matrix: 3.4.4
 
-  '@shapediver/viewer.shared.services@3.22.0-next.52':
+  '@shapediver/viewer.shared.services@3.23.0':
     dependencies:
       '@ctrl/tinycolor': 4.2.0
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/ua-parser-js': 0.7.39
       dompurify: 3.4.17
       gl-matrix: 3.4.4
       ua-parser-js: 1.0.39
       uuid: 14.0.0
 
-  '@shapediver/viewer.shared.types@3.22.0-next.52':
+  '@shapediver/viewer.shared.types@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
       '@shapediver/sdk.sdtf-primitives': 1.7.4
@@ -6522,52 +6530,52 @@ snapshots:
 
   '@shapediver/viewer.utils.mime-type@1.1.0': {}
 
-  '@shapediver/viewer.viewport@3.22.0-next.52':
+  '@shapediver/viewer.viewport@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.api.general': 3.22.0-next.52
-      '@shapediver/viewer.creation-control-center.viewport': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.data-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.geometry-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.gltf-converter': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.material-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.animation-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.light-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.22.0-next.52
+      '@shapediver/viewer.api.general': 3.23.0
+      '@shapediver/viewer.creation-control-center.viewport': 3.23.0
+      '@shapediver/viewer.data-engine.data-engine': 3.23.0
+      '@shapediver/viewer.data-engine.geometry-engine': 3.23.0
+      '@shapediver/viewer.data-engine.gltf-converter': 3.23.0
+      '@shapediver/viewer.data-engine.material-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.animation-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.light-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.23.0
       '@shapediver/viewer.settings': 1.3.3
-      '@shapediver/viewer.shared.build-data': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
+      '@shapediver/viewer.shared.build-data': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
       '@types/qrcode': 1.5.6
       '@types/three': 0.184.1
       gl-matrix: 3.4.4
       qrcode: 1.5.4
       three: 0.184.0
 
-  '@shapediver/viewer@3.22.0-next.52':
+  '@shapediver/viewer@3.23.0':
     dependencies:
       '@shapediver/sdk.geometry-api-sdk-v2': 4.2.2
-      '@shapediver/viewer.api.general': 3.22.0-next.52
-      '@shapediver/viewer.creation-control-center.session': 3.22.0-next.52
-      '@shapediver/viewer.creation-control-center.viewport': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.data-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.geometry-engine': 3.22.0-next.52
-      '@shapediver/viewer.data-engine.material-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.camera-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.light-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine': 3.22.0-next.52
-      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.22.0-next.52
-      '@shapediver/viewer.session': 3.22.0-next.52
-      '@shapediver/viewer.session-engine.session-engine': 3.22.0-next.52
-      '@shapediver/viewer.shared.math': 3.22.0-next.52
-      '@shapediver/viewer.shared.node-tree': 3.22.0-next.52
-      '@shapediver/viewer.shared.services': 3.22.0-next.52
-      '@shapediver/viewer.shared.types': 3.22.0-next.52
-      '@shapediver/viewer.viewport': 3.22.0-next.52
+      '@shapediver/viewer.api.general': 3.23.0
+      '@shapediver/viewer.creation-control-center.session': 3.23.0
+      '@shapediver/viewer.creation-control-center.viewport': 3.23.0
+      '@shapediver/viewer.data-engine.data-engine': 3.23.0
+      '@shapediver/viewer.data-engine.geometry-engine': 3.23.0
+      '@shapediver/viewer.data-engine.material-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.camera-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.light-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine': 3.23.0
+      '@shapediver/viewer.rendering-engine.rendering-engine-threejs': 3.23.0
+      '@shapediver/viewer.session': 3.23.0
+      '@shapediver/viewer.session-engine.session-engine': 3.23.0
+      '@shapediver/viewer.shared.math': 3.23.0
+      '@shapediver/viewer.shared.node-tree': 3.23.0
+      '@shapediver/viewer.shared.services': 3.23.0
+      '@shapediver/viewer.shared.types': 3.23.0
+      '@shapediver/viewer.viewport': 3.23.0
 
   '@shikijs/engine-oniguruma@3.23.0':
     dependencies:
@@ -6603,54 +6611,54 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@svgr/babel-plugin-add-jsx-attribute@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-add-jsx-attribute@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-remove-jsx-attribute@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-remove-jsx-attribute@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-remove-jsx-empty-expression@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-remove-jsx-empty-expression@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-replace-jsx-attribute-value@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-replace-jsx-attribute-value@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-svg-dynamic-title@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-svg-dynamic-title@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-svg-em-dimensions@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-svg-em-dimensions@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-transform-react-native-svg@8.1.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-transform-react-native-svg@8.1.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-plugin-transform-svg-component@8.0.0(@babel/core@7.29.7)':
+  '@svgr/babel-plugin-transform-svg-component@8.0.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
 
-  '@svgr/babel-preset@8.1.0(@babel/core@7.29.7)':
+  '@svgr/babel-preset@8.1.0(@babel/core@7.29.7(supports-color@8.1.1))':
     dependencies:
-      '@babel/core': 7.29.7
-      '@svgr/babel-plugin-add-jsx-attribute': 8.0.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-remove-jsx-attribute': 8.0.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-remove-jsx-empty-expression': 8.0.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-replace-jsx-attribute-value': 8.0.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-svg-dynamic-title': 8.0.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-svg-em-dimensions': 8.0.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-transform-react-native-svg': 8.1.0(@babel/core@7.29.7)
-      '@svgr/babel-plugin-transform-svg-component': 8.0.0(@babel/core@7.29.7)
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@svgr/babel-plugin-add-jsx-attribute': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-remove-jsx-attribute': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-remove-jsx-empty-expression': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-replace-jsx-attribute-value': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-svg-dynamic-title': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-svg-em-dimensions': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-transform-react-native-svg': 8.1.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/babel-plugin-transform-svg-component': 8.0.0(@babel/core@7.29.7(supports-color@8.1.1))
 
-  '@svgr/core@8.1.0(typescript@6.0.3)':
+  '@svgr/core@8.1.0(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
-      '@babel/core': 7.29.7
-      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7)
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7(supports-color@8.1.1))
       camelcase: 6.3.0
       cosmiconfig: 8.3.6(typescript@6.0.3)
       snake-case: 3.0.4
@@ -6663,11 +6671,11 @@ snapshots:
       '@babel/types': 7.29.7
       entities: 4.5.0
 
-  '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(typescript@6.0.3))':
+  '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(supports-color@8.1.1)(typescript@6.0.3))(supports-color@8.1.1)':
     dependencies:
-      '@babel/core': 7.29.7
-      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7)
-      '@svgr/core': 8.1.0(typescript@6.0.3)
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7(supports-color@8.1.1))
+      '@svgr/core': 8.1.0(supports-color@8.1.1)(typescript@6.0.3)
       '@svgr/hast-util-to-babel-ast': 8.0.0
       svg-parser: 2.0.4
     transitivePeerDependencies:
@@ -6898,15 +6906,15 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.13.0)(typescript@6.0.3))(eslint@10.13.0)(typescript@6.0.3)':
+  '@typescript-eslint/eslint-plugin@8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.72.1(eslint@10.13.0)(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@typescript-eslint/scope-manager': 8.72.1
-      '@typescript-eslint/type-utils': 8.72.1(eslint@10.13.0)(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.72.1(eslint@10.13.0)(typescript@6.0.3)
+      '@typescript-eslint/type-utils': 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@typescript-eslint/visitor-keys': 8.72.1
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
       ignore: 7.0.14
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(typescript@6.0.3)
@@ -6914,19 +6922,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.72.1(eslint@10.13.0)(typescript@6.0.3)':
+  '@typescript-eslint/parser@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.72.1
       '@typescript-eslint/types': 8.72.1
-      '@typescript-eslint/typescript-estree': 8.72.1(typescript@6.0.3)
+      '@typescript-eslint/typescript-estree': 8.72.1(supports-color@8.1.1)(typescript@6.0.3)
       '@typescript-eslint/visitor-keys': 8.72.1
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.72.1(typescript@6.0.3)':
+  '@typescript-eslint/project-service@8.72.1(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.72.1(typescript@6.0.3)
       '@typescript-eslint/types': 8.72.1
@@ -6944,13 +6952,13 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  '@typescript-eslint/type-utils@8.72.1(eslint@10.13.0)(typescript@6.0.3)':
+  '@typescript-eslint/type-utils@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/types': 8.72.1
-      '@typescript-eslint/typescript-estree': 8.72.1(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.72.1(eslint@10.13.0)(typescript@6.0.3)
+      '@typescript-eslint/typescript-estree': 8.72.1(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       debug: 4.4.3(supports-color@8.1.1)
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -6958,14 +6966,14 @@ snapshots:
 
   '@typescript-eslint/types@8.72.1': {}
 
-  '@typescript-eslint/typescript-estree@8.72.1(typescript@6.0.3)':
+  '@typescript-eslint/typescript-estree@8.72.1(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/project-service': 8.72.1(typescript@6.0.3)
+      '@typescript-eslint/project-service': 8.72.1(supports-color@8.1.1)(typescript@6.0.3)
       '@typescript-eslint/tsconfig-utils': 8.72.1(typescript@6.0.3)
       '@typescript-eslint/types': 8.72.1
       '@typescript-eslint/visitor-keys': 8.72.1
       debug: 4.4.3(supports-color@8.1.1)
-      minimatch: 10.2.6
+      minimatch: 11.0.8
       semver: 7.8.5
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@6.0.3)
@@ -6973,13 +6981,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.72.1(eslint@10.13.0)(typescript@6.0.3)':
+  '@typescript-eslint/utils@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0)
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0(supports-color@8.1.1))
       '@typescript-eslint/scope-manager': 8.72.1
       '@typescript-eslint/types': 8.72.1
-      '@typescript-eslint/typescript-estree': 8.72.1(typescript@6.0.3)
-      eslint: 10.13.0
+      '@typescript-eslint/typescript-estree': 8.72.1(supports-color@8.1.1)(typescript@6.0.3)
+      eslint: 10.13.0(supports-color@8.1.1)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
@@ -6989,7 +6997,7 @@ snapshots:
       '@typescript-eslint/types': 8.72.1
       eslint-visitor-keys: 5.0.1
 
-  '@typescript/vfs@1.6.4(typescript@5.9.3)':
+  '@typescript/vfs@1.6.4(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       typescript: 5.9.3
@@ -7192,25 +7200,25 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  babel-jest@30.5.2(@babel/core@7.29.7):
+  babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
-      '@babel/core': 7.29.7
-      '@jest/transform': 30.5.2
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@types/babel__core': 7.20.5
-      babel-plugin-istanbul: 8.0.0
-      babel-preset-jest: 30.5.0(@babel/core@7.29.7)
+      babel-plugin-istanbul: 8.0.0(supports-color@8.1.1)
+      babel-preset-jest: 30.5.0(@babel/core@7.29.7(supports-color@8.1.1))
       chalk: 4.1.2
       graceful-fs: 4.2.11
       slash: 3.0.0
     transitivePeerDependencies:
       - supports-color
 
-  babel-plugin-istanbul@8.0.0:
+  babel-plugin-istanbul@8.0.0(supports-color@8.1.1):
     dependencies:
       '@babel/helper-plugin-utils': 7.29.7
       '@istanbuljs/load-nyc-config': 1.1.0
       '@istanbuljs/schema': 0.1.6
-      istanbul-lib-instrument: 6.0.3
+      istanbul-lib-instrument: 6.0.3(supports-color@8.1.1)
       test-exclude: 7.0.2
     transitivePeerDependencies:
       - supports-color
@@ -7225,30 +7233,30 @@ snapshots:
       cosmiconfig: 7.1.0
       resolve: 1.22.12
 
-  babel-preset-current-node-syntax@1.2.0(@babel/core@7.29.7):
+  babel-preset-current-node-syntax@1.2.0(@babel/core@7.29.7(supports-color@8.1.1)):
     dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.29.7)
-      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.29.7)
-      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.29.7)
-      '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.29.7)
-      '@babel/plugin-syntax-import-attributes': 7.29.7(@babel/core@7.29.7)
-      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.29.7)
-      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.29.7)
-      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.29.7)
-      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.29.7)
-      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.29.7)
-      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.29.7)
-      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.29.7)
-      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.29.7)
-      '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.29.7)
-      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.29.7)
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-import-attributes': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.29.7(supports-color@8.1.1))
 
-  babel-preset-jest@30.5.0(@babel/core@7.29.7):
+  babel-preset-jest@30.5.0(@babel/core@7.29.7(supports-color@8.1.1)):
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       babel-plugin-jest-hoist: 30.5.0
-      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.29.7)
+      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.29.7(supports-color@8.1.1))
 
   bail@2.0.2: {}
 
@@ -7774,20 +7782,20 @@ snapshots:
 
   escape-string-regexp@5.0.0: {}
 
-  eslint-config-prettier@10.1.8(eslint@10.13.0):
+  eslint-config-prettier@10.1.8(eslint@10.13.0(supports-color@8.1.1)):
     dependencies:
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
 
-  eslint-plugin-prettier@5.5.7(eslint-config-prettier@10.1.8(eslint@10.13.0))(eslint@10.13.0)(prettier@3.9.10):
+  eslint-plugin-prettier@5.5.7(eslint-config-prettier@10.1.8(eslint@10.13.0(supports-color@8.1.1)))(eslint@10.13.0(supports-color@8.1.1))(prettier@3.9.10):
     dependencies:
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
       prettier: 3.9.10
       prettier-linter-helpers: 1.0.1
       synckit: 0.12.3
     optionalDependencies:
-      eslint-config-prettier: 10.1.8(eslint@10.13.0)
+      eslint-config-prettier: 10.1.8(eslint@10.13.0(supports-color@8.1.1))
 
-  eslint-plugin-react@7.37.5(eslint@10.13.0):
+  eslint-plugin-react@7.37.5(eslint@10.13.0(supports-color@8.1.1)):
     dependencies:
       array-includes: 3.1.9
       array.prototype.findlast: 1.2.5
@@ -7795,7 +7803,7 @@ snapshots:
       array.prototype.tosorted: 1.1.4
       doctrine: 2.1.0
       es-iterator-helpers: 1.3.3
-      eslint: 10.13.0
+      eslint: 10.13.0(supports-color@8.1.1)
       estraverse: 5.3.0
       hasown: 2.0.4
       jsx-ast-utils: 3.3.5
@@ -7820,11 +7828,11 @@ snapshots:
 
   eslint-visitor-keys@5.0.1: {}
 
-  eslint@10.13.0:
+  eslint@10.13.0(supports-color@8.1.1):
     dependencies:
-      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0)
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0(supports-color@8.1.1))
       '@eslint-community/regexpp': 4.12.2
-      '@eslint/config-array': 0.23.5
+      '@eslint/config-array': 0.23.5(supports-color@8.1.1)
       '@eslint/config-helpers': 0.7.0
       '@eslint/core': 1.2.1
       '@eslint/plugin-kit': 0.7.3
@@ -7849,7 +7857,7 @@ snapshots:
       imurmurhash: 0.1.4
       is-glob: 4.0.3
       json-stable-stringify-without-jsonify: 1.0.1
-      minimatch: 10.2.6
+      minimatch: 11.0.8
       natural-compare: 1.4.0
       optionator: 0.9.4
     transitivePeerDependencies:
@@ -8035,7 +8043,7 @@ snapshots:
 
   glob@13.0.6:
     dependencies:
-      minimatch: 10.2.6
+      minimatch: 11.0.8
       minipass: 7.1.3
       path-scurry: 2.0.2
 
@@ -8085,7 +8093,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hast-util-to-jsx-runtime@2.3.6:
+  hast-util-to-jsx-runtime@2.3.6(supports-color@8.1.1):
     dependencies:
       '@types/estree': 1.0.9
       '@types/hast': 3.0.5
@@ -8094,9 +8102,9 @@ snapshots:
       devlop: 1.1.0
       estree-util-is-identifier-name: 3.0.0
       hast-util-whitespace: 3.0.0
-      mdast-util-mdx-expression: 2.0.1
-      mdast-util-mdx-jsx: 3.2.0
-      mdast-util-mdxjs-esm: 2.0.1
+      mdast-util-mdx-expression: 2.0.1(supports-color@8.1.1)
+      mdast-util-mdx-jsx: 3.2.0(supports-color@8.1.1)
+      mdast-util-mdxjs-esm: 2.0.1(supports-color@8.1.1)
       property-information: 7.2.0
       space-separated-tokens: 2.0.2
       style-to-js: 1.1.21
@@ -8125,14 +8133,14 @@ snapshots:
 
   html-url-attributes@3.0.1: {}
 
-  http-proxy-agent@7.0.2:
+  http-proxy-agent@7.0.2(supports-color@8.1.1):
     dependencies:
       agent-base: 7.1.4
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
-  https-proxy-agent@7.0.6:
+  https-proxy-agent@7.0.6(supports-color@8.1.1):
     dependencies:
       agent-base: 7.1.4
       debug: 4.4.3(supports-color@8.1.1)
@@ -8324,9 +8332,9 @@ snapshots:
 
   istanbul-lib-coverage@3.2.2: {}
 
-  istanbul-lib-instrument@6.0.3:
+  istanbul-lib-instrument@6.0.3(supports-color@8.1.1):
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/parser': 7.29.7
       '@istanbuljs/schema': 0.1.6
       istanbul-lib-coverage: 3.2.2
@@ -8340,7 +8348,7 @@ snapshots:
       make-dir: 4.0.0
       supports-color: 7.2.0
 
-  istanbul-lib-source-maps@5.0.6:
+  istanbul-lib-source-maps@5.0.6(supports-color@8.1.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       debug: 4.4.3(supports-color@8.1.1)
@@ -8380,10 +8388,10 @@ snapshots:
       jest-util: 30.5.1
       p-limit: 3.1.0
 
-  jest-circus@30.5.2(babel-plugin-macros@3.1.0):
+  jest-circus@30.5.2(babel-plugin-macros@3.1.0)(supports-color@8.1.1):
     dependencies:
       '@jest/environment': 30.5.2
-      '@jest/expect': 30.5.2
+      '@jest/expect': 30.5.2(supports-color@8.1.1)
       '@jest/test-result': 30.5.2
       '@jest/types': 30.5.1
       '@types/node': 24.19.1
@@ -8394,8 +8402,8 @@ snapshots:
       jest-each: 30.5.2
       jest-matcher-utils: 30.5.2
       jest-message-util: 30.5.1
-      jest-runtime: 30.5.2
-      jest-snapshot: 30.5.2
+      jest-runtime: 30.5.2(supports-color@8.1.1)
+      jest-snapshot: 30.5.2(supports-color@8.1.1)
       jest-util: 30.5.1
       p-limit: 3.1.0
       pretty-format: 30.5.1
@@ -8406,15 +8414,15 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0):
+  jest-cli@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1):
     dependencies:
-      '@jest/core': 30.5.2(babel-plugin-macros@3.1.0)
+      '@jest/core': 30.5.2(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       '@jest/test-result': 30.5.2
       '@jest/types': 30.5.1
       chalk: 4.1.2
       exit-x: 0.2.2
       import-local: 3.2.0
-      jest-config: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)
+      jest-config: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       jest-util: 30.5.1
       jest-validate: 30.5.1
       yargs: 17.7.2
@@ -8425,25 +8433,25 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-config@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0):
+  jest-config@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1):
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@jest/get-type': 30.5.0
       '@jest/pattern': 30.5.0
       '@jest/test-sequencer': 30.5.2
       '@jest/types': 30.5.1
-      babel-jest: 30.5.2(@babel/core@7.29.7)
+      babel-jest: 30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
       chalk: 4.1.2
       ci-info: 4.4.0
       deepmerge: 4.3.1
       glob: 13.0.6
       graceful-fs: 4.2.11
-      jest-circus: 30.5.2(babel-plugin-macros@3.1.0)
+      jest-circus: 30.5.2(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       jest-docblock: 30.5.0
       jest-environment-node: 30.5.2
       jest-regex-util: 30.5.0
       jest-resolve: 30.5.1
-      jest-runner: 30.5.2
+      jest-runner: 30.5.2(supports-color@8.1.1)
       jest-util: 30.5.1
       jest-validate: 30.5.1
       parse-json: 5.2.0
@@ -8476,12 +8484,12 @@ snapshots:
       jest-util: 30.5.1
       pretty-format: 30.5.1
 
-  jest-environment-jsdom@30.5.2:
+  jest-environment-jsdom@30.5.2(supports-color@8.1.1):
     dependencies:
       '@jest/environment': 30.5.2
-      '@jest/environment-jsdom-abstract': 30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0)
+      '@jest/environment-jsdom-abstract': 30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0(supports-color@8.1.1))
       '@types/jsdom': 21.1.7
-      jsdom: 26.1.0
+      jsdom: 26.1.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -8545,10 +8553,10 @@ snapshots:
 
   jest-regex-util@30.5.0: {}
 
-  jest-resolve-dependencies@30.5.2:
+  jest-resolve-dependencies@30.5.2(supports-color@8.1.1):
     dependencies:
       jest-regex-util: 30.5.0
-      jest-snapshot: 30.5.2
+      jest-snapshot: 30.5.2(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -8562,13 +8570,13 @@ snapshots:
       slash: 3.0.0
       unrs-resolver: 1.12.2
 
-  jest-runner@30.5.2:
+  jest-runner@30.5.2(supports-color@8.1.1):
     dependencies:
       '@jest/console': 30.5.2
       '@jest/environment': 30.5.2
       '@jest/source-map': 30.5.2
       '@jest/test-result': 30.5.2
-      '@jest/transform': 30.5.2
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
       '@types/node': 24.19.1
       chalk: 4.1.2
@@ -8581,7 +8589,7 @@ snapshots:
       jest-leak-detector: 30.5.1
       jest-message-util: 30.5.1
       jest-resolve: 30.5.1
-      jest-runtime: 30.5.2
+      jest-runtime: 30.5.2(supports-color@8.1.1)
       jest-util: 30.5.1
       jest-watcher: 30.5.2
       jest-worker: 30.5.1
@@ -8589,14 +8597,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jest-runtime@30.5.2:
+  jest-runtime@30.5.2(supports-color@8.1.1):
     dependencies:
       '@jest/environment': 30.5.2
       '@jest/fake-timers': 30.5.2
-      '@jest/globals': 30.5.2
+      '@jest/globals': 30.5.2(supports-color@8.1.1)
       '@jest/source-map': 30.5.2
       '@jest/test-result': 30.5.2
-      '@jest/transform': 30.5.2
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
       '@types/node': 24.19.1
       chalk: 4.1.2
@@ -8610,26 +8618,26 @@ snapshots:
       jest-mock: 30.5.2
       jest-regex-util: 30.5.0
       jest-resolve: 30.5.1
-      jest-snapshot: 30.5.2
+      jest-snapshot: 30.5.2(supports-color@8.1.1)
       jest-util: 30.5.1
       slash: 3.0.0
       strip-bom: 4.0.0
     transitivePeerDependencies:
       - supports-color
 
-  jest-snapshot@30.5.2:
+  jest-snapshot@30.5.2(supports-color@8.1.1):
     dependencies:
-      '@babel/core': 7.29.7
+      '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/generator': 7.29.7
-      '@babel/plugin-syntax-jsx': 7.29.7(@babel/core@7.29.7)
-      '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7)
+      '@babel/plugin-syntax-jsx': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
+      '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
       '@babel/types': 7.29.7
       '@jest/expect-utils': 30.5.2
       '@jest/get-type': 30.5.0
       '@jest/snapshot-utils': 30.5.1
-      '@jest/transform': 30.5.2
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
-      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.29.7)
+      babel-preset-current-node-syntax: 1.2.0(@babel/core@7.29.7(supports-color@8.1.1))
       chalk: 4.1.2
       expect: 30.5.2
       graceful-fs: 4.2.11
@@ -8680,12 +8688,12 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0):
+  jest@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1):
     dependencies:
-      '@jest/core': 30.5.2(babel-plugin-macros@3.1.0)
+      '@jest/core': 30.5.2(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       '@jest/types': 30.5.1
       import-local: 3.2.0
-      jest-cli: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)
+      jest-cli: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -8704,14 +8712,14 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@26.1.0:
+  jsdom@26.1.0(supports-color@8.1.1):
     dependencies:
       cssstyle: 4.6.0
       data-urls: 5.0.0
       decimal.js: 10.6.0
       html-encoding-sniffer: 4.0.0
-      http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.6
+      http-proxy-agent: 7.0.2(supports-color@8.1.1)
+      https-proxy-agent: 7.0.6(supports-color@8.1.1)
       is-potential-custom-element-name: 1.0.1
       nwsapi: 2.2.24
       parse5: 7.3.0
@@ -8902,13 +8910,13 @@ snapshots:
 
   math-intrinsics@1.1.0: {}
 
-  mdast-util-directive@3.1.0:
+  mdast-util-directive@3.1.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
       ccount: 2.0.1
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
       parse-entities: 4.0.2
       stringify-entities: 4.0.4
@@ -8923,14 +8931,14 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit-parents: 6.1.0
 
-  mdast-util-from-markdown@2.0.3:
+  mdast-util-from-markdown@2.0.3(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
       decode-named-character-reference: 1.3.0
       devlop: 1.1.0
       mdast-util-to-string: 4.0.0
-      micromark: 4.0.2
+      micromark: 4.0.2(supports-color@8.1.1)
       micromark-util-decode-numeric-character-reference: 2.0.2
       micromark-util-decode-string: 2.0.1
       micromark-util-normalize-identifier: 2.0.1
@@ -8948,67 +8956,67 @@ snapshots:
       mdast-util-find-and-replace: 3.0.2
       micromark-util-character: 2.1.1
 
-  mdast-util-gfm-footnote@2.1.0:
+  mdast-util-gfm-footnote@2.1.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
       micromark-util-normalize-identifier: 2.0.1
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-gfm-strikethrough@2.0.0:
+  mdast-util-gfm-strikethrough@2.0.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-gfm-table@2.0.0:
+  mdast-util-gfm-table@2.0.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
       markdown-table: 3.0.4
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-gfm-task-list-item@2.0.0:
+  mdast-util-gfm-task-list-item@2.0.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-gfm@3.1.0:
+  mdast-util-gfm@3.1.0(supports-color@8.1.1):
     dependencies:
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-gfm-autolink-literal: 2.0.1
-      mdast-util-gfm-footnote: 2.1.0
-      mdast-util-gfm-strikethrough: 2.0.0
-      mdast-util-gfm-table: 2.0.0
-      mdast-util-gfm-task-list-item: 2.0.0
+      mdast-util-gfm-footnote: 2.1.0(supports-color@8.1.1)
+      mdast-util-gfm-strikethrough: 2.0.0(supports-color@8.1.1)
+      mdast-util-gfm-table: 2.0.0(supports-color@8.1.1)
+      mdast-util-gfm-task-list-item: 2.0.0(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-mdx-expression@2.0.1:
+  mdast-util-mdx-expression@2.0.1(supports-color@8.1.1):
     dependencies:
       '@types/estree-jsx': 1.0.5
       '@types/hast': 3.0.5
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-mdx-jsx@3.2.0:
+  mdast-util-mdx-jsx@3.2.0(supports-color@8.1.1):
     dependencies:
       '@types/estree-jsx': 1.0.5
       '@types/hast': 3.0.5
@@ -9016,7 +9024,7 @@ snapshots:
       '@types/unist': 3.0.3
       ccount: 2.0.1
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
       parse-entities: 4.0.2
       stringify-entities: 4.0.4
@@ -9025,13 +9033,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  mdast-util-mdxjs-esm@2.0.1:
+  mdast-util-mdxjs-esm@2.0.1(supports-color@8.1.1):
     dependencies:
       '@types/estree-jsx': 1.0.5
       '@types/hast': 3.0.5
       '@types/mdast': 4.0.4
       devlop: 1.1.0
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       mdast-util-to-markdown: 2.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9254,7 +9262,7 @@ snapshots:
 
   micromark-util-types@2.0.2: {}
 
-  micromark@4.0.2:
+  micromark@4.0.2(supports-color@8.1.1):
     dependencies:
       '@types/debug': 4.1.13
       debug: 4.4.3(supports-color@8.1.1)
@@ -9282,8 +9290,9 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  minimatch@10.2.6:
+  minimatch@11.0.8:
     dependencies:
+      '@isaacs/nonrecursive-glob-match': 1.1.0
       brace-expansion: 5.0.12
 
   minimatch@3.1.5:
@@ -9612,17 +9621,17 @@ snapshots:
 
   react-is@19.3.1: {}
 
-  react-markdown@10.1.0(@types/react@19.3.0)(react@19.3.1):
+  react-markdown@10.1.0(@types/react@19.3.0)(react@19.3.1)(supports-color@8.1.1):
     dependencies:
       '@types/hast': 3.0.5
       '@types/mdast': 4.0.4
       '@types/react': 19.3.0
       devlop: 1.1.0
-      hast-util-to-jsx-runtime: 2.3.6
+      hast-util-to-jsx-runtime: 2.3.6(supports-color@8.1.1)
       html-url-attributes: 3.0.1
       mdast-util-to-hast: 13.2.1
       react: 19.3.1
-      remark-parse: 11.0.0
+      remark-parse: 11.0.0(supports-color@8.1.1)
       remark-rehype: 11.1.2
       unified: 11.0.5
       unist-util-visit: 5.2.0
@@ -9735,30 +9744,30 @@ snapshots:
       gopd: 1.2.0
       set-function-name: 2.0.2
 
-  remark-directive@4.0.0:
+  remark-directive@4.0.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-directive: 3.1.0
+      mdast-util-directive: 3.1.0(supports-color@8.1.1)
       micromark-extension-directive: 4.0.0
       unified: 11.0.5
     transitivePeerDependencies:
       - supports-color
 
-  remark-gfm@4.0.1:
+  remark-gfm@4.0.1(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-gfm: 3.1.0
+      mdast-util-gfm: 3.1.0(supports-color@8.1.1)
       micromark-extension-gfm: 3.0.0
-      remark-parse: 11.0.0
+      remark-parse: 11.0.0(supports-color@8.1.1)
       remark-stringify: 11.0.0
       unified: 11.0.5
     transitivePeerDependencies:
       - supports-color
 
-  remark-parse@11.0.0:
+  remark-parse@11.0.0(supports-color@8.1.1):
     dependencies:
       '@types/mdast': 4.0.4
-      mdast-util-from-markdown: 2.0.3
+      mdast-util-from-markdown: 2.0.3(supports-color@8.1.1)
       micromark-util-types: 2.0.2
       unified: 11.0.5
     transitivePeerDependencies:
@@ -10114,7 +10123,7 @@ snapshots:
     dependencies:
       '@istanbuljs/schema': 0.1.6
       glob: 10.5.0
-      minimatch: 10.2.6
+      minimatch: 11.0.8
 
   text-camel-case@1.2.11:
     dependencies:
@@ -10240,12 +10249,12 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  ts-jest@29.4.15(@babel/core@7.29.7)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0))(typescript@6.0.3):
+  ts-jest@29.4.15(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.2)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1))(typescript@6.0.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       handlebars: 4.7.10
-      jest: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)
+      jest: 30.5.2(@types/node@24.19.1)(babel-plugin-macros@3.1.0)(supports-color@8.1.1)
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
@@ -10254,18 +10263,18 @@ snapshots:
       typescript: 6.0.3
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@babel/core': 7.29.7
-      '@jest/transform': 30.5.2
+      '@babel/core': 7.29.7(supports-color@8.1.1)
+      '@jest/transform': 30.5.2(supports-color@8.1.1)
       '@jest/types': 30.5.1
-      babel-jest: 30.5.2(@babel/core@7.29.7)
+      babel-jest: 30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
       esbuild: 0.28.2
       jest-util: 30.5.1
 
-  ts-to-zod@5.1.0:
+  ts-to-zod@5.1.0(supports-color@8.1.1):
     dependencies:
       '@clack/prompts': 1.0.0-alpha.4
       '@oclif/core': 4.11.6
-      '@typescript/vfs': 1.6.4(typescript@5.9.3)
+      '@typescript/vfs': 1.6.4(supports-color@8.1.1)(typescript@5.9.3)
       chokidar: 4.0.3
       listr2: 9.0.5
       slash: 5.1.0
@@ -10348,17 +10357,17 @@ snapshots:
       '@gerrit0/mini-shiki': 3.23.0
       lunr: 2.3.9
       markdown-it: 14.3.3
-      minimatch: 10.2.6
+      minimatch: 11.0.8
       typescript: 6.0.3
       yaml: 2.9.1
 
-  typescript-eslint@8.72.1(eslint@10.13.0)(typescript@6.0.3):
+  typescript-eslint@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.13.0)(typescript@6.0.3))(eslint@10.13.0)(typescript@6.0.3)
-      '@typescript-eslint/parser': 8.72.1(eslint@10.13.0)(typescript@6.0.3)
-      '@typescript-eslint/typescript-estree': 8.72.1(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.72.1(eslint@10.13.0)(typescript@6.0.3)
-      eslint: 10.13.0
+      '@typescript-eslint/eslint-plugin': 8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/typescript-estree': 8.72.1(supports-color@8.1.1)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.72.1(eslint@10.13.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      eslint: 10.13.0(supports-color@8.1.1)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
@@ -10513,11 +10522,11 @@ snapshots:
 
   vite-bundle-analyzer@1.3.9: {}
 
-  vite-plugin-svgr@5.2.0(typescript@6.0.3)(vite@8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1)):
+  vite-plugin-svgr@5.2.0(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1)):
     dependencies:
       '@rollup/pluginutils': 5.4.0
-      '@svgr/core': 8.1.0(typescript@6.0.3)
-      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@6.0.3))
+      '@svgr/core': 8.1.0(supports-color@8.1.1)(typescript@6.0.3)
+      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(supports-color@8.1.1)(typescript@6.0.3))(supports-color@8.1.1)
       vite: 8.3.5(@types/node@24.19.1)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1)
     transitivePeerDependencies:
       - rollup

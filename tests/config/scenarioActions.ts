@@ -129,14 +129,19 @@ import {waitForModelRecomputed} from "../helpers/waitForModelRecomputed";
 import {interactionExampleScenarios} from "./interactionExampleScenarios";
 import {
 	actionSlotsActions,
+	actionSlotsParameterNamedActions,
 	actionSlotsSelectionActions,
 } from "./scenarioActionSlots";
+import {scenarioCameraAssignNamedActions} from "./scenarioCameraAssign";
+import {failedComputationShowsMessageOnce} from "./scenarioFailedComputation";
+import {decimalplacesSettingActions} from "./scenarioDecimalplaces";
 import {scenarioFilterableDatabaseNamedActions} from "./scenarioFilterableDatabase";
 import {scenarioFilterableDatabaseAllTypesNamedActions} from "./scenarioFilterableDatabaseAllTypes";
 import {scenarioFilterableDatabasePersistenceNamedActions} from "./scenarioFilterableDatabasePersistence";
 import {
 	exampleMobileFallbackAnchorsNamedActions,
 	exampleMobileFallbackGridNamedActions,
+	exampleMobileFallbackImagesNamedActions,
 	exampleMobileFallbackKeepBottomNamedActions,
 	exampleMobileFallbackNamedActions,
 	exampleMobileFallbackTabsNamedActions,
@@ -145,6 +150,7 @@ import {
 	selectionInputResetValueActions,
 	textInputResetValueActions,
 } from "./scenarioResetValue";
+import {scenarioSelectionActionNamedActions} from "./scenarioSelectionAction";
 import {scenarioSelectWidgetsNamedActions} from "./scenarioSelectWidgets";
 import {scenarioStringSelectNamedActions} from "./scenarioStringSelect";
 
@@ -255,16 +261,26 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		// the companion number textbox (TEXT INPUT PARAMETER pattern).
 		slug: "appbuilder-tutorial4-charts",
 		quickSuite: true,
-		actions: async (page, slug) => {
-			const input = getParameterElement(page, "Block to Edit").getByRole(
-				"textbox",
-			);
-			await waitForModelRecomputed(page, async () => {
-				await input.fill("2");
-				await input.press("Enter");
-			});
-			await takeSnapshot(page, `${slug}-block2`);
-		},
+		namedActions: [
+			{
+				name: "user actions complete successfully",
+				run: async (page, slug) => {
+					const input = getParameterElement(
+						page,
+						"Block to Edit",
+					).getByRole("textbox");
+					await waitForModelRecomputed(page, async () => {
+						await input.fill("2");
+						await input.press("Enter");
+					});
+					await takeSnapshot(page, `${slug}-block2`);
+				},
+			},
+			{
+				name: "failed computation shows its message once",
+				run: failedComputationShowsMessageOnce,
+			},
+		],
 	},
 
 	{
@@ -625,6 +641,43 @@ export const scenarioActions: ScenarioActionConfig[] = [
 	{
 		// Self-contained settings JSON (`g`); session is in the file, so the
 		// spec must not also pass `?slug=` (that would create a second session).
+		// SS-10342: the "assign" camera action fits cameras with `initialAutoAdjust`.
+		slug: "example-cameraAssign",
+		params: {g: "example-cameraAssign.json"},
+		namedActions: scenarioCameraAssignNamedActions,
+	},
+	{
+		// SS-10367: hostedAgent iframe uses the same Paper chrome as other
+		// standard widgets (rounded corners, border, no shadow). Point the
+		// frame at a public page so no agent server is required; the chrome
+		// is on the parent Paper around it.
+		slug: "example-agent-iframe",
+		params: {
+			g: "example-agent-iframe.json",
+			agentUrl: "https://example.com/",
+		},
+		actions: async (page) => {
+			const frame = page.getByTitle("Bookshelf agent");
+			await expect(frame).toBeVisible();
+			const paper = frame.locator("xpath=..");
+			await expect(paper).toHaveClass(/mantine-Paper-root/);
+			const radius = await paper.evaluate(
+				(el) => getComputedStyle(el).borderRadius,
+			);
+			const shadow = await paper.evaluate(
+				(el) => getComputedStyle(el).boxShadow,
+			);
+			const borderStyle = await paper.evaluate(
+				(el) => getComputedStyle(el).borderTopStyle,
+			);
+			expect(radius).not.toBe("0px");
+			expect(borderStyle).toBe("solid");
+			expect(shadow).toBe("none");
+		},
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
 		slug: "example-actionSlots-selection",
 		params: {g: "example-actionSlots-selection.json"},
 		actions: actionSlotsSelectionActions,
@@ -635,6 +688,21 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		slug: "example-actionSlots",
 		params: {g: "example-actionSlots.json"},
 		actions: actionSlotsActions,
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		slug: "example-actionSlots-parameter",
+		params: {g: "example-actionSlots-parameter.json"},
+		namedActions: actionSlotsParameterNamedActions,
+	},
+	{
+		// Self-contained settings JSON (`g`); session is in the file, so the
+		// spec must not also pass `?slug=` (that would create a second session).
+		// SS-10216: `overrides.decimalplaces` of parameter refs and controls.
+		slug: "example-decimalplaces",
+		params: {g: "example-decimalplaces.json"},
+		actions: decimalplacesSettingActions,
 	},
 	{
 		slug: "selection-parameter-variations",
@@ -729,6 +797,12 @@ export const scenarioActions: ScenarioActionConfig[] = [
 		namedActions: exampleMobileFallbackAnchorsNamedActions,
 	},
 	{
+		// Anchor image widgets falling back into top (horizontal) and right.
+		slug: "example-mobileFallback-images",
+		params: {g: "example-mobileFallback-images.json"},
+		namedActions: exampleMobileFallbackImagesNamedActions,
+	},
+	{
 		slug: "example-mobileFallback-keepBottom",
 		params: {g: "example-mobileFallback-keepBottom.json"},
 		namedActions: exampleMobileFallbackKeepBottomNamedActions,
@@ -783,6 +857,14 @@ export const scenarioActions: ScenarioActionConfig[] = [
 				"example-filterableDatabase-persistence.json",
 			),
 		namedActions: scenarioFilterableDatabasePersistenceNamedActions,
+	},
+	{
+		// SS-10192: selection actions. Without `parameter`, toolbar buttons
+		// change the root selecton/selectoff selection. With `parameter`,
+		// they change the SelectBox selection parameter.
+		slug: "example-selectionAction",
+		params: {g: "example-selectionAction.json"},
+		namedActions: scenarioSelectionActionNamedActions,
 	},
 	{
 		// String parameters as selects; Grasshopper sends the select

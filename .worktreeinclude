@@ -1,0 +1,18 @@
+# Gitignored files copied into a new worktree (.gitignore syntax). Only files that
+# are also gitignored are copied. Claude Code reads this natively; every other tool
+# gets the same copy from scripts/agents/setup-worktree.mjs.
+
+# Platform access for e2e global setup, build and publish env
+.env
+.env.platform-access
+.env.sentry-build-plugin
+.npmrc
+
+# Local model storage and Sentry config used by the dev server and build
+modelstorage.local.ts
+modelstorage.slugs.ts
+sentryconfig.local.ts
+
+# Not copied on purpose: viewer.local.ts (links ../Viewer; a worktree uses the
+# installed Viewer unless asked), .vscode/ (written by setup-worktree.mjs),
+# tests/config/.app-links.json (cache rebuilt by global setup).
